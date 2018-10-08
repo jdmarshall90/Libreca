@@ -14,6 +14,10 @@
 		D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04871A9216AF31E0085D22C /* Assets.xcassets */; };
 		D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */; };
 		D04871B8216AF31E0085D22C /* LibrecaiosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */; };
+		D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; };
+		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; };
+		D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +29,21 @@
 			remoteInfo = Librecaios;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D0B475F5216AF613008FDA50 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
+				D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D048719D216AF31D0085D22C /* Librecaios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Librecaios.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -38,6 +57,8 @@
 		D04871B3216AF31E0085D22C /* LibrecaiosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaiosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaiosTests.swift; sourceTree = "<group>"; };
 		D04871B9216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +66,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
+				D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +86,7 @@
 			children = (
 				D048719F216AF31D0085D22C /* Librecaios */,
 				D04871B6216AF31E0085D22C /* LibrecaiosTests */,
+				D0B475E7216AF5E6008FDA50 /* Frameworks */,
 				D048719E216AF31D0085D22C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,6 +123,15 @@
 			path = LibrecaiosTests;
 			sourceTree = "<group>";
 		};
+		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0B475E8216AF5F3008FDA50 /* Alamofire.framework */,
+				D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -109,6 +142,8 @@
 				D0487199216AF31D0085D22C /* Sources */,
 				D048719A216AF31D0085D22C /* Frameworks */,
 				D048719B216AF31D0085D22C /* Resources */,
+				D0B475F5216AF613008FDA50 /* Embed Frameworks */,
+				D0B475F6216AF62D008FDA50 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -194,6 +229,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D0B475F6216AF62D008FDA50 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which /usr/local/bin/swiftlint >/dev/null; then\n    /usr/local/bin/swiftlint lint --config \"Carthage/Checkouts/SwiftLintConfig/.swiftlint.yml\" --no-cache\nelse\n    echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    return 1\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D0487199216AF31D0085D22C /* Sources */ = {

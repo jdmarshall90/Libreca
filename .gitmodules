@@ -1,0 +1,9 @@
+[submodule "Carthage/Checkouts/Alamofire"]
+	path = Carthage/Checkouts/Alamofire
+	url = https://github.com/Alamofire/Alamofire.git
+[submodule "Carthage/Checkouts/calibrekit"]
+	path = Carthage/Checkouts/calibrekit
+	url = git@gitlab.com:calibre-utils/calibrekit.git
+[submodule "Carthage/Checkouts/SwiftLintConfig"]
+	path = Carthage/Checkouts/SwiftLintConfig
+	url = git@gitlab.com:jdmarshall90libs/SwiftLintConfig.git
