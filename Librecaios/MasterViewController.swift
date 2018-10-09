@@ -14,7 +14,7 @@ class MasterViewController: UITableViewController {
     
     private var detailViewController: DetailViewController?
     private let booksEndpoint = BooksEndpoint()
-    private var books: [BooksResponse.Book] = [] {
+    private var books: [Book] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -34,7 +34,7 @@ class MasterViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         booksEndpoint.hitService { [weak self] response in
-            self?.books = response.result.value?.books ?? []
+            self?.books = response.result.value ?? []
         }
     }
     
