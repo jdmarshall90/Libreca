@@ -52,7 +52,7 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         let book = books[indexPath.row]
-        cell.textLabel?.text = book.title
+        cell.textLabel?.text = book.title.name
         return cell
     }
     
