@@ -59,11 +59,9 @@ class BooksListViewController: UITableViewController, BooksListView {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
         
-        // TODO: Fix constraint issues in console
-        // TODO: Add rest of fields onto cell that make sense for the landing screen
-        
         let book = books[indexPath.row]
         cell.titleLabel.text = book.title.name
+        cell.authorsLabel.text = viewModel.authors(for: book)
         
         // TODO: Bug - scroll very fast all the way to bottom, watch images change several times before finally updating to correct image
         
