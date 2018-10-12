@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A0216AF31D0085D22C /* AppDelegate.swift */; };
 		D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A2216AF31D0085D22C /* BooksListViewController.swift */; };
 		D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D048719D216AF31D0085D22C /* Librecaios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Librecaios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871A0216AF31D0085D22C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D04871A2216AF31D0085D22C /* BooksListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
+				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
 				D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */,
 				D04871A6216AF31D0085D22C /* Books.storyboard */,
 			);
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
+				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 			);

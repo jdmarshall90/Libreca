@@ -6,14 +6,14 @@
 //  Copyright © 2018 Justin Marshall. All rights reserved.
 //
 
-import UIKit
-// TODO: Refactor this stuff out of the VC -- this is just a prototype for now
 import CalibreKit
+import UIKit
 
-class BooksListViewController: UITableViewController {
+class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
-    private let booksEndpoint = BooksEndpoint()
+    private lazy var viewModel = BooksListViewModel(view: self)
+    
     private var books: [Book] = [] {
         didSet {
             tableView.reloadData()
@@ -27,15 +27,19 @@ class BooksListViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count - 1] as? UINavigationController)?.topViewController as? BookDetailsViewController
         }
+        
+        viewModel.fetchBooks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController?.isCollapsed == true
         super.viewWillAppear(animated)
-        
-        booksEndpoint.hitService { [weak self] response in
-            self?.books = response.result.value ?? []
-        }
+    }
+    
+    // MARK: - BooksListView
+    
+    func finishedFetching(books: [Book]) {
+        self.books = books
     }
     
     // MARK: - Table View
