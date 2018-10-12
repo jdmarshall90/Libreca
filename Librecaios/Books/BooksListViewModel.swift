@@ -26,4 +26,11 @@ struct BooksListViewModel {
             self.view.finishedFetching(books: response.result.value ?? [])
         }
     }
+    
+    func fetchThumbnail(for book: Book, completion: @escaping (UIImage?) -> Void) {
+        book.thumbnail.hitService { response in
+            // TODO: need to cache this in the service layer
+            completion(response.result.value?.image)
+        }
+    }
 }

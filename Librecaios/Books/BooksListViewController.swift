@@ -28,6 +28,9 @@ class BooksListViewController: UITableViewController, BooksListView {
             detailViewController = (controllers[controllers.count - 1] as? UINavigationController)?.topViewController as? BookDetailsViewController
         }
         
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44
+        
         viewModel.fetchBooks()
     }
     
@@ -53,10 +56,18 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
+        
+        // TODO: Fix constraint issues in console
         
         let book = books[indexPath.row]
-        cell.textLabel?.text = book.title.name
+        cell.titleLabel.text = book.title.name
+        
+        // TODO: add a spinner
+        cell.thumbnailImageView.image = nil
+        viewModel.fetchThumbnail(for: book) {
+            cell.thumbnailImageView.image = $0
+        }
         return cell
     }
     
