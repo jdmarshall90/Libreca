@@ -90,7 +90,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lIh-7k-qXl">
-                                            <rect key="frame" x="104" y="42" width="263" height="20.5"/>
+                                            <rect key="frame" x="104" y="42" width="229" height="20.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -102,10 +102,16 @@
                                                 <constraint firstAttribute="width" secondItem="6Cn-L9-TEq" secondAttribute="height" multiplier="1:1" id="RV0-1r-AFf"/>
                                             </constraints>
                                         </imageView>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="bEY-u4-AcV">
+                                            <rect key="frame" x="8" y="42.5" width="88" height="20"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="6Cn-L9-TEq" firstAttribute="centerY" secondItem="37f-cq-3Eg" secondAttribute="centerY" id="54T-aG-cF8"/>
                                         <constraint firstItem="6Cn-L9-TEq" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="GYT-6N-YpY"/>
+                                        <constraint firstItem="bEY-u4-AcV" firstAttribute="width" secondItem="6Cn-L9-TEq" secondAttribute="width" multiplier="1:1" id="OgY-75-HOD"/>
+                                        <constraint firstItem="bEY-u4-AcV" firstAttribute="centerX" secondItem="6Cn-L9-TEq" secondAttribute="centerX" id="RU6-1Y-hF5"/>
+                                        <constraint firstItem="bEY-u4-AcV" firstAttribute="centerY" secondItem="6Cn-L9-TEq" secondAttribute="centerY" id="WsP-2R-jNR"/>
                                         <constraint firstItem="lIh-7k-qXl" firstAttribute="leading" secondItem="6Cn-L9-TEq" secondAttribute="trailing" constant="8" id="Xkb-L3-Nis"/>
                                         <constraint firstAttribute="bottom" secondItem="6Cn-L9-TEq" secondAttribute="bottom" constant="8" id="bag-po-8xH"/>
                                         <constraint firstItem="6Cn-L9-TEq" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="dmE-Pv-9Gb"/>
@@ -115,6 +121,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
+                                    <outlet property="activityIndicator" destination="bEY-u4-AcV" id="3EL-q9-TPU"/>
                                     <outlet property="thumbnailImageView" destination="6Cn-L9-TEq" id="beH-xc-dlA"/>
                                     <outlet property="titleLabel" destination="lIh-7k-qXl" id="CYT-3E-kih"/>
                                     <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetail" id="6S0-TO-JiA"/>

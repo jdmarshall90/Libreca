@@ -66,9 +66,10 @@ class BooksListViewController: UITableViewController, BooksListView {
         
         // TODO: Bug - scroll very fast all the way to bottom, watch images change several times before finally updating to correct image
         
-        // TODO: add a spinner
+        cell.activityIndicator.startAnimating()
         cell.thumbnailImageView.image = nil
         viewModel.fetchThumbnail(for: book) {
+            cell.activityIndicator.stopAnimating()
             cell.thumbnailImageView.image = $0
         }
         return cell
