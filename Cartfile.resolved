@@ -1,3 +1,3 @@
-git "git@gitlab.com:calibre-utils/calibrekit.git" "10c9e5e6902d1adf75c81e71c622316e7a172a88"
+git "git@gitlab.com:calibre-utils/calibrekit.git" "6632cc0d84701771bdc013552dcd16b5ff7fb7ff"
 git "git@gitlab.com:jdmarshall90libs/SwiftLintConfig.git" "v3.1.1"
 github "Alamofire/Alamofire" "4.7.3"
