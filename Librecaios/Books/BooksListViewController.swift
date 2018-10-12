@@ -31,6 +31,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
+        // TODO: Loading view
         viewModel.fetchBooks()
     }
     
