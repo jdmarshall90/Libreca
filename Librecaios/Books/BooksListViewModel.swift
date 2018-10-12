@@ -30,7 +30,6 @@ struct BooksListViewModel {
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage?) -> Void) {
         book.thumbnail.hitService { response in
             // TODO: need to cache this in the service layer
-            // TODO: Need to add Alamofire to the Cartfile for the app itself since you are referencing it here
             completion(response.result.value?.image)
         }
     }
