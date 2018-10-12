@@ -63,6 +63,8 @@ class BooksListViewController: UITableViewController, BooksListView {
         let book = books[indexPath.row]
         cell.titleLabel.text = book.title.name
         
+        // TODO: Bug - scroll very fast all the way to bottom, watch images change several times before finally updating to correct image
+        
         // TODO: add a spinner
         cell.thumbnailImageView.image = nil
         viewModel.fetchThumbnail(for: book) {
