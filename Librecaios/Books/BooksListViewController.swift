@@ -60,6 +60,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
         
         // TODO: Fix constraint issues in console
+        // TODO: Add rest of fields onto cell that make sense for the landing screen
         
         let book = books[indexPath.row]
         cell.titleLabel.text = book.title.name
