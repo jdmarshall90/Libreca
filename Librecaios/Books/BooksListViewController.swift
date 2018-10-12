@@ -1,5 +1,5 @@
 //
-//  MasterViewController.swift
+//  BooksListViewController.swift
 //  Librecaios
 //
 //  Created by Justin Marshall on 10/7/18.
@@ -10,9 +10,9 @@ import UIKit
 // TODO: Refactor this stuff out of the VC -- this is just a prototype for now
 import CalibreKit
 
-class MasterViewController: UITableViewController {
+class BooksListViewController: UITableViewController {
     
-    private var detailViewController: DetailViewController?
+    private var detailViewController: BookDetailsViewController?
     private let booksEndpoint = BooksEndpoint()
     private var books: [Book] = [] {
         didSet {
@@ -25,7 +25,7 @@ class MasterViewController: UITableViewController {
         
         if let split = splitViewController {
             let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count - 1] as? UINavigationController)?.topViewController as? DetailViewController
+            detailViewController = (controllers[controllers.count - 1] as? UINavigationController)?.topViewController as? BookDetailsViewController
         }
     }
     
