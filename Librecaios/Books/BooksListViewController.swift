@@ -59,17 +59,19 @@ class BooksListViewController: UITableViewController, BooksListView {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
         
+        cell.tag = indexPath.row
+        
         let book = books[indexPath.row]
         cell.titleLabel.text = book.title.name
         cell.authorsLabel.text = viewModel.authors(for: book)
         
-        // TODO: Bug - scroll very fast all the way to bottom, watch images change several times before finally updating to correct image
-        
         cell.activityIndicator.startAnimating()
         cell.thumbnailImageView.image = nil
         viewModel.fetchThumbnail(for: book) {
-            cell.activityIndicator.stopAnimating()
-            cell.thumbnailImageView.image = $0
+            if cell.tag == indexPath.row {
+                cell.activityIndicator.stopAnimating()
+                cell.thumbnailImageView.image = $0
+            }
         }
         return cell
     }
