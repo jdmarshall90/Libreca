@@ -14,6 +14,8 @@ class BooksListViewController: UITableViewController, BooksListView {
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
     
+    @IBOutlet weak var sortButton: UIBarButtonItem!
+    
     private var books: [Book] = [] {
         didSet {
             tableView.reloadData()
@@ -31,6 +33,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
+        sortButton.isEnabled = false
         viewModel.fetchBooks()
     }
     
@@ -42,6 +45,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     // MARK: - BooksListView
     
     func finishedFetching(books: [Book]) {
+        sortButton.isEnabled = true
         self.books = books
     }
     
@@ -80,4 +84,21 @@ class BooksListViewController: UITableViewController, BooksListView {
             return cell
         }
     }
+    
+    @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Sort", message: "Select sort option", preferredStyle: .actionSheet)
+        
+        BooksListViewModel.Sort.allCases.forEach { sortOption in
+            let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
+                guard let strongSelf = self else { return }
+                strongSelf.books = strongSelf.viewModel.sort(by: sortOption)
+            }
+            alertController.addAction(action)
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
+    }
+    
 }
