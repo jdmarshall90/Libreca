@@ -63,8 +63,6 @@ class BooksListViewController: UITableViewController, BooksListView {
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
             
-            // TODO: shadows and rounding?
-            
             cell.tag = indexPath.row
             
             let book = books[indexPath.row]
