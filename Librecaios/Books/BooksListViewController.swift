@@ -31,7 +31,6 @@ class BooksListViewController: UITableViewController, BooksListView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
-        // TODO: Loading view
         viewModel.fetchBooks()
     }
     
@@ -53,26 +52,34 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return books.count
+        return max(books.count, 1)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
-        
-        cell.tag = indexPath.row
-        
-        let book = books[indexPath.row]
-        cell.titleLabel.text = book.title.name
-        cell.authorsLabel.text = viewModel.authors(for: book)
-        
-        cell.activityIndicator.startAnimating()
-        cell.thumbnailImageView.image = nil
-        viewModel.fetchThumbnail(for: book) {
-            if cell.tag == indexPath.row {
-                cell.activityIndicator.stopAnimating()
-                cell.thumbnailImageView.image = $0
+        if books.isEmpty {
+            let cell = UITableViewCell()
+            cell.textLabel?.text = "Loading..."
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
+            
+            // TODO: shadows and rounding?
+            
+            cell.tag = indexPath.row
+            
+            let book = books[indexPath.row]
+            cell.titleLabel.text = book.title.name
+            cell.authorsLabel.text = viewModel.authors(for: book)
+            
+            cell.activityIndicator.startAnimating()
+            cell.thumbnailImageView.image = nil
+            viewModel.fetchThumbnail(for: book) {
+                if cell.tag == indexPath.row {
+                    cell.activityIndicator.stopAnimating()
+                    cell.thumbnailImageView.image = $0
+                }
             }
+            return cell
         }
-        return cell
     }
 }
