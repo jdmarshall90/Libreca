@@ -90,7 +90,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harry Potter and the Half-Blood Prince" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lIh-7k-qXl">
-                                            <rect key="frame" x="96" y="8" width="245" height="44"/>
+                                            <rect key="frame" x="96" y="9.5" width="245" height="42.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -113,7 +113,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="lIh-7k-qXl" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="4m0-RB-vfA"/>
+                                        <constraint firstItem="lIh-7k-qXl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="4m0-RB-vfA"/>
                                         <constraint firstItem="6Cn-L9-TEq" firstAttribute="centerY" secondItem="37f-cq-3Eg" secondAttribute="centerY" id="54T-aG-cF8"/>
                                         <constraint firstItem="bEY-u4-AcV" firstAttribute="width" secondItem="6Cn-L9-TEq" secondAttribute="width" multiplier="1:1" id="OgY-75-HOD"/>
                                         <constraint firstItem="bEY-u4-AcV" firstAttribute="centerX" secondItem="6Cn-L9-TEq" secondAttribute="centerX" id="RU6-1Y-hF5"/>
