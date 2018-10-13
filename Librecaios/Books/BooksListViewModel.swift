@@ -22,8 +22,7 @@ struct BooksListViewModel {
     }
     
     func authors(for book: Book) -> String {
-        // TODO: remove these extras after done debugging
-        return (book.authors + book.authors + book.authors + book.authors).map { $0.name }.joined(separator: "; ")
+        return book.authors.map { $0.name }.joined(separator: "; ")
     }
     
     func fetchBooks() {
