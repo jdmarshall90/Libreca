@@ -32,7 +32,7 @@ struct BooksListViewModel {
     }
     
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage?) -> Void) {
-        book.thumbnail.hitService { response in
+        book.cover.hitService { response in
             completion(response.result.value?.image)
         }
     }
