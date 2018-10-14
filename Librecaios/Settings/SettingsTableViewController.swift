@@ -22,9 +22,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             static let emailAddress = "jmarshallsoftware@gmail.com"
             
             // swiftlint:disable force_unwrapping
-            static let twitter = URL(string: "https://twitter.com/fiscusapp")!
-            static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/fiscus/")!
-            static let blog = URL(string: "https://marshallsoftware.wordpress.com/")!
+            static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/librecaios/")!
             // swiftlint:enable force_unwrapping
         }
         
@@ -82,9 +80,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) {
                     UIApplication.shared.open(Constants.Connect.supportSite, options: [:], completionHandler: nil)
-                },
-                DisplayModel(mainText: "Blog", subText: nil, accessoryType: .disclosureIndicator) {
-                    UIApplication.shared.open(Constants.Connect.blog, options: [:], completionHandler: nil)
                 }
             ],
             [
