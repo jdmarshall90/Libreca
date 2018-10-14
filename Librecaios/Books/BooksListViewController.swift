@@ -61,15 +61,15 @@ class BooksListViewController: UITableViewController, BooksListView {
     // MARK: - Table View
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return max(sectionIndexGenerator.sections.count, 1)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max(books.count, 1)
+        return sectionIndexGenerator.sections.count > section ? sectionIndexGenerator.sections[section].values.count : 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if books.isEmpty {
+        if sectionIndexGenerator.sections.isEmpty {
             let cell = UITableViewCell()
             cell.textLabel?.text = "Loading..."
             return cell
@@ -78,7 +78,7 @@ class BooksListViewController: UITableViewController, BooksListView {
             
             cell.tag = indexPath.row
             
-            let book = books[indexPath.row]
+            let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
             cell.titleLabel.text = book.title.name
             cell.authorsLabel.text = viewModel.authors(for: book)
             
@@ -99,8 +99,11 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        sectionIndexGenerator.handleScrolling(for: tableView, whenTitleIsTapped: title, at: index)
-        return -1
+        return index
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
     }
     
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {

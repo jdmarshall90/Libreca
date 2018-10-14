@@ -18,7 +18,6 @@ final class BooksListViewModel {
     private let booksEndpoint = BooksEndpoint()
     private let view: BooksListView
     
-    // TODO: Put these into sections
     private var books: [Book] = [] {
         didSet {
             books = books.sorted(by: Settings.Sort.current.sortAction)

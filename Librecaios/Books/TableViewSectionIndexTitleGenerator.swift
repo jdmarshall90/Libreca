@@ -12,27 +12,41 @@ protocol SectionIndexDisplayable {
     var stringValue: String { get }
 }
 
-final class TableViewSectionIndexTitleGenerator {
+final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     
-    private var strings: [String]
-    private var cachedSectionIndexItems: [String: [String]]
+    struct Section {
+        let header: String
+        let values: [T]
+    }
+    
+    private var sectionIndexDisplayables: [T] {
+        didSet {
+            sections = sortedTitles.map { sortedTitle in
+                let values = sectionIndexDisplayables.filter { displayable in
+                    sortedTitle == displayable.stringValue.firstLetter()
+                }
+                return Section(header: sortedTitle, values: values)
+            }
+        }
+    }
+    
     private weak var viewController: UITableViewController?
     
     private var sortedTitles: [String] {
-        let sectionTitles = strings.map { $0.firstLetter() }
+        let sectionTitles = sectionIndexDisplayables.map { $0.stringValue.firstLetter() }
         let duplicateFreeSectionTitles = Set(sectionTitles)
         return Array(duplicateFreeSectionTitles).sorted(by: <)
     }
     
-    init(sectionIndexDisplayables: [SectionIndexDisplayable], tableViewController: UITableViewController) {
-        self.strings = sectionIndexDisplayables.map { $0.stringValue }
+    var sections: [Section] = []
+    
+    init(sectionIndexDisplayables: [T], tableViewController: UITableViewController) {
+        self.sectionIndexDisplayables = sectionIndexDisplayables
         viewController = tableViewController
-        cachedSectionIndexItems = [:]
     }
     
-    func reset(with sectionIndexDisplayables: [SectionIndexDisplayable]) {
-        self.strings = sectionIndexDisplayables.map { $0.stringValue }
-        cachedSectionIndexItems = [:]
+    func reset(with sectionIndexDisplayables: [T]) {
+        self.sectionIndexDisplayables = sectionIndexDisplayables
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -44,27 +58,6 @@ final class TableViewSectionIndexTitleGenerator {
         let frameOfBottomCell = viewController?.tableView.visibleCells.last?.frame ?? .zero
         let bottomPositionOfFinalCell = frameOfBottomCell.origin.y + frameOfBottomCell.height
         return bottomPositionOfFinalCell > screenHeightBelowNavbar ? sortedTitles : nil
-    }
-    
-    // TODO: this might be able to go away after you're using actual sections ... ?
-    func handleScrolling(for tableView: UITableView, whenTitleIsTapped title: String, at index: Int) {
-        let stringsStartingWithSelectedTitle: [String]
-        
-        // if I already have it, just pull it from the cache
-        if let result = cachedSectionIndexItems[title] {
-            stringsStartingWithSelectedTitle = result
-        } else {
-            // calculate and set it
-            stringsStartingWithSelectedTitle = strings.filter { $0.firstLetter() == title }
-            cachedSectionIndexItems[title] = stringsStartingWithSelectedTitle
-        }
-        
-        guard let rowToWhichToScroll = strings.index(where: { $0 == stringsStartingWithSelectedTitle.first }) else { return }
-        let firstIndexPathStartingWithThisLetter = IndexPath(row: rowToWhichToScroll, section: 0)
-        
-        if let visibleIndexPaths = tableView.indexPathsForVisibleRows, visibleIndexPaths.isEmpty == false {
-            tableView.scrollToRow(at: firstIndexPathStartingWithThisLetter, at: .top, animated: false)
-        }
     }
     
 }
