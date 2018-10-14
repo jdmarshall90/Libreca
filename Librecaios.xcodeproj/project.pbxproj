@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
 		D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A0216AF31D0085D22C /* AppDelegate.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionIndexTitleGenerator.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		D048719D216AF31D0085D22C /* Librecaios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Librecaios.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +94,7 @@
 				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
 				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
 				D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */,
+				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
 				D04871A6216AF31D0085D22C /* Books.storyboard */,
 			);
 			path = Books;
@@ -291,6 +294,7 @@
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
+				D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,16 +9,25 @@
 import CalibreKit
 import UIKit
 
+extension Book: SectionIndexDisplayable {
+    var stringValue: String {
+        return title.name
+    }
+}
+
 class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
+    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator(sectionIndexDisplayables: books, tableViewController: self)
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private var books: [Book] = [] {
         didSet {
+            sectionIndexGenerator.reset(with: books)
             tableView.reloadData()
+            tableView.reloadSectionIndexTitles()
         }
     }
     
@@ -83,6 +92,15 @@ class BooksListViewController: UITableViewController, BooksListView {
             }
             return cell
         }
+    }
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return sectionIndexGenerator.sectionIndexTitles(for: tableView)
+    }
+    
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        sectionIndexGenerator.handleScrolling(for: tableView, whenTitleIsTapped: title, at: index)
+        return -1
     }
     
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
