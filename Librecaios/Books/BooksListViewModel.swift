@@ -39,11 +39,24 @@ final class BooksListViewModel {
         }
     }
     
-    // TODO: Store the preferred sort in user defaults
-    private var currentSort: Sort = .title {
-        didSet {
-            if currentSort != oldValue {
-                books = books.sorted(by: currentSort.sortAction)
+    private var bookSortKey: String {
+        // swiftlint:disable:next force_cast
+        return Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
+    }
+    
+    private var currentSort: Sort {
+        get {
+            guard let savedCurrentSort = UserDefaults.standard.string(forKey: bookSortKey) else {
+                return .title
+            }
+            // swiftlint:disable:next force_unwrapping
+            return Sort(rawValue: savedCurrentSort)!
+        }
+        set(newValue) {
+            let oldSort = currentSort
+            UserDefaults.standard.set(newValue.rawValue, forKey: bookSortKey)
+            if oldSort != newValue {
+                books = books.sorted(by: newValue.sortAction)
             }
         }
     }
