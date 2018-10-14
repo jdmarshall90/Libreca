@@ -24,6 +24,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             static let emailAddress = "jmarshallsoftware@gmail.com"
             
             // swiftlint:disable force_unwrapping
+            // TODO: Need to create this page on WordPress
+            // TODO: Have this open in in-app safari VC
             static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/librecaios/")!
             // swiftlint:enable force_unwrapping
         }
