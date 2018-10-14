@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */; };
+		D0195B812172EEA8006EA713 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B802172EEA8006EA713 /* Settings.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
 		D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A0216AF31D0085D22C /* AppDelegate.swift */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionIndexTitleGenerator.swift; sourceTree = "<group>"; };
+		D0195B802172EEA8006EA713 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		D048719D216AF31D0085D22C /* Librecaios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Librecaios.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0195B7F2172EE94006EA713 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D0195B802172EEA8006EA713 /* Settings.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		D02F75DC217036D90040EDE5 /* Books */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +152,7 @@
 			children = (
 				D02F75DD217036E10040EDE5 /* Startup */,
 				D02F75DC217036D90040EDE5 /* Books */,
+				D0195B7F2172EE94006EA713 /* Settings */,
 				D02F75DE217036F20040EDE5 /* Supporting Files */,
 			);
 			path = Librecaios;
@@ -293,6 +304,7 @@
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
+				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */,
 			);

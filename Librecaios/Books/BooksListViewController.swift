@@ -106,7 +106,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Sort", message: "Select sort option", preferredStyle: .actionSheet)
         
-        BooksListViewModel.Sort.allCases.forEach { sortOption in
+        Settings.Sort.allCases.forEach { sortOption in
             let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
                 guard let strongSelf = self else { return }
                 strongSelf.books = strongSelf.viewModel.sort(by: sortOption)
