@@ -24,7 +24,7 @@ final class BooksListViewModel {
             case .title:
                 return lhs.title.sort < rhs.title.sort
             case .authorLastName:
-                return lhs.authors.first!.sort < rhs.authors.first!.sort
+                return (lhs.authors.first?.sort ?? "") < (rhs.authors.first?.sort ?? "")
             }
         }
     }
