@@ -51,8 +51,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             
             // swiftlint:disable force_unwrapping
             static let app = Framework(forBundleID: "com.marshall.justin.mobile.ios.Librecaios")!
-            static let fiscusKit = Framework(forBundleID: "com.marshall.justin.lib.CalibreKit")!
-            static let alienAlbatross = Framework(forBundleID: "org.alamofire.Alamofire")!
+            static let calibreKit = Framework(forBundleID: "com.marshall.justin.lib.CalibreKit")!
+            static let alamofire = Framework(forBundleID: "org.alamofire.Alamofire")!
             // swiftlint:enable force_unwrapping
         }
     }
@@ -200,8 +200,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         guard numberOfSections(in: tableView) == section + 1 else { return nil }
         return """
         \(Constants.Bundles.app.name) v\(Constants.Bundles.app.shortDescription)
-        \(Constants.Bundles.fiscusKit.name) v\(Constants.Bundles.fiscusKit.shortDescription)
-        \(Constants.Bundles.alienAlbatross.name) v\(Constants.Bundles.alienAlbatross.shortDescription)
+        \(Constants.Bundles.calibreKit.name) v\(Constants.Bundles.calibreKit.shortDescription)
+        \(Constants.Bundles.alamofire.name) v\(Constants.Bundles.alamofire.shortDescription)
         
         Made with ❤️ on GitLab
         """
