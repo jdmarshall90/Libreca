@@ -10,6 +10,8 @@ import Foundation
 import MessageUI
 import UIKit
 
+// TODO: Audit this whole file, make sure it's all needed and that you're not forgetting something
+
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
     
     private struct Constants {
