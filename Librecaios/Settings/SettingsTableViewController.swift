@@ -19,7 +19,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         struct Connect {
             private init() {}
             
-            static let emailAddress = "incoming+jmarshallsoftwareiOSApps/Fiscus@incoming.gitlab.com"
+            static let emailAddress = "jmarshallsoftware@gmail.com"
             
             // swiftlint:disable force_unwrapping
             static let twitter = URL(string: "https://twitter.com/fiscusapp")!
@@ -136,7 +136,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let mailComposeVC = MFMailComposeViewController(nibName: nil, bundle: nil)
         mailComposeVC.mailComposeDelegate = self
         mailComposeVC.setToRecipients([Constants.Connect.emailAddress])
-        mailComposeVC.setSubject("Fiscus App Question")
+        mailComposeVC.setSubject("Librecaios App Question")
         let messageBody = """
         \n\n\n\(Constants.Bundles.app.name) v\(Constants.Bundles.app.version) (\(Constants.Bundles.app.build)): \(UIDevice.current.hardwareName), iOS \(UIDevice.current.systemVersion)
         """
