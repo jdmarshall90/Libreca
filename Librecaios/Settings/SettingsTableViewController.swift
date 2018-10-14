@@ -201,6 +201,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         \(Constants.Bundles.alamofire.name) v\(Constants.Bundles.alamofire.shortDescription)
         
         Made with ❤️ on GitLab
+        
+        \(Constants.Bundles.app.name) connects with Calibre © content server via HTTP. It is neither affiliated with nor endorsed by Calibre ©.
         """
     }
     
