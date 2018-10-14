@@ -26,6 +26,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     private var books: [Book] = [] {
         didSet {
             sectionIndexGenerator.reset(with: books)
+            title = "Books (\(books.count))"
             tableView.reloadData()
             tableView.reloadSectionIndexTitles()
         }
