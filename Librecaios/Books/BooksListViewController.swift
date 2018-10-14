@@ -11,7 +11,7 @@ import UIKit
 
 extension Book: SectionIndexDisplayable {
     var stringValue: String {
-        return title.name
+        return self[keyPath: Settings.Sort.current.sortingKeyPath]
     }
 }
 
