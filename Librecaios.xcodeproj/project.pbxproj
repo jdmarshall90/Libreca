@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */; };
 		D0195B812172EEA8006EA713 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B802172EEA8006EA713 /* Settings.swift */; };
+		D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B8421730794006EA713 /* SettingsTableViewController.swift */; };
+		D0195B8721730953006EA713 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0195B8621730953006EA713 /* Settings.storyboard */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
 		D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A0216AF31D0085D22C /* AppDelegate.swift */; };
@@ -52,6 +54,8 @@
 /* Begin PBXFileReference section */
 		D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionIndexTitleGenerator.swift; sourceTree = "<group>"; };
 		D0195B802172EEA8006EA713 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		D0195B8421730794006EA713 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		D0195B8621730953006EA713 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		D048719D216AF31D0085D22C /* Librecaios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Librecaios.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				D0195B802172EEA8006EA713 /* Settings.swift */,
+				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
+				D0195B8621730953006EA713 /* Settings.storyboard */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -262,6 +268,7 @@
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
+				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +311,7 @@
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
+				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */,

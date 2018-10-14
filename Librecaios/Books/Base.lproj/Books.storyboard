@@ -152,6 +152,13 @@
                                 <action selector="sortButtonTapped:" destination="7bK-jq-Zjz" id="7ki-EC-ruA"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="Settings" id="aQZ-fF-gjY">
+                            <connections>
+                                <segue destination="9dI-Th-nO8" kind="popoverPresentation" popoverAnchorBarButtonItem="aQZ-fF-gjY" id="K3i-Sb-VXV">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="sortButton" destination="rFL-NB-48e" id="wwA-Qo-9HU"/>
@@ -160,6 +167,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="708" y="-630.13493253373315"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="xP6-il-b9m">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="9dI-Th-nO8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31p-9h-jNI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1459" y="-865"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="r7l-gg-dq7">
@@ -179,6 +194,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Settings" width="25" height="25"/>
         <image name="Sort" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
