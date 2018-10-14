@@ -75,10 +75,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         [
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) {
-                    self.didTapSendEmail()
+                    self.didTapSendEmail(isBeta: false)
                 },
-                DisplayModel(mainText: "Twitter", subText: nil, accessoryType: .disclosureIndicator) {
-                    UIApplication.shared.open(Constants.Connect.twitter, options: [:], completionHandler: nil)
+                DisplayModel(mainText: "Beta Signup", subText: nil, accessoryType: .disclosureIndicator) {
+                    self.didTapSendEmail(isBeta: true)
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) {
                     UIApplication.shared.open(Constants.Connect.supportSite, options: [:], completionHandler: nil)
@@ -125,7 +125,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         }
     }
     
-    private func didTapSendEmail() {
+    private func didTapSendEmail(isBeta: Bool) {
         guard MFMailComposeViewController.canSendMail() else {
             let alertController = UIAlertController(title: "Unable to send email", message: "Your device is not configured for sending emails.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -136,11 +136,11 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let mailComposeVC = MFMailComposeViewController(nibName: nil, bundle: nil)
         mailComposeVC.mailComposeDelegate = self
         mailComposeVC.setToRecipients([Constants.Connect.emailAddress])
-        mailComposeVC.setSubject("Librecaios App Question")
+        mailComposeVC.setSubject(isBeta ? "\(Constants.Bundles.app.name) Beta Request" : "\(Constants.Bundles.app.name) App Question")
         let messageBody = """
         \n\n\n\(Constants.Bundles.app.name) v\(Constants.Bundles.app.version) (\(Constants.Bundles.app.build)): \(UIDevice.current.hardwareName), iOS \(UIDevice.current.systemVersion)
         """
-        mailComposeVC.setMessageBody(messageBody, isHTML: false)
+        mailComposeVC.setMessageBody(isBeta ? "Please sign me up for beta testing." + messageBody : messageBody, isHTML: false)
         present(mailComposeVC, animated: true)
     }
     
