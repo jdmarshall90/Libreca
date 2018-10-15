@@ -17,10 +17,6 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
         return URL(string: urlTextField.text ?? "")
     }
     
-    private var isFormValid: Bool {
-        return url != nil
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         urlTextField.text = Settings.ContentServer.url?.absoluteString
@@ -33,15 +29,8 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if isFormValid {
-            textField.resignFirstResponder()
-            saveTheURL()
-        } else {
-            let alertController = UIAlertController(title: "Invalid Entry", message: "Must be a valid URL", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            present(alertController, animated: true)
-        }
+        textField.resignFirstResponder()
+        saveTheURL()
         
         return true
     }
