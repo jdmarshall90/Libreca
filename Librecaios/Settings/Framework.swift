@@ -9,19 +9,19 @@
 import Foundation
 
 struct Framework {
-    public let name: String
-    public let version: String
-    public let build: String
+    let name: String
+    let version: String
+    let build: String
     
-    public var longDescription: String {
+    var longDescription: String {
         return "\(name) \(shortDescription)"
     }
     
-    public var shortDescription: String {
+    var shortDescription: String {
         return "\(version) (\(build))"
     }
     
-    public init?(forBundleID bundleID: String) {
+    init?(forBundleID bundleID: String) {
         guard let infoDictionary = Bundle(identifier: bundleID)?.infoDictionary,
             let frameworkName = infoDictionary["CFBundleName"] as? String,
             let versionNumber = infoDictionary["CFBundleShortVersionString"] as? String,
