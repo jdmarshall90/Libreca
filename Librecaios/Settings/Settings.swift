@@ -73,7 +73,6 @@ struct Settings {
             }
             set(newValue) {
                 UserDefaults.standard.set(newValue, forKey: key)
-                guard let newValue = newValue else { return }
                 CalibreKitConfiguration.baseURL = newValue
                 NotificationCenter.default.post(urlDidChangeNotification)
             }

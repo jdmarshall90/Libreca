@@ -13,18 +13,17 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     @IBOutlet weak var urlTextField: UITextField!
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
     
-    private var validURL: URL? {
+    private var url: URL? {
         return URL(string: urlTextField.text ?? "")
     }
     
     private var isFormValid: Bool {
-        return validURL != nil
+        return url != nil
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         urlTextField.text = Settings.ContentServer.url?.absoluteString
-        saveButton.isEnabled = isFormValid
         navigationItem.rightBarButtonItem = saveButton
     }
     
@@ -47,14 +46,9 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
         return true
     }
     
-    @IBAction private func urlValueDidChange(_ sender: UITextField) {
-        saveButton.isEnabled = isFormValid
-    }
-    
     @objc
     private func saveTheURL() {
-        guard let validURL = validURL else { return }
-        Settings.ContentServer.url = validURL
+        Settings.ContentServer.url = url
         navigationController?.popViewController(animated: true)
     }
     

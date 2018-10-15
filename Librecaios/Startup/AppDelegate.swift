@@ -22,9 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             splitViewController.delegate = self
         }
         
-        if let url = Settings.ContentServer.url {
-            CalibreKitConfiguration.baseURL = url
-        }
+        CalibreKitConfiguration.baseURL = Settings.ContentServer.url
         return true
     }
 
