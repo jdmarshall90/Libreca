@@ -12,13 +12,17 @@ import Foundation
 struct Settings {
     private init() {}
     
+    private static var baseSettingsKey: String {
+        // swiftlint:disable:next force_cast
+        return Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String + ".settings."
+    }
+    
     enum Sort: String, CaseIterable {
         case title = "Title"
         case authorLastName = "Author Last Name"
         
-        private static var bookSortKey: String {
-            // swiftlint:disable:next force_cast
-            return Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String
+        private static var key: String {
+            return Settings.baseSettingsKey + "sort"
         }
         
         var sortingKeyPath: KeyPath<Book, String> {
@@ -33,14 +37,14 @@ struct Settings {
         
         static var current: Settings.Sort {
             get {
-                guard let savedCurrentSort = UserDefaults.standard.string(forKey: bookSortKey) else {
+                guard let savedCurrentSort = UserDefaults.standard.string(forKey: key) else {
                     return .title
                 }
                 // swiftlint:disable:next force_unwrapping
                 return Settings.Sort(rawValue: savedCurrentSort)!
             }
             set(newValue) {
-                UserDefaults.standard.set(newValue.rawValue, forKey: bookSortKey)
+                UserDefaults.standard.set(newValue.rawValue, forKey: key)
             }
         }
         
@@ -50,6 +54,28 @@ struct Settings {
                 return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
             case .authorLastName:
                 return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
+            }
+        }
+    }
+    
+    struct ContentServer {
+        private init() {}
+        
+        static let urlDidChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
+        
+        private static var key: String {
+            return Settings.baseSettingsKey + "url"
+        }
+        
+        static var url: URL? {
+            get {
+                return UserDefaults.standard.url(forKey: key)
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue, forKey: key)
+                guard let newValue = newValue else { return }
+                CalibreKitConfiguration.baseURL = newValue
+                NotificationCenter.default.post(urlDidChangeNotification)
             }
         }
     }

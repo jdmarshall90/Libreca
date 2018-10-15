@@ -26,6 +26,7 @@ final class BooksListViewModel {
     
     init(view: BooksListView) {
         self.view = view
+        NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.urlDidChangeNotification.name, object: nil)
     }
     
     func sort(by newSortOption: Settings.Sort) -> [Book] {
@@ -53,5 +54,12 @@ final class BooksListViewModel {
         book.cover.hitService { response in
             completion(response.result.value?.image)
         }
+    }
+    
+    @objc
+    private func urlDidChange(_ notification: Notification) {
+        // TODO: clear the cache
+        view.finishedFetching(books: [])
+        fetchBooks()
     }
 }

@@ -14,6 +14,10 @@ import UIKit
 
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
     
+    private enum Segue: String {
+        case contentServerSegue
+    }
+    
     private struct Constants {
         
         private init() {}
@@ -41,6 +45,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             private init() {}
             
             static let all = [
+                "Settings",
                 "Contact",
                 "About",
                 "Credits"
@@ -73,14 +78,22 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         }
     }
     
-    private lazy var displayModels: [[DisplayModel]] = {
-        [
+    private var displayModels: [[DisplayModel]] = []
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        displayModels = [
             [
-                DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) {
-                    self.didTapSendEmail(isBeta: false)
+                DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
+                    self?.didTapContentServer()
+                }
+            ],
+            [
+                DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapSendEmail(isBeta: false)
                 },
-                DisplayModel(mainText: "Beta Signup", subText: nil, accessoryType: .disclosureIndicator) {
-                    self.didTapSendEmail(isBeta: true)
+                DisplayModel(mainText: "Beta Signup", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapSendEmail(isBeta: true)
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) {
                     UIApplication.shared.open(Constants.Connect.supportSite, options: [:], completionHandler: nil)
@@ -95,7 +108,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 }
             ]
         ]
-    }()
+        tableView.reloadData()
+    }
     
     @IBAction private func closeTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
@@ -122,6 +136,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 break
             }
         }
+    }
+    
+    private func didTapContentServer() {
+        performSegue(withIdentifier: Segue.contentServerSegue.rawValue, sender: nil)
     }
     
     private func didTapSendEmail(isBeta: Bool) {
@@ -165,6 +183,25 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         return displayModels[indexPath.section][indexPath.row]
     }
     
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let alertController = UIAlertController(title: "What's this?",
+                                                message: """
+            This setting lets you connect \(Constants.Bundles.app.name) to your Calibre Content Server. Provide the URL of your server, such as:
+            
+            ∙ http://192.168.1.0
+            ∙ http://192.168.1.0:8080
+            ∙ http://mycontentserver.com
+            ∙ https://mysecurecontentserver.com
+            ∙ https://mysecurecontentserver.com:8080
+            
+            Please include https:// or http://
+            """,
+            preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         displayModel(at: indexPath).selectionHandler?()
         tableView.deselectRow(at: indexPath, animated: true)
@@ -190,6 +227,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let thisDisplayModel = displayModel(at: indexPath)
         cell.textLabel?.text = thisDisplayModel.mainText
         cell.detailTextLabel?.text = thisDisplayModel.subText
+        cell.detailTextLabel?.textColor = Settings.ContentServer.url == nil ? .red : .black
         cell.accessoryType = thisDisplayModel.accessoryType
         
         return cell

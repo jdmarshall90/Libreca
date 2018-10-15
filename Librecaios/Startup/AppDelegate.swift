@@ -21,6 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             navigationController.topViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
             splitViewController.delegate = self
         }
+        
+        if let url = Settings.ContentServer.url {
+            CalibreKitConfiguration.baseURL = url
+        }
         return true
     }
 

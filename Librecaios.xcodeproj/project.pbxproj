@@ -22,6 +22,7 @@
 		D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04871A9216AF31E0085D22C /* Assets.xcassets */; };
 		D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */; };
 		D04871B8216AF31E0085D22C /* LibrecaiosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */; };
+		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
 		D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; };
 		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; };
@@ -73,6 +74,7 @@
 		D04871B3216AF31E0085D22C /* LibrecaiosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaiosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaiosTests.swift; sourceTree = "<group>"; };
 		D04871B9216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
 		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -100,6 +102,7 @@
 		D0195B7F2172EE94006EA713 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */,
 				D0195B8A21730DA2006EA713 /* Framework.swift */,
 				D0195B802172EEA8006EA713 /* Settings.swift */,
 				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
@@ -318,6 +321,7 @@
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
+				D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
