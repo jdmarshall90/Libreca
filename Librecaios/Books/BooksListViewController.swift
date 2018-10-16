@@ -19,16 +19,33 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
-    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator(sectionIndexDisplayables: books, tableViewController: self)
+    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book>(sectionIndexDisplayables: [], tableViewController: self)
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
-    private var books: [Book] = [] {
+    private enum Content {
+        // swiftlint:disable identifier_name
+        case books([Book])
+        case message(String)
+        // swiftlint:enable identifier_name
+    }
+    
+    // TODO: Fix issue where "Loading..." doesn't show up after you set the URL
+    private var content: Content = .message("Loading...") {
         didSet {
-            sectionIndexGenerator.reset(with: books)
-            title = "Books (\(books.count))"
-            tableView.reloadData()
-            tableView.reloadSectionIndexTitles()
+            // TODO: refactor this duplication
+            switch content {
+            case .books(let books):
+                sectionIndexGenerator.reset(with: books)
+                title = "Books (\(books.count))"
+                tableView.reloadData()
+                tableView.reloadSectionIndexTitles()
+            case .message:
+                sectionIndexGenerator.reset(with: [])
+                title = "Books (0)"
+                tableView.reloadData()
+                tableView.reloadSectionIndexTitles()
+            }
         }
     }
     
@@ -54,9 +71,13 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     // MARK: - BooksListView
     
+    func show(message: String) {
+        content = .message(message)
+    }
+    
     func finishedFetching(books: [Book]) {
         sortButton.isEnabled = true
-        self.books = books
+        content = .books(books)
     }
     
     // MARK: - Table View
@@ -70,11 +91,8 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if sectionIndexGenerator.sections.isEmpty {
-            let cell = UITableViewCell()
-            cell.textLabel?.text = "Loading..."
-            return cell
-        } else {
+        switch content {
+        case .books where !sectionIndexGenerator.sections.isEmpty:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
             
             cell.tag = indexPath.row
@@ -92,6 +110,13 @@ class BooksListViewController: UITableViewController, BooksListView {
                 }
             }
             return cell
+        case .books:
+            return UITableViewCell()
+        case .message(let message):
+            let cell = UITableViewCell()
+            cell.textLabel?.text = message
+            cell.textLabel?.numberOfLines = 0
+            return cell
         }
     }
     
@@ -107,13 +132,17 @@ class BooksListViewController: UITableViewController, BooksListView {
         return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Sort", message: "Select sort option", preferredStyle: .actionSheet)
         
         Settings.Sort.allCases.forEach { sortOption in
             let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
                 guard let strongSelf = self else { return }
-                strongSelf.books = strongSelf.viewModel.sort(by: sortOption)
+                strongSelf.content = .books(strongSelf.viewModel.sort(by: sortOption))
             }
             alertController.addAction(action)
         }
