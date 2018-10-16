@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageUI
+import SafariServices
 import UIKit
 
 // TODO: Audit this whole file, make sure it's all needed and that you're not forgetting something
@@ -28,9 +29,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             static let emailAddress = "jmarshallsoftware@gmail.com"
             
             // swiftlint:disable force_unwrapping
-            // TODO: Need to create this page on WordPress
-            // TODO: Have this open in in-app safari VC
-            static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/librecaios/")!
+            static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/libreca/")!
             // swiftlint:enable force_unwrapping
         }
         
@@ -95,8 +94,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Beta Signup", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.didTapSendEmail(isBeta: true)
                 },
-                DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) {
-                    UIApplication.shared.open(Constants.Connect.supportSite, options: [:], completionHandler: nil)
+                DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    let safariVC = SFSafariViewController(url: Constants.Connect.supportSite)
+                    self?.present(safariVC, animated: true)
                 }
             ],
             [
