@@ -10,6 +10,7 @@ import CalibreKit
 import Foundation
 
 protocol BooksListView {
+    func show(message: String)
     func finishedFetching(books: [Book])
 }
 
@@ -45,13 +46,26 @@ final class BooksListViewModel {
     func fetchBooks() {
         booksEndpoint.hitService { [weak self] response in
             guard let strongSelf = self else { return }
-            strongSelf.books = response.result.value ?? []
-            strongSelf.view.finishedFetching(books: strongSelf.books)
+            
+            switch response.result {
+            case .success(let books):
+                strongSelf.books = books
+                strongSelf.view.finishedFetching(books: strongSelf.books)
+            case .failure(let error as CalibreError):
+                strongSelf.books = []
+                strongSelf.view.finishedFetching(books: strongSelf.books)
+                strongSelf.view.show(message: "Error: \(error.localizedDescription)")
+            case .failure(let error):
+                strongSelf.books = []
+                strongSelf.view.finishedFetching(books: strongSelf.books)
+                strongSelf.view.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.")
+            }
         }
     }
     
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage?) -> Void) {
         book.cover.hitService { response in
+            // TODO: Show placeholder image in case this fails
             completion(response.result.value?.image)
         }
     }

@@ -72,13 +72,13 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="hk1-88-9Fo">
-                                <string key="footerTitle">This setting lets you connect Librecaios to your Calibre Content Server. Provide the URL of your server, such as:
+                                <mutableString key="footerTitle">This setting lets you connect Librecaios to your Calibre© Content Server. Provide the URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</string>
+            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</mutableString>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="xQi-Vr-MWl">
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>
