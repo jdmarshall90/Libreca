@@ -27,7 +27,7 @@ final class BooksListViewModel {
     
     init(view: BooksListView) {
         self.view = view
-        NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.urlDidChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
     }
     
     func sort(by newSortOption: Settings.Sort) -> [Book] {

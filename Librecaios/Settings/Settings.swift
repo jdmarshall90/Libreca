@@ -61,7 +61,7 @@ struct Settings {
     struct ContentServer {
         private init() {}
         
-        static let urlDidChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
         
         private static var key: String {
             return Settings.baseSettingsKey + "url"
@@ -74,7 +74,7 @@ struct Settings {
             set(newValue) {
                 UserDefaults.standard.set(newValue, forKey: key)
                 CalibreKitConfiguration.baseURL = newValue
-                NotificationCenter.default.post(urlDidChangeNotification)
+                NotificationCenter.default.post(didChangeNotification)
             }
         }
     }
