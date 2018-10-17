@@ -10,7 +10,7 @@ import CalibreKit
 import UIKit
 
 // TODO: Test on all screen sizes
-// TODO: Remove license file
+// TODO: Remove license file - not sure on this yet, might still release under GPL ? Firebase license is compatible with GPL
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
