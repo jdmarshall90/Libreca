@@ -149,6 +149,9 @@ class BooksListViewController: UITableViewController, BooksListView {
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
+        
+        alertController.popoverPresentationController?.barButtonItem = sender
+        
         present(alertController, animated: true)
     }
     
