@@ -10,6 +10,7 @@ import CalibreKit
 import UIKit
 
 // TODO: Test on all screen sizes
+// TODO: Remove license file
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
