@@ -10,7 +10,6 @@ import CalibreKit
 import UIKit
 
 // TODO: Test on all screen sizes
-// TODO: Test tapping of "info" button on settings screen on the iPad
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
