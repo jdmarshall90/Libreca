@@ -25,6 +25,8 @@ struct Settings {
             return Settings.baseSettingsKey + "sort"
         }
         
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
+        
         var sortingKeyPath: KeyPath<Book, String> {
             switch self {
             case .title:
@@ -45,6 +47,7 @@ struct Settings {
             }
             set(newValue) {
                 UserDefaults.standard.set(newValue.rawValue, forKey: key)
+                NotificationCenter.default.post(didChangeNotification)
             }
         }
         

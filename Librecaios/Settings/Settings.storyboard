@@ -41,6 +41,45 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SortCellID" id="xaY-2p-U4o" customClass="SortSettingTableViewCell" customModule="Librecaios" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xaY-2p-U4o" id="oPO-uK-hkg">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorting" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZt-Qh-LOW">
+                                            <rect key="frame" x="16" y="8" width="100.5" height="27.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="7xc-zn-JWC">
+                                            <rect key="frame" x="124.5" y="8" width="234.5" height="28.5"/>
+                                            <segments>
+                                                <segment title="Title"/>
+                                                <segment title="Author Last Name"/>
+                                            </segments>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="gZt-Qh-LOW" firstAttribute="centerY" secondItem="oPO-uK-hkg" secondAttribute="centerY" id="4ZH-WX-NBt"/>
+                                        <constraint firstItem="gZt-Qh-LOW" firstAttribute="leading" secondItem="oPO-uK-hkg" secondAttribute="leading" constant="16" id="5bO-Mj-EjT"/>
+                                        <constraint firstItem="7xc-zn-JWC" firstAttribute="width" secondItem="oPO-uK-hkg" secondAttribute="width" multiplier="1:1.6" id="Bhb-eD-nwc"/>
+                                        <constraint firstItem="7xc-zn-JWC" firstAttribute="centerY" secondItem="oPO-uK-hkg" secondAttribute="centerY" id="Fei-YL-8vl"/>
+                                        <constraint firstAttribute="bottom" secondItem="gZt-Qh-LOW" secondAttribute="bottom" constant="8" id="LnD-sy-GQF"/>
+                                        <constraint firstItem="gZt-Qh-LOW" firstAttribute="top" secondItem="oPO-uK-hkg" secondAttribute="top" constant="8" id="OHd-wW-uMS"/>
+                                        <constraint firstAttribute="trailing" secondItem="7xc-zn-JWC" secondAttribute="trailing" constant="16" id="TrJ-q9-Oao"/>
+                                        <constraint firstAttribute="bottom" secondItem="7xc-zn-JWC" secondAttribute="bottom" constant="8" id="Xz8-cl-P32"/>
+                                        <constraint firstItem="7xc-zn-JWC" firstAttribute="leading" secondItem="gZt-Qh-LOW" secondAttribute="trailing" constant="8" id="eYa-PW-ukx"/>
+                                        <constraint firstItem="7xc-zn-JWC" firstAttribute="top" secondItem="oPO-uK-hkg" secondAttribute="top" constant="8" id="rfx-ur-Sz4"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="gZt-Qh-LOW" id="mr1-oK-DoT"/>
+                                    <outlet property="selectionSegmentedControl" destination="7xc-zn-JWC" id="miQ-Iv-VrB"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="pga-vG-gsS" id="bzZ-h7-eUQ"/>
@@ -72,13 +111,13 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="hk1-88-9Fo">
-                                <mutableString key="footerTitle">This setting lets you connect Librecaios to your Calibre© Content Server. Provide the URL of your server, such as:
+                                <string key="footerTitle">This setting lets you connect Librecaios to your Calibre© Content Server. Provide the URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</mutableString>
+            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="xQi-Vr-MWl">
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>

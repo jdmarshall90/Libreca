@@ -85,7 +85,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             [
                 DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
                     self?.didTapContentServer()
-                }
+                },
+                DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none)
             ],
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -220,17 +221,43 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoreCellID") else {
-            return UITableViewCell()
-        }
-        
         let thisDisplayModel = displayModel(at: indexPath)
-        cell.textLabel?.text = thisDisplayModel.mainText
-        cell.detailTextLabel?.text = thisDisplayModel.subText
-        cell.detailTextLabel?.textColor = Settings.ContentServer.url == nil ? .red : .black
-        cell.accessoryType = thisDisplayModel.accessoryType
         
-        return cell
+        // this is not scalable, but it doesn't need to be (at least not right now)
+        if indexPath.section == 0 && indexPath.row == 1 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SortCellID") as? SortSettingTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.descriptionLabel.text = thisDisplayModel.mainText
+            switch Settings.Sort.current {
+            case .title:
+                cell.selectionSegmentedControl.selectedSegmentIndex = 0
+            case .authorLastName:
+                cell.selectionSegmentedControl.selectedSegmentIndex = 1
+            }
+            
+            cell.selectionHandler = {
+                if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
+                    Settings.Sort.current = .title
+                } else {
+                    Settings.Sort.current = .authorLastName
+                }
+            }
+            
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoreCellID") else {
+                return UITableViewCell()
+            }
+            
+            cell.textLabel?.text = thisDisplayModel.mainText
+            cell.detailTextLabel?.text = thisDisplayModel.subText
+            cell.detailTextLabel?.textColor = Settings.ContentServer.url == nil ? .red : .black
+            cell.accessoryType = thisDisplayModel.accessoryType
+            
+            return cell
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

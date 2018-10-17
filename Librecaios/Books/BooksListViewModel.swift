@@ -27,7 +27,9 @@ final class BooksListViewModel {
     
     init(view: BooksListView) {
         self.view = view
+        // VC doesn't need to know about these, so abstract it into the view model
         NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
     }
     
     func sort(by newSortOption: Settings.Sort) -> [Book] {
@@ -75,4 +77,11 @@ final class BooksListViewModel {
         view.finishedFetching(books: [])
         fetchBooks()
     }
+    
+    @objc
+    private func sortSettingDidChange(_ notification: Notification) {
+        books = books.sorted(by: Settings.Sort.current.sortAction)
+        view.finishedFetching(books: books)
+    }
+    
 }
