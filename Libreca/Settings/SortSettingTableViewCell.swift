@@ -1,6 +1,6 @@
 //
 //  SortSettingTableViewCell.swift
-//  Librecaios
+//  Libreca
 //
 //  Created by Justin Marshall on 10/16/18.
 //  Copyright © 2018 Justin Marshall. All rights reserved.

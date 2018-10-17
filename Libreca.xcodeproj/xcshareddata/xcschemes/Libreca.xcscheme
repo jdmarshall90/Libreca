@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D048719C216AF31D0085D22C"
-               BuildableName = "Librecaios.app"
-               BlueprintName = "Librecaios"
-               ReferencedContainer = "container:Librecaios.xcodeproj">
+               BuildableName = "Libreca.app"
+               BlueprintName = "Libreca"
+               ReferencedContainer = "container:Libreca.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D04871B2216AF31E0085D22C"
-               BuildableName = "LibrecaiosTests.xctest"
-               BlueprintName = "LibrecaiosTests"
-               ReferencedContainer = "container:Librecaios.xcodeproj">
+               BuildableName = "LibrecaTests.xctest"
+               BlueprintName = "LibrecaTests"
+               ReferencedContainer = "container:Libreca.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D048719C216AF31D0085D22C"
-            BuildableName = "Librecaios.app"
-            BlueprintName = "Librecaios"
-            ReferencedContainer = "container:Librecaios.xcodeproj">
+            BuildableName = "Libreca.app"
+            BlueprintName = "Libreca"
+            ReferencedContainer = "container:Libreca.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D048719C216AF31D0085D22C"
-            BuildableName = "Librecaios.app"
-            BlueprintName = "Librecaios"
-            ReferencedContainer = "container:Librecaios.xcodeproj">
+            BuildableName = "Libreca.app"
+            BlueprintName = "Libreca"
+            ReferencedContainer = "container:Libreca.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D048719C216AF31D0085D22C"
-            BuildableName = "Librecaios.app"
-            BlueprintName = "Librecaios"
-            ReferencedContainer = "container:Librecaios.xcodeproj">
+            BuildableName = "Libreca.app"
+            BlueprintName = "Libreca"
+            ReferencedContainer = "container:Libreca.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

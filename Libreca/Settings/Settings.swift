@@ -1,6 +1,6 @@
 //
 //  Settings.swift
-//  Librecaios
+//  Libreca
 //
 //  Created by Justin Marshall on 10/13/18.
 //  Copyright © 2018 Justin Marshall. All rights reserved.

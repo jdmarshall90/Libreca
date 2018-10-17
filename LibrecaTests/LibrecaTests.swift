@@ -1,15 +1,15 @@
 //
-//  LibrecaiosTests.swift
-//  LibrecaiosTests
+//  LibrecaTests.swift
+//  LibrecaTests
 //
 //  Created by Justin Marshall on 10/7/18.
 //  Copyright © 2018 Justin Marshall. All rights reserved.
 //
 
-@testable import Librecaios
+@testable import Libreca
 import XCTest
 
-class LibrecaiosTests: XCTestCase {
+class LibrecaTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

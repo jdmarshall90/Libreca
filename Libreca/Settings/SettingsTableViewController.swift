@@ -1,6 +1,6 @@
 //
 //  SettingsTableViewController.swift
-//  Librecaios
+//  Libreca
 //
 //  Created by Justin Marshall on 10/14/18.
 //  Copyright © 2018 Justin Marshall. All rights reserved.
@@ -56,7 +56,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             private init() {}
             
             // swiftlint:disable force_unwrapping
-            static let app = Framework(forBundleID: "com.marshall.justin.mobile.ios.Librecaios")!
+            static let app = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!
             static let calibreKit = Framework(forBundleID: "com.marshall.justin.lib.CalibreKit")!
             static let alamofire = Framework(forBundleID: "org.alamofire.Alamofire")!
             // swiftlint:enable force_unwrapping

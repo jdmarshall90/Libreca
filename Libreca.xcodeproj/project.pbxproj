@@ -22,7 +22,7 @@
 		D04871A8216AF31D0085D22C /* Books.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871A6216AF31D0085D22C /* Books.storyboard */; };
 		D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04871A9216AF31E0085D22C /* Assets.xcassets */; };
 		D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */; };
-		D04871B8216AF31E0085D22C /* LibrecaiosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */; };
+		D04871B8216AF31E0085D22C /* LibrecaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaTests.swift */; };
 		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
 		D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; };
 		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -65,7 +65,7 @@
 		D0195B8A21730DA2006EA713 /* Framework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Framework.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
-		D048719D216AF31D0085D22C /* Librecaios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Librecaios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D048719D216AF31D0085D22C /* Libreca.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Libreca.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871A0216AF31D0085D22C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D04871A2216AF31D0085D22C /* BooksListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewController.swift; sourceTree = "<group>"; };
 		D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsViewController.swift; sourceTree = "<group>"; };
@@ -73,8 +73,8 @@
 		D04871A9216AF31E0085D22C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D04871AC216AF31E0085D22C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D04871AE216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D04871B3216AF31E0085D22C /* LibrecaiosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaiosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaiosTests.swift; sourceTree = "<group>"; };
+		D04871B3216AF31E0085D22C /* LibrecaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D04871B7216AF31E0085D22C /* LibrecaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaTests.swift; sourceTree = "<group>"; };
 		D04871B9216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
 		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,8 +149,8 @@
 		D0487194216AF31D0085D22C = {
 			isa = PBXGroup;
 			children = (
-				D048719F216AF31D0085D22C /* Librecaios */,
-				D04871B6216AF31E0085D22C /* LibrecaiosTests */,
+				D048719F216AF31D0085D22C /* Libreca */,
+				D04871B6216AF31E0085D22C /* LibrecaTests */,
 				D0B475E7216AF5E6008FDA50 /* Frameworks */,
 				D048719E216AF31D0085D22C /* Products */,
 			);
@@ -159,13 +159,13 @@
 		D048719E216AF31D0085D22C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D048719D216AF31D0085D22C /* Librecaios.app */,
-				D04871B3216AF31E0085D22C /* LibrecaiosTests.xctest */,
+				D048719D216AF31D0085D22C /* Libreca.app */,
+				D04871B3216AF31E0085D22C /* LibrecaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D048719F216AF31D0085D22C /* Librecaios */ = {
+		D048719F216AF31D0085D22C /* Libreca */ = {
 			isa = PBXGroup;
 			children = (
 				D02F75DD217036E10040EDE5 /* Startup */,
@@ -173,16 +173,16 @@
 				D0195B7F2172EE94006EA713 /* Settings */,
 				D02F75DE217036F20040EDE5 /* Supporting Files */,
 			);
-			path = Librecaios;
+			path = Libreca;
 			sourceTree = "<group>";
 		};
-		D04871B6216AF31E0085D22C /* LibrecaiosTests */ = {
+		D04871B6216AF31E0085D22C /* LibrecaTests */ = {
 			isa = PBXGroup;
 			children = (
-				D04871B7216AF31E0085D22C /* LibrecaiosTests.swift */,
+				D04871B7216AF31E0085D22C /* LibrecaTests.swift */,
 				D04871B9216AF31E0085D22C /* Info.plist */,
 			);
-			path = LibrecaiosTests;
+			path = LibrecaTests;
 			sourceTree = "<group>";
 		};
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
@@ -197,9 +197,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D048719C216AF31D0085D22C /* Librecaios */ = {
+		D048719C216AF31D0085D22C /* Libreca */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D04871BC216AF31E0085D22C /* Build configuration list for PBXNativeTarget "Librecaios" */;
+			buildConfigurationList = D04871BC216AF31E0085D22C /* Build configuration list for PBXNativeTarget "Libreca" */;
 			buildPhases = (
 				D0487199216AF31D0085D22C /* Sources */,
 				D048719A216AF31D0085D22C /* Frameworks */,
@@ -211,14 +211,14 @@
 			);
 			dependencies = (
 			);
-			name = Librecaios;
+			name = Libreca;
 			productName = Librecaios;
-			productReference = D048719D216AF31D0085D22C /* Librecaios.app */;
+			productReference = D048719D216AF31D0085D22C /* Libreca.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D04871B2216AF31E0085D22C /* LibrecaiosTests */ = {
+		D04871B2216AF31E0085D22C /* LibrecaTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D04871BF216AF31E0085D22C /* Build configuration list for PBXNativeTarget "LibrecaiosTests" */;
+			buildConfigurationList = D04871BF216AF31E0085D22C /* Build configuration list for PBXNativeTarget "LibrecaTests" */;
 			buildPhases = (
 				D04871AF216AF31E0085D22C /* Sources */,
 				D04871B0216AF31E0085D22C /* Frameworks */,
@@ -229,9 +229,9 @@
 			dependencies = (
 				D04871B5216AF31E0085D22C /* PBXTargetDependency */,
 			);
-			name = LibrecaiosTests;
+			name = LibrecaTests;
 			productName = LibrecaiosTests;
-			productReference = D04871B3216AF31E0085D22C /* LibrecaiosTests.xctest */;
+			productReference = D04871B3216AF31E0085D22C /* LibrecaTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -253,7 +253,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D0487198216AF31D0085D22C /* Build configuration list for PBXProject "Librecaios" */;
+			buildConfigurationList = D0487198216AF31D0085D22C /* Build configuration list for PBXProject "Libreca" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -266,8 +266,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D048719C216AF31D0085D22C /* Librecaios */,
-				D04871B2216AF31E0085D22C /* LibrecaiosTests */,
+				D048719C216AF31D0085D22C /* Libreca */,
+				D04871B2216AF31E0085D22C /* LibrecaTests */,
 			);
 		};
 /* End PBXProject section */
@@ -338,7 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D04871B8216AF31E0085D22C /* LibrecaiosTests.swift in Sources */,
+				D04871B8216AF31E0085D22C /* LibrecaTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +347,7 @@
 /* Begin PBXTargetDependency section */
 		D04871B5216AF31E0085D22C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D048719C216AF31D0085D22C /* Librecaios */;
+			target = D048719C216AF31D0085D22C /* Libreca */;
 			targetProxy = D04871B4216AF31E0085D22C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -495,12 +495,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6CRFEU9SAX;
-				INFOPLIST_FILE = Librecaios/Info.plist;
+				INFOPLIST_FILE = Libreca/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Librecaios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Libreca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -515,12 +515,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6CRFEU9SAX;
-				INFOPLIST_FILE = Librecaios/Info.plist;
+				INFOPLIST_FILE = Libreca/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Librecaios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Libreca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -535,17 +535,17 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6CRFEU9SAX;
-				INFOPLIST_FILE = LibrecaiosTests/Info.plist;
+				INFOPLIST_FILE = LibrecaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.LibrecaiosTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.LibrecaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Librecaios.app/Librecaios";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Libreca.app/Libreca";
 			};
 			name = Debug;
 		};
@@ -556,24 +556,24 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6CRFEU9SAX;
-				INFOPLIST_FILE = LibrecaiosTests/Info.plist;
+				INFOPLIST_FILE = LibrecaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.LibrecaiosTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.LibrecaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Librecaios.app/Librecaios";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Libreca.app/Libreca";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D0487198216AF31D0085D22C /* Build configuration list for PBXProject "Librecaios" */ = {
+		D0487198216AF31D0085D22C /* Build configuration list for PBXProject "Libreca" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D04871BA216AF31E0085D22C /* Debug */,
@@ -582,7 +582,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D04871BC216AF31E0085D22C /* Build configuration list for PBXNativeTarget "Librecaios" */ = {
+		D04871BC216AF31E0085D22C /* Build configuration list for PBXNativeTarget "Libreca" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D04871BD216AF31E0085D22C /* Debug */,
@@ -591,7 +591,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D04871BF216AF31E0085D22C /* Build configuration list for PBXNativeTarget "LibrecaiosTests" */ = {
+		D04871BF216AF31E0085D22C /* Build configuration list for PBXNativeTarget "LibrecaTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D04871C0216AF31E0085D22C /* Debug */,
