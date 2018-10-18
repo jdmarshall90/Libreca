@@ -28,7 +28,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         CalibreKitConfiguration.baseURL = Settings.ContentServer.url
         FirebaseApp.configure()
+        
+        setUserProperties()
+        NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
+        
         return true
+    }
+    
+    @objc
+    private func urlDidChange(_ notification: Notification) {
+        setUserPropertyURL()
+    }
+    
+    private func setUserProperties() {
+        setUserPropertyURL()
+        setUserPropertySort()
+    }
+    
+    private func setUserPropertyURL() {
+        // if analytics is showing that nobody uses non-HTTPS, then support for that can be removed
+        
+        let value: String
+        switch Settings.ContentServer.url {
+        case .none:
+            value = "nil"
+        case .some(let url) where url.absoluteString.contains("https"):
+            value = "https"
+        case .some(let url) where url.absoluteString.contains("http"):
+            value = "http"
+        case .some:
+            // user tried to set url without any http:// or https:// prefix
+            value = "missing_prefix"
+        }
+        Analytics.setUserProperty(value, forName: "setting_url")
+    }
+    
+    private func setUserPropertySort() {
+        let value: String
+        
+        switch Settings.Sort.current {
+        case .title:
+            value = "title"
+        case .authorLastName:
+            value = "author_last_name"
+        }
+        Analytics.setUserProperty(value, forName: "setting_sort")
+    }
+    
+    @objc
+    private func sortSettingDidChange(_ notification: Notification) {
+        setUserPropertySort()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
