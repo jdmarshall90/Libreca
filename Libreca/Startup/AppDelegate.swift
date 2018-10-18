@@ -7,6 +7,7 @@
 //
 
 import CalibreKit
+import Firebase
 import UIKit
 
 // TODO: Test on all screen sizes
@@ -26,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
         
         CalibreKitConfiguration.baseURL = Settings.ContentServer.url
+        FirebaseApp.configure()
         return true
     }
 

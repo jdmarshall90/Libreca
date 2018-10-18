@@ -28,6 +28,18 @@
 		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; };
 		D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */; };
+		D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29321782130006F21A4 /* Fabric.framework */; };
+		D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29521782130006F21A4 /* FirebaseCore.framework */; };
+		D0D6F2A021782131006F21A4 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29621782130006F21A4 /* FirebaseInstanceID.framework */; };
+		D0D6F2A121782131006F21A4 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29721782130006F21A4 /* GoogleUtilities.framework */; };
+		D0D6F2A221782131006F21A4 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29821782130006F21A4 /* nanopb.framework */; };
+		D0D6F2A321782131006F21A4 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29921782131006F21A4 /* GoogleAppMeasurement.framework */; };
+		D0D6F2A521782131006F21A4 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29B21782131006F21A4 /* FirebaseAnalytics.framework */; };
+		D0D6F2A9217823FD006F21A4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */; };
+		D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */; };
+		D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2AC2178246D006F21A4 /* libc++.tbd */; };
+		D0D6F2AF217826CC006F21A4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0D6F2AE217826CC006F21A4 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +91,19 @@
 		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
 		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
+		D0D6F29321782130006F21A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
+		D0D6F29521782130006F21A4 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		D0D6F29621782130006F21A4 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Carthage/Build/iOS/FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		D0D6F29721782130006F21A4 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = Carthage/Build/iOS/GoogleUtilities.framework; sourceTree = "<group>"; };
+		D0D6F29821782130006F21A4 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = nanopb.framework; path = Carthage/Build/iOS/nanopb.framework; sourceTree = "<group>"; };
+		D0D6F29921782131006F21A4 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = Carthage/Build/iOS/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		D0D6F29B21782131006F21A4 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Carthage/Build/iOS/FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Carthage/Build/iOS/Crashlytics.framework; sourceTree = "<group>"; };
+		D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		D0D6F2AC2178246D006F21A4 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		D0D6F2AE217826CC006F21A4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +111,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */,
+				D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
+				D0D6F2A321782131006F21A4 /* GoogleAppMeasurement.framework in Frameworks */,
+				D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */,
+				D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */,
+				D0D6F2A221782131006F21A4 /* nanopb.framework in Frameworks */,
+				D0D6F2A021782131006F21A4 /* FirebaseInstanceID.framework in Frameworks */,
+				D0D6F2A521782131006F21A4 /* FirebaseAnalytics.framework in Frameworks */,
 				D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */,
+				D0D6F2A121782131006F21A4 /* GoogleUtilities.framework in Frameworks */,
+				D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */,
+				D0D6F2A9217823FD006F21A4 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +208,7 @@
 				D02F75DC217036D90040EDE5 /* Books */,
 				D0195B7F2172EE94006EA713 /* Settings */,
 				D02F75DE217036F20040EDE5 /* Supporting Files */,
+				D0D6F26B21781A8C006F21A4 /* Firebase */,
 			);
 			path = Libreca;
 			sourceTree = "<group>";
@@ -188,10 +225,30 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0D6F2AC2178246D006F21A4 /* libc++.tbd */,
+				D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */,
+				D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */,
+				D0D6F29321782130006F21A4 /* Fabric.framework */,
+				D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */,
+				D0D6F29B21782131006F21A4 /* FirebaseAnalytics.framework */,
+				D0D6F29521782130006F21A4 /* FirebaseCore.framework */,
+				D0D6F29621782130006F21A4 /* FirebaseInstanceID.framework */,
+				D0D6F29921782131006F21A4 /* GoogleAppMeasurement.framework */,
+				D0D6F29721782130006F21A4 /* GoogleUtilities.framework */,
+				D0D6F29821782130006F21A4 /* nanopb.framework */,
 				D0B475E8216AF5F3008FDA50 /* Alamofire.framework */,
 				D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D0D6F26B21781A8C006F21A4 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				D0D6F2AE217826CC006F21A4 /* GoogleService-Info.plist */,
+				D0D6F26C21781B02006F21A4 /* LICENSE */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +263,7 @@
 				D048719B216AF31D0085D22C /* Resources */,
 				D0B475F5216AF613008FDA50 /* Embed Frameworks */,
 				D0B475F6216AF62D008FDA50 /* SwiftLint */,
+				D0D6F29121781F43006F21A4 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -279,6 +337,7 @@
 			files = (
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
+				D0D6F2AF217826CC006F21A4 /* GoogleService-Info.plist in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
 			);
@@ -311,6 +370,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which /usr/local/bin/swiftlint >/dev/null; then\n    /usr/local/bin/swiftlint lint --config \"Carthage/Checkouts/SwiftLintConfig/.swiftlint.yml\" --no-cache\nelse\n    echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    return 1\nfi\n";
+		};
+		D0D6F29121781F43006F21A4 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/Carthage/Build/iOS/Fabric.framework/run\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -494,12 +571,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6CRFEU9SAX;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Libreca/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Libreca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -514,12 +598,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6CRFEU9SAX;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Libreca/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Libreca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
