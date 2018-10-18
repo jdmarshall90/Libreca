@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     // TODO: See this: (From Firebase docs) You can also identify up to 50 custom event parameters per project (40 numeric and 10 textual) to include in reporting by registering those parameters with their corresponding events. --- With this limit, you will need to make some of these events numeric (such as 0 or 1 for boolean values)
     
+    // TODO: Register all custom event parameters in Firebase Console
+    
 //    Firebase.Analytics.logEvent(event.name, parameters: contextDictionary)
 //    Firebase.Analytics.setScreenName(screen, screenClass: nil)
     
