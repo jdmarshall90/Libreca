@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     /*
      
      Screen views:
-        - books list
+        - books list (with book count)
         - details
         - settings
         - content server setting
