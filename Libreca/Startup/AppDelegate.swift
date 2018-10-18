@@ -18,6 +18,126 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     var window: UIWindow?
     
+    // TODO: See analytics notes here
+    
+//    Firebase.Analytics.logEvent(event.name, parameters: contextDictionary)
+//    Firebase.Analytics.setScreenName(screen, screenClass: nil)
+    
+    /*
+     
+     Screen views:
+        - books list
+        - details
+        - settings
+        - content server setting
+        - credits
+        - open source
+     
+     Events:
+        - sort via books list VC (with value)
+        - used section index titles
+        - info button for calibre content server
+        - sort via settings (with value)
+        - email
+        - beta
+        - support site
+     
+     plus all these: (call `enable()` and `appStarted()` on app launch
+     
+     final class Analytics: AnalyticsFiring {
+     private init() {}
+     
+     static let shared = Analytics()
+     
+     private var configFileName: String {
+     #if DEBUG
+     return "GoogleService-Info.dev"
+     #elseif TESTFLIGHT
+     return "GoogleService-Info.testflight"
+     #elseif PRODUCTION
+     return "GoogleService-Info"
+     #endif
+     }
+     
+     func enable() {
+     guard let filePath = Bundle.main.path(forResource: configFileName, ofType: "plist"),
+     let firebaseOptions = FirebaseOptions(contentsOfFile: filePath) else { fatalError("Couldn't load Firebase analytics config file") }
+     FirebaseApp.configure(options: firebaseOptions)
+     }
+     
+     func appStarted() {
+     DispatchQueue.global(qos: .background).async {
+     self.fireLocaleAnalytics()
+     self.fireOrientationAnalytics()
+     self.fireAccessibilityAnalytics()
+     }
+     }
+     
+     private func fireLocaleAnalytics() {
+     let locale = Locale.autoupdatingCurrent
+     fire(event: AnalyticsEvent(name: "locale_info", contextParameters: [
+     AnalyticsEvent.ContextParameter(key: "preferred_language", value: "\(Locale.preferredLanguages)"),
+     AnalyticsEvent.ContextParameter(key: "calendar", value: "\(locale.calendar)"),
+     AnalyticsEvent.ContextParameter(key: "language_code", value: "\(locale.languageCode ?? "UNKNOWN")"),
+     AnalyticsEvent.ContextParameter(key: "currency_code", value: "\(locale.currencyCode ?? "UNKNOWN")")
+     ]))
+     }
+     
+     private func fireOrientationAnalytics() {
+     fire(event: AnalyticsEvent(name: "startup_orientation", contextParameters: [
+     AnalyticsEvent.ContextParameter(key: "is", value: "\(UIDevice.current.orientation.description)")
+     ]))
+     UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+     NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: .UIDeviceOrientationDidChange, object: nil)
+     }
+     
+     private func fireAccessibilityAnalytics() {
+     fire(event: AnalyticsEvent(name: "accessibility", contextParameters: [
+     AnalyticsEvent.ContextParameter(key: "invert_colors_enabled", value: "\(UIAccessibilityIsInvertColorsEnabled())"),
+     AnalyticsEvent.ContextParameter(key: "bold_text_enabled", value: "\(UIAccessibilityIsBoldTextEnabled())"),
+     AnalyticsEvent.ContextParameter(key: "grayscale_enabled", value: "\(UIAccessibilityIsGrayscaleEnabled())"),
+     AnalyticsEvent.ContextParameter(key: "reduce_transparency_enabled", value: "\(UIAccessibilityIsReduceTransparencyEnabled())"),
+     AnalyticsEvent.ContextParameter(key: "darker_system_colors_enabled", value: "\(UIAccessibilityDarkerSystemColorsEnabled())"),
+     AnalyticsEvent.ContextParameter(key: "speak_selection_enabled", value: "\(UIAccessibilityIsSpeakSelectionEnabled())"),
+     AnalyticsEvent.ContextParameter(key: "speak_screen_enabled", value: "\(UIAccessibilityIsSpeakScreenEnabled())")
+     ]))
+     }
+     
+     @objc
+     private func orientationChanged() {
+     fire(event: AnalyticsEvent(name: "orientation_changed", contextParameters: [
+     AnalyticsEvent.ContextParameter(key: "to", value: "\(UIDevice.current.orientation.description)")
+     ]))
+     }
+     
+     deinit {
+     UIDevice.current.endGeneratingDeviceOrientationNotifications()
+     }
+     }
+     
+     private extension UIDeviceOrientation {
+     var description: String {
+     switch self {
+     case .faceDown:
+     return "faceDown"
+     case .faceUp:
+     return "faceUp"
+     case .landscapeLeft:
+     return "landscapeLeft"
+     case .landscapeRight:
+     return "landscapeRight"
+     case .portrait:
+     return "portrait"
+     case .portraitUpsideDown:
+     return "portraitUpsideDown"
+     case .unknown:
+     return "unknown"
+     }
+     }
+     }
+     
+     */
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         if let splitViewController = window?.rootViewController as? UISplitViewController,
