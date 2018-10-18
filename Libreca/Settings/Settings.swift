@@ -25,7 +25,7 @@ struct Settings {
             return Settings.baseSettingsKey + "sort"
         }
         
-        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.sortDidChange"))
         
         var sortingKeyPath: KeyPath<Book, String> {
             switch self {
