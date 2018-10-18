@@ -149,6 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         CalibreKitConfiguration.baseURL = Settings.ContentServer.url
         FirebaseApp.configure()
         
+        // TODO: Move all analytics stuff to helper class
         setUserProperties()
         NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
