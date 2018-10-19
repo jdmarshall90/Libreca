@@ -7,9 +7,25 @@
 //
 
 import FirebaseAnalytics
+import LicensesViewController
 import UIKit
 
-final class OpenSourceViewController: UIViewController {
+final class OpenSourceViewController: LicensesViewController {
+    
+    init(licensesFileName: String) {
+        super.init(nibName: nil, bundle: nil)
+        loadPlist(Bundle.main, resourceName: licensesFileName)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        loadPlist(Bundle.main, resourceName: "Credits")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Open Source"
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

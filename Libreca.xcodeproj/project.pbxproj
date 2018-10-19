@@ -23,6 +23,9 @@
 		D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04871A9216AF31E0085D22C /* Assets.xcassets */; };
 		D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */; };
 		D04871B8216AF31E0085D22C /* LibrecaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaTests.swift */; };
+		D0518E7A21797A490087A000 /* Credits.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7921797A490087A000 /* Credits.plist */; };
+		D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; };
+		D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
 		D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; };
 		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -62,6 +65,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */,
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
 				D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */,
 			);
@@ -91,6 +95,9 @@
 		D04871B3216AF31E0085D22C /* LibrecaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871B7216AF31E0085D22C /* LibrecaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaTests.swift; sourceTree = "<group>"; };
 		D04871B9216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0518E7921797A490087A000 /* Credits.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credits.plist; sourceTree = "<group>"; };
+		D0518E7F21797CE40087A000 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
+		D0518E8121797E730087A000 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
 		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */,
 				D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */,
 				D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
@@ -187,6 +195,8 @@
 				D04871A9216AF31E0085D22C /* Assets.xcassets */,
 				D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */,
 				D04871AE216AF31E0085D22C /* Info.plist */,
+				D0518E7921797A490087A000 /* Credits.plist */,
+				D0518E7F21797CE40087A000 /* LICENSE */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -234,6 +244,7 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0518E8121797E730087A000 /* LicensesViewController.framework */,
 				D0D6F2AC2178246D006F21A4 /* libc++.tbd */,
 				D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */,
 				D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */,
@@ -272,6 +283,7 @@
 				D048719B216AF31D0085D22C /* Resources */,
 				D0B475F5216AF613008FDA50 /* Embed Frameworks */,
 				D0B475F6216AF62D008FDA50 /* SwiftLint */,
+				D0518E782179797E0087A000 /* Generate License plist */,
 				D0D6F29121781F43006F21A4 /* Crashlytics */,
 			);
 			buildRules = (
@@ -345,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
+				D0518E7A21797A490087A000 /* Credits.plist in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
 				D0D6F2AF217826CC006F21A4 /* GoogleService-Info.plist in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
@@ -362,6 +375,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		D0518E782179797E0087A000 /* Generate License plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate License plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Credits.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
+		};
 		D0B475F6216AF62D008FDA50 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
