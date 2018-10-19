@@ -6,6 +6,7 @@
 //  Copyright © 2018 Justin Marshall. All rights reserved.
 //
 
+import FirebaseAnalytics
 import UIKit
 
 final class ContentServerSettingTableViewController: UITableViewController, UITextFieldDelegate {
@@ -21,6 +22,11 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
         super.viewDidLoad()
         urlTextField.text = Settings.ContentServer.url?.absoluteString
         navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("settings_content_server", screenClass: nil)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

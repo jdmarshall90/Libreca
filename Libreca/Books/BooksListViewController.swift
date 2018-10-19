@@ -7,6 +7,7 @@
 //
 
 import CalibreKit
+import FirebaseAnalytics
 import UIKit
 
 extension Book: SectionIndexDisplayable {
@@ -69,15 +70,22 @@ class BooksListViewController: UITableViewController, BooksListView {
         super.viewWillAppear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("books", screenClass: nil)
+    }
+    
     // MARK: - BooksListView
     
     func show(message: String) {
         content = .message(message)
+        Analytics.logEvent("books_fetched", parameters: ["status": "error"])
     }
     
     func finishedFetching(books: [Book]) {
         sortButton.isEnabled = true
         content = .books(books)
+        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
     }
     
     // MARK: - Table View
@@ -125,6 +133,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        Analytics.logEvent("section_index_title_tapped", parameters: nil)
         return index
     }
     
@@ -141,6 +150,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         
         Settings.Sort.allCases.forEach { sortOption in
             let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
+                Analytics.logEvent("sort_via_list_vc", parameters: ["type": sortOption.rawValue])
                 guard let strongSelf = self else { return }
                 strongSelf.content = .books(strongSelf.viewModel.sort(by: sortOption))
             }

@@ -6,6 +6,7 @@
 //  Copyright © 2018 Justin Marshall. All rights reserved.
 //
 
+import FirebaseAnalytics
 import Foundation
 import MessageUI
 import SafariServices
@@ -17,6 +18,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     private enum Segue: String {
         case contentServerSegue
+        case creditsSegue
+        case openSourceSegue
     }
     
     private struct Constants {
@@ -96,20 +99,26 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     self?.didTapSendEmail(isBeta: true)
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    Analytics.logEvent("support_site_tapped", parameters: nil)
                     let safariVC = SFSafariViewController(url: Constants.Connect.supportSite)
                     self?.present(safariVC, animated: true)
                 }
             ],
             [
                 DisplayModel(mainText: Constants.About.credits, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.didTapCreditsCell()
+                    self?.performSegue(withIdentifier: Segue.creditsSegue.rawValue, sender: nil)
                 },
                 DisplayModel(mainText: Constants.About.openSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.didTapOpenSourceCell()
+                    self?.performSegue(withIdentifier: Segue.openSourceSegue.rawValue, sender: nil)
                 }
             ]
         ]
         tableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("settings", screenClass: nil)
     }
     
     @IBAction private func closeTapped(_ sender: UIBarButtonItem) {
@@ -144,6 +153,11 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapSendEmail(isBeta: Bool) {
+        if isBeta {
+            Analytics.logEvent("beta_signup_tapped", parameters: nil)
+        } else {
+            Analytics.logEvent("send_email_tapped", parameters: nil)
+        }
         guard MFMailComposeViewController.canSendMail() else {
             let alertController = UIAlertController(title: "Unable to send email", message: "Your device is not configured for sending emails.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -162,20 +176,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         present(mailComposeVC, animated: true)
     }
     
-    private func didTapCreditsCell() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let creditsVC = storyboard.instantiateViewController(withIdentifier: "CreditsVC")
-        
-        creditsVC.view.subviews.compactMap { $0 as? UITextView }.first?.delegate = self
-        navigationController?.pushViewController(creditsVC, animated: true)
-    }
-    
-    private func didTapOpenSourceCell() {
-//        let openSourceVC = OpenSourceViewController(licensesFileName: "Credits")
-//        openSourceVC.navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationController?.pushViewController(openSourceVC, animated: true)
-    }
-    
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return true
     }
@@ -185,6 +185,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        Analytics.logEvent("server_info_button_tapped", parameters: nil)
         let alertController = UIAlertController(title: "What's this?",
                                                 message: """
             This setting lets you connect \(Constants.Bundles.app.name) to your Calibre Content Server. Provide the URL of your server, such as:
@@ -243,6 +244,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 } else {
                     Settings.Sort.current = .authorLastName
                 }
+                Analytics.logEvent("sort_via_settings", parameters: ["type": Settings.Sort.current.rawValue])
             }
             
             return cell
