@@ -11,7 +11,7 @@ import Firebase
 import UIKit
 
 // TODO: Test on all screen sizes
-// TODO: Remove license file - not sure on this yet, might still release under GPL ? Firebase license is compatible with GPL
+// TODO: Add GPL license to all projects under this app's GitLab group so that you can make them all public
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
