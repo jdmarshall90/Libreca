@@ -26,6 +26,7 @@
 		D0518E7A21797A490087A000 /* Credits.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7921797A490087A000 /* Credits.plist */; };
 		D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; };
 		D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E85217982C80087A000 /* GoogleService-Info.plist */; };
 		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
 		D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; };
 		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -42,7 +43,6 @@
 		D0D6F2A9217823FD006F21A4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */; };
 		D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */; };
 		D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2AC2178246D006F21A4 /* libc++.tbd */; };
-		D0D6F2AF217826CC006F21A4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0D6F2AE217826CC006F21A4 /* GoogleService-Info.plist */; };
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* OpenSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */; };
 		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
@@ -98,6 +98,7 @@
 		D0518E7921797A490087A000 /* Credits.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credits.plist; sourceTree = "<group>"; };
 		D0518E7F21797CE40087A000 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		D0518E8121797E730087A000 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
+		D0518E85217982C80087A000 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
 		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,7 +114,6 @@
 		D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Carthage/Build/iOS/Crashlytics.framework; sourceTree = "<group>"; };
 		D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0D6F2AC2178246D006F21A4 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		D0D6F2AE217826CC006F21A4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
@@ -265,8 +265,8 @@
 		D0D6F26B21781A8C006F21A4 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				D0D6F2AE217826CC006F21A4 /* GoogleService-Info.plist */,
 				D0D6F26C21781B02006F21A4 /* LICENSE */,
+				D0518E85217982C80087A000 /* GoogleService-Info.plist */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -359,9 +359,9 @@
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
 				D0518E7A21797A490087A000 /* Credits.plist in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
-				D0D6F2AF217826CC006F21A4 /* GoogleService-Info.plist in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
+				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
