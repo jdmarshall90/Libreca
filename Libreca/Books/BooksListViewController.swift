@@ -82,7 +82,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         Analytics.logEvent("books_fetched", parameters: ["status": "error"])
     }
     
-    func finishedFetching(books: [Book]) {
+    func didFetch(books: [Book]) {
         sortButton.isEnabled = true
         content = .books(books)
         Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])

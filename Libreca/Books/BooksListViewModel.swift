@@ -11,7 +11,7 @@ import Foundation
 
 protocol BooksListView {
     func show(message: String)
-    func finishedFetching(books: [Book])
+    func didFetch(books: [Book])
 }
 
 final class BooksListViewModel {
@@ -52,14 +52,14 @@ final class BooksListViewModel {
             switch response.result {
             case .success(let books):
                 strongSelf.books = books
-                strongSelf.view.finishedFetching(books: strongSelf.books)
+                strongSelf.view.didFetch(books: strongSelf.books)
             case .failure(let error as CalibreError):
                 strongSelf.books = []
-                strongSelf.view.finishedFetching(books: strongSelf.books)
+                strongSelf.view.didFetch(books: strongSelf.books)
                 strongSelf.view.show(message: "Error: \(error.localizedDescription)")
             case .failure(let error):
                 strongSelf.books = []
-                strongSelf.view.finishedFetching(books: strongSelf.books)
+                strongSelf.view.didFetch(books: strongSelf.books)
                 strongSelf.view.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.")
             }
         }
@@ -74,14 +74,14 @@ final class BooksListViewModel {
     @objc
     private func urlDidChange(_ notification: Notification) {
         // TODO: clear the cache
-        view.finishedFetching(books: [])
+        view.didFetch(books: [])
         fetchBooks()
     }
     
     @objc
     private func sortSettingDidChange(_ notification: Notification) {
         books = books.sorted(by: Settings.Sort.current.sortAction)
-        view.finishedFetching(books: books)
+        view.didFetch(books: books)
     }
     
 }
