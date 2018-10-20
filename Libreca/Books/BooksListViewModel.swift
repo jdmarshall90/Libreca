@@ -65,7 +65,7 @@ final class BooksListViewModel {
         }
     }
     
-    func fetchThumbnail(for book: Book, completion: @escaping (UIImage?) -> Void) {
+    func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
         book.cover.hitService { response in
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
         }
