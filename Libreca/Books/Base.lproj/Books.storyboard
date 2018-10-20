@@ -136,7 +136,10 @@
                                     <outlet property="authorsLabel" destination="kg9-2q-7s1" id="a3V-7T-uc5"/>
                                     <outlet property="thumbnailImageView" destination="6Cn-L9-TEq" id="beH-xc-dlA"/>
                                     <outlet property="titleLabel" destination="lIh-7k-qXl" id="CYT-3E-kih"/>
-                                    <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetail" id="6S0-TO-JiA"/>
+                                    <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetail" id="6S0-TO-JiA">
+                                        <segue key="commit" inheritsFrom="parent" id="zDS-Vq-eek"/>
+                                        <segue key="preview" inheritsFrom="commit" id="3HZ-8i-PnH"/>
+                                    </segue>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
