@@ -11,7 +11,8 @@ import Firebase
 import UIKit
 
 // TODO: Test on all screen sizes
-// TODO: Remove GPL Licenses from this app and CalibreKit
+// TODO: Add GPL license to all projects under this app's GitLab group so that you can make them all public
+// TODO: You'll also need to open source your SwiftLint configuration file
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
