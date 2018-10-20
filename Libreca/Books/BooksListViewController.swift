@@ -24,6 +24,10 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
+    private enum Segue: String {
+        case showDetail
+    }
+    
     private enum Content {
         // swiftlint:disable identifier_name
         case books([Book])
@@ -73,6 +77,22 @@ class BooksListViewController: UITableViewController, BooksListView {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Analytics.setScreenName("books", screenClass: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let navController = segue.destination as? UINavigationController,
+            let detailsVC = navController.viewControllers.first as? BookDetailsViewController,
+            let segue = Segue(rawValue: segue.identifier ?? ""),
+            let cell = sender as? BookTableViewCell,
+            let indexPath = tableView.indexPath(for: cell) else {
+                return
+        }
+        
+        switch segue {
+        case .showDetail:
+            let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
+            detailsVC.prepare(for: book)
+        }
     }
     
     // MARK: - BooksListView
