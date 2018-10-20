@@ -26,7 +26,7 @@ struct BookDetailsViewModel {
             let footer: String?
             
             fileprivate init(header: String?, cellRepresentations: [CellRepresentable], footer: String?) {
-                self.header = header
+                self.header = cellRepresentations.count == 1 ? String(header?.dropLast() ?? "") : header
                 self.cells = cellRepresentations.map { $0.cellRepresentation }
                 self.footer = footer
             }
