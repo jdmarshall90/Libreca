@@ -15,7 +15,11 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var coverImageView: UIImageView!
     
     // swiftlint:disable:next implicitly_unwrapped_optional
-    private var bookModel: BookDetailsViewModel.BookModel!
+    private var bookModel: BookDetailsViewModel.BookModel! {
+        didSet {
+            title = bookModel.title
+        }
+    }
     
     func prepare(for book: Book) {
         bookModel = BookDetailsViewModel().createBookModel(for: book)
@@ -23,7 +27,6 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = bookModel.title
         
         bookModel.cover { [weak self] cover in
             self?.coverImageView.image = cover
