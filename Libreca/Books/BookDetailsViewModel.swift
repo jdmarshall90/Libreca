@@ -59,7 +59,6 @@ struct BookDetailsViewModel {
             self.sections = [authorsSection, commentsSection, languagesSection, identifiersSection, tagsSection]
             
             self.cover = { completion in
-                // TODO: What if image isn't done loading by the time this is here? need a spinner on the UI
                 book.cover.hitService { response in
                     completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
                 }

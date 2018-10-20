@@ -12,6 +12,7 @@ import UIKit
 
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var coverImageView: UIImageView!
     
     // swiftlint:disable:next implicitly_unwrapped_optional
@@ -28,7 +29,9 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        activityIndicator.startAnimating()
         bookModel.cover { [weak self] cover in
+            self?.activityIndicator.stopAnimating()
             self?.coverImageView.image = cover
         }
     }

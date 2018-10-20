@@ -66,10 +66,19 @@
                                     <outlet property="delegate" destination="JEX-9P-axG" id="fe1-xr-zQi"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="q8t-3n-116">
+                                <rect key="frame" x="145.66666666666666" y="72" width="122.66666666666666" height="122.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="q8t-3n-116" secondAttribute="height" multiplier="1:1" id="fXN-e8-KWI"/>
+                                </constraints>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="q8t-3n-116" firstAttribute="centerY" secondItem="cu7-fi-U6M" secondAttribute="centerY" id="8f3-Ya-pFp"/>
+                            <constraint firstItem="q8t-3n-116" firstAttribute="width" secondItem="cu7-fi-U6M" secondAttribute="width" id="Cqi-O4-j9S"/>
                             <constraint firstItem="VUw-jc-0yf" firstAttribute="bottom" secondItem="kFn-Mr-COp" secondAttribute="bottom" id="RIy-IO-09h"/>
+                            <constraint firstItem="q8t-3n-116" firstAttribute="centerX" secondItem="cu7-fi-U6M" secondAttribute="centerX" id="YWM-WS-y4c"/>
                             <constraint firstItem="kFn-Mr-COp" firstAttribute="top" secondItem="cu7-fi-U6M" secondAttribute="bottom" constant="8" id="eXG-if-EVh"/>
                             <constraint firstItem="cu7-fi-U6M" firstAttribute="height" secondItem="svH-Pt-448" secondAttribute="height" multiplier="1:6" id="fEV-Dm-RzB"/>
                             <constraint firstItem="cu7-fi-U6M" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="8" id="gCU-dC-czj"/>
@@ -82,6 +91,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" largeTitleDisplayMode="never" id="mOI-FS-AaM"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="q8t-3n-116" id="skr-ed-IAh"/>
                         <outlet property="coverImageView" destination="cu7-fi-U6M" id="zbt-6h-tPl"/>
                     </connections>
                 </viewController>
