@@ -51,7 +51,9 @@ struct BookDetailsViewModel {
             let languagesSection = Section(header: "Languages", cellRepresentations: book.languages, footer: nil)
             let identifiersSection = Section(header: "Identifiers", cellRepresentations: book.identifiers, footer: nil)
             
-            let tagsFooter = "Last updated on \(BookModel.dateFormatter.string(from: book.lastModified))"
+            let addedToCaliberFooter = "Added to Calibre on \(BookModel.dateFormatter.string(from: book.addedOn))"
+            let lastUpdatedFooter = "Last updated on \(BookModel.dateFormatter.string(from: book.lastModified))"
+            let tagsFooter = "\n\(addedToCaliberFooter)\n\n\(lastUpdatedFooter)"
             let tagsSection = Section(header: "Tags", cellRepresentations: book.tags, footer: tagsFooter)
             
             self.sections = [authorsSection, commentsSection, languagesSection, identifiersSection, tagsSection]
