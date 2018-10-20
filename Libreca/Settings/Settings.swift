@@ -52,12 +52,7 @@ struct Settings {
         }
         
         func sortAction(_ lhs: Book, _ rhs: Book) -> Bool {
-            switch self {
-            case .title:
-                return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
-            case .authorLastName:
-                return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
-            }
+            return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
         }
     }
     
