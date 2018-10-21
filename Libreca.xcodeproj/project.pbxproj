@@ -48,6 +48,8 @@
 		D0D6F2B321795777006F21A4 /* OpenSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */; };
 		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
+		D0EFA8E9217C05F200622080 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */; };
+		D0EFA8EB217C07F900622080 /* privacy_policy.html in Resources */ = {isa = PBXBuildFile; fileRef = D0EFA8EA217C07F900622080 /* privacy_policy.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +122,8 @@
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
+		D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		D0EFA8EA217C07F900622080 /* privacy_policy.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = privacy_policy.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,11 +165,13 @@
 				D0D6F2B021795769006F21A4 /* CreditsViewController.swift */,
 				D0195B8A21730DA2006EA713 /* Framework.swift */,
 				D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */,
+				D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */,
 				D0195B802172EEA8006EA713 /* Settings.swift */,
 				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
 				D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */,
 				D0195B8821730D86006EA713 /* UIDevice+HardwareName.swift */,
 				D0195B8621730953006EA713 /* Settings.storyboard */,
+				D0EFA8EA217C07F900622080 /* privacy_policy.html */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -363,6 +369,7 @@
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
 				D0518E7A21797A490087A000 /* Credits.plist in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
+				D0EFA8EB217C07F900622080 /* privacy_policy.html in Resources */,
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
@@ -447,6 +454,7 @@
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
+				D0EFA8E9217C05F200622080 /* PrivacyPolicyViewController.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
 				D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* OpenSourceViewController.swift in Sources */,

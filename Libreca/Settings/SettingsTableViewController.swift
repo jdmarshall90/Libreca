@@ -20,6 +20,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         case contentServerSegue
         case creditsSegue
         case openSourceSegue
+        case privacyPolicySegue
     }
     
     private struct Constants {
@@ -49,8 +50,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             static let all = [
                 "Settings",
                 "Contact",
-                "About",
-                "Credits"
+                "Privacy",
+                "About"
             ]
             
         }
@@ -102,6 +103,17 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     Analytics.logEvent("support_site_tapped", parameters: nil)
                     let safariVC = SFSafariViewController(url: Constants.Connect.supportSite)
                     self?.present(safariVC, animated: true)
+                }
+            ],
+            [
+                DisplayModel(mainText: "Export all my data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    
+                },
+                DisplayModel(mainText: "Remove all my data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    
+                },
+                DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.performSegue(withIdentifier: Segue.privacyPolicySegue.rawValue, sender: nil)
                 }
             ],
             [
