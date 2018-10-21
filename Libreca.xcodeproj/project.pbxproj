@@ -163,18 +163,10 @@
 		D0195B7F2172EE94006EA713 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */,
-				D0D6F2B021795769006F21A4 /* CreditsViewController.swift */,
-				D0195B8A21730DA2006EA713 /* Framework.swift */,
-				D0EFA8EC217C0C8300622080 /* GDPR.swift */,
-				D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */,
-				D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */,
-				D0195B802172EEA8006EA713 /* Settings.swift */,
-				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
-				D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */,
-				D0195B8821730D86006EA713 /* UIDevice+HardwareName.swift */,
-				D0195B8621730953006EA713 /* Settings.storyboard */,
-				D0EFA8EA217C07F900622080 /* privacy_policy.html */,
+				D0EFA8EF217C2A3900622080 /* About */,
+				D0EFA8F1217C2A5D00622080 /* Contact */,
+				D0EFA8EE217C29A500622080 /* Privacy */,
+				D0EFA8F0217C2A5400622080 /* Settings */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -282,6 +274,46 @@
 				D0518E85217982C80087A000 /* GoogleService-Info.plist */,
 			);
 			path = Firebase;
+			sourceTree = "<group>";
+		};
+		D0EFA8EE217C29A500622080 /* Privacy */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFA8EC217C0C8300622080 /* GDPR.swift */,
+				D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */,
+				D0EFA8EA217C07F900622080 /* privacy_policy.html */,
+			);
+			path = Privacy;
+			sourceTree = "<group>";
+		};
+		D0EFA8EF217C2A3900622080 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				D0D6F2B021795769006F21A4 /* CreditsViewController.swift */,
+				D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		D0EFA8F0217C2A5400622080 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */,
+				D0195B802172EEA8006EA713 /* Settings.swift */,
+				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
+				D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */,
+				D0195B8621730953006EA713 /* Settings.storyboard */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D0EFA8F1217C2A5D00622080 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				D0195B8A21730DA2006EA713 /* Framework.swift */,
+				D0195B8821730D86006EA713 /* UIDevice+HardwareName.swift */,
+			);
+			path = Contact;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
