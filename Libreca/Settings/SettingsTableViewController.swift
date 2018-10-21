@@ -85,9 +85,13 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        reload()
+    }
+    
+    private func reload() {
         displayModels = [
             [
-                DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
+                DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.current.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
                     self?.didTapContentServer()
                 },
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none)
@@ -106,11 +110,11 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 }
             ],
             [
-                DisplayModel(mainText: "Export all my data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    
+                DisplayModel(mainText: "Export all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapExportData()
                 },
-                DisplayModel(mainText: "Remove all my data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    
+                DisplayModel(mainText: "Remove all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapRemoveData()
                 },
                 DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.performSegue(withIdentifier: Segue.privacyPolicySegue.rawValue, sender: nil)
@@ -162,6 +166,26 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     private func didTapContentServer() {
         performSegue(withIdentifier: Segue.contentServerSegue.rawValue, sender: nil)
+    }
+    
+    private func didTapExportData() {
+        print("export!")
+    }
+    
+    private func didTapRemoveData() {
+        let alertController = UIAlertController(title: "Confirm", message: "Remove all app data stored on this device? This cannot be undone.", preferredStyle: .actionSheet)
+        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
+            GDPR.remove()
+            self?.reload()
+            let alertController = UIAlertController(title: "Success", message: "All app data stored on this device has been removed.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self?.present(alertController, animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
     }
     
     private func didTapSendEmail(isBeta: Bool) {
@@ -267,7 +291,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             
             cell.textLabel?.text = thisDisplayModel.mainText
             cell.detailTextLabel?.text = thisDisplayModel.subText
-            cell.detailTextLabel?.textColor = Settings.ContentServer.url == nil ? .red : .black
+            cell.detailTextLabel?.textColor = Settings.ContentServer.current.url == nil ? .red : .black
             cell.accessoryType = thisDisplayModel.accessoryType
             
             return cell

@@ -37,10 +37,14 @@ struct Settings {
             }
         }
         
-        static var current: Settings.Sort {
+        static var `default`: Sort {
+            return .title
+        }
+        
+        static var current: Sort {
             get {
                 guard let savedCurrentSort = UserDefaults.standard.string(forKey: key) else {
-                    return .title
+                    return .default
                 }
                 // swiftlint:disable:next force_unwrapping
                 return Settings.Sort(rawValue: savedCurrentSort)!
@@ -57,7 +61,8 @@ struct Settings {
     }
     
     struct ContentServer {
-        private init() {}
+        
+        let url: URL?
         
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
         
@@ -65,13 +70,18 @@ struct Settings {
             return Settings.baseSettingsKey + "url"
         }
         
-        static var url: URL? {
+        static var `default`: ContentServer {
+            return ContentServer(url: nil)
+        }
+        
+        static var current: ContentServer {
             get {
-                return UserDefaults.standard.url(forKey: key)
+                guard let current = UserDefaults.standard.url(forKey: key) else { return .default }
+                return ContentServer(url: current)
             }
             set(newValue) {
-                UserDefaults.standard.set(newValue, forKey: key)
-                CalibreKitConfiguration.baseURL = newValue
+                UserDefaults.standard.set(newValue.url, forKey: key)
+                CalibreKitConfiguration.baseURL = newValue.url
                 NotificationCenter.default.post(didChangeNotification)
             }
         }

@@ -20,7 +20,7 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        urlTextField.text = Settings.ContentServer.url?.absoluteString
+        urlTextField.text = Settings.ContentServer.current.url?.absoluteString
         navigationItem.rightBarButtonItem = saveButton
     }
     
@@ -43,7 +43,7 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     
     @objc
     private func saveTheURL() {
-        Settings.ContentServer.url = url
+        Settings.ContentServer.current = Settings.ContentServer(url: url)
         navigationController?.popViewController(animated: true)
     }
     

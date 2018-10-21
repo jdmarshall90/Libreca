@@ -75,7 +75,7 @@ final class AppAnalytics {
         // if analytics is showing that nobody uses non-HTTPS, then support for that can be removed
         
         let value: String
-        switch Settings.ContentServer.url {
+        switch Settings.ContentServer.current.url {
         case .none:
             value = "nil"
         case .some(let url) where url.absoluteString.contains("https"):

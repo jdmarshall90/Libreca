@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             splitViewController.delegate = self
         }
         
-        CalibreKitConfiguration.baseURL = Settings.ContentServer.url
+        CalibreKitConfiguration.baseURL = Settings.ContentServer.current.url
         AppAnalytics.shared.enable()
         AppAnalytics.shared.appStarted()
         
