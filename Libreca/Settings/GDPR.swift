@@ -9,8 +9,7 @@
 import Foundation
 
 protocol GDPRItem {
-    var title: String { get }
-    var content: Data { get }
+    var information: String { get }
     
     func remove()
 }
