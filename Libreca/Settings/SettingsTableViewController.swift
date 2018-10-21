@@ -175,7 +175,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapRemoveData() {
-        let alertController = UIAlertController(title: "Confirm", message: "Remove all app data stored on this device? This cannot be undone.", preferredStyle: .actionSheet)
+        let storedItemsDescription = "Data currently stored:\n\n" + GDPR.export().map { "∙ " + $0.information }.joined(separator: "\n")
+        let alertController = UIAlertController(title: "Confirm", message: "Remove all app data stored on this device? This cannot be undone.\n\n\(storedItemsDescription)", preferredStyle: .actionSheet)
         let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
             GDPR.remove()
             self?.reload()
