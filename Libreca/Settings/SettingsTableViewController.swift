@@ -169,7 +169,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapExportData() {
-        print("export!")
+        let itemsDescription = GDPR.export().map { $0.information }.joined(separator: "\n\n")
+        let activityViewController = UIActivityViewController(activityItems: [itemsDescription], applicationActivities: nil)
+        present(activityViewController, animated: true)
     }
     
     private func didTapRemoveData() {

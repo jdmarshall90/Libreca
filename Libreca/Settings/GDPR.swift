@@ -34,12 +34,8 @@ struct GDPR {
 }
 
 extension Settings.Sort: GDPRItem {
-    var title: String {
-        return "your sort setting"
-    }
-    
-    var content: Data {
-        return Data()
+    var information: String {
+        return "Book sorting setting is: by \(rawValue.lowercased())"
     }
     
     func remove() {
@@ -48,12 +44,8 @@ extension Settings.Sort: GDPRItem {
 }
 
 extension Settings.ContentServer: GDPRItem {
-    var title: String {
-        return "your server"
-    }
-    
-    var content: Data {
-        return Data()
+    var information: String {
+        return "Calibre© Content Server URL: \(url?.absoluteString ?? "none stored")"
     }
     
     func remove() {
