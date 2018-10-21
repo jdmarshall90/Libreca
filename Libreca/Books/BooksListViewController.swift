@@ -38,18 +38,18 @@ class BooksListViewController: UITableViewController, BooksListView {
     // TODO: Fix issue where "Loading..." doesn't show up after you set the URL
     private var content: Content = .message("Loading...") {
         didSet {
-            // TODO: refactor this duplication
-            switch content {
-            case .books(let books):
+            func handleContentChange(with books: [Book]) {
                 sectionIndexGenerator.reset(with: books)
                 title = "Books (\(books.count))"
                 tableView.reloadData()
                 tableView.reloadSectionIndexTitles()
+            }
+            
+            switch content {
+            case .books(let books):
+                handleContentChange(with: books)
             case .message:
-                sectionIndexGenerator.reset(with: [])
-                title = "Books (0)"
-                tableView.reloadData()
-                tableView.reloadSectionIndexTitles()
+                handleContentChange(with: [])
             }
         }
     }
