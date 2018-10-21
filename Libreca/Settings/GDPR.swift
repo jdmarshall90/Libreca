@@ -11,7 +11,7 @@ import Foundation
 protocol GDPRItem {
     var information: String { get }
     
-    func remove()
+    func delete()
 }
 
 struct GDPR {
@@ -26,8 +26,8 @@ struct GDPR {
         return allItems
     }
     
-    static func remove() {
-        allItems.forEach { $0.remove() }
+    static func delete() {
+        allItems.forEach { $0.delete() }
     }
     
 }
@@ -37,7 +37,7 @@ extension Settings.Sort: GDPRItem {
         return "Book sort setting is: by \(rawValue.lowercased())"
     }
     
-    func remove() {
+    func delete() {
         Settings.Sort.current = .default
     }
 }
@@ -47,7 +47,7 @@ extension Settings.ContentServer: GDPRItem {
         return "Calibre© Content Server URL is: \(url?.absoluteString ?? "none stored")"
     }
     
-    func remove() {
+    func delete() {
         Settings.ContentServer.current = .default
     }
 }

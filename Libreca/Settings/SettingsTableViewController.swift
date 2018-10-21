@@ -113,8 +113,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Export all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.didTapExportData()
                 },
-                DisplayModel(mainText: "Remove all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.didTapRemoveData()
+                DisplayModel(mainText: "Delete all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapDeleteData()
                 },
                 DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.performSegue(withIdentifier: Segue.privacyPolicySegue.rawValue, sender: nil)
@@ -174,13 +174,13 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         present(activityViewController, animated: true)
     }
     
-    private func didTapRemoveData() {
+    private func didTapDeleteData() {
         let storedItemsDescription = "Data currently stored:\n\n" + GDPR.export().map { "∙ " + $0.information }.joined(separator: "\n")
-        let alertController = UIAlertController(title: "Confirm", message: "Remove all app data stored on this device? This cannot be undone.\n\n\(storedItemsDescription)", preferredStyle: .actionSheet)
-        let confirmAction = UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
-            GDPR.remove()
+        let alertController = UIAlertController(title: "Confirm", message: "Delete all app data stored on this device? This cannot be undone.\n\n\(storedItemsDescription)", preferredStyle: .actionSheet)
+        let confirmAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            GDPR.delete()
             self?.reload()
-            let alertController = UIAlertController(title: "Success", message: "All app data stored on this device has been removed.", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Success", message: "All app data stored on this device has been deleted.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
             self?.present(alertController, animated: true)
