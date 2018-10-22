@@ -22,6 +22,14 @@ class BooksListViewController: UITableViewController, BooksListView {
     private lazy var viewModel = BooksListViewModel(view: self)
     private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book>(sectionIndexDisplayables: [], tableViewController: self)
     
+    private var isFetchingBooks = true
+    
+    private lazy var booksRefreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
+    }()
+    
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private enum Segue: String {
@@ -57,6 +65,8 @@ class BooksListViewController: UITableViewController, BooksListView {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        refreshControl = booksRefreshControl
+        
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count - 1] as? UINavigationController)?.topViewController as? BookDetailsViewController
@@ -65,13 +75,16 @@ class BooksListViewController: UITableViewController, BooksListView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
-        sortButton.isEnabled = false
-        viewModel.fetchBooks()
+        refresh()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        clearsSelectionOnViewWillAppear = splitViewController?.isCollapsed == true
         super.viewWillAppear(animated)
+        
+        if isFetchingBooks {
+            booksRefreshControl.beginRefreshing()
+        }
+        clearsSelectionOnViewWillAppear = splitViewController?.isCollapsed == true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -103,6 +116,8 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     func didFetch(books: [Book]) {
+        isFetchingBooks = false
+        booksRefreshControl.endRefreshing()
         sortButton.isEnabled = true
         content = .books(books)
         Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
@@ -183,6 +198,24 @@ class BooksListViewController: UITableViewController, BooksListView {
         alertController.popoverPresentationController?.barButtonItem = sender
         
         present(alertController, animated: true)
+    }
+    
+    @objc
+    private func refreshControlPulled(_ sender: UIRefreshControl) {
+        // TODO: See if issue where "Loading..." doesn't show up after you set the URL happens here too
+        // TODO: Clear the cache
+        // TODO: It's kind of a jarring animation when you enable / disable the refresh control
+        // TODO: Integration test
+        // TODO: Make sure this event shows up in Firebase console
+        Analytics.logEvent("pull_to_refresh_books", parameters: nil)
+        content = .message("Loading...")
+        refresh()
+    }
+    
+    private func refresh() {
+        isFetchingBooks = true
+        sortButton.isEnabled = false
+        viewModel.fetchBooks()
     }
     
 }
