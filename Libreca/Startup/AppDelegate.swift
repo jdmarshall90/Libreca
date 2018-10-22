@@ -15,6 +15,7 @@ import UIKit
 // TODO: You'll also need to open source your SwiftLint configuration file
 // TODO: Bug - error fetching books, change sort, now error is gone and book list is empty (if error still present)
 // TODO: Bug - date format with the new books in your Calibre library
+// TODO: Add license notice to all files (https://www.gnu.org/licenses/gpl-howto.html)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
