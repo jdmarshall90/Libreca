@@ -10,19 +10,10 @@ import CalibreKit
 import Firebase
 import UIKit
 
-// TODO: Test on all screen sizes
-// TODO: Add GPL license to all projects under this app's GitLab group so that you can make them all public
-// TODO: You'll also need to open source your SwiftLint configuration file
-// TODO: Bug - error fetching books, change sort, now error is gone and book list is empty (if error still present)
-// TODO: Add license notice to all files (https://www.gnu.org/licenses/gpl-howto.html)
-// TODO: Bug - make a request to authenticated content server (such as with your calibre gui running), then turn the gui server off and start via terminal. then refresh the app. it'll get the data, then when the requests time out, it'll show the timeout message, even though we have already gotten a valid response
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
     
     var window: UIWindow?
-    
-    // TODO: Register all custom event parameters in Firebase Console
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

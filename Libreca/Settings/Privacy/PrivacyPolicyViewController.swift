@@ -12,8 +12,6 @@ import WebKit
 
 final class PrivacyPolicyViewController: UIViewController {
     
-    // TODO: Put actual privacy policy into this screen once you have it
-    
     @IBOutlet weak var webView: WKWebView!
     
     override func viewDidLoad() {

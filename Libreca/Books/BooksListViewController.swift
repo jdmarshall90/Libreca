@@ -43,7 +43,6 @@ class BooksListViewController: UITableViewController, BooksListView {
         // swiftlint:enable identifier_name
     }
     
-    // TODO: Fix issue where "Loading..." doesn't show up after you set the URL
     private var content: Content = .message("Loading...") {
         didSet {
             func handleContentChange(with books: [Book]) {
