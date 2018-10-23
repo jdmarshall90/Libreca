@@ -206,7 +206,6 @@ class BooksListViewController: UITableViewController, BooksListView {
         // TODO: Clear the cache
         // TODO: It's kind of a jarring animation when you enable / disable the refresh control
         // TODO: Integration test
-        // TODO: Make sure this event shows up in Firebase console
         Analytics.logEvent("pull_to_refresh_books", parameters: nil)
         content = .message("Loading...")
         refresh()
