@@ -202,10 +202,6 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     @objc
     private func refreshControlPulled(_ sender: UIRefreshControl) {
-        // TODO: See if issue where "Loading..." doesn't show up after you set the URL happens here too
-        // TODO: Clear the cache
-        // TODO: It's kind of a jarring animation when you enable / disable the refresh control
-        // TODO: Integration test
         Analytics.logEvent("pull_to_refresh_books", parameters: nil)
         content = .message("Loading...")
         refresh()

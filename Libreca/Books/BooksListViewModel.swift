@@ -46,6 +46,7 @@ final class BooksListViewModel {
     }
     
     func fetchBooks() {
+        Cache.clear()
         booksEndpoint.hitService { [weak self] response in
             guard let strongSelf = self else { return }
             
@@ -73,7 +74,6 @@ final class BooksListViewModel {
     
     @objc
     private func urlDidChange(_ notification: Notification) {
-        // TODO: clear the cache
         view.didFetch(books: [])
         fetchBooks()
     }
