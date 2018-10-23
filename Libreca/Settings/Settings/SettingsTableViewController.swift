@@ -227,13 +227,15 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         Analytics.logEvent("server_info_button_tapped", parameters: nil)
         let alertController = UIAlertController(title: "What's this?",
                                                 message: """
-            This setting lets you connect \(Constants.Bundles.app.name) to your Calibre Content Server. Provide the URL of your server, such as:
+            This setting lets you connect \(Constants.Bundles.app.name) to your Calibre© Content Server. Provide the URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
             ∙ https://mysecurecontentserver.com:8080
+            
+            Currently only unauthenticated content servers are supported. Please check back soon for authenticated access support.
             
             Please include https:// or http://
             """,
