@@ -1,8 +1,8 @@
 //
-//  BookTableViewCell.swift
+//  AppLicensesViewController.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 10/11/18.
+//  Created by Justin Marshall on 10/18/18.
 //
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,13 +21,30 @@
 //  This file is part of project: Libreca
 //
 
+import FirebaseAnalytics
+import LicensesViewController
 import UIKit
 
-final class BookTableViewCell: UITableViewCell {
+final class AppLicensesViewController: LicensesViewController {
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var authorsLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var thumbnailImageView: UIImageView!
+    init(licensesFileName: String) {
+        super.init(nibName: nil, bundle: nil)
+        loadPlist(Bundle.main, resourceName: licensesFileName)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        loadPlist(Bundle.main, resourceName: "Credits")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Licenses"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("licenses", screenClass: nil)
+    }
     
 }

@@ -3,7 +3,22 @@
 //  Libreca
 //
 //  Created by Justin Marshall on 10/14/18.
-//  Copyright © 2018 Justin Marshall. All rights reserved.
+//
+//  Libreca is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Libreca is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Libreca.  If not, see <https://www.gnu.org/licenses/>.
+//
+//  Copyright © 2018 Justin Marshall
+//  This file is part of project: Libreca
 //
 
 import FirebaseAnalytics
@@ -17,7 +32,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     private enum Segue: String {
         case contentServerSegue
         case creditsSegue
-        case openSourceSegue
+        case licensesSegue
         case privacyPolicySegue
     }
     
@@ -39,7 +54,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             private init() {}
             
             static let credits = "Credits"
-            static let openSource = "Open Source"
+            static let licenses = "Licenses"
         }
         
         struct HeaderTitles {
@@ -122,8 +137,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: Constants.About.credits, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.performSegue(withIdentifier: Segue.creditsSegue.rawValue, sender: nil)
                 },
-                DisplayModel(mainText: Constants.About.openSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.performSegue(withIdentifier: Segue.openSourceSegue.rawValue, sender: nil)
+                DisplayModel(mainText: Constants.About.licenses, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.performSegue(withIdentifier: Segue.licensesSegue.rawValue, sender: nil)
                 }
             ]
         ]

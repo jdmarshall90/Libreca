@@ -45,7 +45,7 @@
 		D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */; };
 		D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F2AC2178246D006F21A4 /* libc++.tbd */; };
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
-		D0D6F2B321795777006F21A4 /* OpenSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */; };
+		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
 		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8E9217C05F200622080 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */; };
@@ -121,7 +121,7 @@
 		D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0D6F2AC2178246D006F21A4 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
-		D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceViewController.swift; sourceTree = "<group>"; };
+		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
 		D0EFA8E8217C05F200622080 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		D0EFA8EA217C07F900622080 /* privacy_policy.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = privacy_policy.html; sourceTree = "<group>"; };
@@ -289,8 +289,8 @@
 		D0EFA8EF217C2A3900622080 /* About */ = {
 			isa = PBXGroup;
 			children = (
+				D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */,
 				D0D6F2B021795769006F21A4 /* CreditsViewController.swift */,
-				D0D6F2B221795777006F21A4 /* OpenSourceViewController.swift */,
 			);
 			path = About;
 			sourceTree = "<group>";
@@ -492,7 +492,7 @@
 				D0EFA8E9217C05F200622080 /* PrivacyPolicyViewController.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
 				D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */,
-				D0D6F2B321795777006F21A4 /* OpenSourceViewController.swift in Sources */,
+				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */,
