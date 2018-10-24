@@ -96,7 +96,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="EAu-Au-OdW" kind="show" identifier="contentServerSegue" id="jmZ-Iu-1H7"/>
-                        <segue destination="OcN-pJ-1Ht" kind="show" identifier="openSourceSegue" id="Jom-SF-HEm"/>
+                        <segue destination="OcN-pJ-1Ht" kind="show" identifier="licensesSegue" id="Jom-SF-HEm"/>
                         <segue destination="Sso-7Z-g2T" kind="show" identifier="creditsSegue" id="3cH-LI-9AC"/>
                         <segue destination="fBU-7Z-KP9" kind="show" identifier="privacyPolicySegue" id="hpU-ET-p29"/>
                     </connections>
@@ -115,13 +115,13 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="hk1-88-9Fo">
-                                <mutableString key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the URL of your server, such as:
+                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Currently only unauthenticated content servers are supported. Please check back soon for authenticated access support.  Please include https:// or http://</mutableString>
+            ∙ https://mysecurecontentserver.com:8080  Currently only unauthenticated content servers are supported. Please check back soon for authenticated access support.  Please include https:// or http://</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="xQi-Vr-MWl">
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>
@@ -181,10 +181,10 @@
             </objects>
             <point key="canvasLocation" x="164" y="133"/>
         </scene>
-        <!--Open Source-->
+        <!--Licenses-->
         <scene sceneID="F9y-vN-XNF">
             <objects>
-                <viewController title="Open Source" id="OcN-pJ-1Ht" customClass="OpenSourceViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Licenses" id="OcN-pJ-1Ht" customClass="AppLicensesViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aCe-V2-aEI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
