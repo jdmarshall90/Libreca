@@ -27,11 +27,6 @@ import UIKit
 
 final class AppLicensesViewController: LicensesViewController {
     
-    init(licensesFileName: String) {
-        super.init(nibName: nil, bundle: nil)
-        loadPlist(Bundle.main, resourceName: licensesFileName)
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         loadPlist(Bundle.main, resourceName: "Licenses")
