@@ -34,7 +34,7 @@ final class AppLicensesViewController: LicensesViewController {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        loadPlist(Bundle.main, resourceName: "Credits")
+        loadPlist(Bundle.main, resourceName: "Licenses")
     }
     
     override func viewDidLoad() {

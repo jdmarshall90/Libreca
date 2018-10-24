@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
 		D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */; };
 		D0195B812172EEA8006EA713 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B802172EEA8006EA713 /* Settings.swift */; };
@@ -23,7 +24,6 @@
 		D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04871A9216AF31E0085D22C /* Assets.xcassets */; };
 		D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */; };
 		D04871B8216AF31E0085D22C /* LibrecaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaTests.swift */; };
-		D0518E7A21797A490087A000 /* Credits.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7921797A490087A000 /* Credits.plist */; };
 		D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; };
 		D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E85217982C80087A000 /* GoogleService-Info.plist */; };
@@ -80,6 +80,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionIndexTitleGenerator.swift; sourceTree = "<group>"; };
 		D0195B802172EEA8006EA713 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		D04871B3216AF31E0085D22C /* LibrecaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871B7216AF31E0085D22C /* LibrecaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaTests.swift; sourceTree = "<group>"; };
 		D04871B9216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D0518E7921797A490087A000 /* Credits.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credits.plist; sourceTree = "<group>"; };
 		D0518E7F21797CE40087A000 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		D0518E8121797E730087A000 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D0518E85217982C80087A000 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -200,8 +200,8 @@
 				D04871A9216AF31E0085D22C /* Assets.xcassets */,
 				D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */,
 				D04871AE216AF31E0085D22C /* Info.plist */,
-				D0518E7921797A490087A000 /* Credits.plist */,
 				D0518E7F21797CE40087A000 /* LICENSE */,
+				D00772D32180131E0066ED9D /* Licenses.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -402,12 +402,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
-				D0518E7A21797A490087A000 /* Credits.plist in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
 				D0EFA8EB217C07F900622080 /* privacy_policy.html in Resources */,
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
+				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
 				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,7 +438,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Credits.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
+			shellScript = "./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Licenses.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
 		};
 		D0B475F6216AF62D008FDA50 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
