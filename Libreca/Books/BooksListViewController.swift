@@ -39,17 +39,19 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private var isFetchingBooks = true
     
-    private lazy var booksRefreshControl: UIRefreshControl = {
+    private var booksRefreshControl: UIRefreshControl {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         return refreshControl
-    }()
+    }
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private enum Segue: String {
         case showDetail
     }
+    
+    private var didJustLoadView = false
     
     private enum Content {
         // swiftlint:disable identifier_name
@@ -80,6 +82,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         super.viewDidLoad()
         
         refreshControl = booksRefreshControl
+        didJustLoadView = true
         
         if let split = splitViewController {
             let controllers = split.viewControllers
@@ -92,11 +95,21 @@ class BooksListViewController: UITableViewController, BooksListView {
         refresh()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        guard !didJustLoadView else { return didJustLoadView = false }
+        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
+            // total hack to allow the refresh control to be visible in landscape
+            refreshControl = booksRefreshControl
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if isFetchingBooks {
-            booksRefreshControl.beginRefreshing()
+            refreshControl?.beginRefreshing()
         }
         clearsSelectionOnViewWillAppear = splitViewController?.isCollapsed == true
     }
@@ -131,7 +144,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     func didFetch(books: [Book]) {
         isFetchingBooks = false
-        booksRefreshControl.endRefreshing()
+        refreshControl?.endRefreshing()
         sortButton.isEnabled = true
         content = .books(books)
         Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
