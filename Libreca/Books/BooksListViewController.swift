@@ -61,7 +61,11 @@ class BooksListViewController: UITableViewController, BooksListView {
         // swiftlint:enable identifier_name
     }
     
-    private var content: Content = .message("Loading...") {
+    private static var loadingContent: Content {
+        return .message("Loading...")
+    }
+    
+    private var content: Content = BooksListViewController.loadingContent {
         didSet {
             func handleContentChange(with books: [Book]) {
                 sectionIndexGenerator.reset(with: books)
@@ -162,6 +166,13 @@ class BooksListViewController: UITableViewController, BooksListView {
         Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
     }
     
+    func willRefreshBooks() {
+        content = BooksListViewController.loadingContent
+        isFetchingBooks = true
+        sortButton.isEnabled = false
+        refreshControl?.beginRefreshing()
+    }
+    
     // MARK: - Table View
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -242,7 +253,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     @objc
     private func refreshControlPulled(_ sender: UIRefreshControl) {
         Analytics.logEvent("pull_to_refresh_books", parameters: nil)
-        content = .message("Loading...")
+        content = BooksListViewController.loadingContent
         refresh()
     }
     

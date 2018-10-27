@@ -27,6 +27,7 @@ import Foundation
 protocol BooksListView {
     func show(message: String)
     func didFetch(books: [Book])
+    func willRefreshBooks()
 }
 
 final class BooksListViewModel {
@@ -89,7 +90,7 @@ final class BooksListViewModel {
     
     @objc
     private func urlDidChange(_ notification: Notification) {
-        view.didFetch(books: [])
+        view.willRefreshBooks()
         fetchBooks()
     }
     
