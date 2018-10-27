@@ -52,6 +52,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     private var didJustLoadView = false
+    private var hasFixedContentOffset = false
     
     private enum Content {
         // swiftlint:disable identifier_name
@@ -67,20 +68,22 @@ class BooksListViewController: UITableViewController, BooksListView {
                 title = "Books (\(books.count))"
                 tableView.reloadData()
                 tableView.reloadSectionIndexTitles()
-                
-                // fix layout after initial fetch after app launch
-                UIView.animate(withDuration: 0.35) {
-                    let navBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
-                    let refreshControlHeight = self.refreshControl?.frame.height ?? 0
-                    let statusBarHeight = UIApplication.shared.statusBarFrame.height
-                    let yOffset = -(navBarHeight + refreshControlHeight + statusBarHeight)
-                    self.tableView.contentOffset = CGPoint(x: 0, y: yOffset)
-                }
             }
             
             switch content {
             case .books(let books):
                 handleContentChange(with: books)
+                if !hasFixedContentOffset {
+                    // fix layout after initial fetch after app launch
+                    hasFixedContentOffset = true
+                    UIView.animate(withDuration: 0.35) {
+                        let navBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+                        let refreshControlHeight = self.refreshControl?.frame.height ?? 0
+                        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+                        let yOffset = -(navBarHeight + refreshControlHeight + statusBarHeight)
+                        self.tableView.contentOffset = CGPoint(x: 0, y: yOffset)
+                    }
+                }
             case .message:
                 handleContentChange(with: [])
             }
