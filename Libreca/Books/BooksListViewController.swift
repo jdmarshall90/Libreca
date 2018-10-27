@@ -236,8 +236,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         Settings.Sort.allCases.forEach { sortOption in
             let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
                 Analytics.logEvent("sort_via_list_vc", parameters: ["type": sortOption.rawValue])
-                guard let strongSelf = self else { return }
-                strongSelf.content = .books(strongSelf.viewModel.sort(by: sortOption))
+                self?.viewModel.sort(by: sortOption)
             }
             alertController.addAction(action)
         }

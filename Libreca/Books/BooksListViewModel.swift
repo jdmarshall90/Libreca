@@ -48,13 +48,12 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
     }
     
-    func sort(by newSortOption: Settings.Sort) -> [Book] {
+    func sort(by newSortOption: Settings.Sort) {
         let oldSort = Settings.Sort.current
         Settings.Sort.current = newSortOption
         if oldSort != newSortOption {
             books = books.sorted(by: newSortOption.sortAction)
         }
-        return books
     }
     
     func authors(for book: Book) -> String {
@@ -100,6 +99,15 @@ final class BooksListViewModel {
     
     @objc
     private func sortSettingDidChange(_ notification: Notification) {
+        // If books is empty, that means either:
+        // a.) User has no books in library.
+        // b.) There was an error fetching books.
+        //
+        // In either of these cases, updating the UI would clear out that empty
+        // state or error message, which we don't want to
+        // do. So just ignore the notification.
+        guard !books.isEmpty else { return }
+        
         books = books.sorted(by: Settings.Sort.current.sortAction)
         view.didFetch(books: books)
     }
