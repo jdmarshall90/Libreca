@@ -67,6 +67,10 @@ final class BooksListViewModel {
             guard let strongSelf = self else { return }
             
             switch response.result {
+            case .success(let books) where books.isEmpty:
+                strongSelf.books = books
+                strongSelf.view.didFetch(books: strongSelf.books)
+                strongSelf.view.show(message: "No books in library")
             case .success(let books):
                 strongSelf.books = books
                 strongSelf.view.didFetch(books: strongSelf.books)
