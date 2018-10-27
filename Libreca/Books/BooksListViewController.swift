@@ -67,6 +67,15 @@ class BooksListViewController: UITableViewController, BooksListView {
                 title = "Books (\(books.count))"
                 tableView.reloadData()
                 tableView.reloadSectionIndexTitles()
+                
+                // fix layout after initial fetch after app launch
+                UIView.animate(withDuration: 0.35) {
+                    let navBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+                    let refreshControlHeight = self.refreshControl?.frame.height ?? 0
+                    let statusBarHeight = UIApplication.shared.statusBarFrame.height
+                    let yOffset = -(navBarHeight + refreshControlHeight + statusBarHeight)
+                    self.tableView.contentOffset = CGPoint(x: 0, y: yOffset)
+                }
             }
             
             switch content {
