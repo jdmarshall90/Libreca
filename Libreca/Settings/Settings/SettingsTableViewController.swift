@@ -33,7 +33,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         case contentServerSegue
         case creditsSegue
         case licensesSegue
-        case privacyPolicySegue
     }
     
     private struct Constants {
@@ -47,6 +46,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             
             // swiftlint:disable force_unwrapping
             static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/libreca/")!
+            static let privacyPolicySite = URL(string: "https://marshallsoftware.wordpress.com/libreca-privacy-policy/")!
             // swiftlint:enable force_unwrapping
         }
         
@@ -130,7 +130,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     self?.didTapDeleteData()
                 },
                 DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.performSegue(withIdentifier: Segue.privacyPolicySegue.rawValue, sender: nil)
+                    Analytics.logEvent("privacy_policy_tapped", parameters: nil)
+                    let safariVC = SFSafariViewController(url: Constants.Connect.privacyPolicySite)
+                    self?.present(safariVC, animated: true)
                 }
             ],
             [
