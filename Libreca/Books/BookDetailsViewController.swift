@@ -85,7 +85,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     private func showBookCover() {
         // if bookModel is nil here, then we are likely on app launch running on a pad
-        guard let bookModel = bookModel else { return }
+        guard let bookModel = bookModel else { return title = nil }
         activityIndicator.startAnimating()
         bookModel.cover { [weak self] cover in
             self?.activityIndicator.stopAnimating()
