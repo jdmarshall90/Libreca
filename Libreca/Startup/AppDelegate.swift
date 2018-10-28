@@ -32,15 +32,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        CalibreKitConfiguration.baseURL = Settings.ContentServer.current.url
+        AppAnalytics.shared.enable()
+        AppAnalytics.shared.appStarted()
+        
         if let splitViewController = window?.rootViewController as? UISplitViewController,
             let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count - 1] as? UINavigationController {
             navigationController.topViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
             splitViewController.delegate = self
+            splitViewController.preferredDisplayMode = .allVisible
         }
-        
-        CalibreKitConfiguration.baseURL = Settings.ContentServer.current.url
-        AppAnalytics.shared.enable()
-        AppAnalytics.shared.appStarted()
         
         return true
     }
