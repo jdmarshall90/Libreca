@@ -25,27 +25,29 @@ import CalibreKit
 import FirebaseAnalytics
 import UIKit
 
-class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView {
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var coverImageView: UIImageView!
     
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    private var bookModel: BookDetailsViewModel.BookModel! {
+    private lazy var viewModel = BookDetailsViewModel(view: self)
+    
+    private var bookModel: BookDetailsViewModel.BookModel? {
         didSet {
-            title = bookModel.title
+            title = bookModel?.title
         }
     }
     
     func prepare(for book: Book) {
-        bookModel = BookDetailsViewModel().createBookModel(for: book)
+        bookModel = viewModel.createBookModel(for: book)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         activityIndicator.startAnimating()
-        bookModel.cover { [weak self] cover in
+        bookModel?.cover { [weak self] cover in
             self?.activityIndicator.stopAnimating()
             self?.coverImageView.image = cover
         }
@@ -56,28 +58,34 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         Analytics.setScreenName("book_details", screenClass: nil)
     }
     
+    func removeBookDetails() {
+        bookModel = nil
+        tableView.reloadData()
+        coverImageView.image = nil
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return bookModel.sections.count
+        return bookModel?.sections.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookModel.sections[section].cells.count
+        return bookModel?.sections[section].cells.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
         
-        let cellModel = bookModel.sections[indexPath.section].cells[indexPath.row]
-        cell.textLabel?.text = cellModel.text
+        let cellModel = bookModel?.sections[indexPath.section].cells[indexPath.row]
+        cell.textLabel?.text = cellModel?.text
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return bookModel.sections[section].header
+        return bookModel?.sections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return bookModel.sections[section].footer
+        return bookModel?.sections[section].footer
     }
     
 }

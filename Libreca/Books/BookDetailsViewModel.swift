@@ -24,7 +24,11 @@
 import CalibreKit
 import Foundation
 
-struct BookDetailsViewModel {
+protocol BookDetailsView: class {
+    func removeBookDetails()
+}
+
+final class BookDetailsViewModel {
     
     struct BookModel {
         struct Section {
@@ -93,8 +97,20 @@ struct BookDetailsViewModel {
         }
     }
     
+    private weak var view: BookDetailsView?
+    
+    init(view: BookDetailsView) {
+        self.view = view
+        NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
+    }
+    
     func createBookModel(for book: Book) -> BookModel {
         return BookModel(book: book)
+    }
+    
+    @objc
+    private func urlDidChange(_ notification: Notification) {
+        view?.removeBookDetails()
     }
     
 }

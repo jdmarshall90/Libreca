@@ -93,6 +93,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="q8t-3n-116" id="skr-ed-IAh"/>
                         <outlet property="coverImageView" destination="cu7-fi-U6M" id="zbt-6h-tPl"/>
+                        <outlet property="tableView" destination="kFn-Mr-COp" id="L0d-8L-bMY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
