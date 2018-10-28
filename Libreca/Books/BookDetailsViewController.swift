@@ -45,12 +45,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        activityIndicator.startAnimating()
-        bookModel?.cover { [weak self] cover in
-            self?.activityIndicator.stopAnimating()
-            self?.coverImageView.image = cover
-        }
+        showBookCover()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -86,6 +81,16 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return bookModel?.sections[section].footer
+    }
+    
+    private func showBookCover() {
+        // if bookModel is nil here, then we are likely on app launch running on a pad
+        guard let bookModel = bookModel else { return }
+        activityIndicator.startAnimating()
+        bookModel.cover { [weak self] cover in
+            self?.activityIndicator.stopAnimating()
+            self?.coverImageView.image = cover
+        }
     }
     
 }
