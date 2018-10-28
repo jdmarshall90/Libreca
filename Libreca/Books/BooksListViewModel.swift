@@ -24,7 +24,7 @@
 import CalibreKit
 import Foundation
 
-protocol BooksListView {
+protocol BooksListView: class {
     func show(message: String)
     func didFetch(books: [Book])
     func willRefreshBooks()
@@ -33,7 +33,7 @@ protocol BooksListView {
 final class BooksListViewModel {
     
     private let booksEndpoint = BooksEndpoint()
-    private let view: BooksListView
+    private weak var view: BooksListView?
     
     private var books: [Book] = [] {
         didSet {
@@ -68,19 +68,19 @@ final class BooksListViewModel {
             switch response.result {
             case .success(let books) where books.isEmpty:
                 strongSelf.books = books
-                strongSelf.view.didFetch(books: strongSelf.books)
-                strongSelf.view.show(message: "No books in library")
+                strongSelf.view?.didFetch(books: strongSelf.books)
+                strongSelf.view?.show(message: "No books in library")
             case .success(let books):
                 strongSelf.books = books
-                strongSelf.view.didFetch(books: strongSelf.books)
+                strongSelf.view?.didFetch(books: strongSelf.books)
             case .failure(let error as CalibreError):
                 strongSelf.books = []
-                strongSelf.view.didFetch(books: strongSelf.books)
-                strongSelf.view.show(message: "Error: \(error.localizedDescription)")
+                strongSelf.view?.didFetch(books: strongSelf.books)
+                strongSelf.view?.show(message: "Error: \(error.localizedDescription)")
             case .failure(let error):
                 strongSelf.books = []
-                strongSelf.view.didFetch(books: strongSelf.books)
-                strongSelf.view.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
+                strongSelf.view?.didFetch(books: strongSelf.books)
+                strongSelf.view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
             }
         }
     }
@@ -93,7 +93,7 @@ final class BooksListViewModel {
     
     @objc
     private func urlDidChange(_ notification: Notification) {
-        view.willRefreshBooks()
+        view?.willRefreshBooks()
         fetchBooks()
     }
     
@@ -109,7 +109,7 @@ final class BooksListViewModel {
         guard !books.isEmpty else { return }
         
         books = books.sorted(by: Settings.Sort.current.sortAction)
-        view.didFetch(books: books)
+        view?.didFetch(books: books)
     }
     
 }
