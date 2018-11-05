@@ -38,7 +38,7 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         return Array(duplicateFreeSectionTitles).sorted(by: <)
     }
     
-    var sections: [Section] = []
+    private(set) var sections: [Section] = []
     
     init(sectionIndexDisplayables: [T], tableViewController: UITableViewController) {
         self.sectionIndexDisplayables = sectionIndexDisplayables
