@@ -64,20 +64,60 @@ final class BooksListViewModel {
     func fetchBooks() {
         Cache.clear()
         
-        var search: DataResponse<Search>?
-        var books: [DataResponse<Book>] = []
+        // this is a very rough hack just to get it working, and is far from done, clean it up ...
         
-        BooksPagination().begin(search: { searchResponse in
-            search = searchResponse
-        },
-                                book: { bookResponse in
-                                    books.append(bookResponse)
-        },
-                                completion: {
-                                    _ = search
-                                    _ = books
-                                    print()
-        })
+        SearchEndpoint(count: 50).hitService { searchResponse in
+            switch searchResponse.result {
+            case .success(let value):
+                // tell UI to show X empty cells with spinners
+                
+                var allBookIDs: [BookEndpoint] = []
+                allBookIDs.append(contentsOf: value.bookIDs)
+                
+                func next(at offset: Int, completion: @escaping () -> Void) {
+                    SearchEndpoint(count: 50, offset: offset).hitService { nextSearchResponse in
+                        switch nextSearchResponse.result {
+                        case .success(let nextValue):
+                            allBookIDs.append(contentsOf: nextValue.bookIDs)
+                            if value.totalBookCount != nextValue.offset {
+                                next(at: allBookIDs.count, completion: completion)
+                            } else {
+                                completion()
+                            }
+                        case .failure(let error):
+                            break
+                        }
+                    }
+                }
+                
+                next(at: allBookIDs.count) {
+                    var allBookDetails: [Book?] = []
+                    if allBookIDs.count == value.totalBookCount {
+                        let dispatchGroup = DispatchGroup()
+                        allBookIDs.forEach { bookID in
+                            dispatchGroup.enter()
+                            bookID.hitService { bookIDResponse in
+                                // for each book ID response, tell UI about the book and its index, or the error and its index
+                                allBookDetails.append(bookIDResponse.result.value)
+                                dispatchGroup.leave()
+                            }
+                        }
+                        dispatchGroup.notify(queue: .main, execute: {
+                            _ = allBookDetails
+                            self.books = allBookDetails.compactMap { $0 }
+                            self.view?.didFetch(books: self.books)
+                            print()
+                        })
+                    } else {
+                        // an error happened, handle it
+                    }
+                }
+                
+            case .failure:
+                // show error message
+                break
+            }
+        }
         
 //        booksEndpoint.hitService { [weak self] response in
 //            guard let strongSelf = self else { return }

@@ -47,7 +47,6 @@
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
 		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
-		D0E09B05218FDE6E0042C12D /* BooksPagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E09B04218FDE6E0042C12D /* BooksPagination.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8EC217C0C8300622080 /* GDPR.swift */; };
 /* End PBXBuildFile section */
@@ -122,7 +121,6 @@
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
-		D0E09B04218FDE6E0042C12D /* BooksPagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksPagination.swift; sourceTree = "<group>"; };
 		D0EFA8EC217C0C8300622080 /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,7 +173,6 @@
 				D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */,
 				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
 				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
-				D0E09B04218FDE6E0042C12D /* BooksPagination.swift */,
 				D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */,
 				D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */,
 				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
@@ -511,7 +508,6 @@
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */,
-				D0E09B05218FDE6E0042C12D /* BooksPagination.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,
 				D0195B8B21730DA2006EA713 /* Framework.swift in Sources */,
