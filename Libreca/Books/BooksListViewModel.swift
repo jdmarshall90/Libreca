@@ -27,7 +27,8 @@ import Foundation
 
 protocol BooksListView: class {
     func show(message: String)
-    func didFetch(books: [Book])
+    func didFetch(bookCount: Int)
+    func didFetch(book: Book?, at index: Int)
     func willRefreshBooks()
 }
 
@@ -66,10 +67,12 @@ final class BooksListViewModel {
         
         // this is a very rough hack just to get it working, and is far from done, clean it up ...
         
-        SearchEndpoint(count: 50).hitService { searchResponse in
+        SearchEndpoint(count: 50).hitService { [weak self] searchResponse in
+            guard let strongSelf = self else { return }
+            
             switch searchResponse.result {
             case .success(let value):
-                // tell UI to show X empty cells with spinners
+                strongSelf.view?.didFetch(bookCount: value.totalBookCount)
                 
                 var allBookIDs: [BookEndpoint] = []
                 allBookIDs.append(contentsOf: value.bookIDs)
@@ -84,7 +87,8 @@ final class BooksListViewModel {
                             } else {
                                 completion()
                             }
-                        case .failure(let error):
+                        case .failure:
+                            // handle error
                             break
                         }
                     }
@@ -94,27 +98,24 @@ final class BooksListViewModel {
                     var allBookDetails: [Book?] = []
                     if allBookIDs.count == value.totalBookCount {
                         let dispatchGroup = DispatchGroup()
-                        allBookIDs.forEach { bookID in
+                        allBookIDs.enumerated().forEach { index, bookID in
                             dispatchGroup.enter()
                             bookID.hitService { bookIDResponse in
-                                // for each book ID response, tell UI about the book and its index, or the error and its index
+                                strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
                                 allBookDetails.append(bookIDResponse.result.value)
                                 dispatchGroup.leave()
                             }
                         }
                         dispatchGroup.notify(queue: .main, execute: {
-                            _ = allBookDetails
-                            self.books = allBookDetails.compactMap { $0 }
-                            self.view?.didFetch(books: self.books)
-                            print()
+                            strongSelf.books = allBookDetails.compactMap { $0 }
                         })
                     } else {
-                        // an error happened, handle it
+                        // handle error
                     }
                 }
                 
             case .failure:
-                // show error message
+                // handle error
                 break
             }
         }
@@ -166,7 +167,7 @@ final class BooksListViewModel {
         guard !books.isEmpty else { return }
         
         books = books.sorted(by: Settings.Sort.current.sortAction)
-        view?.didFetch(books: books)
+//        view?.didFetch(books: books)
     }
     
 }

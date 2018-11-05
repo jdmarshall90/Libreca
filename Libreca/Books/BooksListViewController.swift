@@ -31,11 +31,17 @@ extension Book: SectionIndexDisplayable {
     }
 }
 
+extension Optional: SectionIndexDisplayable where Wrapped == Book {
+    var stringValue: String {
+        return "change me"
+    }
+}
+
 class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
-    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book>(sectionIndexDisplayables: [], tableViewController: self)
+    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book?>(sectionIndexDisplayables: [], tableViewController: self)
     
     private var isFetchingBooks = true
     
@@ -56,7 +62,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private enum Content {
         // swiftlint:disable identifier_name
-        case books([Book])
+        case books([Book?])
         case message(String)
         // swiftlint:enable identifier_name
     }
@@ -65,12 +71,16 @@ class BooksListViewController: UITableViewController, BooksListView {
         return .message("Loading...")
     }
     
+    private var shouldReloadTable = true
     private var content: Content = BooksListViewController.loadingContent {
         didSet {
-            func handleContentChange(with books: [Book]) {
+            func handleContentChange(with books: [Book?]) {
                 sectionIndexGenerator.reset(with: books)
-                title = "Books (\(books.count))"
-                tableView.reloadData()
+                
+                if shouldReloadTable {
+                    title = "Books (\(books.count))"
+                    tableView.reloadData()
+                }
                 tableView.reloadSectionIndexTitles()
             }
             
@@ -158,12 +168,21 @@ class BooksListViewController: UITableViewController, BooksListView {
         Analytics.logEvent("books_fetched", parameters: ["status": "error"])
     }
     
-    func didFetch(books: [Book]) {
+    func didFetch(bookCount: Int) {
         isFetchingBooks = false
         refreshControl?.endRefreshing()
         sortButton.isEnabled = true
+        content = .books(Array(repeating: nil, count: bookCount))
+//        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
+    }
+    
+    func didFetch(book: Book?, at index: Int) {
+        guard case .books(var books) = content else { return }
+        books[index] = book
+        shouldReloadTable = false
         content = .books(books)
-        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
+        // TODO: Reload index path for this new book
+        shouldReloadTable = true
     }
     
     func willRefreshBooks() {
@@ -191,17 +210,22 @@ class BooksListViewController: UITableViewController, BooksListView {
             cell.tag = indexPath.row
             
             let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
-            cell.titleLabel.text = book.title.name
-            cell.authorsLabel.text = viewModel.authors(for: book)
+            cell.titleLabel.text = book?.title.name
             
             cell.activityIndicator.startAnimating()
             cell.thumbnailImageView.image = nil
-            viewModel.fetchThumbnail(for: book) {
-                if cell.tag == indexPath.row {
-                    cell.activityIndicator.stopAnimating()
-                    cell.thumbnailImageView.image = $0
+            if let book = book {
+                cell.authorsLabel.text = viewModel.authors(for: book)
+                viewModel.fetchThumbnail(for: book) {
+                    if cell.tag == indexPath.row {
+                        cell.activityIndicator.stopAnimating()
+                        cell.thumbnailImageView.image = $0
+                    }
                 }
+            } else {
+                cell.authorsLabel.text = nil
             }
+            
             return cell
         case .books:
             return UITableViewCell()
