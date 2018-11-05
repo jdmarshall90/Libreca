@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import Alamofire
 import CalibreKit
 import Foundation
 
@@ -62,27 +63,43 @@ final class BooksListViewModel {
     
     func fetchBooks() {
         Cache.clear()
-        booksEndpoint.hitService { [weak self] response in
-            guard let strongSelf = self else { return }
-            
-            switch response.result {
-            case .success(let books) where books.isEmpty:
-                strongSelf.books = books
-                strongSelf.view?.didFetch(books: strongSelf.books)
-                strongSelf.view?.show(message: "No books in library")
-            case .success(let books):
-                strongSelf.books = books
-                strongSelf.view?.didFetch(books: strongSelf.books)
-            case .failure(let error as CalibreError):
-                strongSelf.books = []
-                strongSelf.view?.didFetch(books: strongSelf.books)
-                strongSelf.view?.show(message: "Error: \(error.localizedDescription)")
-            case .failure(let error):
-                strongSelf.books = []
-                strongSelf.view?.didFetch(books: strongSelf.books)
-                strongSelf.view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
-            }
-        }
+        
+        var search: DataResponse<Search>?
+        var books: [DataResponse<Book>] = []
+        
+        BooksPagination().begin(search: { searchResponse in
+            search = searchResponse
+        },
+                                book: { bookResponse in
+                                    books.append(bookResponse)
+        },
+                                completion: {
+                                    _ = search
+                                    _ = books
+                                    print()
+        })
+        
+//        booksEndpoint.hitService { [weak self] response in
+//            guard let strongSelf = self else { return }
+//
+//            switch response.result {
+//            case .success(let books) where books.isEmpty:
+//                strongSelf.books = books
+//                strongSelf.view?.didFetch(books: strongSelf.books)
+//                strongSelf.view?.show(message: "No books in library")
+//            case .success(let books):
+//                strongSelf.books = books
+//                strongSelf.view?.didFetch(books: strongSelf.books)
+//            case .failure(let error as CalibreError):
+//                strongSelf.books = []
+//                strongSelf.view?.didFetch(books: strongSelf.books)
+//                strongSelf.view?.show(message: "Error: \(error.localizedDescription)")
+//            case .failure(let error):
+//                strongSelf.books = []
+//                strongSelf.view?.didFetch(books: strongSelf.books)
+//                strongSelf.view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
+//            }
+//        }
     }
     
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
