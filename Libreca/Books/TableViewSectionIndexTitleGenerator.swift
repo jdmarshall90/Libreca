@@ -49,6 +49,11 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         self.sectionIndexDisplayables = sectionIndexDisplayables
     }
     
+    func indexPath(for displayable: T) -> IndexPath {
+        // TODO: implement me
+        return IndexPath(item: 0, section: 0)
+    }
+    
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         let screenHeight = tableView.frame.height
         let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
@@ -64,6 +69,6 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
 
 private extension String {
     func firstLetter() -> String {
-        return (self as NSString).substring(to: 1)
+        return isEmpty ? self : (self as NSString).substring(to: 1)
     }
 }

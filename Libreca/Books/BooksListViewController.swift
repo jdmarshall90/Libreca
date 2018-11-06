@@ -33,7 +33,7 @@ extension Book: SectionIndexDisplayable {
 
 extension Optional: SectionIndexDisplayable where Wrapped == Book {
     var stringValue: String {
-        return "change me"
+        return self?.stringValue ?? ""
     }
 }
 
@@ -181,8 +181,15 @@ class BooksListViewController: UITableViewController, BooksListView {
         books[index] = book
         shouldReloadTable = false
         content = .books(books)
-        // TODO: Reload index path for this new book
-        shouldReloadTable = true
+        
+        tableView.performBatchUpdates({ [weak self] in
+            self?.tableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .automatic)
+            
+            let indexPath = sectionIndexGenerator.indexPath(for: book)
+            self?.tableView.insertRows(at: [indexPath], with: .automatic)
+        }, completion: { [weak self] _ in
+            self?.shouldReloadTable = true
+        })
     }
     
     func willRefreshBooks() {
