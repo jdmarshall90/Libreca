@@ -29,6 +29,7 @@ protocol BooksListView: class {
     func show(message: String)
     func didFetch(bookCount: Int)
     func didFetch(book: Book?, at index: Int)
+    func didFinishFetchingBooks()
     func willRefreshBooks()
 }
 
@@ -108,6 +109,7 @@ final class BooksListViewModel {
                         }
                         dispatchGroup.notify(queue: .main, execute: {
                             strongSelf.books = allBookDetails.compactMap { $0 }
+                            strongSelf.view?.didFinishFetchingBooks()
                         })
                     } else {
                         // handle error

@@ -80,8 +80,8 @@ class BooksListViewController: UITableViewController, BooksListView {
                 if shouldReloadTable {
                     title = "Books (\(books.count))"
                     tableView.reloadData()
+                    tableView.reloadSectionIndexTitles()
                 }
-                tableView.reloadSectionIndexTitles()
             }
             
             switch content {
@@ -182,14 +182,20 @@ class BooksListViewController: UITableViewController, BooksListView {
         shouldReloadTable = false
         content = .books(books)
         
-        tableView.performBatchUpdates({ [weak self] in
-            self?.tableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .automatic)
-            
-            let indexPath = sectionIndexGenerator.indexPath(for: book)
-            self?.tableView.insertRows(at: [indexPath], with: .automatic)
-        }, completion: { [weak self] _ in
-            self?.shouldReloadTable = true
-        })
+        let indexPath = IndexPath(row: index, section: 0)
+        
+        if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
+            // TODO: If you change the content server, it crashes at this point
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        shouldReloadTable = true
+    }
+    
+    func didFinishFetchingBooks() {
+        sectionIndexGenerator.isSectioningEnabled = true
+        
+        let content = self.content
+        self.content = content
     }
     
     func willRefreshBooks() {
