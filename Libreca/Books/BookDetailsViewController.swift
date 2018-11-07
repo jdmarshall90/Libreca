@@ -39,8 +39,8 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func prepare(for book: Book?) {
-//        bookModel = viewModel.createBookModel(for: book)
+    func prepare(for book: Book) {
+        bookModel = viewModel.createBookModel(for: book)
     }
     
     override func viewDidLoad() {

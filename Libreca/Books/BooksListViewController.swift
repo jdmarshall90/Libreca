@@ -156,8 +156,9 @@ class BooksListViewController: UITableViewController, BooksListView {
         
         switch segue {
         case .showDetail:
-            let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
-            detailsVC.prepare(for: book)
+            if let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
+                detailsVC.prepare(for: book)
+            }
         }
     }
     
@@ -228,6 +229,7 @@ class BooksListViewController: UITableViewController, BooksListView {
             cell.activityIndicator.startAnimating()
             cell.thumbnailImageView.image = nil
             if let book = book {
+                cell.accessoryType = .disclosureIndicator
                 cell.authorsLabel.text = viewModel.authors(for: book)
                 viewModel.fetchThumbnail(for: book) {
                     if cell.tag == indexPath.row {
@@ -236,6 +238,7 @@ class BooksListViewController: UITableViewController, BooksListView {
                     }
                 }
             } else {
+                cell.accessoryType = .none
                 cell.authorsLabel.text = nil
             }
             
@@ -248,6 +251,10 @@ class BooksListViewController: UITableViewController, BooksListView {
             cell.textLabel?.numberOfLines = 0
             return cell
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] != nil
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
