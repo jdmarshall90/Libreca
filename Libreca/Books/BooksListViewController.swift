@@ -174,6 +174,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         refreshControl?.endRefreshing()
         sortButton.isEnabled = true
         content = .books(Array(repeating: nil, count: bookCount))
+        // TODO: Update this
 //        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
     }
     
