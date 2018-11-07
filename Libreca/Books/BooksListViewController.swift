@@ -186,7 +186,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         let indexPath = IndexPath(row: index, section: 0)
         
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
-            // TODO: If you change the content server, it crashes at this point
+            // TODO: If you change the content server (or pull to refresh), it crashes at this point
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         shouldReloadTable = true
