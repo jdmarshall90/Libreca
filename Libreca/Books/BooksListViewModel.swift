@@ -72,6 +72,11 @@ final class BooksListViewModel {
             guard let strongSelf = self else { return }
             
             switch searchResponse.result {
+            case .success(let value) where value.totalBookCount == 0:
+                strongSelf.books = []
+                strongSelf.view?.didFetch(bookCount: 0)
+                strongSelf.view?.didFinishFetchingBooks()
+                strongSelf.view?.show(message: "No books in library")
             case .success(let value):
                 strongSelf.view?.didFetch(bookCount: value.totalBookCount)
                 
@@ -88,61 +93,41 @@ final class BooksListViewModel {
                             } else {
                                 completion()
                             }
-                        case .failure:
-                            // handle error
-                            break
+                        case .failure(let error as CalibreError):
+                            strongSelf.handle(calibreError: error)
+                        case .failure(let error):
+                            strongSelf.handle(error: error)
                         }
                     }
                 }
                 
                 next(at: allBookIDs.count) {
                     var allBookDetails: [Book?] = []
-                    if allBookIDs.count == value.totalBookCount {
-                        let dispatchGroup = DispatchGroup()
-                        allBookIDs.enumerated().forEach { index, bookID in
-                            dispatchGroup.enter()
-                            bookID.hitService { bookIDResponse in
-                                strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
-                                allBookDetails.append(bookIDResponse.result.value)
-                                dispatchGroup.leave()
-                            }
+                    let dispatchGroup = DispatchGroup()
+                    
+                    allBookIDs.enumerated().forEach { index, bookID in
+                        dispatchGroup.enter()
+                        bookID.hitService { bookIDResponse in
+                            let isSuccess = index % 125 != 0
+                            let book = isSuccess ? bookIDResponse.result.value : nil
+                            
+                            strongSelf.view?.didFetch(book: book, at: index)
+                            allBookDetails.append(bookIDResponse.result.value)
+                            dispatchGroup.leave()
                         }
-                        dispatchGroup.notify(queue: .main, execute: {
-                            strongSelf.books = allBookDetails.compactMap { $0 }
-                            strongSelf.view?.didFinishFetchingBooks()
-                        })
-                    } else {
-                        // handle error
                     }
+                    dispatchGroup.notify(queue: .main, execute: {
+                        strongSelf.books = allBookDetails.compactMap { $0 }
+                        strongSelf.view?.didFinishFetchingBooks()
+                    })
                 }
                 
-            case .failure:
-                // handle error
-                break
+            case .failure(let error as CalibreError):
+                strongSelf.handle(calibreError: error)
+            case .failure(let error):
+                strongSelf.handle(error: error)
             }
         }
-        
-//        booksEndpoint.hitService { [weak self] response in
-//            guard let strongSelf = self else { return }
-//
-//            switch response.result {
-//            case .success(let books) where books.isEmpty:
-//                strongSelf.books = books
-//                strongSelf.view?.didFetch(books: strongSelf.books)
-//                strongSelf.view?.show(message: "No books in library")
-//            case .success(let books):
-//                strongSelf.books = books
-//                strongSelf.view?.didFetch(books: strongSelf.books)
-//            case .failure(let error as CalibreError):
-//                strongSelf.books = []
-//                strongSelf.view?.didFetch(books: strongSelf.books)
-//                strongSelf.view?.show(message: "Error: \(error.localizedDescription)")
-//            case .failure(let error):
-//                strongSelf.books = []
-//                strongSelf.view?.didFetch(books: strongSelf.books)
-//                strongSelf.view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
-//            }
-//        }
     }
     
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
@@ -169,7 +154,22 @@ final class BooksListViewModel {
         guard !books.isEmpty else { return }
         
         books = books.sorted(by: Settings.Sort.current.sortAction)
+        // TODO: handle this
 //        view?.didFetch(books: books)
+    }
+    
+    private func handle(calibreError error: CalibreError) {
+        books = []
+        view?.didFetch(bookCount: 0)
+        view?.didFinishFetchingBooks()
+        view?.show(message: "Error: \(error.localizedDescription)")
+    }
+    
+    private func handle(error: Error) {
+        books = []
+        view?.didFetch(bookCount: 0)
+        view?.didFinishFetchingBooks()
+        view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
     }
     
 }

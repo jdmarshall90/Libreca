@@ -238,8 +238,16 @@ class BooksListViewController: UITableViewController, BooksListView {
                     }
                 }
             } else {
-                cell.accessoryType = .none
-                cell.authorsLabel.text = nil
+                if sectionIndexGenerator.isSectioningEnabled {
+                    cell.activityIndicator.stopAnimating()
+                    cell.thumbnailImageView.image = #imageLiteral(resourceName: "BookCoverPlaceholder")
+                    cell.accessoryType = .none
+                    cell.authorsLabel.text = "Error loading information for this book. Successful books are below, or refresh to try again."
+                    cell.authorsLabel.sizeToFit()
+                } else {
+                    cell.accessoryType = .none
+                    cell.authorsLabel.text = nil
+                }
             }
             
             return cell
