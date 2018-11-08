@@ -29,7 +29,7 @@ protocol BooksListView: class {
     func show(message: String)
     func didFetch(bookCount: Int)
     func didFetch(book: Book?, at index: Int)
-    func didFinishFetchingBooks()
+    func reload(all: [Book])
     func willRefreshBooks()
 }
 
@@ -75,7 +75,7 @@ final class BooksListViewModel {
             case .success(let value) where value.totalBookCount == 0:
                 strongSelf.books = []
                 strongSelf.view?.didFetch(bookCount: 0)
-                strongSelf.view?.didFinishFetchingBooks()
+                strongSelf.view?.reload(all: strongSelf.books)
                 strongSelf.view?.show(message: "No books in library")
             case .success(let value):
                 strongSelf.view?.didFetch(bookCount: value.totalBookCount)
@@ -118,7 +118,7 @@ final class BooksListViewModel {
                     }
                     dispatchGroup.notify(queue: .main, execute: {
                         strongSelf.books = allBookDetails.compactMap { $0 }
-                        strongSelf.view?.didFinishFetchingBooks()
+                        strongSelf.view?.reload(all: strongSelf.books)
                     })
                 }
                 
@@ -154,21 +154,20 @@ final class BooksListViewModel {
         guard !books.isEmpty else { return }
         
         books = books.sorted(by: Settings.Sort.current.sortAction)
-        // TODO: handle this
-//        view?.didFetch(books: books)
+        view?.reload(all: books)
     }
     
     private func handle(calibreError error: CalibreError) {
         books = []
         view?.didFetch(bookCount: 0)
-        view?.didFinishFetchingBooks()
+        view?.reload(all: books)
         view?.show(message: "Error: \(error.localizedDescription)")
     }
     
     private func handle(error: Error) {
         books = []
         view?.didFetch(bookCount: 0)
-        view?.didFinishFetchingBooks()
+        view?.reload(all: books)
         view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
     }
     

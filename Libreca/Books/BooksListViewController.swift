@@ -193,11 +193,9 @@ class BooksListViewController: UITableViewController, BooksListView {
         shouldReloadTable = true
     }
     
-    func didFinishFetchingBooks() {
+    func reload(all books: [Book]) {
         sectionIndexGenerator.isSectioningEnabled = true
-        
-        let content = self.content
-        self.content = content
+        content = .books(books)
     }
     
     func willRefreshBooks() {
