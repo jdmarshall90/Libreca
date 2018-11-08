@@ -108,10 +108,7 @@ final class BooksListViewModel {
                     allBookIDs.enumerated().forEach { index, bookID in
                         dispatchGroup.enter()
                         bookID.hitService { bookIDResponse in
-                            let isSuccess = index % 125 != 0
-                            let book = isSuccess ? bookIDResponse.result.value : nil
-                            
-                            strongSelf.view?.didFetch(book: book, at: index)
+                            strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
                             allBookDetails.append(bookIDResponse.result.value)
                             dispatchGroup.leave()
                         }
