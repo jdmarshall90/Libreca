@@ -115,6 +115,9 @@ final class BooksListViewModel {
                     }
                     dispatchGroup.notify(queue: .main, execute: {
                         strongSelf.books = allBookDetails.compactMap { $0 }
+                        // A better solution would be to fetch them already sorted from the server,
+                        // that way they populate in the UI in the right order, but this is good
+                        // enough for now.
                         strongSelf.view?.reload(all: strongSelf.books)
                     })
                 }
