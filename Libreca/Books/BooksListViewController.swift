@@ -188,6 +188,11 @@ class BooksListViewController: UITableViewController, BooksListView {
         
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
             // TODO: If you change the content server (or pull to refresh), it crashes at this point
+            to fix this, look at changes in the commit that introduced this note, that fixes it partially
+            i think the rest of the fix woud be to disable the settings and sort buttons until after loading is
+            100% complete
+            
+            the best fix would be to cancel in flight requests when refreshing or changing the content server, but that is out of scope for this release
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         shouldReloadTable = true
@@ -199,6 +204,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     func willRefreshBooks() {
+//        sectionIndexGenerator.isSectioningEnabled = false
         content = BooksListViewController.loadingContent
         isFetchingBooks = true
         sortButton.isEnabled = false
@@ -308,6 +314,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     private func refresh() {
+//        sectionIndexGenerator.isSectioningEnabled = false
         isFetchingBooks = true
         sortButton.isEnabled = false
         viewModel.fetchBooks()
