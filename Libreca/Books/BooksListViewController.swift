@@ -45,6 +45,14 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private var isFetchingBooks = true
     
+    /// Total hack to fix bug where, if you change the content server (or pull to refresh), while already
+    /// trying to fetch book metadata, the app would crash when trying to reload a single row in the
+    /// table view. A better fix would be to cancel in flight requests when refreshing the data or
+    /// changing the content server.
+    private var isRefreshing: Bool {
+        return !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView)
+    }
+    
     private var booksRefreshControl: UIRefreshControl {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
@@ -54,6 +62,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private enum Segue: String {
+        case settings
         case showDetail
     }
     
@@ -145,6 +154,22 @@ class BooksListViewController: UITableViewController, BooksListView {
         Analytics.setScreenName("books", screenClass: nil)
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        guard let segue = Segue(rawValue: identifier) else { return true }
+        switch segue {
+        case .settings:
+            let isRefreshing = self.isRefreshing
+            
+            if isRefreshing {
+                displayUninteractibleAlert()
+            }
+            
+            return !isRefreshing
+        case .showDetail:
+            return true
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navController = segue.destination as? UINavigationController,
             let detailsVC = navController.viewControllers.first as? BookDetailsViewController,
@@ -155,6 +180,8 @@ class BooksListViewController: UITableViewController, BooksListView {
         }
         
         switch segue {
+        case .settings:
+            break
         case .showDetail:
             if let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
                 detailsVC.prepare(for: book)
@@ -172,7 +199,6 @@ class BooksListViewController: UITableViewController, BooksListView {
     func didFetch(bookCount: Int) {
         isFetchingBooks = false
         refreshControl?.endRefreshing()
-        sortButton.isEnabled = true
         content = .books(Array(repeating: nil, count: bookCount))
         // TODO: Update this
 //        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
@@ -187,12 +213,6 @@ class BooksListViewController: UITableViewController, BooksListView {
         let indexPath = IndexPath(row: index, section: 0)
         
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
-            // TODO: If you change the content server (or pull to refresh), it crashes at this point
-            to fix this, look at changes in the commit that introduced this note, that fixes it partially
-            i think the rest of the fix woud be to disable the settings and sort buttons until after loading is
-            100% complete
-            
-            the best fix would be to cancel in flight requests when refreshing or changing the content server, but that is out of scope for this release
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         shouldReloadTable = true
@@ -204,10 +224,9 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     func willRefreshBooks() {
-//        sectionIndexGenerator.isSectioningEnabled = false
+        sectionIndexGenerator.isSectioningEnabled = false
         content = BooksListViewController.loadingContent
         isFetchingBooks = true
-        sortButton.isEnabled = false
         refreshControl?.beginRefreshing()
     }
     
@@ -288,6 +307,9 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
+        guard !isRefreshing else {
+            return displayUninteractibleAlert()
+        }
         let alertController = UIAlertController(title: "Sort", message: "Select sort option", preferredStyle: .actionSheet)
         
         Settings.Sort.allCases.forEach { sortOption in
@@ -309,15 +331,29 @@ class BooksListViewController: UITableViewController, BooksListView {
     @objc
     private func refreshControlPulled(_ sender: UIRefreshControl) {
         Analytics.logEvent("pull_to_refresh_books", parameters: nil)
-        content = BooksListViewController.loadingContent
+        
+        if !isRefreshing {
+            content = BooksListViewController.loadingContent
+        }
         refresh()
     }
     
     private func refresh() {
-//        sectionIndexGenerator.isSectioningEnabled = false
-        isFetchingBooks = true
-        sortButton.isEnabled = false
-        viewModel.fetchBooks()
+        if isRefreshing {
+            refreshControl?.endRefreshing()
+            displayUninteractibleAlert()
+        } else {
+            sectionIndexGenerator.isSectioningEnabled = false
+            isFetchingBooks = true
+            viewModel.fetchBooks()
+        }
+    }
+    
+    private func displayUninteractibleAlert() {
+        let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        present(alertController, animated: true)
     }
     
 }

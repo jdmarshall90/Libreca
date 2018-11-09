@@ -191,14 +191,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Books" id="Zdf-7t-Un8">
-                        <barButtonItem key="leftBarButtonItem" enabled="NO" image="Sort" id="rFL-NB-48e">
+                        <barButtonItem key="leftBarButtonItem" image="Sort" id="rFL-NB-48e">
                             <connections>
                                 <action selector="sortButtonTapped:" destination="7bK-jq-Zjz" id="7ki-EC-ruA"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="Settings" id="aQZ-fF-gjY">
                             <connections>
-                                <segue destination="9dI-Th-nO8" kind="popoverPresentation" popoverAnchorBarButtonItem="aQZ-fF-gjY" id="K3i-Sb-VXV">
+                                <segue destination="9dI-Th-nO8" kind="popoverPresentation" identifier="settings" popoverAnchorBarButtonItem="aQZ-fF-gjY" id="K3i-Sb-VXV">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
