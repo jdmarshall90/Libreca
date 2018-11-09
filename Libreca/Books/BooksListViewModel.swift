@@ -23,6 +23,7 @@
 
 import Alamofire
 import CalibreKit
+import FirebaseAnalytics
 import Foundation
 
 protocol BooksListView: class {
@@ -44,6 +45,15 @@ final class BooksListViewModel {
         }
     }
     
+    private let logTimeNumberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 3
+        formatter.roundingMode = .halfUp
+        return formatter
+    }()
+    
     init(view: BooksListView) {
         self.view = view
         // VC doesn't need to know about these, so abstract it into the view model
@@ -64,6 +74,8 @@ final class BooksListViewModel {
     }
     
     func fetchBooks() {
+        let startTime = Date()
+        
         Cache.clear()
         
         // this is a very rough hack just to get it working, and is far from done, clean it up ...
@@ -73,6 +85,7 @@ final class BooksListViewModel {
             
             switch searchResponse.result {
             case .success(let value) where value.totalBookCount == 0:
+                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.books = []
                 strongSelf.view?.didFetch(bookCount: 0)
                 strongSelf.view?.reload(all: strongSelf.books)
@@ -94,9 +107,13 @@ final class BooksListViewModel {
                                 completion()
                             }
                         case .failure(let error as CalibreError):
+                            strongSelf.logTimeInterval(since: startTime)
                             strongSelf.handle(calibreError: error)
+                            strongSelf.logError()
                         case .failure(let error):
+                            strongSelf.logTimeInterval(since: startTime)
                             strongSelf.handle(error: error)
+                            strongSelf.logError()
                         }
                     }
                 }
@@ -114,7 +131,9 @@ final class BooksListViewModel {
                         }
                     }
                     dispatchGroup.notify(queue: .main, execute: {
+                        strongSelf.logTimeInterval(since: startTime)
                         strongSelf.books = allBookDetails.compactMap { $0 }
+                        
                         // A better solution would be to fetch them already sorted from the server,
                         // that way they populate in the UI in the right order, but this is good
                         // enough for now.
@@ -123,9 +142,13 @@ final class BooksListViewModel {
                 }
                 
             case .failure(let error as CalibreError):
+                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(calibreError: error)
+                strongSelf.logError()
             case .failure(let error):
+                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(error: error)
+                strongSelf.logError()
             }
         }
     }
@@ -169,6 +192,17 @@ final class BooksListViewModel {
         view?.didFetch(bookCount: 0)
         view?.reload(all: books)
         view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
+    }
+    
+    private func logTimeInterval(since startTime: Date) {
+        let elapsed = -startTime.timeIntervalSinceNow
+        let toNearest = 0.01
+        let roundedElapsed = round(elapsed / toNearest) * toNearest
+        Analytics.logEvent("books_fetched", parameters: ["time_interval": roundedElapsed])
+    }
+    
+    private func logError() {
+        Analytics.logEvent("book_count_error", parameters: nil)
     }
     
 }

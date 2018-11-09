@@ -193,15 +193,13 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     func show(message: String) {
         content = .message(message)
-        Analytics.logEvent("books_fetched", parameters: ["status": "error"])
     }
     
     func didFetch(bookCount: Int) {
         isFetchingBooks = false
         refreshControl?.endRefreshing()
         content = .books(Array(repeating: nil, count: bookCount))
-        // TODO: Update this
-//        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
+        Analytics.logEvent("book_count", parameters: ["count": bookCount])
     }
     
     func didFetch(book: Book?, at index: Int) {
