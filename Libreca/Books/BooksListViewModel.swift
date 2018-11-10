@@ -37,6 +37,7 @@ protocol BooksListView: class {
 final class BooksListViewModel {
     
     private let booksEndpoint = BooksEndpoint()
+    private let batchSize = 300
     private weak var view: BooksListView?
     
     private var books: [Book] = [] {
@@ -78,9 +79,7 @@ final class BooksListViewModel {
         
         Cache.clear()
         
-        // this is a very rough hack just to get it working, and is far from done, clean it up ...
-        
-        SearchEndpoint(count: 50).hitService { [weak self] searchResponse in
+        SearchEndpoint(count: batchSize).hitService { [weak self] searchResponse in
             guard let strongSelf = self else { return }
             
             switch searchResponse.result {
@@ -91,56 +90,7 @@ final class BooksListViewModel {
                 strongSelf.view?.reload(all: strongSelf.books)
                 strongSelf.view?.show(message: "No books in library")
             case .success(let value):
-                strongSelf.view?.didFetch(bookCount: value.totalBookCount)
-                
-                var allBookIDs: [BookEndpoint] = []
-                allBookIDs.append(contentsOf: value.bookIDs)
-                
-                func next(at offset: Int, completion: @escaping () -> Void) {
-                    SearchEndpoint(count: 50, offset: offset).hitService { nextSearchResponse in
-                        switch nextSearchResponse.result {
-                        case .success(let nextValue):
-                            allBookIDs.append(contentsOf: nextValue.bookIDs)
-                            if value.totalBookCount != nextValue.offset {
-                                next(at: allBookIDs.count, completion: completion)
-                            } else {
-                                completion()
-                            }
-                        case .failure(let error as CalibreError):
-                            strongSelf.logTimeInterval(since: startTime)
-                            strongSelf.handle(calibreError: error)
-                            strongSelf.logError()
-                        case .failure(let error):
-                            strongSelf.logTimeInterval(since: startTime)
-                            strongSelf.handle(error: error)
-                            strongSelf.logError()
-                        }
-                    }
-                }
-                
-                next(at: allBookIDs.count) {
-                    var allBookDetails: [Book?] = []
-                    let dispatchGroup = DispatchGroup()
-                    
-                    allBookIDs.enumerated().forEach { index, bookID in
-                        dispatchGroup.enter()
-                        bookID.hitService { bookIDResponse in
-                            strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
-                            allBookDetails.append(bookIDResponse.result.value)
-                            dispatchGroup.leave()
-                        }
-                    }
-                    dispatchGroup.notify(queue: .main, execute: {
-                        strongSelf.logTimeInterval(since: startTime)
-                        strongSelf.books = allBookDetails.compactMap { $0 }
-                        
-                        // A better solution would be to fetch them already sorted from the server,
-                        // that way they populate in the UI in the right order, but this is good
-                        // enough for now.
-                        strongSelf.view?.reload(all: strongSelf.books)
-                    })
-                }
-                
+                strongSelf.paginate(from: value, startedAt: startTime)
             case .failure(let error as CalibreError):
                 strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(calibreError: error)
@@ -156,6 +106,59 @@ final class BooksListViewModel {
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
         book.cover.hitService { response in
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+        }
+    }
+    
+    private func paginate(from search: Search, startedAt startTime: Date) {
+        view?.didFetch(bookCount: search.totalBookCount)
+        
+        nextPage(startingAt: search.bookIDs.count, totalBookCount: search.totalBookCount, bookIDs: search.bookIDs, startedAt: startTime) { [weak self] bookIDs in
+            guard let strongSelf = self else { return }
+            var allBookDetails: [Book?] = []
+            let dispatchGroup = DispatchGroup()
+            
+            bookIDs.enumerated().forEach { index, bookID in
+                dispatchGroup.enter()
+                bookID.hitService { bookIDResponse in
+                    strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
+                    allBookDetails.append(bookIDResponse.result.value)
+                    dispatchGroup.leave()
+                }
+            }
+            dispatchGroup.notify(queue: .main) {
+                strongSelf.logTimeInterval(since: startTime)
+                strongSelf.books = allBookDetails.compactMap { $0 }
+                
+                // A better solution would be to fetch them already sorted from the server,
+                // that way they populate in the UI in the right order, but this is good
+                // enough for now.
+                strongSelf.view?.reload(all: strongSelf.books)
+            }
+        }
+    }
+    
+    private func nextPage(startingAt offset: Int, totalBookCount: Int, bookIDs: [BookEndpoint], startedAt startTime: Date, completion: @escaping ([BookEndpoint]) -> Void) {
+        var bookIDs = bookIDs
+        SearchEndpoint(count: batchSize, offset: offset).hitService { [weak self] nextSearchResponse in
+            guard let strongSelf = self else { return }
+            
+            switch nextSearchResponse.result {
+            case .success(let nextValue):
+                bookIDs.append(contentsOf: nextValue.bookIDs)
+                if totalBookCount != nextValue.offset {
+                    strongSelf.nextPage(startingAt: bookIDs.count, totalBookCount: totalBookCount, bookIDs: bookIDs, startedAt: startTime, completion: completion)
+                } else {
+                    completion(bookIDs)
+                }
+            case .failure(let error as CalibreError):
+                strongSelf.logTimeInterval(since: startTime)
+                strongSelf.handle(calibreError: error)
+                strongSelf.logError()
+            case .failure(let error):
+                strongSelf.logTimeInterval(since: startTime)
+                strongSelf.handle(error: error)
+                strongSelf.logError()
+            }
         }
     }
     
