@@ -77,5 +77,4 @@ extension Settings.Image: GDPRItem {
     }
 }
 
-// TODO: Change version number of CalibreKit, redo the tag
 // TODO: Test new analytics within Firebase console
