@@ -91,7 +91,7 @@ struct Settings {
                     return .default
                 }
                 // swiftlint:disable:next force_unwrapping
-                return Settings.Sort(rawValue: savedCurrentSort)!
+                return Sort(rawValue: savedCurrentSort)!
             }
             set(newValue) {
                 UserDefaults.standard.set(newValue.rawValue, forKey: key)
