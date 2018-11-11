@@ -316,7 +316,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
                     Settings.Image.current = .thumbnail
                 } else {
-                    // TODO: test this on iPad
                     let alertController = UIAlertController(title: "Are you sure?", message: "Downloading full size images will increase data usage, and could cause performance issues for large libraries.", preferredStyle: .actionSheet)
                     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
                         Settings.Image.current = .thumbnail
