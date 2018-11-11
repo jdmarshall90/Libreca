@@ -85,6 +85,7 @@ final class AppAnalytics {
     private func setUserProperties() {
         setUserPropertyURL()
         setUserPropertySort()
+        setUserPropertyImage()
     }
     
     private func setUserPropertyURL() {
