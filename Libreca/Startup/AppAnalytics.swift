@@ -28,6 +28,7 @@ final class AppAnalytics {
     private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
     static let shared = AppAnalytics()
@@ -111,6 +112,15 @@ final class AppAnalytics {
     @objc
     private func sortSettingDidChange(_ notification: Notification) {
         setUserPropertySort()
+    }
+    
+    private func setUserPropertyImage() {
+        Analytics.setUserProperty(Settings.Image.current.rawValue, forName: "image_size")
+    }
+    
+    @objc
+    private func imageSettingDidChange(_ notification: Notification) {
+        setUserPropertyImage()
     }
     
     deinit {

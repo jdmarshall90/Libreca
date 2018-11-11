@@ -107,7 +107,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.current.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
                     self?.didTapContentServer()
                 },
-                DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none)
+                DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none),
+                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none)
             ],
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -295,6 +296,40 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     Settings.Sort.current = .authorLastName
                 }
                 Analytics.logEvent("sort_via_settings", parameters: ["type": Settings.Sort.current.rawValue])
+            }
+            
+            return cell
+        } else if indexPath.section == 0 && indexPath.row == 2 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCellID") as? ImageSettingTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.descriptionLabel.text = thisDisplayModel.mainText
+            switch Settings.Image.current {
+            case .thumbnail:
+                cell.selectionSegmentedControl.selectedSegmentIndex = 0
+            case .fullSize:
+                cell.selectionSegmentedControl.selectedSegmentIndex = 1
+            }
+            
+            cell.selectionHandler = { [weak self] in
+                if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
+                    Settings.Image.current = .thumbnail
+                } else {
+                    // TODO: test this on iPad
+                    let alertController = UIAlertController(title: "Are you sure?", message: "Downloading full size images will increase data usage, and could cause performance issues for large libraries.", preferredStyle: .actionSheet)
+                    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                        Settings.Image.current = .thumbnail
+                        cell.selectionSegmentedControl.selectedSegmentIndex = 0
+                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
+                    })
+                    
+                    alertController.addAction(UIAlertAction(title: "Yes, download full size images", style: .default) { _ in
+                        Settings.Image.current = .fullSize
+                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
+                    })
+                    self?.present(alertController, animated: true)
+                }
             }
             
             return cell

@@ -34,7 +34,7 @@ struct GDPR {
     private init() {}
     
     private static var allItems: [GDPRItem] {
-        return [Settings.Sort.current, Settings.ContentServer.current]
+        return [Settings.Sort.current, Settings.ContentServer.current, Settings.Image.current]
     }
     
     static func export() -> [GDPRItem] {
@@ -66,3 +66,16 @@ extension Settings.ContentServer: GDPRItem {
         Settings.ContentServer.current = .default
     }
 }
+
+extension Settings.Image: GDPRItem {
+    var information: String {
+        return "Image size download setting is: \(rawValue)"
+    }
+    
+    func delete() {
+        Settings.Image.current = .default
+    }
+}
+
+// TODO: Change version number of CalibreKit, redo the tag
+// TODO: Test new analytics within Firebase console

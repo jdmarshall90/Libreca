@@ -81,6 +81,45 @@
                                     <outlet property="selectionSegmentedControl" destination="7xc-zn-JWC" id="miQ-Iv-VrB"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCellID" id="itw-1I-v4J" customClass="ImageSettingTableViewCell" customModule="Libreca" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="itw-1I-v4J" id="3ZF-7f-tGg">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Images" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ro8-ao-v1N">
+                                            <rect key="frame" x="16" y="8" width="100.5" height="27.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="X9w-zQ-Pbc">
+                                            <rect key="frame" x="124.5" y="8" width="234.5" height="28.5"/>
+                                            <segments>
+                                                <segment title="Thumbnail"/>
+                                                <segment title="Full size"/>
+                                            </segments>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="X9w-zQ-Pbc" secondAttribute="bottom" constant="8" id="1kU-Fi-WPb"/>
+                                        <constraint firstItem="X9w-zQ-Pbc" firstAttribute="leading" secondItem="ro8-ao-v1N" secondAttribute="trailing" constant="8" id="6fk-ym-51N"/>
+                                        <constraint firstItem="ro8-ao-v1N" firstAttribute="centerY" secondItem="3ZF-7f-tGg" secondAttribute="centerY" id="ARN-5O-BLf"/>
+                                        <constraint firstItem="X9w-zQ-Pbc" firstAttribute="centerY" secondItem="3ZF-7f-tGg" secondAttribute="centerY" id="Ee1-zP-w1K"/>
+                                        <constraint firstItem="ro8-ao-v1N" firstAttribute="top" secondItem="3ZF-7f-tGg" secondAttribute="top" constant="8" id="HOR-ou-0oe"/>
+                                        <constraint firstAttribute="trailing" secondItem="X9w-zQ-Pbc" secondAttribute="trailing" constant="16" id="Vmt-yu-WPt"/>
+                                        <constraint firstItem="X9w-zQ-Pbc" firstAttribute="width" secondItem="3ZF-7f-tGg" secondAttribute="width" multiplier="1:1.6" id="eBQ-bu-MfP"/>
+                                        <constraint firstItem="X9w-zQ-Pbc" firstAttribute="top" secondItem="3ZF-7f-tGg" secondAttribute="top" constant="8" id="mzd-Jk-PxE"/>
+                                        <constraint firstItem="ro8-ao-v1N" firstAttribute="leading" secondItem="3ZF-7f-tGg" secondAttribute="leading" constant="16" id="swy-cf-MD1"/>
+                                        <constraint firstAttribute="bottom" secondItem="ro8-ao-v1N" secondAttribute="bottom" constant="8" id="uze-Dm-tua"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="ro8-ao-v1N" id="Lt8-zi-74b"/>
+                                    <outlet property="selectionSegmentedControl" destination="X9w-zQ-Pbc" id="r8D-ht-r6Y"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="pga-vG-gsS" id="bzZ-h7-eUQ"/>
