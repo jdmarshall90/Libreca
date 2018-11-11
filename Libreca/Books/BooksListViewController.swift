@@ -31,13 +31,27 @@ extension Book: SectionIndexDisplayable {
     }
 }
 
+extension Optional: SectionIndexDisplayable where Wrapped == Book {
+    var stringValue: String {
+        return self?.stringValue ?? ""
+    }
+}
+
 class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
-    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book>(sectionIndexDisplayables: [], tableViewController: self)
+    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book?>(sectionIndexDisplayables: [], tableViewController: self)
     
     private var isFetchingBooks = true
+    
+    /// Total hack to fix bug where, if you change the content server (or pull to refresh), while already
+    /// trying to fetch book metadata, the app would crash when trying to reload a single row in the
+    /// table view. A better fix would be to cancel in flight requests when refreshing the data or
+    /// changing the content server.
+    private var isRefreshing: Bool {
+        return !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView)
+    }
     
     private var booksRefreshControl: UIRefreshControl {
         let refreshControl = UIRefreshControl()
@@ -48,6 +62,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private enum Segue: String {
+        case settings
         case showDetail
     }
     
@@ -56,7 +71,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private enum Content {
         // swiftlint:disable identifier_name
-        case books([Book])
+        case books([Book?])
         case message(String)
         // swiftlint:enable identifier_name
     }
@@ -65,13 +80,17 @@ class BooksListViewController: UITableViewController, BooksListView {
         return .message("Loading...")
     }
     
+    private var shouldReloadTable = true
     private var content: Content = BooksListViewController.loadingContent {
         didSet {
-            func handleContentChange(with books: [Book]) {
+            func handleContentChange(with books: [Book?]) {
                 sectionIndexGenerator.reset(with: books)
-                title = "Books (\(books.count))"
-                tableView.reloadData()
-                tableView.reloadSectionIndexTitles()
+                
+                if shouldReloadTable {
+                    title = "Books (\(books.count))"
+                    tableView.reloadData()
+                    tableView.reloadSectionIndexTitles()
+                }
             }
             
             switch content {
@@ -135,6 +154,22 @@ class BooksListViewController: UITableViewController, BooksListView {
         Analytics.setScreenName("books", screenClass: nil)
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        guard let segue = Segue(rawValue: identifier) else { return true }
+        switch segue {
+        case .settings:
+            let isRefreshing = self.isRefreshing
+            
+            if isRefreshing {
+                displayUninteractibleAlert()
+            }
+            
+            return !isRefreshing
+        case .showDetail:
+            return true
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navController = segue.destination as? UINavigationController,
             let detailsVC = navController.viewControllers.first as? BookDetailsViewController,
@@ -145,9 +180,12 @@ class BooksListViewController: UITableViewController, BooksListView {
         }
         
         switch segue {
+        case .settings:
+            break
         case .showDetail:
-            let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
-            detailsVC.prepare(for: book)
+            if let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
+                detailsVC.prepare(for: book)
+            }
         }
     }
     
@@ -155,21 +193,38 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     func show(message: String) {
         content = .message(message)
-        Analytics.logEvent("books_fetched", parameters: ["status": "error"])
     }
     
-    func didFetch(books: [Book]) {
+    func didFetch(bookCount: Int) {
         isFetchingBooks = false
         refreshControl?.endRefreshing()
-        sortButton.isEnabled = true
+        content = .books(Array(repeating: nil, count: bookCount))
+        Analytics.logEvent("book_count", parameters: ["count": bookCount])
+    }
+    
+    func didFetch(book: Book?, at index: Int) {
+        guard case .books(var books) = content else { return }
+        books[index] = book
+        shouldReloadTable = false
         content = .books(books)
-        Analytics.logEvent("books_fetched", parameters: ["status": "\(books.count)"])
+        
+        let indexPath = IndexPath(row: index, section: 0)
+        
+        if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        shouldReloadTable = true
+    }
+    
+    func reload(all books: [Book]) {
+        sectionIndexGenerator.isSectioningEnabled = true
+        content = .books(books)
     }
     
     func willRefreshBooks() {
+        sectionIndexGenerator.isSectioningEnabled = false
         content = BooksListViewController.loadingContent
         isFetchingBooks = true
-        sortButton.isEnabled = false
         refreshControl?.beginRefreshing()
     }
     
@@ -191,17 +246,32 @@ class BooksListViewController: UITableViewController, BooksListView {
             cell.tag = indexPath.row
             
             let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
-            cell.titleLabel.text = book.title.name
-            cell.authorsLabel.text = viewModel.authors(for: book)
+            cell.titleLabel.text = book?.title.name
             
             cell.activityIndicator.startAnimating()
             cell.thumbnailImageView.image = nil
-            viewModel.fetchThumbnail(for: book) {
-                if cell.tag == indexPath.row {
+            if let book = book {
+                cell.accessoryType = .disclosureIndicator
+                cell.authorsLabel.text = viewModel.authors(for: book)
+                viewModel.fetchThumbnail(for: book) {
+                    if cell.tag == indexPath.row {
+                        cell.activityIndicator.stopAnimating()
+                        cell.thumbnailImageView.image = $0
+                    }
+                }
+            } else {
+                if sectionIndexGenerator.isSectioningEnabled {
                     cell.activityIndicator.stopAnimating()
-                    cell.thumbnailImageView.image = $0
+                    cell.thumbnailImageView.image = #imageLiteral(resourceName: "BookCoverPlaceholder")
+                    cell.accessoryType = .none
+                    cell.authorsLabel.text = "Error loading information for this book. Successful books are below, or refresh to try again."
+                    cell.authorsLabel.sizeToFit()
+                } else {
+                    cell.accessoryType = .none
+                    cell.authorsLabel.text = nil
                 }
             }
+            
             return cell
         case .books:
             return UITableViewCell()
@@ -211,6 +281,10 @@ class BooksListViewController: UITableViewController, BooksListView {
             cell.textLabel?.numberOfLines = 0
             return cell
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] != nil
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -231,6 +305,9 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
+        guard !isRefreshing else {
+            return displayUninteractibleAlert()
+        }
         let alertController = UIAlertController(title: "Sort", message: "Select sort option", preferredStyle: .actionSheet)
         
         Settings.Sort.allCases.forEach { sortOption in
@@ -252,14 +329,29 @@ class BooksListViewController: UITableViewController, BooksListView {
     @objc
     private func refreshControlPulled(_ sender: UIRefreshControl) {
         Analytics.logEvent("pull_to_refresh_books", parameters: nil)
-        content = BooksListViewController.loadingContent
+        
+        if !isRefreshing {
+            content = BooksListViewController.loadingContent
+        }
         refresh()
     }
     
     private func refresh() {
-        isFetchingBooks = true
-        sortButton.isEnabled = false
-        viewModel.fetchBooks()
+        if isRefreshing {
+            refreshControl?.endRefreshing()
+            displayUninteractibleAlert()
+        } else {
+            sectionIndexGenerator.isSectioningEnabled = false
+            isFetchingBooks = true
+            viewModel.fetchBooks()
+        }
+    }
+    
+    private func displayUninteractibleAlert() {
+        let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        present(alertController, animated: true)
     }
     
 }
