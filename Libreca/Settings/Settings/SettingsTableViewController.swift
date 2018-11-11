@@ -27,6 +27,7 @@ import MessageUI
 import SafariServices
 import UIKit
 
+// swiftlint:disable:next type_body_length - refactor this later
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
     
     private enum Segue: String {
@@ -277,61 +278,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         
         // this is not scalable, but it doesn't need to be (at least not right now)
         if indexPath.section == 0 && indexPath.row == 1 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SortCellID") as? SortSettingTableViewCell else {
-                return UITableViewCell()
-            }
-            
-            cell.descriptionLabel.text = thisDisplayModel.mainText
-            switch Settings.Sort.current {
-            case .title:
-                cell.selectionSegmentedControl.selectedSegmentIndex = 0
-            case .authorLastName:
-                cell.selectionSegmentedControl.selectedSegmentIndex = 1
-            }
-            
-            cell.selectionHandler = {
-                if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
-                    Settings.Sort.current = .title
-                } else {
-                    Settings.Sort.current = .authorLastName
-                }
-                Analytics.logEvent("sort_via_settings", parameters: ["type": Settings.Sort.current.rawValue])
-            }
-            
-            return cell
+            return createSortCell(for: thisDisplayModel)
         } else if indexPath.section == 0 && indexPath.row == 2 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCellID") as? ImageSettingTableViewCell else {
-                return UITableViewCell()
-            }
-            
-            cell.descriptionLabel.text = thisDisplayModel.mainText
-            switch Settings.Image.current {
-            case .thumbnail:
-                cell.selectionSegmentedControl.selectedSegmentIndex = 0
-            case .fullSize:
-                cell.selectionSegmentedControl.selectedSegmentIndex = 1
-            }
-            
-            cell.selectionHandler = { [weak self] in
-                if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
-                    Settings.Image.current = .thumbnail
-                } else {
-                    let alertController = UIAlertController(title: "Are you sure?", message: "Downloading full size images will increase data usage, and could cause performance issues for large libraries.", preferredStyle: .actionSheet)
-                    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                        Settings.Image.current = .thumbnail
-                        cell.selectionSegmentedControl.selectedSegmentIndex = 0
-                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
-                    })
-                    
-                    alertController.addAction(UIAlertAction(title: "Yes, download full size images", style: .default) { _ in
-                        Settings.Image.current = .fullSize
-                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
-                    })
-                    self?.present(alertController, animated: true)
-                }
-            }
-            
-            return cell
+           return createImageCell(for: thisDisplayModel)
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoreCellID") else {
                 return UITableViewCell()
@@ -357,6 +306,66 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         
         \(Constants.Bundles.app.name) connects with Calibre© content server via HTTP. It is neither affiliated with nor endorsed by Calibre©.
         """
+    }
+    
+    private func createSortCell(for displayModel: DisplayModel) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SortCellID") as? SortSettingTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        cell.descriptionLabel.text = displayModel.mainText
+        switch Settings.Sort.current {
+        case .title:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 0
+        case .authorLastName:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 1
+        }
+        
+        cell.selectionHandler = {
+            if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
+                Settings.Sort.current = .title
+            } else {
+                Settings.Sort.current = .authorLastName
+            }
+            Analytics.logEvent("sort_via_settings", parameters: ["type": Settings.Sort.current.rawValue])
+        }
+        
+        return cell
+    }
+    
+    private func createImageCell(for displayModel: DisplayModel) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCellID") as? ImageSettingTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        cell.descriptionLabel.text = displayModel.mainText
+        switch Settings.Image.current {
+        case .thumbnail:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 0
+        case .fullSize:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 1
+        }
+        
+        cell.selectionHandler = { [weak self] in
+            if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
+                Settings.Image.current = .thumbnail
+            } else {
+                let alertController = UIAlertController(title: "Are you sure?", message: "Downloading full size images will increase data usage, and could cause performance issues for large libraries.", preferredStyle: .actionSheet)
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                    Settings.Image.current = .thumbnail
+                    cell.selectionSegmentedControl.selectedSegmentIndex = 0
+                    Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
+                })
+                
+                alertController.addAction(UIAlertAction(title: "Yes, download full size images", style: .default) { _ in
+                    Settings.Image.current = .fullSize
+                    Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
+                })
+                self?.present(alertController, animated: true)
+            }
+        }
+        
+        return cell
     }
     
 }
