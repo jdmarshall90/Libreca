@@ -32,6 +32,35 @@ struct Settings {
         return Bundle.main.infoDictionary?["CFBundleIdentifier"] as! String + ".settings."
     }
     
+    enum Image: String {
+        case thumbnail
+        case fullSize = "full size"
+        
+        private static var key: String {
+            return Settings.baseSettingsKey + "image"
+        }
+        
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.imageDidChange"))
+        
+        static var `default`: Image {
+            return .thumbnail
+        }
+        
+        static var current: Image {
+            get {
+                guard let savedImageSetting = UserDefaults.standard.string(forKey: key) else {
+                    return .default
+                }
+                // swiftlint:disable:next force_unwrapping
+                return Image(rawValue: savedImageSetting)!
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue.rawValue, forKey: key)
+                NotificationCenter.default.post(didChangeNotification)
+            }
+        }
+    }
+    
     enum Sort: String, CaseIterable {
         case title = "Title"
         case authorLastName = "Author Last Name"

@@ -104,7 +104,15 @@ final class BooksListViewModel {
     }
     
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
-        book.cover.hitService { response in
+        let imageEndpoint: ImageEndpoint
+        
+        switch Settings.Image.current {
+        case .thumbnail:
+            imageEndpoint = book.thumbnail
+        case .fullSize:
+            imageEndpoint = book.cover
+        }
+        imageEndpoint.hitService { response in
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
         }
     }
