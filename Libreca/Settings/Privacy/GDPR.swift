@@ -76,5 +76,3 @@ extension Settings.Image: GDPRItem {
         Settings.Image.current = .default
     }
 }
-
-// TODO: Test new analytics within Firebase console
