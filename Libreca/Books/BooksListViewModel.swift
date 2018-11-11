@@ -60,6 +60,8 @@ final class BooksListViewModel {
         // VC doesn't need to know about these, so abstract it into the view model
         NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMemoryWarning), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
     func sort(by newSortOption: Settings.Sort) {
@@ -189,6 +191,16 @@ final class BooksListViewModel {
         
         books = books.sorted(by: Settings.Sort.current.sortAction)
         view?.reload(all: books)
+    }
+    
+    @objc
+    private func didReceiveMemoryWarning(_ notification: Notification) {
+        Cache.clear()
+    }
+    
+    @objc
+    private func imageSettingDidChange(_ notification: Notification) {
+        Cache.clear()
     }
     
     private func handle(calibreError error: CalibreError) {
