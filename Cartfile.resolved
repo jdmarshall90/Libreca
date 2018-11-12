@@ -1,7 +1,7 @@
 binary "https://building42.github.io/Specs/Carthage/iOS/Crashlytics.json" "3.10.9"
 binary "https://building42.github.io/Specs/Carthage/iOS/Fabric.json" "1.7.13"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json" "5.10.0"
-git "git@gitlab.com:calibre-utils/CalibreKit.git" "v1.1.0-beta.2"
+git "git@gitlab.com:calibre-utils/CalibreKit.git" "v1.1.0-rc.1"
 git "git@gitlab.com:iOS_Open_Source_Forks/LicenseGenerator-iOS.git" "0.6.5"
 git "git@gitlab.com:jdmarshall90libs/SwiftLintConfig.git" "v3.1.1"
 github "Alamofire/Alamofire" "4.7.3"
