@@ -284,6 +284,11 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        guard sectionIndexGenerator.sections.count > indexPath.section,
+            sectionIndexGenerator.sections[indexPath.section].values.count > indexPath.row else {
+                return false
+        }
+        
         return sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] != nil
     }
     
