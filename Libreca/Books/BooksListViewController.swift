@@ -247,6 +247,8 @@ class BooksListViewController: UITableViewController, BooksListView {
             
             let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
             cell.titleLabel.text = book?.title.name
+            cell.ratingLabel.text = book?.rating.displayValue
+            cell.serieslabel.text = book?.series?.displayValue
             
             cell.activityIndicator.startAnimating()
             cell.thumbnailImageView.image = nil
