@@ -44,8 +44,8 @@ final class BookDetailsViewModel {
             let cells: [Cell]
             let footer: String?
             
-            fileprivate init(header: String?, cellRepresentations: [CellRepresentable], footer: String?) {
-                self.header = cellRepresentations.count == 1 ? String(header?.dropLast() ?? "") : header
+            fileprivate init(header: String?, shouldSingularize: Bool = true, cellRepresentations: [CellRepresentable], footer: String?) {
+                self.header = shouldSingularize && cellRepresentations.count == 1 ? String(header?.dropLast() ?? "") : header
                 self.cells = cellRepresentations.map { $0.cellRepresentation }
                 self.footer = footer
             }
@@ -55,31 +55,48 @@ final class BookDetailsViewModel {
         let title: String
         let sections: [Section]
         
-        private static let dateFormatter: DateFormatter = {
+        private static let dateTimeFormatter: DateFormatter = {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .long
             dateFormatter.timeStyle = .long
             return dateFormatter
         }()
         
+        private static let dateFormatter: DateFormatter = {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .long
+            return dateFormatter
+        }()
+        
         fileprivate init(book: Book) {
             self.title = book.title.name
             
+            let ratingSection = Section(header: "Rating", shouldSingularize: false, cellRepresentations: [book.rating], footer: nil)
             let authorsSection = Section(header: "Authors", cellRepresentations: book.authors, footer: nil)
+            let seriesSection = Section(header: "Series", shouldSingularize: false, cellRepresentations: [book.series].compactMap { $0 }, footer: nil)
             let commentsSection = Section(header: "Comments", cellRepresentations: [book.comments].compactMap { $0 }, footer: nil)
+            
+            let formattedPublishedDate: String?
+            if let publishedDate = book.publishedDate {
+                formattedPublishedDate = BookModel.dateFormatter.string(from: publishedDate)
+            } else {
+                formattedPublishedDate = nil
+            }
+            let publishedSection = Section(header: "Published On", shouldSingularize: false, cellRepresentations: [formattedPublishedDate].compactMap { $0 }, footer: nil)
+            
             let languagesSection = Section(header: "Languages", cellRepresentations: book.languages, footer: nil)
             let identifiersSection = Section(header: "Identifiers", cellRepresentations: book.identifiers, footer: nil)
             
             let addedToCaliberFooter: String
             if let addedOn = book.addedOn {
-                addedToCaliberFooter = "Added to Calibre on \(BookModel.dateFormatter.string(from: addedOn))"
+                addedToCaliberFooter = "Added to Calibre on \(BookModel.dateTimeFormatter.string(from: addedOn))"
             } else {
                 addedToCaliberFooter = "Added to Calibre on an unknown date"
             }
             
             let lastUpdatedFooter: String
             if let lastModified = book.lastModified {
-                lastUpdatedFooter = "Last updated on \(BookModel.dateFormatter.string(from: lastModified))"
+                lastUpdatedFooter = "Last updated on \(BookModel.dateTimeFormatter.string(from: lastModified))"
             } else {
                 lastUpdatedFooter = "Last updated on an unknown date"
             }
@@ -87,7 +104,7 @@ final class BookDetailsViewModel {
             let tagsFooter = "\n\(addedToCaliberFooter)\n\n\(lastUpdatedFooter)"
             let tagsSection = Section(header: "Tags", cellRepresentations: book.tags, footer: tagsFooter)
             
-            self.sections = [authorsSection, commentsSection, languagesSection, identifiersSection, tagsSection]
+            self.sections = [ratingSection, authorsSection, seriesSection, commentsSection, publishedSection, languagesSection, identifiersSection, tagsSection]
             
             self.cover = { completion in
                 book.cover.hitService { response in
@@ -142,5 +159,17 @@ extension Book.Language: CellRepresentable {
 extension Book.Identifier: CellRepresentable {
     fileprivate var cellRepresentation: Cell {
         return Cell(text: "\(displayValue): \(uniqueID)")
+    }
+}
+
+extension Book.Rating: CellRepresentable {
+    fileprivate var cellRepresentation: Cell {
+        return Cell(text: displayValue)
+    }
+}
+
+extension Book.Series: CellRepresentable {
+    fileprivate var cellRepresentation: Cell {
+        return Cell(text: displayValue)
     }
 }
