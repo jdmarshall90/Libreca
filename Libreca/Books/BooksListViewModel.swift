@@ -42,7 +42,7 @@ final class BooksListViewModel {
     
     private var books: [Book] = [] {
         didSet {
-            books = books.sorted(by: Settings.Sort.current.sortAction)
+            books = sortBooks(by: Settings.Sort.current)
         }
     }
     
@@ -68,7 +68,7 @@ final class BooksListViewModel {
         let oldSort = Settings.Sort.current
         Settings.Sort.current = newSortOption
         if oldSort != newSortOption {
-            books = books.sorted(by: newSortOption.sortAction)
+            books = sortBooks(by: newSortOption)
         }
     }
     
@@ -189,7 +189,7 @@ final class BooksListViewModel {
         // do. So just ignore the notification.
         guard !books.isEmpty else { return }
         
-        books = books.sorted(by: Settings.Sort.current.sortAction)
+        books = sortBooks(by: Settings.Sort.current)
         view?.reload(all: books)
     }
     
@@ -201,6 +201,23 @@ final class BooksListViewModel {
     @objc
     private func imageSettingDidChange(_ notification: Notification) {
         Cache.clear()
+    }
+    
+    private func sortBooks(by sort: Settings.Sort) -> [Book] {
+        switch sort {
+        case .authorLastName:
+            return books.sorted { book1, book2 in
+                if book1[keyPath: sort.sortingKeyPath] != book2[keyPath: sort.sortingKeyPath] {
+                    return sort.sortAction(book1, book2)
+                } else if book1.series?.name != book2.series?.name {
+                    return (book1.series?.name ?? "") < (book2.series?.name ?? "")
+                } else {
+                    return (book1.series?.index ?? -Double(Int.min)) < (book2.series?.index ?? -Double(Int.min))
+                }
+            }
+        case .title:
+            return books.sorted(by: sort.sortAction)
+        }
     }
     
     private func handle(calibreError error: CalibreError) {
