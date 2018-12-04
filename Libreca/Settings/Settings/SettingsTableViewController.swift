@@ -59,7 +59,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             static let viewSource = "View Source Code"
             
             // swiftlint:disable force_unwrapping
-            // TODO: Change this to GitHub
             static let sourceCodeSite = URL(string: "https://gitlab.com/calibre-utils/Libreca")!
             // swiftlint:enable force_unwrapping
         }
@@ -148,8 +147,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     self?.performSegue(withIdentifier: Segue.licensesSegue.rawValue, sender: nil)
                 },
                 DisplayModel(mainText: Constants.About.viewSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    // TODO: Test analytics
-                    
                     Analytics.logEvent("view_source_tapped", parameters: nil)
                     let safariVC = SFSafariViewController(url: Constants.About.sourceCodeSite)
                     self?.present(safariVC, animated: true)
