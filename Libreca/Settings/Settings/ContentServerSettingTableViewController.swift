@@ -59,7 +59,7 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     @objc
     private func saveTheURL() {
         Settings.ContentServer.current = Settings.ContentServer(url: url)
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
     
 }
