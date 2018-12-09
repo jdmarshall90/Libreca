@@ -243,7 +243,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         case .books where !sectionIndexGenerator.sections.isEmpty:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
             
-            cell.tag = indexPath.row
+            cell.tag = indexPath.section * indexPath.row
             
             let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
             cell.titleLabel.text = book?.title.name
@@ -256,7 +256,7 @@ class BooksListViewController: UITableViewController, BooksListView {
                 cell.accessoryType = .disclosureIndicator
                 cell.authorsLabel.text = viewModel.authors(for: book)
                 viewModel.fetchThumbnail(for: book) {
-                    if cell.tag == indexPath.row {
+                    if cell.tag == indexPath.section * indexPath.row {
                         cell.activityIndicator.stopAnimating()
                         cell.thumbnailImageView.image = $0
                     }
