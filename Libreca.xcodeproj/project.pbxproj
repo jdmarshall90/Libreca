@@ -34,6 +34,8 @@
 		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; };
 		D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0C14A9421BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */; };
+		D0C14A9521BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */; };
 		D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29321782130006F21A4 /* Fabric.framework */; };
 		D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29521782130006F21A4 /* FirebaseCore.framework */; };
@@ -72,6 +74,7 @@
 				D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */,
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
 				D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */,
+				D0C14A9521BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,6 +111,7 @@
 		D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlamofireNetworkActivityIndicator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		D0D6F29321782130006F21A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
@@ -133,6 +137,7 @@
 			files = (
 				D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */,
 				D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */,
+				D0C14A9421BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
 				D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
 				D0D6F2A321782131006F21A4 /* GoogleAppMeasurement.framework in Frameworks */,
@@ -260,6 +265,7 @@
 				D0D6F29721782130006F21A4 /* GoogleUtilities.framework */,
 				D0D6F29821782130006F21A4 /* nanopb.framework */,
 				D0B475E8216AF5F3008FDA50 /* Alamofire.framework */,
+				D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */,
 				D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */,
 			);
 			name = Frameworks;
