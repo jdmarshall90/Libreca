@@ -243,7 +243,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         case .books where !sectionIndexGenerator.sections.isEmpty:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
             
-            cell.tag = indexPath.section * indexPath.row
+            cell.tag = indexPath.hashValue
             
             let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
             cell.titleLabel.text = book?.title.name
@@ -255,10 +255,14 @@ class BooksListViewController: UITableViewController, BooksListView {
             if let book = book {
                 cell.accessoryType = .disclosureIndicator
                 cell.authorsLabel.text = viewModel.authors(for: book)
-                viewModel.fetchThumbnail(for: book) {
-                    if cell.tag == indexPath.section * indexPath.row {
-                        cell.activityIndicator.stopAnimating()
-                        cell.thumbnailImageView.image = $0
+                viewModel.fetchThumbnail(for: book) { image in
+                    // some kind of timing issue, I think fixing #124 would address this better
+                    // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
+                    DispatchQueue.main.async {
+                        if cell.tag == indexPath.hashValue {
+                            cell.activityIndicator.stopAnimating()
+                            cell.thumbnailImageView.image = image
+                        }
                     }
                 }
             } else {
