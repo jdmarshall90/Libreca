@@ -71,7 +71,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
         
         let cellModel = bookModel?.sections[indexPath.section].cells[indexPath.row]
-        cell.textLabel?.text = cellModel?.text
+        cell.textLabel?.attributedText = cellModel?.text
         return cell
     }
     
