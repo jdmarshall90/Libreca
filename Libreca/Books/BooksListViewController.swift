@@ -219,6 +219,10 @@ class BooksListViewController: UITableViewController, BooksListView {
     func reload(all books: [Book]) {
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
+        
+        // The series label frame on some cells is not initially rendering at the correct size.
+        // Reloading the cell / table seems to fix it. I don't like it, but it seems to work.
+        tableView.reloadData()
     }
     
     func willRefreshBooks() {
