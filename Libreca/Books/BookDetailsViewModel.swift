@@ -33,10 +33,10 @@ final class BookDetailsViewModel {
     struct BookModel {
         struct Section {
             struct Cell {
-                let text: String
+                let text: NSAttributedString
                 
                 fileprivate init(text: String) {
-                    self.text = text
+                    self.text = text.attributedHTML
                 }
             }
             
@@ -171,5 +171,21 @@ extension Book.Rating: CellRepresentable {
 extension Book.Series: CellRepresentable {
     fileprivate var cellRepresentation: Cell {
         return Cell(text: displayValue)
+    }
+}
+
+private extension String {
+    private var attributedSelf: NSAttributedString {
+        return NSAttributedString(string: self, attributes: [.font: UIFont.preferredFont(forTextStyle: .body)])
+    }
+    var attributedHTML: NSAttributedString {
+        // slightly modified from: https://www.hackingwithswift.com/example-code/system/how-to-convert-html-to-an-nsattributedstring
+        let isHTML = contains("<")
+        guard isHTML else {
+            return attributedSelf
+        }
+        let data = Data(utf8)
+        let attributedString = try? NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+        return attributedString ?? attributedSelf
     }
 }
