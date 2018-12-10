@@ -43,7 +43,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         struct Connect {
             private init() {}
             
-            static let emailAddress = "jmarshallsoftware@gmail.com"
+            static let emailAddress = "incoming+calibre-utils/Libreca@incoming.gitlab.com"
             
             // swiftlint:disable force_unwrapping
             static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/libreca/")!
