@@ -34,8 +34,6 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         }
     }
     
-    private weak var viewController: UITableViewController?
-    
     private var sortedTitles: [String] {
         let sectionTitles = sectionIndexDisplayables.map { $0.stringValue.firstLetter() }
         let duplicateFreeSectionTitles = Set(sectionTitles)
@@ -45,9 +43,8 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     private(set) var sections: [Section] = []
     var isSectioningEnabled = false
     
-    init(sectionIndexDisplayables: [T], tableViewController: UITableViewController) {
+    init(sectionIndexDisplayables: [T]) {
         self.sectionIndexDisplayables = sectionIndexDisplayables
-        viewController = tableViewController
     }
     
     func reset(with sectionIndexDisplayables: [T]) {
@@ -55,18 +52,7 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if isSectioningEnabled {
-            let screenHeight = tableView.frame.height
-            let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-            let navBarHeight = viewController?.navigationController?.navigationBar.frame.size.height ?? 0
-            let screenHeightBelowNavbar = screenHeight - statusBarHeight - navBarHeight
-            
-            let frameOfBottomCell = viewController?.tableView.visibleCells.last?.frame ?? .zero
-            let bottomPositionOfFinalCell = frameOfBottomCell.origin.y + frameOfBottomCell.height
-            return bottomPositionOfFinalCell > screenHeightBelowNavbar ? sortedTitles : nil
-        } else {
-            return nil
-        }
+        return isSectioningEnabled ? sortedTitles : nil
     }
     
 }
