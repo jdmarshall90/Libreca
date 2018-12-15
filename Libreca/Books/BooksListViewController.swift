@@ -41,7 +41,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
-    private lazy var sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book?>(sectionIndexDisplayables: [], tableViewController: self)
+    private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book?>(sectionIndexDisplayables: [])
     
     private var isFetchingBooks = true
     
@@ -219,12 +219,6 @@ class BooksListViewController: UITableViewController, BooksListView {
     func reload(all books: [Book]) {
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
-        
-        // The series label frame on some cells is not initially rendering at the correct size.
-        // Reloading the cell / table seems to fix it. I don't like it, but it seems to work.
-        tableView.reloadData()
-        // without this, the section index titles are never showing up
-        tableView.reloadSectionIndexTitles()
     }
     
     func willRefreshBooks() {
