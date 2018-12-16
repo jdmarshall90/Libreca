@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Override point for customization after application launch.
         CalibreKitConfiguration.baseURL = Settings.ContentServer.current.url
         
+        NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
+        
         #if !DEBUG
             AppAnalytics.shared.enable()
             AppAnalytics.shared.appStarted()
@@ -47,6 +49,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
         
         return true
+    }
+    
+    @objc
+    private func themeSettingDidChange(_ notification: Notification) {
+        UITableViewCell.appearance().backgroundColor = .black
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

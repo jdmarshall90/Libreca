@@ -114,7 +114,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     self?.didTapContentServer()
                 },
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none),
-                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none)
+                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none),
+                DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none)
             ],
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -286,11 +287,13 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let thisDisplayModel = displayModel(at: indexPath)
         
-        // this is not scalable, but it doesn't need to be (at least not right now)
+        // this is not scalable, consider refactoring
         if indexPath.section == 0 && indexPath.row == 1 {
             return createSortCell(for: thisDisplayModel)
         } else if indexPath.section == 0 && indexPath.row == 2 {
            return createImageCell(for: thisDisplayModel)
+        } else if indexPath.section == 0 && indexPath.row == 3 {
+            return createThemeCell(for: thisDisplayModel)
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoreCellID") else {
                 return UITableViewCell()
@@ -373,6 +376,31 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 })
                 self?.present(alertController, animated: true)
             }
+        }
+        
+        return cell
+    }
+    
+    private func createThemeCell(for displayModel: DisplayModel) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ThemeCellID") as? ThemeSettingTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        cell.descriptionLabel.text = displayModel.mainText
+        switch Settings.Theme.current {
+        case .light:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 0
+        case .dark:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 1
+        }
+        
+        cell.selectionHandler = {
+            if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
+                Settings.Theme.current = .light
+            } else {
+                Settings.Theme.current = .dark
+            }
+            Analytics.logEvent("set_theme", parameters: ["type": Settings.Theme.current.rawValue])
         }
         
         return cell

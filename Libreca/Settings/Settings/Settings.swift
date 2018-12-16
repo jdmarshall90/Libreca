@@ -130,4 +130,33 @@ struct Settings {
             }
         }
     }
+    
+    enum Theme: String, CaseIterable {
+        case light
+        case dark
+        
+        private static var key: String {
+            return Settings.baseSettingsKey + "theme"
+        }
+        
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.themeDidChange"))
+        
+        static var `default`: Theme {
+            return .light
+        }
+        
+        static var current: Theme {
+            get {
+                guard let savedCurrentTheme = UserDefaults.standard.string(forKey: key) else {
+                    return .default
+                }
+                // swiftlint:disable:next force_unwrapping
+                return Theme(rawValue: savedCurrentTheme)!
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue.rawValue, forKey: key)
+                NotificationCenter.default.post(didChangeNotification)
+            }
+        }
+    }
 }
