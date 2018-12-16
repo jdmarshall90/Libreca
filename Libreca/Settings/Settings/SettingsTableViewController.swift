@@ -287,7 +287,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let thisDisplayModel = displayModel(at: indexPath)
         
-        // this is not scalable, consider refactoring
+        // TODO: This is starting to get out of hand, refactor
         if indexPath.section == 0 && indexPath.row == 1 {
             return createSortCell(for: thisDisplayModel)
         } else if indexPath.section == 0 && indexPath.row == 2 {

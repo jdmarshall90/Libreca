@@ -24,6 +24,7 @@
 import CalibreKit
 import Foundation
 
+// TODO: This design is starting to get out of hand, refactor
 struct Settings {
     private init() {}
     
