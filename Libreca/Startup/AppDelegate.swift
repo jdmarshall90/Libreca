@@ -53,7 +53,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     @objc
     private func themeSettingDidChange(_ notification: Notification) {
-        UITableViewCell.appearance().backgroundColor = .black
+        // nav bar 44 45 47
+        // top of email and email cells 30 31 34
+        // accounts table view 45 45 45
+        
+        // or 50 55 67
+        
+        UIView.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+        UILabel.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+        UIImageView.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+        UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+        UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1) // TODO: It seems the UIView.appearance() is overriding this
+        UIBarButtonItem.appearance().tintColor = .white
+        UILabel.appearance().textColor = .white
+        // TODO: Set all nav bars to be non-translucent
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
