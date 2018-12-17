@@ -312,6 +312,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: Stop doing this, so that you can have it highlighted on the pad
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
