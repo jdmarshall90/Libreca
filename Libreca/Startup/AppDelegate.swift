@@ -47,26 +47,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             splitViewController.delegate = self
             splitViewController.preferredDisplayMode = .allVisible
         }
-        
+        applyTheme()
         return true
     }
     
     @objc
     private func themeSettingDidChange(_ notification: Notification) {
+        applyTheme()
+    }
+    
+    private func applyTheme() {
         // nav bar 44 45 47
         // top of email and email cells 30 31 34
         // accounts table view 45 45 45
         
         // or 50 55 67
         
-        UIView.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
-        UILabel.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
-        UIImageView.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
-        UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
-        UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1) // TODO: It seems the UIView.appearance() is overriding this
-        UIBarButtonItem.appearance().tintColor = .white
-        UILabel.appearance().textColor = .white
-        // TODO: Set all nav bars to be non-translucent
+        switch Settings.Theme.current {
+        case .dark:
+            UIView.appearance(whenContainedInInstancesOf: [UITableView.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UIView.appearance(whenContainedInInstancesOf: [UITableView.self]).tintColor = .white
+            UILabel.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UIImageView.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)
+            UIBarButtonItem.appearance().tintColor = .white
+            UITableView.appearance().backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+            UILabel.appearance().textColor = .white
+            UIActivityIndicatorView.appearance().style = .white
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white, .backgroundColor: #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)]
+            
+            // TODO: Fix this next, the content server screen's text field isn't quite right
+//            UITextField.appearance().defaultTextAttributes = [.foregroundColor: UIColor.white, .backgroundColor: UIColor.clear]
+//            UITextField.appearance().textColor = .white
+//            UITextField.appearance().tintColor = .black
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)], for: .selected)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+        case .light:
+            break
+        }
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

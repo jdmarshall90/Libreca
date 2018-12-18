@@ -301,7 +301,18 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             
             cell.textLabel?.text = thisDisplayModel.mainText
             cell.detailTextLabel?.text = thisDisplayModel.subText
-            cell.detailTextLabel?.textColor = Settings.ContentServer.current.url == nil ? .red : .black
+            
+            let textColor: UIColor
+            switch (Settings.ContentServer.current.url, Settings.Theme.current) {
+            case (.some, .dark):
+                textColor = .white
+            case (.none, .dark),
+                 (.none, .light):
+                textColor = .red
+            case (.some, .light):
+                textColor = .black
+            }
+            cell.detailTextLabel?.textColor = textColor
             cell.accessoryType = thisDisplayModel.accessoryType
             
             return cell
