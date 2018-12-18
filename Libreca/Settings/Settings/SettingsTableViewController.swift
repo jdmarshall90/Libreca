@@ -21,6 +21,8 @@
 //  This file is part of project: Libreca
 //
 
+// TODO: Remove colons from credits table section headers
+
 import FirebaseAnalytics
 import Foundation
 import MessageUI
