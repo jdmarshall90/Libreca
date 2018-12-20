@@ -70,7 +70,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         switch Settings.Theme.current {
         case .dark:
-            // TODO: Fix keyboard colors
+            // TODO: Make keyboard dark
+            // TODO: Color of URL setting screen's field's "X" button
             // TODO: test licenses screen
             // TODO: Email screen
             // TODO: Fix colors of section index titles
