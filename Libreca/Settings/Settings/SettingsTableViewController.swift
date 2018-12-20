@@ -22,6 +22,7 @@
 //
 
 // TODO: Remove colons from credits table section headers
+// TODO: Make settings cells not recognize taps
 
 import FirebaseAnalytics
 import Foundation
