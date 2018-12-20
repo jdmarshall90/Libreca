@@ -63,6 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // or 50 55 67
         
+        // TODO: Move this code into a helper struct
+        
         // TODO: Test colors for error scenarios
         // TODO: Centralize colors into static helper struct
         
