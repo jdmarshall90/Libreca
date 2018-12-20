@@ -106,7 +106,16 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if case .dark = Settings.Theme.current {
+            UIButton.appearance().tintColor = .white
+        }
         reload()
+    }
+    
+    private func presentSafariViewController(with url: URL) {
+        UIButton.appearance().tintColor = UIButton().tintColor
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
     }
     
     private func reload() {
@@ -125,8 +134,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("support_site_tapped", parameters: nil)
-                    let safariVC = SFSafariViewController(url: Constants.Connect.supportSite)
-                    self?.present(safariVC, animated: true)
+                    self?.presentSafariViewController(with: Constants.Connect.supportSite)
                 }
             ],
             [
@@ -138,8 +146,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("privacy_policy_tapped", parameters: nil)
-                    let safariVC = SFSafariViewController(url: Constants.Connect.privacyPolicySite)
-                    self?.present(safariVC, animated: true)
+                    self?.presentSafariViewController(with: Constants.Connect.privacyPolicySite)
                 }
             ],
             [
@@ -151,8 +158,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: Constants.About.viewSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("view_source_tapped", parameters: nil)
-                    let safariVC = SFSafariViewController(url: Constants.About.sourceCodeSite)
-                    self?.present(safariVC, animated: true)
+                    self?.presentSafariViewController(with: Constants.About.sourceCodeSite)
                 }
             ]
         ]
