@@ -269,6 +269,8 @@ class BooksListViewController: UITableViewController, BooksListView {
                 if sectionIndexGenerator.isSectioningEnabled {
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookErrorCellID", for: indexPath) as? BookErrorTableViewCell else { return UITableViewCell() }
                     
+                    // TODO: Test on various screen sizes
+                    
                     cell.retryAllTapped = { [weak self] in
                         // TODO: analytics event
                         self?.refresh()
