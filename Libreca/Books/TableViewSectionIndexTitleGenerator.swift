@@ -24,7 +24,7 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
             if isSectioningEnabled {
                 sections = sortedTitles.map { sortedTitle in
                     let values = sectionIndexDisplayables.filter { displayable in
-                        sortedTitle == displayable.stringValue.firstLetter()
+                        sortedTitle == displayable.stringValue.firstLetter() || (displayable.stringValue.firstLetter().isEmpty && sortedTitle == "!")
                     }
                     return Section(header: sortedTitle, values: values)
                 }
@@ -35,9 +35,13 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     }
     
     private var sortedTitles: [String] {
-        let sectionTitles = sectionIndexDisplayables.map { $0.stringValue.firstLetter() }
+        let sectionTitles = sectionIndexDisplayables.map { $0.stringValue.firstLetter().isEmpty ? "!" : $0.stringValue.firstLetter() }
         let duplicateFreeSectionTitles = Set(sectionTitles)
         return Array(duplicateFreeSectionTitles).sorted(by: <)
+    }
+    
+    var sectionIndexTitles: [String]? {
+        return isSectioningEnabled ? sortedTitles : nil
     }
     
     private(set) var sections: [Section] = []
@@ -49,10 +53,6 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     
     func reset(with sectionIndexDisplayables: [T]) {
         self.sectionIndexDisplayables = sectionIndexDisplayables
-    }
-    
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return isSectioningEnabled ? sortedTitles : nil
     }
     
 }

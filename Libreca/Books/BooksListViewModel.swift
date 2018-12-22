@@ -29,7 +29,7 @@ protocol BooksListView: class {
     func show(message: String)
     func didFetch(bookCount: Int)
     func didFetch(book: Book?, at index: Int)
-    func reload(all: [Book])
+    func reload(all: [Book?])
     func willRefreshBooks()
 }
 
@@ -39,7 +39,7 @@ final class BooksListViewModel {
     private let batchSize = 300
     private weak var view: BooksListView?
     
-    private var books: [Book] = [] {
+    private var books: [Book?] = [] {
         didSet {
             books = sortBooks(by: Settings.Sort.current)
         }
@@ -129,14 +129,26 @@ final class BooksListViewModel {
             bookIDs.enumerated().forEach { index, bookID in
                 dispatchGroup.enter()
                 bookID.hitService { bookIDResponse in
-                    strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
-                    allBookDetails.append(bookIDResponse.result.value)
-                    dispatchGroup.leave()
+                    switch bookIDResponse.result {
+                    case .success(let book):
+                        strongSelf.view?.didFetch(book: book, at: index)
+                        allBookDetails.append(bookIDResponse.result.value)
+                        dispatchGroup.leave()
+                    case .failure:
+                        // TODO: Remove this delay after debugging is done
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            bookID.hitService { bookIDResponse in
+                                strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
+                                allBookDetails.append(bookIDResponse.result.value)
+                                dispatchGroup.leave()
+                            }
+                        }
+                    }
                 }
             }
             dispatchGroup.notify(queue: .main) {
                 strongSelf.logTimeInterval(since: startTime)
-                strongSelf.books = allBookDetails.compactMap { $0 }
+                strongSelf.books = allBookDetails
                 
                 // A better solution would be to fetch them already sorted from the server,
                 // that way they populate in the UI in the right order, but this is good
@@ -202,16 +214,16 @@ final class BooksListViewModel {
         Cache.clear()
     }
     
-    private func sortBooks(by sort: Settings.Sort) -> [Book] {
+    private func sortBooks(by sort: Settings.Sort) -> [Book?] {
         switch sort {
         case .authorLastName:
             return books.sorted { book1, book2 in
-                if book1[keyPath: sort.sortingKeyPath] != book2[keyPath: sort.sortingKeyPath] {
+                if book1?[keyPath: sort.sortingKeyPath] != book2?[keyPath: sort.sortingKeyPath] {
                     return sort.sortAction(book1, book2)
-                } else if book1.series?.name != book2.series?.name {
-                    return (book1.series?.name ?? "") < (book2.series?.name ?? "")
+                } else if book1?.series?.name != book2?.series?.name {
+                    return (book1?.series?.name ?? "") < (book2?.series?.name ?? "")
                 } else {
-                    return (book1.series?.index ?? -Double(Int.min)) < (book2.series?.index ?? -Double(Int.min))
+                    return (book1?.series?.index ?? -Double(Int.min)) < (book2?.series?.index ?? -Double(Int.min))
                 }
             }
         case .title:

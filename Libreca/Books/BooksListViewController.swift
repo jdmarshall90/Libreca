@@ -216,7 +216,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         shouldReloadTable = true
     }
     
-    func reload(all books: [Book]) {
+    func reload(all books: [Book?]) {
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
     }
@@ -267,11 +267,19 @@ class BooksListViewController: UITableViewController, BooksListView {
                 }
             } else {
                 if sectionIndexGenerator.isSectioningEnabled {
-                    cell.activityIndicator.stopAnimating()
-                    cell.thumbnailImageView.image = #imageLiteral(resourceName: "BookCoverPlaceholder")
-                    cell.accessoryType = .none
-                    cell.authorsLabel.text = "Error loading information for this book. Successful books are below, or refresh to try again."
-                    cell.authorsLabel.sizeToFit()
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookErrorCellID", for: indexPath) as? BookErrorTableViewCell else { return UITableViewCell() }
+                    
+                    cell.retryAllTapped = {
+                        // TODO: analytics event
+                        print("retry all!")
+                    }
+                    
+                    cell.retryThisBookTapped = {
+                        // TODO: analytics event
+                        print("retry this book!")
+                    }
+                    
+                    return cell
                 } else {
                     cell.accessoryType = .none
                     cell.authorsLabel.text = nil
@@ -299,7 +307,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return sectionIndexGenerator.sectionIndexTitles(for: tableView)
+        return sectionIndexGenerator.sectionIndexTitles
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
