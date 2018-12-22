@@ -25,15 +25,12 @@ import UIKit
 
 final class BookErrorTableViewCell: UITableViewCell {
     
-    var retryAllTapped: (() -> Void)?
-    var retryThisBookTapped: (() -> Void)?
+    @IBOutlet weak var retryButton: UIButton!
     
-    @IBAction private func didTapRetryThisBook(_ sender: UIButton) {
-        retryThisBookTapped?()
-    }
+    var retry: (() -> Void)?
     
-    @IBAction private func didTapRetryAll(_ sender: UIButton) {
-        retryAllTapped?()
+    @IBAction private func didTapRetry(_ sender: UIButton) {
+        retry?()
     }
     
 }

@@ -28,20 +28,53 @@ import Foundation
 protocol BooksListView: class {
     func show(message: String)
     func didFetch(bookCount: Int)
-    func didFetch(book: Book?, at index: Int)
-    func reload(all: [Book?])
+    func didFetch(book: BooksListViewModel.BookFetchResult, at index: Int)
+    func reload(all: [BooksListViewModel.BookFetchResult])
     func willRefreshBooks()
 }
 
 final class BooksListViewModel {
     
+    // TODO: Add an issue for this.
+    // I do not like this, but I'm trying get a quick fix out
+    // before the App Store Connect shutdown of 2018. At some
+    // point, revisit this.
+    enum BookFetchResult {
+        struct Failure: Equatable {
+            fileprivate let endpoint: BookEndpoint
+            
+            static func ==(lhs: BooksListViewModel.BookFetchResult.Failure, rhs: BooksListViewModel.BookFetchResult.Failure) -> Bool {
+                return lhs.endpoint.id == rhs.endpoint.id
+            }
+        }
+        
+        // swiftlint:disable identifier_name
+        case book(Book)
+        case inFlight
+        case failure(Failure)
+        // swiftlint:enable identifier_name
+        
+        fileprivate var failure: Failure? {
+            guard case .failure(let theFailure) = self else { return nil }
+            return theFailure
+        }
+        
+        var book: Book? {
+            guard case .book(let book) = self else { return nil }
+            return book
+        }
+    }
+    
     private let booksEndpoint = BooksEndpoint()
     private let batchSize = 300
     private weak var view: BooksListView?
     
-    private var books: [Book?] = [] {
+    private var shouldSort = true
+    private var books: [BooksListViewModel.BookFetchResult] = [] {
         didSet {
-            books = sortBooks(by: Settings.Sort.current)
+            if shouldSort {
+                books = sortBooks(by: Settings.Sort.current)
+            }
         }
     }
     
@@ -104,6 +137,48 @@ final class BooksListViewModel {
         }
     }
     
+    func retryFailures() {
+        let dispatchGroup = DispatchGroup()
+        
+        let endpoints: [(Int, BookEndpoint)] = books.enumerated().compactMap {
+            guard let failure = $0.element.failure else { return nil }
+            return ($0.offset, failure.endpoint)
+        }
+        
+        endpoints.forEach { index, endpoint in
+            dispatchGroup.enter()
+            endpoint.hitService { [weak self] bookIDResponse in
+                guard let strongSelf = self else { return }
+                switch bookIDResponse.result {
+                case .success(let book):
+                    let bookFetchResult = BookFetchResult.book(book)
+                    strongSelf.shouldSort = false
+                    strongSelf.books[index] = bookFetchResult
+                    strongSelf.shouldSort = true
+                    dispatchGroup.leave()
+                case .failure:
+                    let bookFetchResult = BookFetchResult.failure(BookFetchResult.Failure(endpoint: endpoint))
+                    strongSelf.shouldSort = false
+                    strongSelf.books[index] = bookFetchResult
+                    strongSelf.shouldSort = true
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let strongSelf = self else { return }
+            // TODO: update this analytics event with a new name
+//            strongSelf.logTimeInterval(since: startTime)
+            
+            // A better solution would be to fetch them already sorted from the server,
+            // that way they populate in the UI in the right order, but this is good
+            // enough for now.
+            strongSelf.books = strongSelf.sortBooks(by: Settings.Sort.current)
+            strongSelf.view?.reload(all: strongSelf.books)
+        }
+    }
+    
     func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
         let imageEndpoint: ImageEndpoint
         
@@ -123,7 +198,7 @@ final class BooksListViewModel {
         
         nextPage(startingAt: search.bookIDs.count, totalBookCount: search.totalBookCount, bookIDs: search.bookIDs, startedAt: startTime) { [weak self] bookIDs in
             guard let strongSelf = self else { return }
-            var allBookDetails: [Book?] = []
+            var allBookDetails: [BookFetchResult] = []
             let dispatchGroup = DispatchGroup()
             
             bookIDs.enumerated().forEach { index, bookID in
@@ -131,18 +206,15 @@ final class BooksListViewModel {
                 bookID.hitService { bookIDResponse in
                     switch bookIDResponse.result {
                     case .success(let book):
-                        strongSelf.view?.didFetch(book: book, at: index)
-                        allBookDetails.append(bookIDResponse.result.value)
+                        let bookFetchResult = BookFetchResult.book(book)
+                        strongSelf.view?.didFetch(book: bookFetchResult, at: index)
+                        allBookDetails.append(bookFetchResult)
                         dispatchGroup.leave()
                     case .failure:
-                        // TODO: Remove this delay after debugging is done
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            bookID.hitService { bookIDResponse in
-                                strongSelf.view?.didFetch(book: bookIDResponse.result.value, at: index)
-                                allBookDetails.append(bookIDResponse.result.value)
-                                dispatchGroup.leave()
-                            }
-                        }
+                        let bookFetchResult = BookFetchResult.failure(BookFetchResult.Failure(endpoint: bookID))
+                        strongSelf.view?.didFetch(book: bookFetchResult, at: index)
+                        allBookDetails.append(bookFetchResult)
+                        dispatchGroup.leave()
                     }
                 }
             }
@@ -214,20 +286,44 @@ final class BooksListViewModel {
         Cache.clear()
     }
     
-    private func sortBooks(by sort: Settings.Sort) -> [Book?] {
+    private func sortBooks(by sort: Settings.Sort) -> [BookFetchResult] {
         switch sort {
         case .authorLastName:
-            return books.sorted { book1, book2 in
-                if book1?[keyPath: sort.sortingKeyPath] != book2?[keyPath: sort.sortingKeyPath] {
-                    return sort.sortAction(book1, book2)
-                } else if book1?.series?.name != book2?.series?.name {
-                    return (book1?.series?.name ?? "") < (book2?.series?.name ?? "")
-                } else {
-                    return (book1?.series?.index ?? -Double(Int.min)) < (book2?.series?.index ?? -Double(Int.min))
+            return books.sorted { result1, result2 in
+                switch (result1, result2) {
+                case (.book(let book1), .book(let book2)):
+                    if book1[keyPath: sort.sortingKeyPath] != book2[keyPath: sort.sortingKeyPath] {
+                        return sort.sortAction(book1, book2)
+                    } else if book1.series?.name != book2.series?.name {
+                        return (book1.series?.name ?? "") < (book2.series?.name ?? "")
+                    } else {
+                        return (book1.series?.index ?? -Double(Int.min)) < (book2.series?.index ?? -Double(Int.min))
+                    }
+                case (.inFlight, .book), (.failure, .book):
+                    return true
+                case (.book, _),
+                     (.failure, .inFlight),
+                     (.failure, .failure),
+                     (.inFlight, .inFlight),
+                     (.inFlight, .failure):
+                    return false
                 }
             }
         case .title:
-            return books.sorted(by: sort.sortAction)
+            return books.sorted { result1, result2 in
+                switch (result1, result2) {
+                case (.book(let book1), .book(let book2)):
+                    return sort.sortAction(book1, book2)
+                case (.inFlight, .book), (.failure, .book):
+                    return true
+                case (.book, _),
+                     (.failure, .inFlight),
+                     (.failure, .failure),
+                     (.inFlight, .inFlight),
+                     (.inFlight, .failure):
+                    return false
+                }
+            }
         }
     }
     
