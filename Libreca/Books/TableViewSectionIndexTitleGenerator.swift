@@ -40,6 +40,10 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         return Array(duplicateFreeSectionTitles).sorted(by: <)
     }
     
+    var sectionIndexTitles: [String]? {
+        return isSectioningEnabled ? sortedTitles : nil
+    }
+    
     private(set) var sections: [Section] = []
     var isSectioningEnabled = false
     
@@ -49,10 +53,6 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     
     func reset(with sectionIndexDisplayables: [T]) {
         self.sectionIndexDisplayables = sectionIndexDisplayables
-    }
-    
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return isSectioningEnabled ? sortedTitles : nil
     }
     
 }

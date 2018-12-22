@@ -99,7 +99,8 @@ struct Settings {
             }
         }
         
-        func sortAction(_ lhs: Book, _ rhs: Book) -> Bool {
+        func sortAction(_ lhs: Book?, _ rhs: Book?) -> Bool {
+            guard let lhs = lhs, let rhs = rhs else { return true }
             return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
         }
     }
