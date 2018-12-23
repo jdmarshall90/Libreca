@@ -63,6 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // or 50 55 67
         
+        // TODO: Test colors of error cells for the fix for missing books
+        
         // TODO: Move this code into a helper struct
         
         // TODO: Test colors for error scenarios
@@ -70,11 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         switch Settings.Theme.current {
         case .dark:
-            // TODO: Make keyboard dark
-            // TODO: Color of URL setting screen's field's "X" button
             // TODO: test licenses screen
             // TODO: Email screen
-            // TODO: Fix colors of section index titles
             
             UIView.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
             UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
