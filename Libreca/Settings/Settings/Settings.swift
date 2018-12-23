@@ -186,8 +186,6 @@ struct Settings {
                 UISegmentedControl.appearance().tintColor = .white
                 UIButton.appearance().tintColor = .white
             case .light:
-                // TODO: Test on all screen sizes / orientations
-                // TODO: Test on physical device
                 break
             }
         }
