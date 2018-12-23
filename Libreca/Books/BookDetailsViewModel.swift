@@ -186,6 +186,9 @@ private extension String {
         }
         let data = Data(utf8)
         let attributedString = try? NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+        if case .dark = Settings.Theme.current {
+            attributedString?.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedString?.length ?? 0))
+        }
         return attributedString ?? attributedSelf
     }
 }
