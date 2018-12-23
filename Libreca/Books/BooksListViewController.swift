@@ -267,22 +267,7 @@ class BooksListViewController: UITableViewController, BooksListView {
             
             switch bookFetchResult {
             case .book(let book):
-                cell.titleLabel.text = book.title.name
-                cell.ratingLabel.text = book.rating.displayValue
-                cell.serieslabel.text = book.series?.displayValue
-                
-                cell.accessoryType = .disclosureIndicator
-                cell.authorsLabel.text = viewModel.authors(for: book)
-                viewModel.fetchThumbnail(for: book) { image in
-                    // some kind of timing issue, I think fixing #124 would address this better
-                    // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
-                    DispatchQueue.main.async {
-                        if cell.tag == indexPath.hashValue {
-                            cell.activityIndicator.stopAnimating()
-                            cell.thumbnailImageView.image = image
-                        }
-                    }
-                }
+                configure(cell: cell, at: indexPath, for: book)
                 return cell
             case .inFlight:
                 cell.accessoryType = .none
@@ -293,8 +278,6 @@ class BooksListViewController: UITableViewController, BooksListView {
                 return cell
             case .failure:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookErrorCellID", for: indexPath) as? BookErrorTableViewCell else { return UITableViewCell() }
-                
-                // TODO: Test on various screen sizes
                 
                 cell.retryButton.isEnabled = !isFetchingBookDetails
                 cell.retry = { [weak self] in
@@ -401,6 +384,25 @@ class BooksListViewController: UITableViewController, BooksListView {
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         
         present(alertController, animated: true)
+    }
+    
+    private func configure(cell: BookTableViewCell, at indexPath: IndexPath, for book: Book) {
+        cell.titleLabel.text = book.title.name
+        cell.ratingLabel.text = book.rating.displayValue
+        cell.serieslabel.text = book.series?.displayValue
+        
+        cell.accessoryType = .disclosureIndicator
+        cell.authorsLabel.text = viewModel.authors(for: book)
+        viewModel.fetchThumbnail(for: book) { image in
+            // some kind of timing issue, I think fixing #124 would address this better
+            // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
+            DispatchQueue.main.async {
+                if cell.tag == indexPath.hashValue {
+                    cell.activityIndicator.stopAnimating()
+                    cell.thumbnailImageView.image = image
+                }
+            }
+        }
     }
     
 }
