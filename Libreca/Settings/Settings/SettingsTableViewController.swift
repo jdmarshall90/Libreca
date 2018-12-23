@@ -90,12 +90,14 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let mainText: String
         let subText: String?
         let accessoryType: UITableViewCell.AccessoryType
+        let allowHighlight: Bool
         let selectionHandler: (() -> Void)?
         
-        init(mainText: String, subText: String?, accessoryType: UITableViewCell.AccessoryType, selectionHandler: (() -> Void)? = nil) {
+        init(mainText: String, subText: String?, accessoryType: UITableViewCell.AccessoryType, allowHighlight: Bool = true, selectionHandler: (() -> Void)? = nil) {
             self.mainText = mainText
             self.subText = subText
             self.accessoryType = accessoryType
+            self.allowHighlight = allowHighlight
             self.selectionHandler = selectionHandler
         }
     }
@@ -122,9 +124,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.current.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
                     self?.didTapContentServer()
                 },
-                DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none),
-                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none),
-                DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none)
+                DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
+                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none, allowHighlight: false),
+                DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false)
             ],
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -249,6 +251,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     private func displayModel(at indexPath: IndexPath) -> DisplayModel {
         return displayModels[indexPath.section][indexPath.row]
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return displayModel(at: indexPath).allowHighlight
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
