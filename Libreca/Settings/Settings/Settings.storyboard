@@ -282,7 +282,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Programming and Design:" id="kFd-7i-xpu">
+                            <tableViewSection headerTitle="Programming and Design" id="kFd-7i-xpu">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="Lmm-xJ-3cz" style="IBUITableViewCellStyleDefault" id="SOi-nc-EH3">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -303,7 +303,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Icons:" id="cqp-Gp-7J2">
+                            <tableViewSection headerTitle="Icons" id="cqp-Gp-7J2">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="3wh-nI-Doo" style="IBUITableViewCellStyleDefault" id="BDI-Xn-EyB">
                                         <rect key="frame" x="0.0" y="155.5" width="375" height="44"/>
@@ -324,7 +324,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Backend:" id="im0-Gm-OQc">
+                            <tableViewSection headerTitle="Backend" id="im0-Gm-OQc">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="sge-Jl-sVT" style="IBUITableViewCellStyleDefault" id="Okw-AL-nQ3">
                                         <rect key="frame" x="0.0" y="255.5" width="375" height="44"/>
