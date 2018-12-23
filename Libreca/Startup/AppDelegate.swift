@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // TODO: Test colors of error cells for the fix for missing books
         
         // TODO: Move this code into a helper struct
-        
+        // TODO: Test analytics
         // TODO: Test colors for error scenarios
         // TODO: Centralize colors into static helper struct
         
