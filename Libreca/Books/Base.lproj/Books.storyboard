@@ -215,6 +215,43 @@
                                     </segue>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="bookErrorCellID" rowHeight="122" id="rTV-wT-bos" customClass="BookErrorTableViewCell" customModule="Libreca" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="164" width="414" height="122"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTV-wT-bos" id="ozi-u0-jU8">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="121.66666666666667"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error loading information for this book." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fv7-ZP-tiT">
+                                            <rect key="frame" x="60" y="7.9999999999999982" width="294.33333333333331" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85b-uO-eMe">
+                                            <rect key="frame" x="0.0" y="36.333333333333336" width="414" height="49.000000000000007"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <state key="normal" title="Retry books with errors"/>
+                                            <connections>
+                                                <action selector="didTapRetry:" destination="rTV-wT-bos" eventType="touchUpInside" id="jng-mq-sJP"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="fv7-ZP-tiT" firstAttribute="top" secondItem="ozi-u0-jU8" secondAttribute="top" constant="8" id="AZy-x0-shv"/>
+                                        <constraint firstItem="fv7-ZP-tiT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ozi-u0-jU8" secondAttribute="leading" id="HUr-By-5Uo"/>
+                                        <constraint firstItem="85b-uO-eMe" firstAttribute="centerX" secondItem="ozi-u0-jU8" secondAttribute="centerX" id="S2d-iR-ViZ"/>
+                                        <constraint firstItem="fv7-ZP-tiT" firstAttribute="centerX" secondItem="ozi-u0-jU8" secondAttribute="centerX" id="fnh-dk-fei"/>
+                                        <constraint firstItem="85b-uO-eMe" firstAttribute="top" secondItem="fv7-ZP-tiT" secondAttribute="bottom" constant="8" id="gKu-lW-SuX"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fv7-ZP-tiT" secondAttribute="trailing" id="n3v-Oi-Kbh"/>
+                                        <constraint firstItem="85b-uO-eMe" firstAttribute="width" secondItem="ozi-u0-jU8" secondAttribute="width" id="pcw-fO-HAg"/>
+                                        <constraint firstItem="85b-uO-eMe" firstAttribute="centerY" secondItem="ozi-u0-jU8" secondAttribute="centerY" id="yl6-fQ-PBr"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="retryButton" destination="85b-uO-eMe" id="fmH-gX-OCV"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>

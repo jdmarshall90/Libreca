@@ -31,19 +31,29 @@ extension Book: SectionIndexDisplayable {
     }
 }
 
-extension Optional: SectionIndexDisplayable where Wrapped == Book {
+extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     var stringValue: String {
-        return self?.stringValue ?? ""
+        switch self {
+        case .book(let book):
+            return book.stringValue
+        case .inFlight:
+            return ""
+        case .failure:
+            return "!"
+        }
     }
 }
+
+// TODO: Review and refactor the fix introduced in !28, it was rushed. Change this into a GitLab issue
 
 class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
-    private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<Book?>(sectionIndexDisplayables: [])
+    private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<BooksListViewModel.BookFetchResult>(sectionIndexDisplayables: [])
     
     private var isFetchingBooks = true
+    private var isFetchingBookDetails = false
     
     /// Total hack to fix bug where, if you change the content server (or pull to refresh), while already
     /// trying to fetch book metadata, the app would crash when trying to reload a single row in the
@@ -71,7 +81,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private enum Content {
         // swiftlint:disable identifier_name
-        case books([Book?])
+        case books([BooksListViewModel.BookFetchResult])
         case message(String)
         // swiftlint:enable identifier_name
     }
@@ -83,7 +93,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     private var shouldReloadTable = true
     private var content: Content = BooksListViewController.loadingContent {
         didSet {
-            func handleContentChange(with books: [Book?]) {
+            func handleContentChange(with books: [BooksListViewModel.BookFetchResult]) {
                 sectionIndexGenerator.reset(with: books)
                 
                 if shouldReloadTable {
@@ -187,8 +197,11 @@ class BooksListViewController: UITableViewController, BooksListView {
         case .settings:
             break
         case .showDetail:
-            if let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
+            switch sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
+            case .book(let book):
                 detailsVC.prepare(for: book)
+            case .inFlight, .failure:
+                break
             }
         }
     }
@@ -202,11 +215,11 @@ class BooksListViewController: UITableViewController, BooksListView {
     func didFetch(bookCount: Int) {
         isFetchingBooks = false
         refreshControl?.endRefreshing()
-        content = .books(Array(repeating: nil, count: bookCount))
+        content = .books(Array(repeating: .inFlight, count: bookCount))
         Analytics.logEvent("book_count", parameters: ["count": bookCount])
     }
     
-    func didFetch(book: Book?, at index: Int) {
+    func didFetch(book: BooksListViewModel.BookFetchResult, at index: Int) {
         guard case .books(var books) = content else { return }
         books[index] = book
         shouldReloadTable = false
@@ -220,7 +233,8 @@ class BooksListViewController: UITableViewController, BooksListView {
         shouldReloadTable = true
     }
     
-    func reload(all books: [Book]) {
+    func reload(all books: [BooksListViewModel.BookFetchResult]) {
+        isFetchingBookDetails = false
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
     }
@@ -248,15 +262,17 @@ class BooksListViewController: UITableViewController, BooksListView {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookCellID", for: indexPath) as? BookTableViewCell else { return UITableViewCell() }
             
             cell.tag = indexPath.hashValue
-            
-            let book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
-            cell.titleLabel.text = book?.title.name
-            cell.ratingLabel.text = book?.rating.displayValue
-            cell.serieslabel.text = book?.series?.displayValue
-            
             cell.activityIndicator.startAnimating()
             cell.thumbnailImageView.image = nil
-            if let book = book {
+            
+            let bookFetchResult = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
+            
+            switch bookFetchResult {
+            case .book(let book):
+                cell.titleLabel.text = book.title.name
+                cell.ratingLabel.text = book.rating.displayValue
+                cell.serieslabel.text = book.series?.displayValue
+                
                 cell.accessoryType = .disclosureIndicator
                 cell.authorsLabel.text = viewModel.authors(for: book)
                 viewModel.fetchThumbnail(for: book) { image in
@@ -269,20 +285,29 @@ class BooksListViewController: UITableViewController, BooksListView {
                         }
                     }
                 }
-            } else {
-                if sectionIndexGenerator.isSectioningEnabled {
-                    cell.activityIndicator.stopAnimating()
-                    cell.thumbnailImageView.image = #imageLiteral(resourceName: "BookCoverPlaceholder")
-                    cell.accessoryType = .none
-                    cell.authorsLabel.text = "Error loading information for this book. Successful books are below, or refresh to try again."
-                    cell.authorsLabel.sizeToFit()
-                } else {
-                    cell.accessoryType = .none
-                    cell.authorsLabel.text = nil
+                return cell
+            case .inFlight:
+                cell.accessoryType = .none
+                cell.authorsLabel.text = nil
+                return cell
+            case .failure:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookErrorCellID", for: indexPath) as? BookErrorTableViewCell else { return UITableViewCell() }
+                
+                // TODO: Test on various screen sizes
+                
+                cell.retryButton.isEnabled = !isFetchingBookDetails
+                cell.retry = { [weak self] in
+                    // TODO: Analytics event on tap
+                    self?.isFetchingBookDetails = true
+                    tableView.performBatchUpdates({
+                        tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .automatic)
+                    }, completion: { _ in
+                        self?.viewModel.retryFailures()
+                    })
                 }
+                
+                return cell
             }
-            
-            return cell
         case .books:
             return UITableViewCell()
         case .message(let message):
@@ -299,11 +324,15 @@ class BooksListViewController: UITableViewController, BooksListView {
                 return false
         }
         
-        return sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] != nil
+        if case .book = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
+            return true
+        } else {
+            return false
+        }
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return sectionIndexGenerator.sectionIndexTitles(for: tableView)
+        return sectionIndexGenerator.sectionIndexTitles
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -358,6 +387,7 @@ class BooksListViewController: UITableViewController, BooksListView {
         } else {
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true
+            isFetchingBookDetails = true
             viewModel.fetchBooks()
         }
     }
