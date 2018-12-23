@@ -57,12 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     private func applyTheme() {
-        // nav bar 44 45 47
-        // top of email and email cells 30 31 34
-        // accounts table view 45 45 45
-        
-        // or 50 55 67
-        
         // TODO: Test colors of error cells for the fix for missing books
         
         // TODO: Move this code into a helper struct
