@@ -44,8 +44,6 @@ extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     }
 }
 
-// TODO: Review and refactor the fix introduced in !28, it was rushed. Change this into a GitLab issue
-
 class BooksListViewController: UITableViewController, BooksListView {
     
     private var detailViewController: BookDetailsViewController?

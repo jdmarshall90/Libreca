@@ -35,7 +35,6 @@ protocol BooksListView: class {
 
 final class BooksListViewModel {
     
-    // TODO: Add an issue for this.
     // I do not like this, but I'm trying get a quick fix out
     // before the App Store Connect shutdown of 2018. At some
     // point, revisit this.
