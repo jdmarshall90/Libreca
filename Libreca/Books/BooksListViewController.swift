@@ -312,6 +312,9 @@ class BooksListViewController: UITableViewController, BooksListView {
             let cell = UITableViewCell()
             cell.textLabel?.text = message
             cell.textLabel?.numberOfLines = 0
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
             return cell
         }
     }

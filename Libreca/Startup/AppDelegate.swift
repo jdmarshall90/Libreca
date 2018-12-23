@@ -61,7 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // TODO: Move this code into a helper struct
         // TODO: Test analytics
-        // TODO: Test colors for error scenarios
         // TODO: Centralize colors into static helper struct
         
         switch Settings.Theme.current {
