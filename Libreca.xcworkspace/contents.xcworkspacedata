@@ -7,10 +7,4 @@
    <FileRef
       location = "group:Carthage/Checkouts/calibrekit/CalibreKit.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Carthage/Checkouts/Alamofire/Alamofire.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Carthage/Checkouts/AlamofireNetworkActivityIndicator/AlamofireNetworkActivityIndicator.xcodeproj">
-   </FileRef>
 </Workspace>

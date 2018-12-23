@@ -25,19 +25,19 @@
 		D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04871A9216AF31E0085D22C /* Assets.xcassets */; };
 		D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */; };
 		D04871B8216AF31E0085D22C /* LibrecaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871B7216AF31E0085D22C /* LibrecaTests.swift */; };
-		D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; };
-		D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0518E8121797E730087A000 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D049687A21D01D9300BD24C4 /* Alamofire.framework */; };
+		D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */; };
+		D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D049687A21D01D9300BD24C4 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E85217982C80087A000 /* GoogleService-Info.plist */; };
 		D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
+		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
+		D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */; };
-		D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; };
-		D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E8216AF5F3008FDA50 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; };
 		D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0C14A9421BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */; };
-		D0C14A9521BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */; };
 		D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29321782130006F21A4 /* Fabric.framework */; };
 		D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29521782130006F21A4 /* FirebaseCore.framework */; };
@@ -73,10 +73,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D0518E8421797E7E0087A000 /* LicensesViewController.framework in Embed Frameworks */,
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
-				D0B475F2216AF613008FDA50 /* Alamofire.framework in Embed Frameworks */,
-				D0C14A9521BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */,
+				D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */,
+				D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */,
+				D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,16 +106,16 @@
 		D04871B3216AF31E0085D22C /* LibrecaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibrecaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871B7216AF31E0085D22C /* LibrecaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrecaTests.swift; sourceTree = "<group>"; };
 		D04871B9216AF31E0085D22C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D049687A21D01D9300BD24C4 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireNetworkActivityIndicator.framework; path = Carthage/Build/iOS/AlamofireNetworkActivityIndicator.framework; sourceTree = "<group>"; };
 		D0518E7F21797CE40087A000 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
-		D0518E8121797E730087A000 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D0518E85217982C80087A000 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsViewModel.swift; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
+		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingTableViewCell.swift; sourceTree = "<group>"; };
-		D0B475E8216AF5F3008FDA50 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlamofireNetworkActivityIndicator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		D0D6F29321782130006F21A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
@@ -139,18 +139,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0518E8221797E730087A000 /* LicensesViewController.framework in Frameworks */,
 				D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */,
-				D0C14A9421BDA973000F7E4C /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
 				D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */,
+				D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */,
+				D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
 				D0D6F2A321782131006F21A4 /* GoogleAppMeasurement.framework in Frameworks */,
 				D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */,
 				D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */,
 				D0D6F2A221782131006F21A4 /* nanopb.framework in Frameworks */,
 				D0D6F2A021782131006F21A4 /* FirebaseInstanceID.framework in Frameworks */,
+				D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
 				D0D6F2A521782131006F21A4 /* FirebaseAnalytics.framework in Frameworks */,
-				D0B475F1216AF613008FDA50 /* Alamofire.framework in Frameworks */,
 				D0D6F2A121782131006F21A4 /* GoogleUtilities.framework in Frameworks */,
 				D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */,
 				D0D6F2A9217823FD006F21A4 /* Crashlytics.framework in Frameworks */,
@@ -257,7 +257,9 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D0518E8121797E730087A000 /* LicensesViewController.framework */,
+				D0AAA62621D01EC300623608 /* LicensesViewController.framework */,
+				D049687A21D01D9300BD24C4 /* Alamofire.framework */,
+				D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */,
 				D0D6F2AC2178246D006F21A4 /* libc++.tbd */,
 				D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */,
 				D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */,
@@ -269,8 +271,6 @@
 				D0D6F29921782131006F21A4 /* GoogleAppMeasurement.framework */,
 				D0D6F29721782130006F21A4 /* GoogleUtilities.framework */,
 				D0D6F29821782130006F21A4 /* nanopb.framework */,
-				D0B475E8216AF5F3008FDA50 /* Alamofire.framework */,
-				D0C14A9221BDA959000F7E4C /* AlamofireNetworkActivityIndicator.framework */,
 				D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */,
 			);
 			name = Frameworks;
@@ -447,7 +447,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Licenses.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
+			shellScript = "# This script is quirky and is finding duplicates.\n# So I ran it, then commented it out and manually removed the duplicates from the output plist.\n# This will be addressed as part of GitLab issue #151: https://gitlab.com/calibre-utils/Libreca/issues/151\n\n#./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Licenses.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
 		};
 		D0ACBF972185841F00CF9468 /* Copy frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

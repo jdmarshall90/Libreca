@@ -335,7 +335,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         return """
         \(Constants.Bundles.app.name) v\(Constants.Bundles.app.shortDescription)
         \(Constants.Bundles.calibreKit.name) v\(Constants.Bundles.calibreKit.shortDescription)
-        \(Constants.Bundles.alamofire.name) v\(Constants.Bundles.alamofire.version)
+        \(Constants.Bundles.alamofire.name) v\(Constants.Bundles.alamofire.shortDescription)
         
         Made with ❤️ on GitLab
         
