@@ -34,7 +34,7 @@ struct GDPR {
     private init() {}
     
     private static var allItems: [GDPRItem] {
-        return [Settings.Sort.current, Settings.ContentServer.current, Settings.Image.current]
+        return [Settings.Sort.current, Settings.ContentServer.current, Settings.Image.current, Settings.Theme.current]
     }
     
     static func export() -> [GDPRItem] {
@@ -74,5 +74,15 @@ extension Settings.Image: GDPRItem {
     
     func delete() {
         Settings.Image.current = .default
+    }
+}
+
+extension Settings.Theme: GDPRItem {
+    var information: String {
+        return "Theme is set to: \(rawValue)"
+    }
+    
+    func delete() {
+        Settings.Theme.current = .default
     }
 }
