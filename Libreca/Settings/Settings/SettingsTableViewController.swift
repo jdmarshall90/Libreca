@@ -204,6 +204,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     private func didTapExportData() {
         let itemsDescription = GDPR.export().map { $0.information }.joined(separator: "\n\n")
+        if case .dark = Settings.Theme.current {
+            UIButton.appearance().tintColor = UIButton().tintColor
+        }
         let activityViewController = UIActivityViewController(activityItems: [itemsDescription], applicationActivities: nil)
         present(activityViewController, animated: true)
     }

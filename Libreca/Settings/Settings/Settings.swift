@@ -162,12 +162,9 @@ struct Settings {
         
         func stylizeApp() {
             // TODO: Test analytics
-            // TODO: Centralize colors into static helper struct
             
             switch self {
             case .dark:
-                // TODO: Content server text field placeholder color
-                // TODO: Messages VC when exporting, colors
                 UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
                 UIImageView.appearance().backgroundColor = .clear
                 UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
