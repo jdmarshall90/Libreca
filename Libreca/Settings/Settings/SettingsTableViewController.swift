@@ -139,6 +139,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             ],
             [
                 DisplayModel(mainText: "Export all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    Analytics.logEvent("export_all_data_tapped", parameters: nil)
                     self?.didTapExportData()
                 },
                 DisplayModel(mainText: "Delete all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -211,6 +212,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let storedItemsDescription = "Data currently stored:\n\n" + GDPR.export().map { "∙ " + $0.information }.joined(separator: "\n")
         let alertController = UIAlertController(title: "Confirm", message: "Delete all app data stored on this device? This cannot be undone.\n\n\(storedItemsDescription)", preferredStyle: .actionSheet)
         let confirmAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            Analytics.logEvent("delete_all_data_confirmed", parameters: nil)
             GDPR.delete()
             self?.reload()
             let alertController = UIAlertController(title: "Success", message: "All app data stored on this device has been deleted.", preferredStyle: .alert)
