@@ -205,6 +205,7 @@
                                 <connections>
                                     <outlet property="activityIndicator" destination="t0b-2a-ufp" id="c8p-yP-9vH"/>
                                     <outlet property="authorsLabel" destination="3Ol-IK-fP7" id="D1H-CB-TZv"/>
+                                    <outlet property="containerView" destination="exV-FR-QRy" id="Z5V-ml-0Lc"/>
                                     <outlet property="ratingLabel" destination="itL-aj-bz6" id="QOe-Fa-d2T"/>
                                     <outlet property="serieslabel" destination="8Vq-T3-gc0" id="EnV-1x-gjr"/>
                                     <outlet property="thumbnailImageView" destination="kTf-h3-LnT" id="8ju-6Y-gTR"/>
