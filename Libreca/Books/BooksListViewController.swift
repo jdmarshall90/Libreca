@@ -137,6 +137,10 @@ class BooksListViewController: UITableViewController, BooksListView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
+        if case .dark = Settings.Theme.current {
+            tableView.sectionIndexColor = .white
+        }
+        
         refresh()
     }
     
