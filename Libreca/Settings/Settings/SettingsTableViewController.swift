@@ -104,7 +104,16 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if case .dark = Settings.Theme.current {
+            UIButton.appearance().tintColor = .white
+        }
         reload()
+    }
+    
+    private func presentSafariViewController(with url: URL) {
+        UIButton.appearance().tintColor = UIButton().tintColor
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
     }
     
     private func reload() {
@@ -114,7 +123,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     self?.didTapContentServer()
                 },
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none),
-                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none)
+                DisplayModel(mainText: "Images", subText: nil, accessoryType: .none),
+                DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none)
             ],
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -122,8 +132,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("support_site_tapped", parameters: nil)
-                    let safariVC = SFSafariViewController(url: Constants.Connect.supportSite)
-                    self?.present(safariVC, animated: true)
+                    self?.presentSafariViewController(with: Constants.Connect.supportSite)
                 }
             ],
             [
@@ -135,8 +144,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("privacy_policy_tapped", parameters: nil)
-                    let safariVC = SFSafariViewController(url: Constants.Connect.privacyPolicySite)
-                    self?.present(safariVC, animated: true)
+                    self?.presentSafariViewController(with: Constants.Connect.privacyPolicySite)
                 }
             ],
             [
@@ -148,8 +156,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 },
                 DisplayModel(mainText: Constants.About.viewSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("view_source_tapped", parameters: nil)
-                    let safariVC = SFSafariViewController(url: Constants.About.sourceCodeSite)
-                    self?.present(safariVC, animated: true)
+                    self?.presentSafariViewController(with: Constants.About.sourceCodeSite)
                 }
             ]
         ]
@@ -286,11 +293,12 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let thisDisplayModel = displayModel(at: indexPath)
         
-        // this is not scalable, but it doesn't need to be (at least not right now)
         if indexPath.section == 0 && indexPath.row == 1 {
             return createSortCell(for: thisDisplayModel)
         } else if indexPath.section == 0 && indexPath.row == 2 {
            return createImageCell(for: thisDisplayModel)
+        } else if indexPath.section == 0 && indexPath.row == 3 {
+            return createThemeCell(for: thisDisplayModel)
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoreCellID") else {
                 return UITableViewCell()
@@ -298,7 +306,18 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             
             cell.textLabel?.text = thisDisplayModel.mainText
             cell.detailTextLabel?.text = thisDisplayModel.subText
-            cell.detailTextLabel?.textColor = Settings.ContentServer.current.url == nil ? .red : .black
+            
+            let textColor: UIColor
+            switch (Settings.ContentServer.current.url, Settings.Theme.current) {
+            case (.some, .dark):
+                textColor = .white
+            case (.none, .dark),
+                 (.none, .light):
+                textColor = .red
+            case (.some, .light):
+                textColor = .black
+            }
+            cell.detailTextLabel?.textColor = textColor
             cell.accessoryType = thisDisplayModel.accessoryType
             
             return cell
@@ -373,6 +392,35 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 })
                 self?.present(alertController, animated: true)
             }
+        }
+        
+        return cell
+    }
+    
+    private func createThemeCell(for displayModel: DisplayModel) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ThemeCellID") as? ThemeSettingTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        cell.descriptionLabel.text = displayModel.mainText
+        switch Settings.Theme.current {
+        case .light:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 0
+        case .dark:
+            cell.selectionSegmentedControl.selectedSegmentIndex = 1
+        }
+        
+        cell.selectionHandler = { [weak self] in
+            if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
+                Settings.Theme.current = .light
+            } else {
+                Settings.Theme.current = .dark
+            }
+            
+            let alertController = UIAlertController(title: "\(Settings.Theme.current.rawValue.capitalized) mode enabled", message: "This setting will take full effect on the next app restart.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self?.present(alertController, animated: true)
+            Analytics.logEvent("set_theme", parameters: ["type": Settings.Theme.current.rawValue])
         }
         
         return cell

@@ -29,6 +29,7 @@ final class AppAnalytics {
         NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
     }
     
     static let shared = AppAnalytics()
@@ -86,6 +87,7 @@ final class AppAnalytics {
         setUserPropertyURL()
         setUserPropertySort()
         setUserPropertyImage()
+        setUserPropertyTheme()
     }
     
     private func setUserPropertyURL() {
@@ -122,6 +124,15 @@ final class AppAnalytics {
     @objc
     private func imageSettingDidChange(_ notification: Notification) {
         setUserPropertyImage()
+    }
+    
+    private func setUserPropertyTheme() {
+        Analytics.setUserProperty(Settings.Theme.current.rawValue, forName: "theme")
+    }
+    
+    @objc
+    private func themeSettingDidChange(_ notification: Notification) {
+        setUserPropertyTheme()
     }
     
     deinit {

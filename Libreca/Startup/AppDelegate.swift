@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Override point for customization after application launch.
         CalibreKitConfiguration.baseURL = Settings.ContentServer.current.url
         
+        NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
+        
         #if !DEBUG
             AppAnalytics.shared.enable()
             AppAnalytics.shared.appStarted()
@@ -45,8 +47,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             splitViewController.delegate = self
             splitViewController.preferredDisplayMode = .allVisible
         }
-        
+        applyTheme()
         return true
+    }
+    
+    @objc
+    private func themeSettingDidChange(_ notification: Notification) {
+        applyTheme()
+    }
+    
+    private func applyTheme() {
+        // TODO: Test colors of error cells for the fix for missing books
+        
+        // TODO: Move this code into a helper struct
+        // TODO: Test analytics
+        // TODO: Test colors for error scenarios
+        // TODO: Centralize colors into static helper struct
+        
+        switch Settings.Theme.current {
+        case .dark:
+            UIView.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UIImageView.appearance().backgroundColor = .clear
+            UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)
+            UITableView.appearance().backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+            UILabel.appearance().textColor = .white
+            UILabel.appearance().backgroundColor = .clear
+            UIActivityIndicatorView.appearance().style = .white
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white, .backgroundColor: #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)]
+            UITextField.appearance().textColor = .white
+            UITextField.appearance().tintColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)], for: .selected)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+            UISegmentedControl.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            UISegmentedControl.appearance().tintColor = .white
+            UIButton.appearance().tintColor = .white
+        case .light:
+            // TODO: Test on all screen sizes / orientations
+            // TODO: Test on physical device
+            break
+        }
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

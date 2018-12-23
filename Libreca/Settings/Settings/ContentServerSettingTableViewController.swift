@@ -37,6 +37,10 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
         super.viewDidLoad()
         urlTextField.text = Settings.ContentServer.current.url?.absoluteString
         navigationItem.rightBarButtonItem = saveButton
+        
+        if case .dark = Settings.Theme.current {
+            urlTextField.keyboardAppearance = .dark
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +51,18 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         urlTextField.becomeFirstResponder()
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if case .dark = Settings.Theme.current {
+            DispatchQueue.main.async {
+                let textField = cell.contentView.subviews.first as? UITextField
+                textField?.setClearButtonColor(to: .white)
+            }
+        }
+        
+        return cell
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -62,4 +78,14 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
         dismiss(animated: true)
     }
     
+}
+
+private extension UITextField {
+    func setClearButtonColor(to newColor: UIColor) {
+        let clearButton = subviews.compactMap { $0 as? UIButton }.first
+        let clearImage = clearButton?.image(for: .normal)?.withRenderingMode(.alwaysTemplate)
+        clearButton?.setImage(clearImage, for: .normal)
+        clearButton?.backgroundColor = .clear
+        clearButton?.tintColor = .white
+    }
 }

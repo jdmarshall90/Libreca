@@ -46,6 +46,10 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         showBookCover()
+        
+        if case .dark = Settings.Theme.current {
+            view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -52,6 +52,14 @@ final class CreditsViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if case .dark = Settings.Theme.current {
+            UIButton.appearance().tintColor = .white
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Analytics.setScreenName("credits", screenClass: nil)
@@ -61,6 +69,7 @@ final class CreditsViewController: UITableViewController {
         guard let tappableCell = TappableCell(rawValue: indexPath.section) else { return }
         
         Analytics.logEvent(tappableCell.analyticsEventName, parameters: nil)
+        UIButton.appearance().tintColor = UIButton().tintColor
         let safariVC = SFSafariViewController(url: tappableCell.url)
         present(safariVC, animated: true)
     }
