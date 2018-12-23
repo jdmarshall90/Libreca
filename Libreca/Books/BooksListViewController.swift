@@ -279,8 +279,6 @@ class BooksListViewController: UITableViewController, BooksListView {
             case .failure:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "bookErrorCellID", for: indexPath) as? BookErrorTableViewCell else { return UITableViewCell() }
                 
-                // TODO: Test on various screen sizes
-                
                 cell.retryButton.isEnabled = !isFetchingBookDetails
                 cell.retry = { [weak self] in
                     // TODO: Analytics event on tap
