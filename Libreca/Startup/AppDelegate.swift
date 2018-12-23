@@ -63,7 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         switch Settings.Theme.current {
         case .dark:
-            // TODO: Cancel button when exporting data, text is not visible
             // TODO: Some book details comments are not the right color
             UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
             UIImageView.appearance().backgroundColor = .clear
