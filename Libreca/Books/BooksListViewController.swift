@@ -286,6 +286,9 @@ class BooksListViewController: UITableViewController, BooksListView {
                 return cell
             case .inFlight:
                 cell.accessoryType = .none
+                cell.titleLabel.text = nil
+                cell.ratingLabel.text = nil
+                cell.serieslabel.text = nil
                 cell.authorsLabel.text = nil
                 return cell
             case .failure:
@@ -312,6 +315,9 @@ class BooksListViewController: UITableViewController, BooksListView {
             let cell = UITableViewCell()
             cell.textLabel?.text = message
             cell.textLabel?.numberOfLines = 0
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
             return cell
         }
     }

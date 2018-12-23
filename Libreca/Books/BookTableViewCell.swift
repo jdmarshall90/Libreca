@@ -31,5 +31,12 @@ final class BookTableViewCell: UITableViewCell {
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var serieslabel: UILabel!
+    @IBOutlet weak var containerView: UIView! {
+        didSet {
+            if case .dark = Settings.Theme.current {
+                containerView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            }
+        }
+    }
     
 }

@@ -57,19 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     private func applyTheme() {
-        // TODO: Test colors of error cells for the fix for missing books
-        
         // TODO: Move this code into a helper struct
         // TODO: Test analytics
-        // TODO: Test colors for error scenarios
         // TODO: Centralize colors into static helper struct
         
         switch Settings.Theme.current {
         case .dark:
-            // TODO: Some book details comments are not the right color
-            // TODO: A thin black line is appearing through some book list and details screen cells -- fix
-            // TODO: Highlighting text in the URL setting field is blacking out the entire text field's contents
-            UIView.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            // TODO: Messages VC when exporting, colors
             UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
             UIImageView.appearance().backgroundColor = .clear
             UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
