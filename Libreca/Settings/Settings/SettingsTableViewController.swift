@@ -410,12 +410,16 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             cell.selectionSegmentedControl.selectedSegmentIndex = 1
         }
         
-        cell.selectionHandler = {
+        cell.selectionHandler = { [weak self] in
             if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
                 Settings.Theme.current = .light
             } else {
                 Settings.Theme.current = .dark
             }
+            
+            let alertController = UIAlertController(title: "\(Settings.Theme.current.rawValue.capitalized) mode enabled", message: "This setting will take full effect on the next app restart.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self?.present(alertController, animated: true)
             Analytics.logEvent("set_theme", parameters: ["type": Settings.Theme.current.rawValue])
         }
         

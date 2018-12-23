@@ -91,7 +91,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             UISegmentedControl.appearance().tintColor = .white
             UIButton.appearance().tintColor = .white
         case .light:
-            // TODO: Add support for live switching back and forth between colors while the app is running
             // TODO: Test on all screen sizes / orientations
             // TODO: Test on physical device
             break
