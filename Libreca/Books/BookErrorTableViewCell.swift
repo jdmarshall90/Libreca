@@ -25,7 +25,14 @@ import UIKit
 
 final class BookErrorTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak var retryButton: UIButton! {
+        didSet {
+            if case .dark = Settings.Theme.current {
+                // without this, the button text is just white and it's not obvious that it's even tappable
+                retryButton.layer.borderWidth = 2.5
+            }
+        }
+    }
     
     var retry: (() -> Void)?
     

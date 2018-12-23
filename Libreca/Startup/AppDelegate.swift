@@ -57,8 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     private func applyTheme() {
-        // TODO: Test colors of error cells for the fix for missing books
-        
         // TODO: Move this code into a helper struct
         // TODO: Test analytics
         // TODO: Centralize colors into static helper struct
