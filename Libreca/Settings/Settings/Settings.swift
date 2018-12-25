@@ -162,6 +162,7 @@ struct Settings {
         
         func stylizeApp() {
             // TODO: Test analytics
+            // TODO: Spinner color at top of landing screen
             
             switch self {
             case .dark:
