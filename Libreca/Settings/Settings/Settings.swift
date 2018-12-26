@@ -161,8 +161,6 @@ struct Settings {
         }
         
         func stylizeApp() {
-            // TODO: Test analytics
-            
             switch self {
             case .dark:
                 UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
