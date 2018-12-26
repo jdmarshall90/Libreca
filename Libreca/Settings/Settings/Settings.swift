@@ -162,7 +162,6 @@ struct Settings {
         
         func stylizeApp() {
             // TODO: Test analytics
-            // TODO: Spinner color at top of landing screen
             
             switch self {
             case .dark:
@@ -174,6 +173,7 @@ struct Settings {
                 UILabel.appearance().textColor = .white
                 UILabel.appearance().backgroundColor = .clear
                 UIActivityIndicatorView.appearance().style = .white
+                UIRefreshControl.appearance().tintColor = .white
                 UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white, .backgroundColor: #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)]
                 UITextField.appearance().textColor = .white
