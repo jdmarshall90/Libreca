@@ -137,6 +137,7 @@ final class BooksListViewModel {
     }
     
     func retryFailures() {
+        let startTime = Date()
         let dispatchGroup = DispatchGroup()
         
         let endpoints: [(Int, BookEndpoint)] = books.enumerated().compactMap {
@@ -167,8 +168,7 @@ final class BooksListViewModel {
         
         dispatchGroup.notify(queue: .main) { [weak self] in
             guard let strongSelf = self else { return }
-            // TODO: update this analytics event with a new name
-//            strongSelf.logTimeInterval(since: startTime)
+            strongSelf.logTimeInterval(since: startTime, isRetry: true)
             
             // A better solution would be to fetch them already sorted from the server,
             // that way they populate in the UI in the right order, but this is good
@@ -210,6 +210,7 @@ final class BooksListViewModel {
                         allBookDetails.append(bookFetchResult)
                         dispatchGroup.leave()
                     case .failure:
+                        strongSelf.logError()
                         let bookFetchResult = BookFetchResult.failure(BookFetchResult.Failure(endpoint: bookID))
                         strongSelf.view?.didFetch(book: bookFetchResult, at: index)
                         allBookDetails.append(bookFetchResult)
@@ -340,11 +341,12 @@ final class BooksListViewModel {
         view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
     }
     
-    private func logTimeInterval(since startTime: Date) {
+    private func logTimeInterval(since startTime: Date, isRetry: Bool = false) {
         let elapsed = -startTime.timeIntervalSinceNow
         let toNearest = 0.01
         let roundedElapsed = round(elapsed / toNearest) * toNearest
-        Analytics.logEvent("books_fetched", parameters: ["time_interval": roundedElapsed])
+        let eventName = isRetry ? "books_refetched" : "books_fetched"
+        Analytics.logEvent(eventName, parameters: ["time_interval": roundedElapsed])
     }
     
     private func logError() {

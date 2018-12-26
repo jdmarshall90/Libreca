@@ -281,7 +281,7 @@ class BooksListViewController: UITableViewController, BooksListView {
                 
                 cell.retryButton.isEnabled = !isFetchingBookDetails
                 cell.retry = { [weak self] in
-                    // TODO: Analytics event on tap
+                    Analytics.logEvent("retry_book_error_tapped", parameters: nil)
                     self?.isFetchingBookDetails = true
                     tableView.performBatchUpdates({
                         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .automatic)
