@@ -27,7 +27,6 @@ import MessageUI
 import SafariServices
 import UIKit
 
-// swiftlint:disable:next type_body_length - refactor this later
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
     
     private enum Segue: String {
