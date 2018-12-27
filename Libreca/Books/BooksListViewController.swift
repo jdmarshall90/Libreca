@@ -335,10 +335,6 @@ class BooksListViewController: UITableViewController, BooksListView {
         return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
     @IBAction private func sortButtonTapped(_ sender: UIBarButtonItem) {
         guard !isRefreshing else {
             return displayUninteractibleAlert()
