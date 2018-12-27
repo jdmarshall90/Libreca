@@ -18,6 +18,10 @@
 		D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027F5BB21C6DB1B00634587 /* ThemeSettingTableViewCell.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
+		D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */; };
+		D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */; };
+		D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */; };
+		D044A33E21D525D400FBC7C8 /* dark_mode_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A33221D525D400FBC7C8 /* dark_mode_icon@3x.png */; };
 		D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A0216AF31D0085D22C /* AppDelegate.swift */; };
 		D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A2216AF31D0085D22C /* BooksListViewController.swift */; };
 		D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */; };
@@ -95,6 +99,10 @@
 		D027F5BB21C6DB1B00634587 /* ThemeSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
+		D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x.png"; sourceTree = "<group>"; };
+		D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x~ipad.png"; sourceTree = "<group>"; };
+		D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@3x~ipad.png"; sourceTree = "<group>"; };
+		D044A33221D525D400FBC7C8 /* dark_mode_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@3x.png"; sourceTree = "<group>"; };
 		D048719D216AF31D0085D22C /* Libreca.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Libreca.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04871A0216AF31D0085D22C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D04871A2216AF31D0085D22C /* BooksListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +213,7 @@
 		D02F75DE217036F20040EDE5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D044A30421D51C2000FBC7C8 /* DarkModeIcons */,
 				D04871A9216AF31E0085D22C /* Assets.xcassets */,
 				D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */,
 				D04871AE216AF31E0085D22C /* Info.plist */,
@@ -212,6 +221,17 @@
 				D00772D32180131E0066ED9D /* Licenses.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D044A30421D51C2000FBC7C8 /* DarkModeIcons */ = {
+			isa = PBXGroup;
+			children = (
+				D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */,
+				D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */,
+				D044A33221D525D400FBC7C8 /* dark_mode_icon@3x.png */,
+				D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */,
+			);
+			path = DarkModeIcons;
 			sourceTree = "<group>";
 		};
 		D0487194216AF31D0085D22C = {
@@ -413,9 +433,13 @@
 			files = (
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
+				D044A33E21D525D400FBC7C8 /* dark_mode_icon@3x.png in Resources */,
+				D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */,
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
+				D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
+				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
 				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
 				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
 			);
