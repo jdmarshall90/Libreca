@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import FirebaseAnalytics
 import CalibreKit
 import Foundation
 
@@ -136,6 +137,15 @@ struct Settings {
         case light
         case dark
         
+        private var iconName: String? {
+            switch self {
+            case .light:
+                return nil
+            case .dark:
+                return "dark_mode_icon"
+            }
+        }
+        
         private static var key: String {
             return Settings.baseSettingsKey + "theme"
         }
@@ -156,6 +166,13 @@ struct Settings {
             }
             set(newValue) {
                 UserDefaults.standard.set(newValue.rawValue, forKey: key)
+                if UIApplication.shared.supportsAlternateIcons {
+                    UIApplication.shared.setAlternateIconName(newValue.iconName) { error in
+                        if error != nil {
+                            Analytics.logEvent("icon_change_error", parameters: ["type": Settings.Theme.current.rawValue])
+                        }
+                    }
+                }
                 NotificationCenter.default.post(didChangeNotification)
             }
         }
