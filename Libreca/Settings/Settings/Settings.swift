@@ -21,8 +21,8 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import CalibreKit
+import FirebaseAnalytics
 import Foundation
 
 struct Settings {
