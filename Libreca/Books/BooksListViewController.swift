@@ -52,13 +52,14 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     private var isFetchingBooks = true
     private var isFetchingBookDetails = false
+    private var isRetryingFailures = false
     
     /// Total hack to fix bug where, if you change the content server (or pull to refresh), while already
     /// trying to fetch book metadata, the app would crash when trying to reload a single row in the
     /// table view. A better fix would be to cancel in flight requests when refreshing the data or
     /// changing the content server.
     private var isRefreshing: Bool {
-        return !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView)
+        return isRetryingFailures || !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView)
     }
     
     private var booksRefreshControl: UIRefreshControl {
@@ -233,6 +234,7 @@ class BooksListViewController: UITableViewController, BooksListView {
     
     func reload(all books: [BooksListViewModel.BookFetchResult]) {
         isFetchingBookDetails = false
+        isRetryingFailures = false
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
     }
@@ -281,9 +283,10 @@ class BooksListViewController: UITableViewController, BooksListView {
                 
                 cell.retryButton.isEnabled = !isFetchingBookDetails
                 cell.retry = { [weak self] in
-                    // TODO: Disallow manual refreshing while this is in flight, otherwise it can crash
                     Analytics.logEvent("retry_book_error_tapped", parameters: nil)
                     self?.isFetchingBookDetails = true
+                    self?.isRetryingFailures = true
+                    
                     tableView.performBatchUpdates({
                         tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .automatic)
                     }, completion: { _ in
