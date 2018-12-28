@@ -133,7 +133,7 @@ struct Settings {
         }
     }
     
-    enum Theme: String, CaseIterable {
+    enum Theme: String {
         case light
         case dark
         
