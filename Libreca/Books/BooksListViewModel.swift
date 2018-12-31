@@ -127,11 +127,11 @@ final class BooksListViewModel {
             case .failure(let error as CalibreError):
                 strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(calibreError: error)
-                strongSelf.logError()
+                strongSelf.logError(error)
             case .failure(let error):
                 strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(error: error)
-                strongSelf.logError()
+                strongSelf.logError(error)
             }
         }
     }
@@ -209,8 +209,8 @@ final class BooksListViewModel {
                         strongSelf.view?.didFetch(book: bookFetchResult, at: index)
                         allBookDetails.append(bookFetchResult)
                         dispatchGroup.leave()
-                    case .failure:
-                        strongSelf.logError()
+                    case .failure(let error):
+                        strongSelf.logError(error)
                         let bookFetchResult = BookFetchResult.failure(BookFetchResult.Failure(endpoint: bookID))
                         strongSelf.view?.didFetch(book: bookFetchResult, at: index)
                         allBookDetails.append(bookFetchResult)
@@ -246,11 +246,11 @@ final class BooksListViewModel {
             case .failure(let error as CalibreError):
                 strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(calibreError: error)
-                strongSelf.logError()
+                strongSelf.logError(error)
             case .failure(let error):
                 strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(error: error)
-                strongSelf.logError()
+                strongSelf.logError(error)
             }
         }
     }
@@ -349,8 +349,15 @@ final class BooksListViewModel {
         Analytics.logEvent(eventName, parameters: ["time_interval": roundedElapsed])
     }
     
-    private func logError() {
+    private func logError(_ error: Error) {
+        DebugErrors.errors.append(error)
         Analytics.logEvent("book_count_error", parameters: nil)
     }
     
+}
+
+struct DebugErrors {
+    static var errors: [Error] = []
+    
+    private init() {}
 }

@@ -33,7 +33,6 @@
 		D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */; };
 		D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D049687A21D01D9300BD24C4 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E85217982C80087A000 /* GoogleService-Info.plist */; };
 		D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
@@ -441,7 +440,6 @@
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
 				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
 				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
-				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,8 @@
 //  This file is part of project: Libreca
 //
 
+import Alamofire
+import CalibreKit
 import FirebaseAnalytics
 import Foundation
 import MessageUI
@@ -244,6 +246,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         mailComposeVC.setSubject("\(Constants.Bundles.app.name) App Question")
         let messageBody = """
         \n\n\n\(Constants.Bundles.app.name) v\(Constants.Bundles.app.version) (\(Constants.Bundles.app.build)): \(UIDevice.current.hardwareName), iOS \(UIDevice.current.systemVersion)
+        
+        Error logging:
+        
+        \(DebugErrors.errors.map { $0.localizedDescription })
         """
         mailComposeVC.setMessageBody(messageBody, isHTML: false)
         present(mailComposeVC, animated: true)
