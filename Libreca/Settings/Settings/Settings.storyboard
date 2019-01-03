@@ -191,17 +191,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection id="hk1-88-9Fo">
-                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the URL of your server, such as:
-            
-            ∙ http://192.168.1.0
-            ∙ http://192.168.1.0:8080
-            ∙ http://mycontentserver.com
-            ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Currently only unauthenticated content servers are supported. Please check back soon for authenticated access support.  Please include https:// or http://</string>
+                            <tableViewSection headerTitle="URL" id="hk1-88-9Fo">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="xQi-Vr-MWl">
-                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xQi-Vr-MWl" id="XaB-Bj-Xyp">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -221,6 +214,65 @@
                                                 <constraint firstItem="uLX-gw-DKU" firstAttribute="leading" secondItem="XaB-Bj-Xyp" secondAttribute="leading" constant="16" id="5qA-UV-vLF"/>
                                                 <constraint firstAttribute="trailing" secondItem="uLX-gw-DKU" secondAttribute="trailing" constant="8" id="LRm-7b-4wg"/>
                                                 <constraint firstItem="uLX-gw-DKU" firstAttribute="centerY" secondItem="XaB-Bj-Xyp" secondAttribute="centerY" id="wk2-BH-K8M"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Credentials" id="pix-Kr-AQc">
+                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the URL of your server, such as:
+            
+            ∙ http://192.168.1.0
+            ∙ http://192.168.1.0:8080
+            ∙ http://mycontentserver.com
+            ∙ https://mysecurecontentserver.com
+            ∙ https://mysecurecontentserver.com:8080  Currently only unauthenticated content servers are supported. Please check back soon for authenticated access support.  Please include https:// or http://</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3gY-rN-sij">
+                                        <rect key="frame" x="0.0" y="163" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3gY-rN-sij" id="vM3-Ng-trB">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Irr-zF-Ri3">
+                                                    <rect key="frame" x="16" y="11.5" width="351" height="21"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="username"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="EAu-Au-OdW" id="dfr-Js-AQZ"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Irr-zF-Ri3" firstAttribute="centerY" secondItem="vM3-Ng-trB" secondAttribute="centerY" id="9R3-DX-L8H"/>
+                                                <constraint firstItem="Irr-zF-Ri3" firstAttribute="leading" secondItem="vM3-Ng-trB" secondAttribute="leading" constant="16" id="VcF-em-49z"/>
+                                                <constraint firstAttribute="trailing" secondItem="Irr-zF-Ri3" secondAttribute="trailing" constant="8" id="wtZ-Xt-VO5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Lnq-W6-lon">
+                                        <rect key="frame" x="0.0" y="207" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lnq-W6-lon" id="9hX-Fb-Ct7">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="wCg-5m-7hj">
+                                                    <rect key="frame" x="16" y="11.5" width="351" height="21"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="EAu-Au-OdW" id="yOV-Es-KhC"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="wCg-5m-7hj" secondAttribute="trailing" constant="8" id="KJT-rd-jHx"/>
+                                                <constraint firstItem="wCg-5m-7hj" firstAttribute="centerY" secondItem="9hX-Fb-Ct7" secondAttribute="centerY" id="PUD-NQ-xhh"/>
+                                                <constraint firstItem="wCg-5m-7hj" firstAttribute="leading" secondItem="9hX-Fb-Ct7" secondAttribute="leading" constant="16" id="qGI-TF-CC3"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
