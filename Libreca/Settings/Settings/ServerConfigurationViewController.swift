@@ -24,7 +24,7 @@
 import FirebaseAnalytics
 import UIKit
 
-final class ContentServerSettingTableViewController: UITableViewController, UITextFieldDelegate {
+final class ServerConfigurationViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var urlTextField: UITextField!
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
