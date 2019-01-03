@@ -35,8 +35,10 @@
 		D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E85217982C80087A000 /* GoogleService-Info.plist */; };
 		D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */; };
+		D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C4DF521DECF6500E1B470 /* ServerSetupViewModel.swift */; };
+		D07C4DF821DECFD200E1B470 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C4DF721DECFD200E1B470 /* ServerConfiguration.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
-		D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */; };
+		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
 		D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */; };
@@ -119,8 +121,10 @@
 		D0518E7F21797CE40087A000 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		D0518E85217982C80087A000 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsViewModel.swift; sourceTree = "<group>"; };
+		D07C4DF521DECF6500E1B470 /* ServerSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewModel.swift; sourceTree = "<group>"; };
+		D07C4DF721DECFD200E1B470 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
-		D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServerSettingTableViewController.swift; sourceTree = "<group>"; };
+		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -325,8 +329,10 @@
 		D0EFA8F0217C2A5400622080 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				D09D7C0421742A5500E8232E /* ContentServerSettingTableViewController.swift */,
 				D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */,
+				D07C4DF721DECFD200E1B470 /* ServerConfiguration.swift */,
+				D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */,
+				D07C4DF521DECF6500E1B470 /* ServerSetupViewModel.swift */,
 				D0195B802172EEA8006EA713 /* Settings.swift */,
 				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
 				D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */,
@@ -541,15 +547,17 @@
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
+				D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */,
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
-				D09D7C0521742A5500E8232E /* ContentServerSettingTableViewController.swift in Sources */,
+				D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
 				D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
+				D07C4DF821DECFD200E1B470 /* ServerConfiguration.swift in Sources */,
 				D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */,
 				D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,

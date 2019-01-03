@@ -1,5 +1,5 @@
 //
-//  ContentServerSettingTableViewController.swifto
+//  ServerSetupViewController.swift
 //  Libreca
 //
 //  Created by Justin Marshall on 10/14/18.
@@ -24,14 +24,18 @@
 import FirebaseAnalytics
 import UIKit
 
-final class ContentServerSettingTableViewController: UITableViewController, UITextFieldDelegate {
+final class ServerSetupViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var urlTextField: UITextField!
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
     
+    private let viewModel = ServerSetupViewModel()
+    
     private var url: URL? {
         return URL(string: urlTextField.text ?? "")
     }
+    
+    // TODO: Toggle to hide / show credentials, if you don't need authentication
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +44,7 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
         
         if case .dark = Settings.Theme.current {
             urlTextField.keyboardAppearance = .dark
+            // TODO: Do this for other text fields as well
         }
     }
     
@@ -74,7 +79,7 @@ final class ContentServerSettingTableViewController: UITableViewController, UITe
     
     @objc
     private func saveTheURL() {
-        Settings.ContentServer.current = Settings.ContentServer(url: url)
+        // TODO: Call to VM
         dismiss(animated: true)
     }
     
