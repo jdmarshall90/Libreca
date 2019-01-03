@@ -182,10 +182,10 @@
             </objects>
             <point key="canvasLocation" x="1076" y="132.68365817091455"/>
         </scene>
-        <!--Server URL-->
+        <!--Server Setup-->
         <scene sceneID="ILB-2P-hMZ">
             <objects>
-                <tableViewController title="Server URL" id="EAu-Au-OdW" customClass="ServerConfigurationViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Server Setup" id="EAu-Au-OdW" customClass="ServerConfigurationViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="c9Q-V3-Ks6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
