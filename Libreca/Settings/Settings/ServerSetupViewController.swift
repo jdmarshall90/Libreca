@@ -35,6 +35,8 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         return URL(string: urlTextField.text ?? "")
     }
     
+    // TODO: Toggle to hide / show credentials, if you don't need authentication
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         urlTextField.text = Settings.ContentServer.current.url?.absoluteString
@@ -42,6 +44,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         
         if case .dark = Settings.Theme.current {
             urlTextField.keyboardAppearance = .dark
+            // TODO: Do this for other text fields as well
         }
     }
     

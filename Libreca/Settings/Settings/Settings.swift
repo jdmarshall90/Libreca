@@ -107,7 +107,7 @@ struct Settings {
     
     struct ContentServer {
         
-        // TODO: Update this to use the new Credential API
+        // TODO: Update this to use the new ServerConfiguration struct
         // TODO: Migrate this UserDefaults storage to the keychain
         
         let url: URL?
