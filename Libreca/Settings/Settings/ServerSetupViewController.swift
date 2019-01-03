@@ -29,6 +29,8 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     @IBOutlet weak var urlTextField: UITextField!
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
     
+    private let viewModel = ServerSetupViewModel()
+    
     private var url: URL? {
         return URL(string: urlTextField.text ?? "")
     }
@@ -74,7 +76,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     @objc
     private func saveTheURL() {
-        Settings.ContentServer.current = Settings.ContentServer(url: url)
+        // TODO: Call to VM
         dismiss(animated: true)
     }
     
