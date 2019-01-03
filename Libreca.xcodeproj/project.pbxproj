@@ -36,7 +36,7 @@
 		D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0518E85217982C80087A000 /* GoogleService-Info.plist */; };
 		D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
-		D09D7C0521742A5500E8232E /* ServerConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerConfigurationViewController.swift */; };
+		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
 		D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */; };
@@ -120,7 +120,7 @@
 		D0518E85217982C80087A000 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsViewModel.swift; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
-		D09D7C0421742A5500E8232E /* ServerConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfigurationViewController.swift; sourceTree = "<group>"; };
+		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -326,7 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */,
-				D09D7C0421742A5500E8232E /* ServerConfigurationViewController.swift */,
+				D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */,
 				D0195B802172EEA8006EA713 /* Settings.swift */,
 				D0195B8421730794006EA713 /* SettingsTableViewController.swift */,
 				D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */,
@@ -545,7 +545,7 @@
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
-				D09D7C0521742A5500E8232E /* ServerConfigurationViewController.swift in Sources */,
+				D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
 				D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,

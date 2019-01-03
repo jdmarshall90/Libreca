@@ -1,5 +1,5 @@
 //
-//  ContentServerSettingTableViewController.swifto
+//  ServerSetupViewController.swift
 //  Libreca
 //
 //  Created by Justin Marshall on 10/14/18.
@@ -24,7 +24,7 @@
 import FirebaseAnalytics
 import UIKit
 
-final class ServerConfigurationViewController: UITableViewController, UITextFieldDelegate {
+final class ServerSetupViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var urlTextField: UITextField!
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
