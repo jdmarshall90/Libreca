@@ -107,10 +107,7 @@ struct Settings {
     
     struct ContentServer {
         
-        // TODO: Update this to use the new ServerConfiguration struct
-        // TODO: Migrate this UserDefaults storage to the keychain
-        
-        let url: URL?
+        private init() {}
         
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))
         
@@ -118,18 +115,18 @@ struct Settings {
             return Settings.baseSettingsKey + "url"
         }
         
-        static var `default`: ContentServer {
-            return ContentServer(url: nil)
-        }
-        
-        static var current: ContentServer {
+        static var current: ServerConfiguration? {
             get {
-                guard let current = UserDefaults.standard.url(forKey: key) else { return .default }
-                return ContentServer(url: current)
+                return Keychain.retrieveServerConfiguration()
             }
             set(newValue) {
-                UserDefaults.standard.set(newValue.url, forKey: key)
-                CalibreKitConfiguration.baseURL = newValue.url
+                if let newValue = newValue {
+                    Keychain.store(newValue)
+                } else {
+                    Keychain.wipe()
+                }
+                
+                CalibreKitConfiguration.baseURL = newValue?.url
                 NotificationCenter.default.post(didChangeNotification)
             }
         }

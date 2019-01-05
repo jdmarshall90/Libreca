@@ -1,6 +1,7 @@
 git "git@gitlab.com:calibre-utils/CalibreKit.git" ~> 1.2.3
 git "git@gitlab.com:jdmarshall90libs/SwiftLintConfig.git" ~> 3.0.0
 git "git@gitlab.com:iOS_Open_Source_Forks/LicenseGenerator-iOS.git" ~> 0.7.0
+github "Square/Valet" ~> 3.2.2
 
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json" ~> 5.10.0
 binary "https://building42.github.io/Specs/Carthage/iOS/Fabric.json" ~> 1.7.13

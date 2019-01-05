@@ -36,7 +36,10 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        urlTextField.text = Settings.ContentServer.current.url?.absoluteString
+        urlTextField.text = Settings.ContentServer.current?.url.absoluteString
+        usernameTextField.text = Settings.ContentServer.current?.credentials?.username
+        passwordTextField.text = Settings.ContentServer.current?.credentials?.password
+        
         navigationItem.rightBarButtonItem = saveButton
         
         if case .dark = Settings.Theme.current {
