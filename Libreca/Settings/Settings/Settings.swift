@@ -131,7 +131,7 @@ struct Settings {
                     Keychain.wipe()
                 }
                 
-                CalibreKitConfiguration.baseURL = newValue?.url
+                CalibreKitConfiguration.configuration = newValue
                 NotificationCenter.default.post(didChangeNotification)
             }
         }
