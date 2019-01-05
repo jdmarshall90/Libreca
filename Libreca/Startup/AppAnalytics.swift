@@ -26,7 +26,7 @@ import UIKit
 
 final class AppAnalytics {
     private init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(serverConfigDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
@@ -79,15 +79,20 @@ final class AppAnalytics {
     }
     
     @objc
-    private func urlDidChange(_ notification: Notification) {
-        setUserPropertyURL()
+    private func serverConfigDidChange(_ notification: Notification) {
+        setUserPropertiesServerConfig()
     }
     
     private func setUserProperties() {
-        setUserPropertyURL()
+        setUserPropertiesServerConfig()
         setUserPropertySort()
         setUserPropertyImage()
         setUserPropertyTheme()
+    }
+    
+    private func setUserPropertiesServerConfig() {
+        setUserPropertyURL()
+        setUserPropertyAuthenticated()
     }
     
     private func setUserPropertyURL() {
@@ -106,6 +111,11 @@ final class AppAnalytics {
             value = "missing_prefix"
         }
         Analytics.setUserProperty(value, forName: "setting_url")
+    }
+    
+    private func setUserPropertyAuthenticated() {
+        let usesAuthentication = "\(Settings.ContentServer.current?.credentials != nil)"
+        Analytics.setUserProperty(usesAuthentication, forName: "setting_authentication")
     }
     
     private func setUserPropertySort() {
