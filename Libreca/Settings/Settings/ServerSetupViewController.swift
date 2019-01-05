@@ -36,10 +36,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     private let viewModel = ServerSetupViewModel()
     
-    private var url: URL? {
-        return URL(string: urlTextField.text ?? "")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         urlTextField.text = Settings.ContentServer.current.url?.absoluteString
@@ -91,8 +87,15 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     @objc
     private func saveTheURL() {
-        // TODO: Call to VM
-        dismiss(animated: true)
+        do {
+            try viewModel.save(url: urlTextField.text, username: usernameTextField.text, password: passwordTextField.text)
+            dismiss(animated: true)
+        } catch {
+            // swiftlint:disable:next force_cast
+            let alertController = UIAlertController(title: "Missing information", message: (error as! ServerSetupViewModel.ConfigurationError).localizedDescription, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true)
+        }
     }
     
 }

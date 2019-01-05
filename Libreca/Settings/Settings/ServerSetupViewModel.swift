@@ -24,7 +24,47 @@
 import Foundation
 
 struct ServerSetupViewModel {
-    func save(_ configuration: ServerConfiguration) {
-//        Settings.ContentServer.current = Settings.ContentServer(url: url)
+    
+    enum ConfigurationError: Error, LocalizedError {
+        case url
+        case username
+        case password
+        
+        var localizedDescription: String {
+            switch self {
+            case .url:
+                return "Missing or invalid URL"
+            case .username:
+                return "Username is required"
+            case .password:
+                return "Password is required"
+            }
+        }
+    }
+    
+    func save(url: String?, username: String?, password: String?) throws {
+        guard let url = URL(string: url ?? "") else {
+            throw ConfigurationError.url
+        }
+        
+        switch (username, password) {
+        case (.none, .none):
+            // TODO: Store username and password
+            Settings.ContentServer.current = Settings.ContentServer(url: url)
+        case (.some(let username), .some(let password)) where username.isEmpty && password.isEmpty:
+            // TODO: Store username and password
+            Settings.ContentServer.current = Settings.ContentServer(url: url)
+        case (.none, .some):
+            throw ConfigurationError.username
+        case (.some, .none):
+            throw ConfigurationError.password
+        case (.some(let username), .some) where username.isEmpty:
+            throw ConfigurationError.username
+        case (.some, .some(let password)) where password.isEmpty:
+            throw ConfigurationError.password
+        case (.some, .some):
+            // TODO: Store username and password
+            Settings.ContentServer.current = Settings.ContentServer(url: url)
+        }
     }
 }
