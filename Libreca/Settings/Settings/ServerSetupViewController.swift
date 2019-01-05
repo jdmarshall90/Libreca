@@ -34,13 +34,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     // TODO: Form validation
     
-    private var requiresAuthentication = true {
-        didSet {
-            urlTextField.returnKeyType = requiresAuthentication ? .next : .done
-            tableView.reloadData()
-        }
-    }
-    
     private let viewModel = ServerSetupViewModel()
     
     private var url: URL? {
@@ -69,16 +62,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         self.tableView(tableView, cellForRowAt: indexPath).contentView.subviews.first { $0 is UITextField }?.becomeFirstResponder()
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch (requiresAuthentication, indexPath.section, indexPath.row) {
-        case (false, 1, 1),
-             (false, 1, 2):
-            return 0
-        default:
-            return UITableView.automaticDimension
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if case .dark = Settings.Theme.current {
@@ -92,29 +75,18 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if requiresAuthentication {
-            switch textField {
-            case urlTextField:
-                usernameTextField.becomeFirstResponder()
-            case usernameTextField:
-                passwordTextField.becomeFirstResponder()
-            case passwordTextField:
-                passwordTextField.resignFirstResponder()
-                saveTheURL()
-            default:
-                break
-            }
-            return false
-        } else {
-            textField.resignFirstResponder()
+        switch textField {
+        case urlTextField:
+            usernameTextField.becomeFirstResponder()
+        case usernameTextField:
+            passwordTextField.becomeFirstResponder()
+        case passwordTextField:
+            passwordTextField.resignFirstResponder()
             saveTheURL()
-            
-            return true
+        default:
+            break
         }
-    }
-    
-    @IBAction private func didToggleAuthentication(_ sender: UISwitch) {
-        requiresAuthentication = sender.isOn
+        return false
     }
     
     @objc

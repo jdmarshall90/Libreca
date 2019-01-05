@@ -219,46 +219,17 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Credentials" id="pix-Kr-AQc">
-                                <mutableString key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
+                            <tableViewSection headerTitle="Credentials - leave blank if authentication not needed" id="pix-Kr-AQc">
+                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</mutableString>
+            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</string>
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="n3I-Wu-uqd">
-                                        <rect key="frame" x="0.0" y="163" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n3I-Wu-uqd" id="eZI-Cp-gaf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Authentication?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uai-ms-Oa5">
-                                                    <rect key="frame" x="16" y="11.5" width="286" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="71J-Qh-9JU">
-                                                    <rect key="frame" x="310" y="6.5" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="didToggleAuthentication:" destination="EAu-Au-OdW" eventType="valueChanged" id="X8x-eC-9pF"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="71J-Qh-9JU" firstAttribute="leading" secondItem="Uai-ms-Oa5" secondAttribute="trailing" constant="8" id="2n4-45-OAG"/>
-                                                <constraint firstItem="Uai-ms-Oa5" firstAttribute="leading" secondItem="eZI-Cp-gaf" secondAttribute="leading" constant="16" id="4La-lI-DiJ"/>
-                                                <constraint firstItem="Uai-ms-Oa5" firstAttribute="centerY" secondItem="eZI-Cp-gaf" secondAttribute="centerY" id="XKI-2Z-wjT"/>
-                                                <constraint firstAttribute="trailing" secondItem="71J-Qh-9JU" secondAttribute="trailing" constant="16" id="e0v-Vm-rqF"/>
-                                                <constraint firstItem="71J-Qh-9JU" firstAttribute="centerY" secondItem="eZI-Cp-gaf" secondAttribute="centerY" id="uq1-DU-o6T"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3gY-rN-sij">
-                                        <rect key="frame" x="0.0" y="207" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="163" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3gY-rN-sij" id="vM3-Ng-trB">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -282,7 +253,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Lnq-W6-lon">
-                                        <rect key="frame" x="0.0" y="251" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="207" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lnq-W6-lon" id="9hX-Fb-Ct7">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
