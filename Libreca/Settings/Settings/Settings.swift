@@ -117,6 +117,11 @@ struct Settings {
         
         static var current: ServerConfiguration? {
             get {
+                if let legacy = UserDefaults.standard.url(forKey: key) {
+                    UserDefaults.standard.set(nil, forKey: key)
+                    self.current = ServerConfiguration(url: legacy, credentials: nil)
+                }
+                
                 return Keychain.retrieveServerConfiguration()
             }
             set(newValue) {
