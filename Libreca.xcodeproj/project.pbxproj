@@ -496,6 +496,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/LicensesViewController.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/AlamofireNetworkActivityIndicator.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Valet.framework",
 			);
 			name = "Copy frameworks";
 			outputFileListPaths = (
