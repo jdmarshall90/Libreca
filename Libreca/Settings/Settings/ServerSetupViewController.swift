@@ -27,15 +27,25 @@ import UIKit
 final class ServerSetupViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var urlTextField: UITextField!
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
+    
+    // TODO: Form validation
+    
+    private var requiresAuthentication = true {
+        didSet {
+            urlTextField.returnKeyType = requiresAuthentication ? .next : .done
+            tableView.reloadData()
+        }
+    }
     
     private let viewModel = ServerSetupViewModel()
     
     private var url: URL? {
         return URL(string: urlTextField.text ?? "")
     }
-    
-    // TODO: Toggle to hide / show credentials, if you don't need authentication
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +54,8 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         
         if case .dark = Settings.Theme.current {
             urlTextField.keyboardAppearance = .dark
-            // TODO: Do this for other text fields as well
+            usernameTextField.keyboardAppearance = .dark
+            passwordTextField.keyboardAppearance = .dark
         }
     }
     
@@ -55,7 +66,17 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        urlTextField.becomeFirstResponder()
+        self.tableView(tableView, cellForRowAt: indexPath).contentView.subviews.first { $0 is UITextField }?.becomeFirstResponder()
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch (requiresAuthentication, indexPath.section, indexPath.row) {
+        case (false, 1, 1),
+             (false, 1, 2):
+            return 0
+        default:
+            return UITableView.automaticDimension
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,10 +92,29 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        saveTheURL()
-        
-        return true
+        if requiresAuthentication {
+            switch textField {
+            case urlTextField:
+                usernameTextField.becomeFirstResponder()
+            case usernameTextField:
+                passwordTextField.becomeFirstResponder()
+            case passwordTextField:
+                passwordTextField.resignFirstResponder()
+                saveTheURL()
+            default:
+                break
+            }
+            return false
+        } else {
+            textField.resignFirstResponder()
+            saveTheURL()
+            
+            return true
+        }
+    }
+    
+    @IBAction private func didToggleAuthentication(_ sender: UISwitch) {
+        requiresAuthentication = sender.isOn
     }
     
     @objc
