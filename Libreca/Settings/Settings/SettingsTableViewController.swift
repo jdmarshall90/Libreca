@@ -120,9 +120,19 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     private func reload() {
         displayModels = [
             [
-                DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.current?.url.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
-                    self?.didTapContentServer()
-                },
+                DisplayModel(mainText: "Calibre Content Server",
+                             subText: {
+                                let configuration = Settings.ContentServer.current
+                                var subtext = configuration?.url.absoluteString ?? "None configured"
+                                if let username = configuration?.credentials?.username {
+                                    subtext = "\(username) @ \(subtext)"
+                                }
+                                return subtext
+                }(),
+                             accessoryType: .detailDisclosureButton,
+                             selectionHandler: { [weak self] in
+                                self?.didTapContentServer()
+                }),
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Images", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false)
@@ -308,7 +318,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         } else if indexPath.section == 0 && indexPath.row == 3 {
             return createThemeCell(for: thisDisplayModel)
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoreCellID") else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ServerConfigCellID") else {
                 return UITableViewCell()
             }
             
