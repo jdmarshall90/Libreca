@@ -273,8 +273,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             ∙ https://mysecurecontentserver.com
             ∙ https://mysecurecontentserver.com:8080
             
-            Currently only unauthenticated content servers are supported. Please check back soon for authenticated access support.
-            
             Please include https:// or http://
             """,
             preferredStyle: .alert)

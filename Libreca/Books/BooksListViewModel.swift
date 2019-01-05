@@ -338,7 +338,7 @@ final class BooksListViewModel {
         books = []
         view?.didFetch(bookCount: 0)
         view?.reload(all: books)
-        view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.\n\nIf you are trying to connect to a content server that is protected by a username and password, please note that authenticated content servers are not yet supported. Please check back soon for authenticated access support.")
+        view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server URL in settings (https:// or http:// is required) and make sure your server is up and running.")
     }
     
     private func logTimeInterval(since startTime: Date, isRetry: Bool = false) {
