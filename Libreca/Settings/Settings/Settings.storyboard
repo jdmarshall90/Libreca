@@ -220,13 +220,13 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Credentials" id="pix-Kr-AQc">
-                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the URL of your server, such as:
+                                <mutableString key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</string>
+            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</mutableString>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="n3I-Wu-uqd">
                                         <rect key="frame" x="0.0" y="163" width="375" height="44"/>

@@ -58,6 +58,7 @@ extension Settings.Sort: GDPRItem {
 }
 
 extension Settings.ContentServer: GDPRItem {
+    // TODO: Include username / password
     var information: String {
         return "Calibre© Content Server URL is: \(url?.absoluteString ?? "none stored")"
     }
