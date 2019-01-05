@@ -32,13 +32,14 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
     
-    // TODO: Form validation
-    
     private let viewModel = ServerSetupViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        urlTextField.text = Settings.ContentServer.current.url?.absoluteString
+        urlTextField.text = Settings.ContentServer.current?.url.absoluteString
+        usernameTextField.text = Settings.ContentServer.current?.credentials?.username
+        passwordTextField.text = Settings.ContentServer.current?.credentials?.password
+        
         navigationItem.rightBarButtonItem = saveButton
         
         if case .dark = Settings.Theme.current {

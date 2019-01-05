@@ -57,14 +57,23 @@ extension Settings.Sort: GDPRItem {
     }
 }
 
-extension Settings.ContentServer: GDPRItem {
-    // TODO: Include username / password
+extension Optional: GDPRItem where Wrapped == ServerConfiguration {
     var information: String {
-        return "Calibre© Content Server URL is: \(url?.absoluteString ?? "none stored")"
+        switch self {
+        case .some(let configuration):
+            return """
+            Calibre© Content Server setup is:
+            URL: \(configuration.url.absoluteString)
+            username: \(configuration.credentials?.username ?? "none stored")
+            password: \(configuration.credentials?.username ?? "none stored")
+            """
+        case .none:
+            return "Calibre© Content Server setup is: none stored"
+        }
     }
     
     func delete() {
-        Settings.ContentServer.current = .default
+        Settings.ContentServer.current = nil
     }
 }
 

@@ -37,6 +37,9 @@
 		D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */; };
 		D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C4DF521DECF6500E1B470 /* ServerSetupViewModel.swift */; };
 		D07C4DF821DECFD200E1B470 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C4DF721DECFD200E1B470 /* ServerConfiguration.swift */; };
+		D07C4DFB21E0644F00E1B470 /* Valet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07C4DF921E0643E00E1B470 /* Valet.framework */; };
+		D07C4DFC21E0644F00E1B470 /* Valet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D07C4DF921E0643E00E1B470 /* Valet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C4DFD21E0682E00E1B470 /* Keychain.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
@@ -82,6 +85,7 @@
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
 				D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */,
 				D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */,
+				D07C4DFC21E0644F00E1B470 /* Valet.framework in Embed Frameworks */,
 				D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -123,6 +127,8 @@
 		D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsViewModel.swift; sourceTree = "<group>"; };
 		D07C4DF521DECF6500E1B470 /* ServerSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewModel.swift; sourceTree = "<group>"; };
 		D07C4DF721DECFD200E1B470 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
+		D07C4DF921E0643E00E1B470 /* Valet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Valet.framework; path = Carthage/Build/iOS/Valet.framework; sourceTree = "<group>"; };
+		D07C4DFD21E0682E00E1B470 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
@@ -157,6 +163,7 @@
 				D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
 				D0D6F2A321782131006F21A4 /* GoogleAppMeasurement.framework in Frameworks */,
+				D07C4DFB21E0644F00E1B470 /* Valet.framework in Frameworks */,
 				D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */,
 				D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */,
 				D0D6F2A221782131006F21A4 /* nanopb.framework in Frameworks */,
@@ -281,6 +288,7 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D07C4DF921E0643E00E1B470 /* Valet.framework */,
 				D0AAA62621D01EC300623608 /* LicensesViewController.framework */,
 				D049687A21D01D9300BD24C4 /* Alamofire.framework */,
 				D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */,
@@ -330,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */,
+				D07C4DFD21E0682E00E1B470 /* Keychain.swift */,
 				D07C4DF721DECFD200E1B470 /* ServerConfiguration.swift */,
 				D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */,
 				D07C4DF521DECF6500E1B470 /* ServerSetupViewModel.swift */,
@@ -554,6 +563,7 @@
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
 				D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
+				D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */,
 				D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,

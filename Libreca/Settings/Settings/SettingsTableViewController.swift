@@ -120,7 +120,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     private func reload() {
         displayModels = [
             [
-                DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.current.url?.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
+                DisplayModel(mainText: "Calibre Content Server", subText: Settings.ContentServer.current?.url.absoluteString ?? "None configured", accessoryType: .detailDisclosureButton) { [weak self] in
                     self?.didTapContentServer()
                 },
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
@@ -316,7 +316,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             cell.detailTextLabel?.text = thisDisplayModel.subText
             
             let textColor: UIColor
-            switch (Settings.ContentServer.current.url, Settings.Theme.current) {
+            switch (Settings.ContentServer.current?.url, Settings.Theme.current) {
             case (.some, .dark):
                 textColor = .white
             case (.none, .dark),

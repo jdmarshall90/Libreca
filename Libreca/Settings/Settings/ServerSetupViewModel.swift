@@ -43,17 +43,21 @@ struct ServerSetupViewModel {
     }
     
     func save(url: String?, username: String?, password: String?) throws {
+        if url.isNilOrEmpty && username.isNilOrEmpty && password.isNilOrEmpty {
+            return Settings.ContentServer.current = nil
+        }
+        
         guard let url = URL(string: url ?? "") else {
             throw ConfigurationError.url
         }
         
         switch (username, password) {
         case (.none, .none):
-            // TODO: Store username and password
-            Settings.ContentServer.current = Settings.ContentServer(url: url)
+            let configuration = ServerConfiguration(url: url, credentials: nil)
+            Settings.ContentServer.current = configuration
         case (.some(let username), .some(let password)) where username.isEmpty && password.isEmpty:
-            // TODO: Store username and password
-            Settings.ContentServer.current = Settings.ContentServer(url: url)
+            let configuration = ServerConfiguration(url: url, credentials: nil)
+            Settings.ContentServer.current = configuration
         case (.none, .some):
             throw ConfigurationError.username
         case (.some, .none):
@@ -62,9 +66,21 @@ struct ServerSetupViewModel {
             throw ConfigurationError.username
         case (.some, .some(let password)) where password.isEmpty:
             throw ConfigurationError.password
-        case (.some, .some):
-            // TODO: Store username and password
-            Settings.ContentServer.current = Settings.ContentServer(url: url)
+        case (.some(let username), .some(let password)):
+            let credentials = ServerConfiguration.Credentials(username: username, password: password)
+            let configuration = ServerConfiguration(url: url, credentials: credentials)
+            Settings.ContentServer.current = configuration
+        }
+    }
+}
+
+private extension Optional where Wrapped == String {
+    var isNilOrEmpty: Bool {
+        switch self {
+        case .some(let string):
+            return string.isEmpty
+        case .none:
+            return true
         }
     }
 }
