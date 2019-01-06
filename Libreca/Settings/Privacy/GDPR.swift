@@ -66,7 +66,7 @@ extension Optional: GDPRItem where Wrapped == ServerConfiguration {
             Calibre© Content Server setup is:
             URL: \(configuration.url.absoluteString)
             username: \(configuration.credentials?.username ?? "none stored")
-            password: \(configuration.credentials?.username ?? "none stored")
+            password: \(configuration.credentials?.password ?? "none stored")
             """
         case .none:
             return "Calibre© Content Server setup is: none stored"
