@@ -163,12 +163,12 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: Constants.About.credits, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.performSegue(withIdentifier: Segue.creditsSegue.rawValue, sender: nil)
                 },
-                DisplayModel(mainText: Constants.About.licenses, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.performSegue(withIdentifier: Segue.licensesSegue.rawValue, sender: nil)
-                },
                 DisplayModel(mainText: Constants.About.viewSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("view_source_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.About.sourceCodeSite)
+                },
+                DisplayModel(mainText: Constants.About.licenses, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.performSegue(withIdentifier: Segue.licensesSegue.rawValue, sender: nil)
                 }
             ]
         ]
