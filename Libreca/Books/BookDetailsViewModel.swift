@@ -176,7 +176,11 @@ extension Book.Series: CellRepresentable {
 
 private extension String {
     private var attributedSelf: NSAttributedString {
-        return NSAttributedString(string: self, attributes: [.font: UIFont.preferredFont(forTextStyle: .body)])
+        let attributedString = NSMutableAttributedString(string: self, attributes: [.font: UIFont.preferredFont(forTextStyle: .body)])
+        if case .dark = Settings.Theme.current {
+            attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedString.length))
+        }
+        return attributedString
     }
     var attributedHTML: NSAttributedString {
         // slightly modified from: https://www.hackingwithswift.com/example-code/system/how-to-convert-html-to-an-nsattributedstring
