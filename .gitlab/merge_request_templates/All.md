@@ -1,4 +1,4 @@
-# Submissions with explicit agreement to the contributor’s agreement will be ignored.
+# Submissions without explicit agreement to the contributor’s agreement will be ignored.
 # Being noted as a contributor is completely optional.
 
 ## Contributing
