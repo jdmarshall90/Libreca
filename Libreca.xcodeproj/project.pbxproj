@@ -18,6 +18,7 @@
 		D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027F5BB21C6DB1B00634587 /* ThemeSettingTableViewCell.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
+		D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDC21E4408C0046D00F /* Searcher.swift */; };
 		D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */; };
 		D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */; };
 		D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */; };
@@ -104,6 +105,7 @@
 		D027F5BB21C6DB1B00634587 /* ThemeSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
+		D042EEDC21E4408C0046D00F /* Searcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searcher.swift; sourceTree = "<group>"; };
 		D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x.png"; sourceTree = "<group>"; };
 		D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x~ipad.png"; sourceTree = "<group>"; };
 		D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@3x~ipad.png"; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
 				D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */,
 				D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */,
+				D042EEDC21E4408C0046D00F /* Searcher.swift */,
 				D04871A6216AF31D0085D22C /* Books.storyboard */,
 			);
 			path = Books;
@@ -556,6 +559,7 @@
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
 				D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */,
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
+				D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,

@@ -44,7 +44,7 @@ extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     }
 }
 
-class BooksListViewController: UITableViewController, BooksListView {
+class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate {
     
     private var detailViewController: BookDetailsViewController?
     private lazy var viewModel = BooksListViewModel(view: self)
@@ -244,6 +244,18 @@ class BooksListViewController: UITableViewController, BooksListView {
         content = BooksListViewController.loadingContent
         isFetchingBooks = true
         refreshControl?.beginRefreshing()
+    }
+    
+    // MARK: - Search bar
+    
+    // TODO: Don't allow searching while content is loading
+    // TODO: Test what happens when you search with some error cells on screen. Those should never display
+    // TODO: Analytics
+    // TODO: Add item into section index titles for the search bar
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let matches = viewModel.search(using: searchText)
+        content = .books(matches)
     }
     
     // MARK: - Table View
