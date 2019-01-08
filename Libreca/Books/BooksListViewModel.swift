@@ -95,6 +95,15 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
+    // TODO: This will need to be asynchronous, handing back results one at a time, so that it'll scale for large libraries
+    func search(using terms: String) -> [BooksListViewModel.BookFetchResult] {
+        let terms = terms.split(separator: " ").map(String.init)
+        let dataSet = books.compactMap { $0.book }
+        let matches = Searcher(dataSet: dataSet, terms: terms).search()
+        let matchResults = matches.map { BooksListViewModel.BookFetchResult.book($0) }
+        return matchResults
+    }
+    
     func sort(by newSortOption: Settings.Sort) {
         let oldSort = Settings.Sort.current
         Settings.Sort.current = newSortOption
