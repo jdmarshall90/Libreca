@@ -30,7 +30,49 @@ struct Searcher {
     let terms: [String]
     
     func search() -> [Book] {
-        return []
+        guard !terms.isEmpty else { return dataSet }
+        let matches = dataSet.filter { book in
+            let searchableMetadata = book.searchableMetadata
+            // if any of the searchable metadata contains any of the search terms, then it's a match
+            for metadata in searchableMetadata {
+                for term in terms {
+                    if metadata.lowercased().contains(term.lowercased()) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+        return matches
     }
     
+}
+
+private extension Book {
+    var searchableMetadata: [String] {
+        var searchableMetadata = [
+            [title.name],
+            ["\(rating.rawValue)"],
+            authors.map { $0.name },
+            [series?.name].compactMap { $0 },
+            [comments].compactMap { $0 },
+            languages.map { $0.displayValue },
+            identifiers.map { $0.displayValue },
+            tags
+        ].flatMap { $0 }
+        
+        if let publishedDate = publishedDate {
+            searchableMetadata.append(Formatters.dateFormatter.string(from: publishedDate))
+        }
+        
+        if let addedOn = addedOn {
+            searchableMetadata.append(Formatters.dateTimeFormatter.string(from: addedOn))
+        }
+        
+        if let lastModified = lastModified {
+            searchableMetadata.append(Formatters.dateTimeFormatter.string(from: lastModified))
+        }
+        
+        return searchableMetadata
+    }
 }

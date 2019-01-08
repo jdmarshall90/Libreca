@@ -55,19 +55,6 @@ final class BookDetailsViewModel {
         let title: String
         let sections: [Section]
         
-        private static let dateTimeFormatter: DateFormatter = {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .long
-            dateFormatter.timeStyle = .long
-            return dateFormatter
-        }()
-        
-        private static let dateFormatter: DateFormatter = {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .long
-            return dateFormatter
-        }()
-        
         fileprivate init(book: Book) {
             self.title = book.title.name
             
@@ -78,7 +65,7 @@ final class BookDetailsViewModel {
             
             let formattedPublishedDate: String?
             if let publishedDate = book.publishedDate {
-                formattedPublishedDate = BookModel.dateFormatter.string(from: publishedDate)
+                formattedPublishedDate = Formatters.dateFormatter.string(from: publishedDate)
             } else {
                 formattedPublishedDate = nil
             }
@@ -89,14 +76,14 @@ final class BookDetailsViewModel {
             
             let addedToCaliberFooter: String
             if let addedOn = book.addedOn {
-                addedToCaliberFooter = "Added to Calibre on \(BookModel.dateTimeFormatter.string(from: addedOn))"
+                addedToCaliberFooter = "Added to Calibre on \(Formatters.dateTimeFormatter.string(from: addedOn))"
             } else {
                 addedToCaliberFooter = "Added to Calibre on an unknown date"
             }
             
             let lastUpdatedFooter: String
             if let lastModified = book.lastModified {
-                lastUpdatedFooter = "Last updated on \(BookModel.dateTimeFormatter.string(from: lastModified))"
+                lastUpdatedFooter = "Last updated on \(Formatters.dateTimeFormatter.string(from: lastModified))"
             } else {
                 lastUpdatedFooter = "Last updated on an unknown date"
             }
