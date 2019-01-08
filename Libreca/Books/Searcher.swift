@@ -29,8 +29,8 @@ struct Searcher {
     let dataSet: [Book]
     let terms: [String]
     
-    func search() -> Book {
-        fatalError("implement me")
+    func search() -> [Book] {
+        return []
     }
     
 }

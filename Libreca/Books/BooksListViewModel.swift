@@ -95,6 +95,10 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
+    func search(using terms: String) -> [BooksListViewModel.BookFetchResult] {
+        return []
+    }
+    
     func sort(by newSortOption: Settings.Sort) {
         let oldSort = Settings.Sort.current
         Settings.Sort.current = newSortOption

@@ -122,9 +122,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search" id="ruH-5X-M8f">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <scopeButtonTitles>
+                                <string>Title</string>
+                                <string>Title</string>
+                            </scopeButtonTitles>
+                            <connections>
+                                <outlet property="delegate" destination="7bK-jq-Zjz" id="v8t-FI-pAd"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="bookCellID" rowHeight="136" id="KdC-Vd-CrG" customClass="BookTableViewCell" customModule="Libreca" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="136"/>
+                                <rect key="frame" x="0.0" y="84" width="414" height="136"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KdC-Vd-CrG" id="G0i-QW-PTT">
                                     <rect key="frame" x="0.0" y="0.0" width="376" height="135.66666666666666"/>
@@ -217,7 +229,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="bookErrorCellID" rowHeight="122" id="rTV-wT-bos" customClass="BookErrorTableViewCell" customModule="Libreca" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="164" width="414" height="122"/>
+                                <rect key="frame" x="0.0" y="220" width="414" height="122"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTV-wT-bos" id="ozi-u0-jU8">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="121.66666666666667"/>
