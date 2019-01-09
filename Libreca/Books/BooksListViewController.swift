@@ -68,6 +68,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         return refreshControl
     }
     
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private enum Segue: String {
@@ -139,7 +140,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         if case .dark = Settings.Theme.current {
             tableView.sectionIndexColor = .white
         }
-        
+        searchBar.disable()
         refresh()
     }
     
@@ -237,9 +238,11 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         isRetryingFailures = false
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
+        searchBar.enable()
     }
     
     func willRefreshBooks() {
+        searchBar.disable()
         sectionIndexGenerator.isSectioningEnabled = false
         content = BooksListViewController.loadingContent
         isFetchingBooks = true
@@ -248,7 +251,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     // MARK: - Search bar
     
-    // TODO: Don't allow searching while content is loading
+    // TODO: Hide keyboard on tapping "search"
     // TODO: Test what happens when you search with some error cells on screen. Those should never display
     // TODO: Analytics
     // TODO: Add item into section index titles for the search bar
@@ -385,6 +388,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             refreshControl?.endRefreshing()
             displayUninteractibleAlert()
         } else {
+            searchBar.disable()
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true
             isFetchingBookDetails = true
@@ -418,4 +422,18 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         }
     }
     
+}
+
+private extension UISearchBar {
+    func enable() {
+        isUserInteractionEnabled = true
+        alpha = 1.0
+    }
+    
+    func disable() {
+        isUserInteractionEnabled = false
+        alpha = 0.5
+        resignFirstResponder()
+        text = nil
+    }
 }
