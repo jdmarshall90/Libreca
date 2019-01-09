@@ -32,16 +32,14 @@ struct Searcher {
     func search() -> [Book] {
         guard !terms.isEmpty else { return dataSet }
         let matches = dataSet.filter { book in
-            let searchableMetadata = book.searchableMetadata
-            // if any of the searchable metadata contains any of the search terms, then it's a match
-            for metadata in searchableMetadata {
-                for term in terms {
-                    if metadata.lowercased().contains(term.lowercased()) {
-                        return true
-                    }
+            let searchableMetadata = book.searchableMetadata.map { $0.lowercased() }
+            let matchingTerms = terms.map { $0.lowercased() }.filter { term in
+                searchableMetadata.contains { metadata in
+                   metadata.contains(term)
                 }
             }
-            return false
+            let isMatch = matchingTerms.count == terms.count
+            return isMatch
         }
         return matches
     }
@@ -58,6 +56,7 @@ private extension Book {
             [comments].compactMap { $0 },
             languages.map { $0.displayValue },
             identifiers.map { $0.displayValue },
+            identifiers.map { $0.uniqueID },
             tags
         ].flatMap { $0 }
         
