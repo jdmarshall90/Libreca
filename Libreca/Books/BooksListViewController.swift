@@ -252,6 +252,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     // TODO: Test what happens when you search with some error cells on screen. Those should never display
     // TODO: Analytics
     // TODO: Add item into section index titles for the search bar
+    // TODO: Test cut / copy / paste
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let matches = viewModel.search(using: searchText)
