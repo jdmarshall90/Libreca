@@ -95,13 +95,33 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
-    // TODO: This will need to be asynchronous, handing back results one at a time, so that it'll scale for large libraries
-    func search(using terms: String) -> [BooksListViewModel.BookFetchResult] {
-        let terms = terms.split(separator: " ").map(String.init)
-        let dataSet = books.compactMap { $0.book }
-        let matches = Searcher(dataSet: dataSet, terms: terms).search()
-        let matchResults = matches.map { BooksListViewModel.BookFetchResult.book($0) }
-        return matchResults
+    func search(using terms: String, results: @escaping ([BookFetchResult]) -> Void) {
+        let noResultsFoundMessage = "No results found. Try different search terms, separated by spaces."
+        view?.show(message: "Searching...")
+        guard !terms.isEmpty else {
+            if books.isEmpty {
+                view?.show(message: noResultsFoundMessage)
+            } else {
+                results(books)
+            }
+            return
+        }
+        
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search", qos: .userInitiated).async { [weak self] in
+            guard let strongSelf = self else { return }
+            let terms = terms.split(separator: " ").map(String.init)
+            let dataSet = strongSelf.books.compactMap { $0.book }
+            let matches = Searcher(dataSet: dataSet, terms: terms).search()
+            let matchResults = matches.map { BooksListViewModel.BookFetchResult.book($0) }
+            
+            DispatchQueue.main.async {
+                if matchResults.isEmpty {
+                    self?.view?.show(message: noResultsFoundMessage)
+                } else {
+                    results(matchResults)
+                }
+            }
+        }
     }
     
     func sort(by newSortOption: Settings.Sort) {
