@@ -202,6 +202,7 @@ struct Settings {
                 UISegmentedControl.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
                 UISegmentedControl.appearance().tintColor = .white
                 UIButton.appearance().tintColor = .white
+                UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = .white
             case .light:
                 break
             }

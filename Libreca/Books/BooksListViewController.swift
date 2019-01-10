@@ -139,6 +139,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         
         if case .dark = Settings.Theme.current {
             tableView.sectionIndexColor = .white
+            searchBar.keyboardAppearance = .dark
         }
         searchBar.disable()
         refresh()
