@@ -214,6 +214,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     func didFetch(bookCount: Int) {
+        searchBar.disable()
         isFetchingBooks = false
         refreshControl?.endRefreshing()
         content = .books(Array(repeating: .inFlight, count: bookCount))
@@ -221,6 +222,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     func didFetch(book: BooksListViewModel.BookFetchResult, at index: Int) {
+        searchBar.disable()
         guard case .books(var books) = content else { return }
         books[index] = book
         shouldReloadTable = false
@@ -235,11 +237,11 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     func reload(all books: [BooksListViewModel.BookFetchResult]) {
+        searchBar.enable()
         isFetchingBookDetails = false
         isRetryingFailures = false
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
-        searchBar.enable()
     }
     
     func willRefreshBooks() {
@@ -252,15 +254,28 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     // MARK: - Search bar
     
-    // TODO: Hide keyboard on tapping "search"
-    // TODO: Test what happens when you search with some error cells on screen. Those should never display
-    // TODO: Analytics
-    // TODO: Add item into section index titles for the search bar
-    // TODO: Test cut / copy / paste
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        show(message: "Enter search terms, separated by spaces. Tap \"Search\" when done typing.")
+        Analytics.logEvent("search_started", parameters: nil)
+    }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let matches = viewModel.search(using: searchText)
-        content = .books(matches)
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        Analytics.logEvent("search_ended", parameters: nil)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Analytics.logEvent("search_button_clicked", parameters: nil)
+        searchBar.resignFirstResponder()
+        viewModel.search(using: searchBar.text ?? "") { [weak self] matches in
+            self?.content = .books(matches)
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        Analytics.logEvent("search_cancel_button_clicked", parameters: nil)
+        searchBar.text = nil
+        searchBar.resignFirstResponder()
+        refresh()
     }
     
     // MARK: - Table View
