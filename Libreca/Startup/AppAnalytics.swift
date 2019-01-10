@@ -39,7 +39,7 @@ final class AppAnalytics {
     }
     
     func appStarted() {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.analytics", qos: .background).async {
             self.fireLocaleAnalytics()
             self.fireOrientationAnalytics()
             self.fireAccessibilityAnalytics()
