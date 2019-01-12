@@ -51,6 +51,7 @@
 		D07EC20621EA882F00AE193B /* BookEditPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20521EA882F00AE193B /* BookEditPresenting.swift */; };
 		D07EC20821EA883400AE193B /* BookEditInteracting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20721EA883400AE193B /* BookEditInteracting.swift */; };
 		D07EC20A21EA883A00AE193B /* BookEditServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20921EA883A00AE193B /* BookEditServicing.swift */; };
+		D07EC20C21EA925C00AE193B /* BookEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC20B21EA925C00AE193B /* BookEditViewController.xib */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
@@ -151,6 +152,7 @@
 		D07EC20521EA882F00AE193B /* BookEditPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditPresenting.swift; sourceTree = "<group>"; };
 		D07EC20721EA883400AE193B /* BookEditInteracting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditInteracting.swift; sourceTree = "<group>"; };
 		D07EC20921EA883A00AE193B /* BookEditServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditServicing.swift; sourceTree = "<group>"; };
+		D07EC20B21EA925C00AE193B /* BookEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookEditViewController.xib; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				D07EC1F721EA815800AE193B /* BookEditViewController.swift */,
+				D07EC20B21EA925C00AE193B /* BookEditViewController.xib */,
 				D07EC20121EA881400AE193B /* BookEditViewing.swift */,
 				D07EC20321EA882B00AE193B /* BookEditRouting.swift */,
 				D07EC20521EA882F00AE193B /* BookEditPresenting.swift */,
@@ -522,6 +525,7 @@
 				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
 				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
 				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
+				D07EC20C21EA925C00AE193B /* BookEditViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

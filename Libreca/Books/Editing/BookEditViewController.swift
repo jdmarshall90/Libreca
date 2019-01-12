@@ -24,7 +24,16 @@
 import UIKit
 
 final class BookEditViewController: UIViewController, BookEditViewing {
-    private lazy var presenter: BookEditPresenting = BookEditPresenter(view: self)
+    private let presenter: BookEditPresenting
+    
+    init(presenter: BookEditPresenting) {
+        self.presenter = presenter
+        super.init(nibName: "BookEditViewController", bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // TODO: Put an edit icon from icons8 on the book image
     

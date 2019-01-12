@@ -30,10 +30,21 @@ protocol BookDetailsRouting {
 }
 
 struct BookDetailsRouter: BookDetailsRouting {
-    let viewController: UIViewController
+    private weak var viewController: UIViewController?
+    
+    init(viewController: UIViewController) {
+        self.viewController = viewController
+    }
     
     func routeToEditing(for book: Book) {
-        viewController.performSegue(withIdentifier: "editSegue", sender: nil)
+        let router = BookEditRouter()
+        let interactor = BookEditInteractor()
+        let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
+        let editVC = BookEditViewController(presenter: presenter)
+        presenter.view = editVC
+        
+        let editNav = UINavigationController(rootViewController: editVC)
+        viewController?.present(editNav, animated: true)
     }
     
     func routeToEditPurchaseValueProposition() {

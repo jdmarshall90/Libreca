@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import UIKit
 
 protocol BookEditPresenting {
@@ -28,15 +29,17 @@ protocol BookEditPresenting {
     func cancel()
 }
 
-struct BookEditPresenter: BookEditPresenting {
-    private weak var view: (BookEditViewing & UIViewController)?
+final class BookEditPresenter: BookEditPresenting {
+    let book: Book
+    
+    weak var view: BookEditViewing?
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
     
-    init(view: BookEditViewing & UIViewController) {
-        self.view = view
-        self.router = BookEditRouter(viewController: view)
-        self.interactor = BookEditInteractor()
+    init(book: Book, router: BookEditRouting, interactor: BookEditInteracting) {
+        self.book = book
+        self.router = router
+        self.interactor = interactor
     }
     
     func save() {

@@ -29,13 +29,11 @@ protocol BookEditRouting {
 }
 
 struct BookEditRouter: BookEditRouting {
-    let viewController: UIViewController
-    
     func routeForSuccessfulSave() {
-        viewController.dismiss(animated: true)
+//        viewController.dismiss(animated: true)
     }
     
     func routeForCancellation() {
-        viewController.dismiss(animated: true)
+//        viewController.dismiss(animated: true)
     }
 }
