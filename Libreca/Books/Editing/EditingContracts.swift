@@ -25,6 +25,22 @@ import Foundation
 
 // TODO: Consider moving stuff out into separate files once this is more fleshed out
 
+protocol BookEditRouting {
+    //
+}
+
+protocol BookEditView {
+    //
+}
+
+protocol BookEditPresenting {
+    //
+}
+
+protocol BookEditingInteracting {
+    //
+}
+
 protocol BookEditServicing {
     //
 }
