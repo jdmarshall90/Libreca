@@ -13,7 +13,6 @@ protocol SectionIndexDisplayable {
 }
 
 final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
-    
     struct Section {
         let header: String?
         let values: [T]
@@ -40,8 +39,8 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         return Array(duplicateFreeSectionTitles).sorted(by: <)
     }
     
-    var sectionIndexTitles: [String]? {
-        return isSectioningEnabled ? sortedTitles : nil
+    var sectionIndexTitles: [String] {
+        return isSectioningEnabled ? sortedTitles : []
     }
     
     private(set) var sections: [Section] = []
@@ -54,7 +53,6 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     func reset(with sectionIndexDisplayables: [T]) {
         self.sectionIndexDisplayables = sectionIndexDisplayables
     }
-    
 }
 
 private extension String {

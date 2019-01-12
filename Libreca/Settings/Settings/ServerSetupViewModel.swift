@@ -25,7 +25,6 @@ import CalibreKit
 import Foundation
 
 struct ServerSetupViewModel {
-    
     enum ConfigurationError: Error, LocalizedError {
         case url
         case username

@@ -60,15 +60,17 @@ final class AppAnalytics {
     }
     
     private func fireAccessibilityAnalytics() {
-        Analytics.logEvent("accessibility", parameters: [
-            "invert_colors_enabled": UIAccessibility.isInvertColorsEnabled.intValue,
-            "bold_text_enabled": UIAccessibility.isBoldTextEnabled.intValue,
-            "grayscale_enabled": UIAccessibility.isGrayscaleEnabled.intValue,
-            "reduce_transparency_enabled": UIAccessibility.isReduceTransparencyEnabled.intValue,
-            "darker_system_colors_enabled": UIAccessibility.isDarkerSystemColorsEnabled.intValue,
-            "speak_selection_enabled": UIAccessibility.isSpeakSelectionEnabled.intValue,
-            "speak_screen_enabled": UIAccessibility.isSpeakScreenEnabled.intValue
-        ])
+        Analytics.logEvent(
+            "accessibility", parameters: [
+                "invert_colors_enabled": UIAccessibility.isInvertColorsEnabled.intValue,
+                "bold_text_enabled": UIAccessibility.isBoldTextEnabled.intValue,
+                "grayscale_enabled": UIAccessibility.isGrayscaleEnabled.intValue,
+                "reduce_transparency_enabled": UIAccessibility.isReduceTransparencyEnabled.intValue,
+                "darker_system_colors_enabled": UIAccessibility.isDarkerSystemColorsEnabled.intValue,
+                "speak_selection_enabled": UIAccessibility.isSpeakSelectionEnabled.intValue,
+                "speak_screen_enabled": UIAccessibility.isSpeakScreenEnabled.intValue
+            ]
+        )
     }
     
     @objc

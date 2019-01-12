@@ -31,7 +31,6 @@ protocol GDPRItem {
 }
 
 struct GDPR {
-    
     private init() {}
     
     private static var allItems: [GDPRItem] {
@@ -45,7 +44,6 @@ struct GDPR {
     static func delete() {
         allItems.forEach { $0.delete() }
     }
-    
 }
 
 extension Settings.Sort: GDPRItem {

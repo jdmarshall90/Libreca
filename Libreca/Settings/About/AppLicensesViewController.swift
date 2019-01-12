@@ -26,7 +26,6 @@ import LicensesViewController
 import UIKit
 
 final class AppLicensesViewController: LicensesViewController {
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         loadPlist(Bundle.main, resourceName: "Licenses")
@@ -41,5 +40,4 @@ final class AppLicensesViewController: LicensesViewController {
         super.viewDidAppear(animated)
         Analytics.setScreenName("licenses", screenClass: nil)
     }
-    
 }

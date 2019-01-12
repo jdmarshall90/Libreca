@@ -29,7 +29,6 @@ protocol BookDetailsView: class {
 }
 
 final class BookDetailsViewModel {
-    
     struct BookModel {
         struct Section {
             struct Cell {
@@ -44,7 +43,7 @@ final class BookDetailsViewModel {
             let cells: [Cell]
             let footer: String?
             
-            fileprivate init(header: String?, shouldSingularize: Bool = true, cellRepresentations: [CellRepresentable], footer: String?) {
+            fileprivate init(header: String?, cellRepresentations: [CellRepresentable], footer: String?, shouldSingularize: Bool = true) {
                 self.header = shouldSingularize && cellRepresentations.count == 1 ? String(header?.dropLast() ?? "") : header
                 self.cells = cellRepresentations.map { $0.cellRepresentation }
                 self.footer = footer
@@ -58,9 +57,9 @@ final class BookDetailsViewModel {
         fileprivate init(book: Book) {
             self.title = book.title.name
             
-            let ratingSection = Section(header: "Rating", shouldSingularize: false, cellRepresentations: [book.rating], footer: nil)
+            let ratingSection = Section(header: "Rating", cellRepresentations: [book.rating], footer: nil, shouldSingularize: false)
             let authorsSection = Section(header: "Authors", cellRepresentations: book.authors, footer: nil)
-            let seriesSection = Section(header: "Series", shouldSingularize: false, cellRepresentations: [book.series].compactMap { $0 }, footer: nil)
+            let seriesSection = Section(header: "Series", cellRepresentations: [book.series].compactMap { $0 }, footer: nil, shouldSingularize: false)
             let commentsSection = Section(header: "Comments", cellRepresentations: [book.comments].compactMap { $0 }, footer: nil)
             
             let formattedPublishedDate: String?
@@ -69,7 +68,7 @@ final class BookDetailsViewModel {
             } else {
                 formattedPublishedDate = nil
             }
-            let publishedSection = Section(header: "Published On", shouldSingularize: false, cellRepresentations: [formattedPublishedDate].compactMap { $0 }, footer: nil)
+            let publishedSection = Section(header: "Published On", cellRepresentations: [formattedPublishedDate].compactMap { $0 }, footer: nil, shouldSingularize: false)
             
             let languagesSection = Section(header: "Languages", cellRepresentations: book.languages, footer: nil)
             let identifiersSection = Section(header: "Identifiers", cellRepresentations: book.identifiers, footer: nil)
@@ -116,7 +115,6 @@ final class BookDetailsViewModel {
     private func urlDidChange(_ notification: Notification) {
         view?.removeBookDetails()
     }
-    
 }
 
 private typealias Cell = BookDetailsViewModel.BookModel.Section.Cell

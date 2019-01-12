@@ -28,7 +28,6 @@ import SafariServices
 import UIKit
 
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
-    
     private enum Segue: String {
         case contentServerSegue
         case creditsSegue
@@ -36,7 +35,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private struct Constants {
-        
         private init() {}
         
         struct Connect {
@@ -71,7 +69,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 "Privacy",
                 "About"
             ]
-            
         }
         
         struct Bundles {
@@ -120,19 +117,21 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     private func reload() {
         displayModels = [
             [
-                DisplayModel(mainText: "Calibre Content Server",
-                             subText: {
-                                let configuration = Settings.ContentServer.current
-                                var subtext = configuration?.url.absoluteString ?? "None configured"
-                                if let username = configuration?.credentials?.username {
-                                    subtext = "\(username) @ \(subtext)"
-                                }
-                                return subtext
+                DisplayModel(
+                    mainText: "Calibre Content Server",
+                    subText: {
+                        let configuration = Settings.ContentServer.current
+                        var subtext = configuration?.url.absoluteString ?? "None configured"
+                        if let username = configuration?.credentials?.username {
+                            subtext = "\(username) @ \(subtext)"
+                        }
+                        return subtext
                 }(),
-                             accessoryType: .detailDisclosureButton,
-                             selectionHandler: { [weak self] in
-                                self?.didTapContentServer()
-                }),
+                    accessoryType: .detailDisclosureButton,
+                    selectionHandler: { [weak self] in
+                        self?.didTapContentServer()
+                    }
+                ),
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Images", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false)
@@ -193,12 +192,14 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     return alertController
                 }(), animated: true)
+            // swiftlint:disable:previous multiline_arguments_brackets
             case .failed:
                 self.present({
                     let alertController = UIAlertController(title: "Error sending", message: "\(String(describing: error))", preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     return alertController
                 }(), animated: true)
+            // swiftlint:disable:previous multiline_arguments_brackets
             case .cancelled:
                 break
             case .saved:
@@ -273,8 +274,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         Analytics.logEvent("server_info_button_tapped", parameters: nil)
-        let alertController = UIAlertController(title: "What's this?",
-                                                message: """
+        let alertController = UIAlertController(
+            title: "What's this?",
+            message: """
             This setting lets you connect \(Constants.Bundles.app.name) to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
             
             ∙ http://192.168.1.0
@@ -285,7 +287,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             
             Please include https:// or http://
             """,
-            preferredStyle: .alert)
+            preferredStyle: .alert
+        )
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true)
@@ -398,16 +401,20 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 Settings.Image.current = .thumbnail
             } else {
                 let alertController = UIAlertController(title: "Are you sure?", message: "Downloading full size images will increase data usage, and could cause performance issues for large libraries.", preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                    Settings.Image.current = .thumbnail
-                    cell.selectionSegmentedControl.selectedSegmentIndex = 0
-                    Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
-                })
+                alertController.addAction(
+                    UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                        Settings.Image.current = .thumbnail
+                        cell.selectionSegmentedControl.selectedSegmentIndex = 0
+                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
+                    }
+                )
                 
-                alertController.addAction(UIAlertAction(title: "Yes, download full size images", style: .default) { _ in
-                    Settings.Image.current = .fullSize
-                    Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
-                })
+                alertController.addAction(
+                    UIAlertAction(title: "Yes, download full size images", style: .default) { _ in
+                        Settings.Image.current = .fullSize
+                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
+                    }
+                )
                 self?.present(alertController, animated: true)
             }
         }
@@ -446,5 +453,4 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         
         return cell
     }
-    
 }

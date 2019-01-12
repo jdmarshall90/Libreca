@@ -26,7 +26,6 @@ import SafariServices
 import UIKit
 
 final class CreditsViewController: UITableViewController {
-    
     private enum TappableCell: Int {
         case icons8 = 1
         case calibre = 2
@@ -73,5 +72,4 @@ final class CreditsViewController: UITableViewController {
         let safariVC = SFSafariViewController(url: tappableCell.url)
         present(safariVC, animated: true)
     }
-    
 }

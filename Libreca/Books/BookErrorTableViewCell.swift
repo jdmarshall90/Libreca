@@ -24,7 +24,6 @@
 import UIKit
 
 final class BookErrorTableViewCell: UITableViewCell {
-    
     @IBOutlet weak var retryButton: UIButton! {
         didSet {
             if case .dark = Settings.Theme.current {
@@ -39,5 +38,4 @@ final class BookErrorTableViewCell: UITableViewCell {
     @IBAction private func didTapRetry(_ sender: UIButton) {
         retry?()
     }
-    
 }

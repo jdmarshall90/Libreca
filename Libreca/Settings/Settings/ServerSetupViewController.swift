@@ -25,7 +25,6 @@ import FirebaseAnalytics
 import UIKit
 
 final class ServerSetupViewController: UITableViewController, UITextFieldDelegate {
-    
     @IBOutlet weak var urlTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -98,7 +97,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
             present(alertController, animated: true)
         }
     }
-    
 }
 
 private extension UITextField {
