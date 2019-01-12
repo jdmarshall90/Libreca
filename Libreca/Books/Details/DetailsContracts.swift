@@ -22,7 +22,7 @@
 //
 
 import CalibreKit
-import Foundation
+import UIKit
 
 // TODO: Consider moving stuff out into separate files once this is more fleshed out
 
@@ -32,6 +32,7 @@ protocol BookDetailsRouting {
 
 struct BookDetailsRouter: BookDetailsRouting {
     let viewController: UIViewController
+    
     func routeToEditing(for book: Book) {
         viewController.performSegue(withIdentifier: "editSegue", sender: nil)
     }
