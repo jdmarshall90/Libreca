@@ -21,12 +21,25 @@
 //  This file is part of project: Libreca
 //
 
-import Foundation
+import UIKit
 
 // TODO: Consider moving stuff out into separate files once this is more fleshed out
 
 protocol BookEditRouting {
-    //
+    func routeForSuccessfulSave()
+    func routeForCancellation()
+}
+
+struct BookEditRouter: BookEditRouting {
+    let viewController: UIViewController
+    
+    func routeForSuccessfulSave() {
+        viewController.dismiss(animated: true)
+    }
+    
+    func routeForCancellation() {
+        viewController.dismiss(animated: true)
+    }
 }
 
 protocol BookEditView {
@@ -34,10 +47,35 @@ protocol BookEditView {
 }
 
 protocol BookEditPresenting {
-    //
+    func save()
+    func cancel()
+}
+
+struct BookEditPresenter: BookEditPresenting {
+    private weak var view: (BookEditView & UIViewController)?
+    private let router: BookEditRouting
+    private let interactor: BookEditingInteracting
+    
+    init(view: BookEditView & UIViewController) {
+        self.view = view
+        self.router = BookEditRouter(viewController: view)
+        self.interactor = BookEditInteractor()
+    }
+    
+    func save() {
+        router.routeForSuccessfulSave()
+    }
+    
+    func cancel() {
+        router.routeForCancellation()
+    }
 }
 
 protocol BookEditingInteracting {
+    //
+}
+
+struct BookEditInteractor: BookEditingInteracting {
     //
 }
 
