@@ -44,6 +44,7 @@ struct BookDetailsRouter: BookDetailsRouting {
         presenter.view = editVC
         
         let editNav = UINavigationController(rootViewController: editVC)
+        editNav.modalPresentationStyle = .formSheet
         viewController?.present(editNav, animated: true)
     }
     
