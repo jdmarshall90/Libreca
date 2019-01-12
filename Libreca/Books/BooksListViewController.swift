@@ -264,6 +264,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         Analytics.logEvent("search_button_clicked", parameters: nil)
         searchBar.resignFirstResponder()
         viewModel.search(using: searchBar.text ?? "") { [weak self] matches in
+            Analytics.logEvent("search_results", parameters: ["count": matches.count])
             self?.content = .books(matches)
         }
     }

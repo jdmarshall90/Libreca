@@ -97,6 +97,7 @@ final class BooksListViewModel {
         view?.show(message: "Searching...")
         guard !terms.isEmpty else {
             if books.isEmpty {
+                Analytics.logEvent("search_results", parameters: ["count": 0])
                 view?.show(message: noResultsFoundMessage)
             } else {
                 results(books)
@@ -113,6 +114,7 @@ final class BooksListViewModel {
             
             DispatchQueue.main.async {
                 if matchResults.isEmpty {
+                    Analytics.logEvent("search_results", parameters: ["count": 0])
                     self?.view?.show(message: noResultsFoundMessage)
                 } else {
                     results(matchResults)
