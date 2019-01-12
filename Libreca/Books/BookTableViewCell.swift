@@ -24,7 +24,6 @@
 import UIKit
 
 final class BookTableViewCell: UITableViewCell {
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var authorsLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -38,5 +37,4 @@ final class BookTableViewCell: UITableViewCell {
             }
         }
     }
-    
 }

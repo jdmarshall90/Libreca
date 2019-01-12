@@ -106,7 +106,6 @@ struct Settings {
     }
     
     struct ContentServer {
-        
         private init() {}
         
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.urlDidChange"))

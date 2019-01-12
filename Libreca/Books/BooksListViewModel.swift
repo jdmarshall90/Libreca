@@ -34,7 +34,6 @@ protocol BooksListView: class {
 }
 
 final class BooksListViewModel {
-    
     // I do not like this, but I'm trying get a quick fix out
     // before the App Store Connect shutdown of 2018. At some
     // point, revisit this.
@@ -381,5 +380,4 @@ final class BooksListViewModel {
     private func logError() {
         Analytics.logEvent("book_count_error", parameters: nil)
     }
-    
 }

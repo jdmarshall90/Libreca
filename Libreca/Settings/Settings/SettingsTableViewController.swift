@@ -28,7 +28,6 @@ import SafariServices
 import UIKit
 
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
-    
     private enum Segue: String {
         case contentServerSegue
         case creditsSegue
@@ -36,7 +35,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private struct Constants {
-        
         private init() {}
         
         struct Connect {
@@ -71,7 +69,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 "Privacy",
                 "About"
             ]
-            
         }
         
         struct Bundles {
@@ -446,5 +443,4 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         
         return cell
     }
-    
 }

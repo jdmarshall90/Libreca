@@ -29,7 +29,6 @@ protocol BookDetailsView: class {
 }
 
 final class BookDetailsViewModel {
-    
     struct BookModel {
         struct Section {
             struct Cell {
@@ -116,7 +115,6 @@ final class BookDetailsViewModel {
     private func urlDidChange(_ notification: Notification) {
         view?.removeBookDetails()
     }
-    
 }
 
 private typealias Cell = BookDetailsViewModel.BookModel.Section.Cell

@@ -25,7 +25,6 @@ import CalibreKit
 import Foundation
 
 struct Searcher {
-    
     let dataSet: [Book]
     let terms: [String]
     
@@ -43,7 +42,6 @@ struct Searcher {
         }
         return matches
     }
-    
 }
 
 private extension Book {
