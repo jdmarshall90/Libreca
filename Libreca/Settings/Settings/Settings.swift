@@ -24,6 +24,7 @@
 import CalibreKit
 import FirebaseAnalytics
 import Foundation
+import StoreKit
 
 struct Settings {
     private init() {}
@@ -205,6 +206,31 @@ struct Settings {
             case .light:
                 break
             }
+        }
+    }
+    
+    struct AppLaunched {
+        private init() {}
+        
+        private static var key: String {
+            return Settings.baseSettingsKey + "appLaunched"
+        }
+        
+        private static var shouldPrompt: Bool {
+            return UserDefaults.standard.integer(forKey: key) % 10 == 0
+        }
+        
+        static func appDidLaunch() {
+            incrementAppLaunchCount()
+            if shouldPrompt {
+                SKStoreReviewController.requestReview()
+            }
+        }
+        
+        private static func incrementAppLaunchCount() {
+            let oldLaunchCount = UserDefaults.standard.integer(forKey: key)
+            let newLaunchCount = oldLaunchCount + 1
+            UserDefaults.standard.set(newLaunchCount, forKey: key)
         }
     }
 }
