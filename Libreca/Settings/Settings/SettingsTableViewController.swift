@@ -143,6 +143,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("support_site_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.Connect.supportSite)
+                },
+                DisplayModel(mainText: "Write a review", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapWriteReview()
                 }
             ],
             [
@@ -258,6 +261,15 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         """
         mailComposeVC.setMessageBody(messageBody, isHTML: false)
         present(mailComposeVC, animated: true)
+    }
+    
+    private func didTapWriteReview() {
+        Analytics.logEvent("write_review_tapped", parameters: nil)
+        guard let url = URL(string: "itms-apps://itunes.apple.com/app/id1439663115?action=write-review"),
+            UIApplication.shared.canOpenURL(url) else {
+                return
+        }
+        UIApplication.shared.open(url)
     }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
