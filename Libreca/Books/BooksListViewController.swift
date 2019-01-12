@@ -79,10 +79,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     private var hasFixedContentOffset = false
     
     private enum Content {
-        // swiftlint:disable identifier_name
         case books([BooksListViewModel.BookFetchResult])
         case message(String)
-        // swiftlint:enable identifier_name
     }
     
     private static var loadingContent: Content {
@@ -323,6 +321,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
                     }, completion: { _ in
                         self?.viewModel.retryFailures()
                     })
+                    // swiftlint:disable:previous multiline_arguments_brackets
                 }
                 
                 return cell
@@ -353,7 +352,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         }
     }
     
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    override func sectionIndexTitles(for tableView: UITableView) -> [String] {
         return sectionIndexGenerator.sectionIndexTitles
     }
     

@@ -46,11 +46,9 @@ final class BooksListViewModel {
             }
         }
         
-        // swiftlint:disable identifier_name
         case book(Book)
         case inFlight
         case failure(Failure)
-        // swiftlint:enable identifier_name
         
         fileprivate var failure: Failure? {
             guard case .failure(let theFailure) = self else { return nil }

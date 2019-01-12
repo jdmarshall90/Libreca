@@ -39,8 +39,8 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         return Array(duplicateFreeSectionTitles).sorted(by: <)
     }
     
-    var sectionIndexTitles: [String]? {
-        return isSectioningEnabled ? sortedTitles : nil
+    var sectionIndexTitles: [String] {
+        return isSectioningEnabled ? sortedTitles : []
     }
     
     private(set) var sections: [Section] = []
