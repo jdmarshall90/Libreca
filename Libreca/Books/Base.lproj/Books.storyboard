@@ -327,36 +327,6 @@
             </objects>
             <point key="canvasLocation" x="-45" y="129"/>
         </scene>
-        <!--Root View Controller-->
-        <scene sceneID="xWZ-5x-fff">
-            <objects>
-                <tableViewController id="KHu-6s-ogV" customClass="BookEditViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="yQk-45-x7m">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <connections>
-                            <outlet property="dataSource" destination="KHu-6s-ogV" id="2VB-Vy-ocC"/>
-                            <outlet property="delegate" destination="KHu-6s-ogV" id="JWR-df-7V9"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="niq-Hb-k9o">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="VTU-xE-LR1">
-                            <connections>
-                                <action selector="didTapCancel:" destination="KHu-6s-ogV" id="dWf-MP-yRk"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="blG-ZU-8yP">
-                            <connections>
-                                <action selector="didTapSave:" destination="KHu-6s-ogV" id="h5r-IM-EAd"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fi5-JH-dFF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2603" y="129"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Jmg-Bo-4o1">
             <objects>
@@ -366,15 +336,65 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="KHu-6s-ogV" kind="relationship" relationship="rootViewController" id="wda-Bs-C79"/>
+                        <segue destination="YpO-gT-QMv" kind="relationship" relationship="rootViewController" id="5y1-RH-b6e"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b9f-rG-ilW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1735" y="129"/>
         </scene>
+        <!--Edit-->
+        <scene sceneID="Rzh-yh-nBf">
+            <objects>
+                <viewController id="YpO-gT-QMv" customClass="BookEditViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ife-y5-4Vq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WBZ-2t-ETV">
+                                <rect key="frame" x="145.66666666666666" y="72" width="122.66666666666666" height="122.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="WBZ-2t-ETV" secondAttribute="height" multiplier="1:1" id="KlN-nb-SDW"/>
+                                </constraints>
+                                <state key="normal" title="Button" backgroundImage="BookCoverPlaceholder"/>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="H79-Ec-FXi">
+                                <rect key="frame" x="0.0" y="202.66666666666669" width="414" height="533.33333333333326"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WBZ-2t-ETV" firstAttribute="top" secondItem="f3b-RH-4Yc" secondAttribute="top" constant="8" id="HGU-58-r4T"/>
+                            <constraint firstItem="WBZ-2t-ETV" firstAttribute="height" secondItem="ife-y5-4Vq" secondAttribute="height" multiplier="1:6" id="Ltd-bK-Vf9"/>
+                            <constraint firstItem="H79-Ec-FXi" firstAttribute="top" secondItem="WBZ-2t-ETV" secondAttribute="bottom" constant="8" id="Xik-3I-GHH"/>
+                            <constraint firstItem="WBZ-2t-ETV" firstAttribute="centerX" secondItem="f3b-RH-4Yc" secondAttribute="centerX" id="apS-WC-afM"/>
+                            <constraint firstItem="H79-Ec-FXi" firstAttribute="width" secondItem="ife-y5-4Vq" secondAttribute="width" id="jcK-5R-wk2"/>
+                            <constraint firstItem="f3b-RH-4Yc" firstAttribute="bottom" secondItem="H79-Ec-FXi" secondAttribute="bottom" id="s07-ph-Lwa"/>
+                            <constraint firstItem="H79-Ec-FXi" firstAttribute="centerX" secondItem="f3b-RH-4Yc" secondAttribute="centerX" id="znG-Pb-mgl"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="f3b-RH-4Yc"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit" id="h3a-Wj-OyG">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ILJ-xk-A9S">
+                            <connections>
+                                <action selector="didTapCancel:" destination="YpO-gT-QMv" id="Pl4-1a-mFn"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="eA7-Sh-GaZ">
+                            <connections>
+                                <action selector="didTapSave:" destination="YpO-gT-QMv" id="v9G-la-WjE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eXx-HZ-aps" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2597" y="129"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="BookCoverPlaceholder" width="25" height="25"/>
         <image name="Settings" width="25" height="25"/>
         <image name="Sort" width="25" height="25"/>
     </resources>
