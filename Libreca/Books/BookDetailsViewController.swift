@@ -26,6 +26,7 @@ import FirebaseAnalytics
 import UIKit
 
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView {
+    @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var coverImageView: UIImageView!
@@ -54,6 +55,10 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Analytics.setScreenName("book_details", screenClass: nil)
+    }
+    
+    @IBAction func didTapEdit(_ sender: UIBarButtonItem) {
+        print("enable edit mode")
     }
     
     func removeBookDetails() {
