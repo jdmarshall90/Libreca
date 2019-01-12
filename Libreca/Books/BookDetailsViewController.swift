@@ -57,7 +57,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         Analytics.setScreenName("book_details", screenClass: nil)
     }
     
-    @IBAction func didTapEdit(_ sender: UIBarButtonItem) {
+    @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
         print("enable edit mode")
     }
     
