@@ -1,5 +1,5 @@
 //
-//  BookEditingViewController.swift
+//  BookDetailsViewing.swift
 //  Libreca
 //
 //  Created by Justin Marshall on 1/12/19.
@@ -21,16 +21,8 @@
 //  This file is part of project: Libreca
 //
 
-import UIKit
+import Foundation
 
-final class BookEditingViewController: UITableViewController, BookEditView {
-    private lazy var presenter: BookEditPresenting = BookEditPresenter(view: self)
-    
-    @IBAction private func didTapSave(_ sender: UIBarButtonItem) {
-        presenter.save()
-    }
-    
-    @IBAction private func didTapCancel(_ sender: UIBarButtonItem) {
-        presenter.cancel()
-    }
+protocol BookDetailsViewing: class {
+    //
 }

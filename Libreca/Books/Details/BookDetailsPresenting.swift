@@ -1,5 +1,5 @@
 //
-//  DetailsContracts.swift
+//  BookDetailsPresenting.swift
 //  Libreca
 //
 //  Created by Justin Marshall on 1/12/19.
@@ -24,39 +24,16 @@
 import CalibreKit
 import UIKit
 
-// TODO: Consider moving stuff out into separate files once this is more fleshed out
-
-protocol BookDetailsRouting {
-    func routeToEditing(for book: Book)
-    func routeToEditPurchaseValueProposition()
-}
-
-struct BookDetailsRouter: BookDetailsRouting {
-    let viewController: UIViewController
-    
-    func routeToEditing(for book: Book) {
-        viewController.performSegue(withIdentifier: "editSegue", sender: nil)
-    }
-    
-    func routeToEditPurchaseValueProposition() {
-        print("show value prop")
-    }
-}
-
-protocol BookDetailsViewV2: class {
-    //
-}
-
 protocol BookDetailsPresenting {
     func edit(_ book: Book)
 }
 
 struct BookDetailsPresenter: BookDetailsPresenting {
-    private weak var view: (BookDetailsViewV2 & UIViewController)?
+    private weak var view: (BookDetailsViewing & UIViewController)?
     private let router: BookDetailsRouting
     private let interactor: BookDetailsInteracting
     
-    init(view: BookDetailsViewV2 & UIViewController) {
+    init(view: BookDetailsViewing & UIViewController) {
         self.view = view
         self.router = BookDetailsRouter(viewController: view)
         self.interactor = BookDetailsInteractor()
@@ -68,15 +45,5 @@ struct BookDetailsPresenter: BookDetailsPresenting {
         } else {
             router.routeToEditPurchaseValueProposition()
         }
-    }
-}
-
-protocol BookDetailsInteracting {
-    var hasPurchasedEditing: Bool { get }
-}
-
-struct BookDetailsInteractor: BookDetailsInteracting {
-    var hasPurchasedEditing: Bool {
-        return true
     }
 }

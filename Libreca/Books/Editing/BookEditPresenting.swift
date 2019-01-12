@@ -1,5 +1,5 @@
 //
-//  EditingContracts.swift
+//  BookEditPresenting.swift
 //  Libreca
 //
 //  Created by Justin Marshall on 1/12/19.
@@ -23,40 +23,17 @@
 
 import UIKit
 
-// TODO: Consider moving stuff out into separate files once this is more fleshed out
-
-protocol BookEditRouting {
-    func routeForSuccessfulSave()
-    func routeForCancellation()
-}
-
-struct BookEditRouter: BookEditRouting {
-    let viewController: UIViewController
-    
-    func routeForSuccessfulSave() {
-        viewController.dismiss(animated: true)
-    }
-    
-    func routeForCancellation() {
-        viewController.dismiss(animated: true)
-    }
-}
-
-protocol BookEditView {
-    //
-}
-
 protocol BookEditPresenting {
     func save()
     func cancel()
 }
 
 struct BookEditPresenter: BookEditPresenting {
-    private weak var view: (BookEditView & UIViewController)?
+    private weak var view: (BookEditViewing & UIViewController)?
     private let router: BookEditRouting
-    private let interactor: BookEditingInteracting
+    private let interactor: BookEditInteracting
     
-    init(view: BookEditView & UIViewController) {
+    init(view: BookEditViewing & UIViewController) {
         self.view = view
         self.router = BookEditRouter(viewController: view)
         self.interactor = BookEditInteractor()
@@ -69,16 +46,4 @@ struct BookEditPresenter: BookEditPresenting {
     func cancel() {
         router.routeForCancellation()
     }
-}
-
-protocol BookEditingInteracting {
-    //
-}
-
-struct BookEditInteractor: BookEditingInteracting {
-    //
-}
-
-protocol BookEditServicing {
-    //
 }
