@@ -351,8 +351,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="niq-Hb-k9o">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="VTU-xE-LR1"/>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="blG-ZU-8yP"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="VTU-xE-LR1">
+                            <connections>
+                                <action selector="didTapCancel:" destination="KHu-6s-ogV" id="dWf-MP-yRk"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="blG-ZU-8yP">
+                            <connections>
+                                <action selector="didTapSave:" destination="KHu-6s-ogV" id="h5r-IM-EAd"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fi5-JH-dFF" userLabel="First Responder" sceneMemberID="firstResponder"/>
