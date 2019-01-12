@@ -90,7 +90,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" largeTitleDisplayMode="never" id="mOI-FS-AaM">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="edit" id="KWz-YW-ncP">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="KWz-YW-ncP">
                             <connections>
                                 <action selector="didTapEdit:" destination="JEX-9P-axG" id="A3z-1V-BZ2"/>
                             </connections>
