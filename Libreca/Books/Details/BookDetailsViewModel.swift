@@ -53,8 +53,10 @@ final class BookDetailsViewModel {
         let cover: (@escaping (UIImage) -> Void) -> Void
         let title: String
         let sections: [Section]
+        let book: Book
         
         fileprivate init(book: Book) {
+            self.book = book
             self.title = book.title.name
             
             let ratingSection = Section(header: "Rating", cellRepresentations: [book.rating], footer: nil, shouldSingularize: false)

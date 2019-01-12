@@ -32,6 +32,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var coverImageView: UIImageView!
     
     private lazy var viewModel = BookDetailsViewModel(view: self)
+    private let presenter: BookDetailsPresenting = BookDetailsPresenter()
     
     private var bookModel: BookDetailsViewModel.BookModel? {
         didSet {
@@ -46,6 +47,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         showBookCover()
+        editButton.isEnabled = bookModel != nil
         
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
@@ -58,7 +60,8 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
-        print("enable edit mode")
+        guard let bookModel = bookModel else { return }
+        presenter.edit(bookModel.book)
     }
     
     func removeBookDetails() {
