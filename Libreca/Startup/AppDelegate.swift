@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             splitViewController.preferredDisplayMode = .allVisible
         }
         applyTheme()
+        Settings.AppLaunched.appDidLaunch()
         return true
     }
     
