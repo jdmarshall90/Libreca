@@ -26,6 +26,8 @@ import UIKit
 final class BookEditViewController: UIViewController, BookEditViewing {
     private lazy var presenter: BookEditPresenting = BookEditPresenter(view: self)
     
+    // TODO: Put an edit icon from icons8 on the book image
+    
     @IBAction private func didTapSave(_ sender: UIBarButtonItem) {
         presenter.save()
     }
