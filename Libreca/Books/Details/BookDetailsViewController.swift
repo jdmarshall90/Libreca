@@ -25,12 +25,14 @@ import CalibreKit
 import FirebaseAnalytics
 import UIKit
 
-class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView {
+class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing {
+    @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var coverImageView: UIImageView!
     
     private lazy var viewModel = BookDetailsViewModel(view: self)
+    private lazy var presenter: BookDetailsPresenting = BookDetailsPresenter(view: self)
     
     private var bookModel: BookDetailsViewModel.BookModel? {
         didSet {
@@ -45,6 +47,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         showBookCover()
+        editButton.isEnabled = bookModel != nil
         
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
@@ -54,6 +57,11 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Analytics.setScreenName("book_details", screenClass: nil)
+    }
+    
+    @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
+        guard let bookModel = bookModel else { return }
+        presenter.edit(bookModel.book)
     }
     
     func removeBookDetails() {
