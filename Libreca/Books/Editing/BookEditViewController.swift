@@ -23,7 +23,7 @@
 
 import UIKit
 
-final class BookEditViewController: UITableViewController, BookEditViewing {
+final class BookEditViewController: UIViewController, BookEditViewing {
     private lazy var presenter: BookEditPresenting = BookEditPresenter(view: self)
     
     @IBAction private func didTapSave(_ sender: UIBarButtonItem) {
