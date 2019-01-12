@@ -28,6 +28,13 @@ final class BookEditViewController: UIViewController, BookEditViewing {
     
     // TODO: Put an edit icon from icons8 on the book image
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if case .dark = Settings.Theme.current {
+            view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        }
+    }
+    
     @IBAction private func didTapSave(_ sender: UIBarButtonItem) {
         presenter.save()
     }
