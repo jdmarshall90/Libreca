@@ -43,6 +43,7 @@
 		D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C4DFD21E0682E00E1B470 /* Keychain.swift */; };
 		D07EC1F221EA7B3700AE193B /* DetailsContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC1F121EA7B3700AE193B /* DetailsContracts.swift */; };
 		D07EC1F621EA7D3D00AE193B /* EditingContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC1F521EA7D3D00AE193B /* EditingContracts.swift */; };
+		D07EC1F821EA815800AE193B /* BookEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC1F721EA815800AE193B /* BookEditingViewController.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
@@ -135,6 +136,7 @@
 		D07C4DFD21E0682E00E1B470 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		D07EC1F121EA7B3700AE193B /* DetailsContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsContracts.swift; sourceTree = "<group>"; };
 		D07EC1F521EA7D3D00AE193B /* EditingContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingContracts.swift; sourceTree = "<group>"; };
+		D07EC1F721EA815800AE193B /* BookEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditingViewController.swift; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 		D07EC1F021EA7B2200AE193B /* Editing */ = {
 			isa = PBXGroup;
 			children = (
+				D07EC1F721EA815800AE193B /* BookEditingViewController.swift */,
 				D07EC1F521EA7D3D00AE193B /* EditingContracts.swift */,
 			);
 			path = Editing;
@@ -599,6 +602,7 @@
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
 				D07EC1F221EA7B3700AE193B /* DetailsContracts.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
+				D07EC1F821EA815800AE193B /* BookEditingViewController.swift in Sources */,
 				D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */,
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */,

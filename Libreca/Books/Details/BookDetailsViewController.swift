@@ -25,14 +25,14 @@ import CalibreKit
 import FirebaseAnalytics
 import UIKit
 
-class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView {
+class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewV2 {
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var coverImageView: UIImageView!
     
     private lazy var viewModel = BookDetailsViewModel(view: self)
-    private let presenter: BookDetailsPresenting = BookDetailsPresenter()
+    private lazy var presenter: BookDetailsPresenting = BookDetailsPresenter(view: self)
     
     private var bookModel: BookDetailsViewModel.BookModel? {
         didSet {

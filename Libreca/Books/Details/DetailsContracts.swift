@@ -27,13 +27,17 @@ import Foundation
 // TODO: Consider moving stuff out into separate files once this is more fleshed out
 
 protocol BookDetailsRouting {
-    func routeToEditing(for book: Book)
+    func routeToEditing(for book: Book, from viewController: UIViewController)
 }
 
 struct BookDetailsRouter: BookDetailsRouting {
-    func routeToEditing(for book: Book) {
-        print("in router, need to present")
+    func routeToEditing(for book: Book, from viewController: UIViewController) {
+        viewController.performSegue(withIdentifier: "editSegue", sender: nil)
     }
+}
+
+protocol BookDetailsViewV2: class {
+    //
 }
 
 protocol BookDetailsPresenting {
@@ -41,16 +45,19 @@ protocol BookDetailsPresenting {
 }
 
 struct BookDetailsPresenter: BookDetailsPresenting {
+    private weak var view: (BookDetailsViewV2 & UIViewController)?
     private let router: BookDetailsRouting
     private let interactor: BookDetailsInteracting
     
-    init(router: BookDetailsRouting = BookDetailsRouter(), interactor: BookDetailsInteracting = BookDetailsInteractor()) {
+    init(view: (BookDetailsViewV2 & UIViewController)?, router: BookDetailsRouting = BookDetailsRouter(), interactor: BookDetailsInteracting = BookDetailsInteractor()) {
+        self.view = view
         self.router = router
         self.interactor = interactor
     }
     
     func edit(_ book: Book) {
-        router.routeToEditing(for: book)
+        guard let view = view else { return }
+        router.routeToEditing(for: book, from: view)
     }
 }
 
