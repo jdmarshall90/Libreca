@@ -28,6 +28,7 @@ import UIKit
 
 protocol BookDetailsRouting {
     func routeToEditing(for book: Book)
+    func routeToEditPurchaseValueProposition()
 }
 
 struct BookDetailsRouter: BookDetailsRouting {
@@ -35,6 +36,10 @@ struct BookDetailsRouter: BookDetailsRouting {
     
     func routeToEditing(for book: Book) {
         viewController.performSegue(withIdentifier: "editSegue", sender: nil)
+    }
+    
+    func routeToEditPurchaseValueProposition() {
+        print("show value prop")
     }
 }
 
@@ -58,14 +63,20 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     }
     
     func edit(_ book: Book) {
-        router.routeToEditing(for: book)
+        if interactor.hasPurchasedEditing {
+            router.routeToEditing(for: book)
+        } else {
+            router.routeToEditPurchaseValueProposition()
+        }
     }
 }
 
 protocol BookDetailsInteracting {
-    //
+    var hasPurchasedEditing: Bool { get }
 }
 
 struct BookDetailsInteractor: BookDetailsInteracting {
-    //
+    var hasPurchasedEditing: Bool {
+        return true
+    }
 }
