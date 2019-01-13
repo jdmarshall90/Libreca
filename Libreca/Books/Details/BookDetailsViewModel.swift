@@ -28,6 +28,9 @@ protocol BookDetailsView: class {
     func removeBookDetails()
 }
 
+typealias BookModel = BookDetailsViewModel.BookModel
+
+@available(*, deprecated, message: "BookDetailsViewModel is deprecated. Migrate usage of this to VIPER architecture (BookEditPresenting and friends).")
 final class BookDetailsViewModel {
     struct BookModel {
         struct Section {
@@ -39,14 +42,42 @@ final class BookDetailsViewModel {
                 }
             }
             
-            let header: String?
+            enum Field: Int {
+                case rating
+                case authors
+                case series
+                case comments
+                case publishedOn
+                case languages
+                case identifiers
+                case tags
+                
+                var header: String {
+                    switch self {
+                    case .rating,
+                         .authors,
+                         .series,
+                         .comments,
+                         .languages,
+                         .identifiers,
+                         .tags:
+                        return "\(self)"
+                    case .publishedOn:
+                        return "Published On"
+                    }
+                }
+            }
+            
+            let field: Field
             let cells: [Cell]
+            let header: String
             let footer: String?
             
-            fileprivate init(header: String?, cellRepresentations: [CellRepresentable], footer: String?, shouldSingularize: Bool = true) {
-                self.header = shouldSingularize && cellRepresentations.count == 1 ? String(header?.dropLast() ?? "") : header
+            fileprivate init(field: Field, cellRepresentations: [CellRepresentable], footer: String?, shouldSingularize: Bool = true) {
+                self.field = field
                 self.cells = cellRepresentations.map { $0.cellRepresentation }
                 self.footer = footer
+                self.header = shouldSingularize && cellRepresentations.count == 1 ? String(field.header.dropLast()) : field.header
             }
         }
         
@@ -55,14 +86,14 @@ final class BookDetailsViewModel {
         let sections: [Section]
         let book: Book
         
-        fileprivate init(book: Book) {
+        init(book: Book) {
             self.book = book
             self.title = book.title.name
             
-            let ratingSection = Section(header: "Rating", cellRepresentations: [book.rating], footer: nil, shouldSingularize: false)
-            let authorsSection = Section(header: "Authors", cellRepresentations: book.authors, footer: nil)
-            let seriesSection = Section(header: "Series", cellRepresentations: [book.series].compactMap { $0 }, footer: nil, shouldSingularize: false)
-            let commentsSection = Section(header: "Comments", cellRepresentations: [book.comments].compactMap { $0 }, footer: nil)
+            let ratingSection = Section(field: .rating, cellRepresentations: [book.rating], footer: nil, shouldSingularize: false)
+            let authorsSection = Section(field: .authors, cellRepresentations: book.authors, footer: nil)
+            let seriesSection = Section(field: .series, cellRepresentations: [book.series].compactMap { $0 }, footer: nil, shouldSingularize: false)
+            let commentsSection = Section(field: .comments, cellRepresentations: [book.comments].compactMap { $0 }, footer: nil)
             
             let formattedPublishedDate: String?
             if let publishedDate = book.publishedDate {
@@ -70,10 +101,10 @@ final class BookDetailsViewModel {
             } else {
                 formattedPublishedDate = nil
             }
-            let publishedSection = Section(header: "Published On", cellRepresentations: [formattedPublishedDate].compactMap { $0 }, footer: nil, shouldSingularize: false)
+            let publishedSection = Section(field: .publishedOn, cellRepresentations: [formattedPublishedDate].compactMap { $0 }, footer: nil, shouldSingularize: false)
             
-            let languagesSection = Section(header: "Languages", cellRepresentations: book.languages, footer: nil)
-            let identifiersSection = Section(header: "Identifiers", cellRepresentations: book.identifiers, footer: nil)
+            let languagesSection = Section(field: .languages, cellRepresentations: book.languages, footer: nil)
+            let identifiersSection = Section(field: .identifiers, cellRepresentations: book.identifiers, footer: nil)
             
             let addedToCaliberFooter: String
             if let addedOn = book.addedOn {
@@ -90,7 +121,7 @@ final class BookDetailsViewModel {
             }
             
             let tagsFooter = "\n\(addedToCaliberFooter)\n\n\(lastUpdatedFooter)"
-            let tagsSection = Section(header: "Tags", cellRepresentations: book.tags, footer: tagsFooter)
+            let tagsSection = Section(field: .tags, cellRepresentations: book.tags, footer: tagsFooter)
             
             self.sections = [ratingSection, authorsSection, seriesSection, commentsSection, publishedSection, languagesSection, identifiersSection, tagsSection]
             
