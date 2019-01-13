@@ -30,6 +30,7 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         }
     }
     
+    // TODO: Analytics
     // TODO: Implement editing for the rest of the book's fields
     
     private let presenter: BookEditPresenting
