@@ -24,12 +24,36 @@
 import UIKit
 
 protocol BookEditRouting {
+    func routeForPicTap()
     func routeForSuccessfulSave()
     func routeForCancellation()
 }
 
 final class BookEditRouter: BookEditRouting {
-    weak var viewController: UIViewController?
+    weak var viewController: BookEditViewController?
+    
+    func routeForPicTap() {
+        guard let viewController = viewController else { return }
+        
+        let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(
+            UIAlertAction(title: "Take picture", style: .default) { _ in
+                print("take pic")
+            }
+        )
+        alertController.addAction(
+            UIAlertAction(title: "Select from library", style: .default) { _ in
+                print("select from library")
+            }
+        )
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alertController.popoverPresentationController?.sourceRect = viewController.bookCoverButton.bounds
+        alertController.popoverPresentationController?.sourceView = viewController.bookCoverButton
+        alertController.popoverPresentationController?.permittedArrowDirections = .up
+        
+        viewController.present(alertController, animated: true)
+    }
     
     func routeForSuccessfulSave() {
         viewController?.dismiss(animated: true)

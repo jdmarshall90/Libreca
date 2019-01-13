@@ -56,6 +56,10 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         }
     }
     
+    @IBAction private func didTapPic(_ sender: UIButton) {
+        presenter.didTapPic()
+    }
+    
     @objc
     func didTapSave(_ sender: UIBarButtonItem) {
         presenter.save()
