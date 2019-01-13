@@ -34,7 +34,19 @@ final class BookEditRouter: BookEditRouting {
     
     func routeForPicTap() {
         guard let viewController = viewController else { return }
-        
+        let alertController = viewControllerForImageEditActions(from: viewController.bookCoverButton)
+        viewController.present(alertController, animated: true)
+    }
+    
+    func routeForSuccessfulSave() {
+        viewController?.dismiss(animated: true)
+    }
+    
+    func routeForCancellation() {
+        viewController?.dismiss(animated: true)
+    }
+    
+    private func viewControllerForImageEditActions(from sender: UIButton) -> UIViewController {
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: "Take picture", style: .default) { _ in
@@ -48,18 +60,12 @@ final class BookEditRouter: BookEditRouting {
         )
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        alertController.popoverPresentationController?.sourceRect = viewController.bookCoverButton.bounds
-        alertController.popoverPresentationController?.sourceView = viewController.bookCoverButton
-        alertController.popoverPresentationController?.permittedArrowDirections = .up
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceRect = sender.bounds
+            popoverController.sourceView = sender
+            popoverController.permittedArrowDirections = .up
+        }
         
-        viewController.present(alertController, animated: true)
-    }
-    
-    func routeForSuccessfulSave() {
-        viewController?.dismiss(animated: true)
-    }
-    
-    func routeForCancellation() {
-        viewController?.dismiss(animated: true)
+        return alertController
     }
 }
