@@ -40,10 +40,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     // TODO: Analytics
     
     private let presenter: BookEditPresenting
-    private lazy var bookModel = presenter.bookModel
+    private let bookModel: BookModel
     
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
+        self.bookModel = presenter.bookModel
         super.init(nibName: "BookEditViewController", bundle: nil)
     }
     
