@@ -37,7 +37,7 @@ struct BookDetailsRouter: BookDetailsRouting {
     }
     
     func routeToEditing(for book: Book) {
-        let editVC = createEditViewController(for: book)
+        let editVC = BookEditModuleFactory.viewController(for: book)
         let editNav = UINavigationController(rootViewController: editVC)
         editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewController.didTapCancel))
         editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewController.didTapSave))
@@ -47,16 +47,5 @@ struct BookDetailsRouter: BookDetailsRouting {
     
     func routeToEditPurchaseValueProposition() {
         print("show value prop")
-    }
-    
-    private func createEditViewController(for book: Book) -> BookEditViewController {
-        let router = BookEditRouter()
-        let service = BookEditService(coverService: book.cover.hitService)
-        let interactor = BookEditInteractor(service: service)
-        let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
-        let editVC = BookEditViewController(presenter: presenter)
-        router.viewController = editVC
-        presenter.view = editVC
-        return editVC
     }
 }
