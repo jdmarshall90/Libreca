@@ -27,6 +27,7 @@ protocol BookDetailsInteracting {
 
 struct BookDetailsInteractor: BookDetailsInteracting {
     var hasPurchasedEditing: Bool {
+        // TODO: Check for in app purchase. Encapsulate that logic into separate class
         return true
     }
 }

@@ -38,12 +38,12 @@ final class BookEditRouter: BookEditRouting {
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: "Take picture", style: .default) { _ in
-                print("take pic")
+                // TODO: Take pic
             }
         )
         alertController.addAction(
             UIAlertAction(title: "Select from library", style: .default) { _ in
-                print("select from library")
+                // TODO: Select from library
             }
         )
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
