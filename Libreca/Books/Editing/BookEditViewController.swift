@@ -23,12 +23,14 @@
 
 import UIKit
 
-final class BookEditViewController: UIViewController, BookEditViewing {
+final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var bookCoverButton: UIButton! {
         didSet {
             bookCoverButton.imageView?.contentMode = .scaleAspectFit
         }
     }
+    
+    @IBOutlet weak var tableView: UITableView!
     
     var imageButton: UIButton {
         return bookCoverButton
@@ -36,9 +38,9 @@ final class BookEditViewController: UIViewController, BookEditViewing {
     
     // TODO: End-to-end testing in light mode
     // TODO: Analytics
-    // TODO: Implement editing for the rest of the book's fields
     
     private let presenter: BookEditPresenting
+    private lazy var bookModel = presenter.bookModel
     
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
@@ -53,6 +55,8 @@ final class BookEditViewController: UIViewController, BookEditViewing {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        registerCells()
         title = "Edit"
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
@@ -61,6 +65,58 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         // TODO: Spinner
         presenter.fetchImage { [weak self] image in
             self?.bookCoverButton.setImage(image, for: .normal)
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return bookModel.sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return bookModel.sections[section].cells.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // TODO: Dequeue the correct cell (see `registerCells()` function)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
+        
+        let cellModel = bookModel.sections[indexPath.section].cells[indexPath.row]
+        cell.textLabel?.attributedText = cellModel.text
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return bookModel.sections[section].header
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedField = bookModel.sections[indexPath.section].field
+        
+        switch selectedField {
+        case .rating:
+            // TODO: Implement me
+            break
+        case .authors:
+            // TODO: Implement me
+            break
+        case .series:
+            // TODO: Implement me
+            break
+        case .comments:
+            // TODO: Implement me
+            break
+        case .publishedOn:
+            // TODO: Implement me
+            break
+        case .languages:
+            // TODO: Implement me
+            break
+        case .identifiers:
+            // TODO: Implement me
+            break
+        case .tags:
+            // TODO: Implement me
+            break
         }
     }
     
@@ -80,5 +136,9 @@ final class BookEditViewController: UIViewController, BookEditViewing {
     @objc
     func didTapCancel(_ sender: UIBarButtonItem) {
         presenter.cancel()
+    }
+    
+    private func registerCells() {
+        tableView.register(UINib(nibName: NSStringFromClass(RatingTableViewCell.self), bundle: nil), forCellReuseIdentifier: "ratingCellID")
     }
 }
