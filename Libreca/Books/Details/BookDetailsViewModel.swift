@@ -150,7 +150,7 @@ final class BookDetailsViewModel {
     }
 }
 
-private typealias Cell = BookDetailsViewModel.BookModel.Section.Cell
+private typealias Cell = BookModel.Section.Cell
 
 private protocol CellRepresentable {
     var cellRepresentation: Cell { get }
