@@ -26,6 +26,7 @@ import UIKit
 
 protocol BookEditPresenting {
     func fetchImage(completion: @escaping (UIImage) -> Void)
+    func didTapPic()
     func save()
     func cancel()
 }
@@ -45,6 +46,10 @@ final class BookEditPresenter: BookEditPresenting {
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
         interactor.fetchImage(completion: completion)
+    }
+    
+    func didTapPic() {
+        router.routeForPicTap()
     }
     
     func save() {

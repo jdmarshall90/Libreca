@@ -30,6 +30,8 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         }
     }
     
+    // TODO: Implement editing for the rest of the book's fields
+    
     private let presenter: BookEditPresenting
     
     init(presenter: BookEditPresenting) {
@@ -54,6 +56,10 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         presenter.fetchImage { [weak self] image in
             self?.bookCoverButton.setImage(image, for: .normal)
         }
+    }
+    
+    @IBAction private func didTapPic(_ sender: UIButton) {
+        presenter.didTapPic()
     }
     
     @objc

@@ -27,6 +27,9 @@
                     </constraints>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <state key="normal" image="BookCoverPlaceholder"/>
+                    <connections>
+                        <action selector="didTapPic:" destination="-1" eventType="touchUpInside" id="EQe-Rb-FaE"/>
+                    </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c8f-Tu-WVg">
                     <rect key="frame" x="0.0" y="147" width="375" height="520"/>

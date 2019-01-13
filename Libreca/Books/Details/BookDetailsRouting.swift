@@ -46,6 +46,6 @@ struct BookDetailsRouter: BookDetailsRouting {
     }
     
     func routeToEditPurchaseValueProposition() {
-        print("show value prop")
+        // TODO: Show value prop
     }
 }
