@@ -41,9 +41,12 @@ struct BookDetailsRouter: BookDetailsRouting {
         let interactor = BookEditInteractor()
         let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
         let editVC = BookEditViewController(presenter: presenter)
+        router.viewController = editVC
         presenter.view = editVC
         
         let editNav = UINavigationController(rootViewController: editVC)
+        editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewController.didTapCancel))
+        editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewController.didTapSave))
         editNav.modalPresentationStyle = .formSheet
         viewController?.present(editNav, animated: true)
     }

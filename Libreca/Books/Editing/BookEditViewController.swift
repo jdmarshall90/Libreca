@@ -44,11 +44,13 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         }
     }
     
-    @IBAction private func didTapSave(_ sender: UIBarButtonItem) {
+    @objc
+    func didTapSave(_ sender: UIBarButtonItem) {
         presenter.save()
     }
     
-    @IBAction private func didTapCancel(_ sender: UIBarButtonItem) {
+    @objc
+    func didTapCancel(_ sender: UIBarButtonItem) {
         presenter.cancel()
     }
 }
