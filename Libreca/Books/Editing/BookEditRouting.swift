@@ -28,14 +28,14 @@ protocol BookEditRouting {
     func routeForCancellation()
 }
 
-struct BookEditRouter: BookEditRouting {
-    let viewController: UIViewController
+final class BookEditRouter: BookEditRouting {
+    weak var viewController: UIViewController?
     
     func routeForSuccessfulSave() {
-        viewController.dismiss(animated: true)
+        viewController?.dismiss(animated: true)
     }
     
     func routeForCancellation() {
-        viewController.dismiss(animated: true)
+        viewController?.dismiss(animated: true)
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookEditViewController" customModule="Libreca" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="k63-B7-xaX" id="lLR-Hw-Msi"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="k63-B7-xaX">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Yx-RS-yFH">
+                    <rect key="frame" x="132" y="28" width="111" height="111"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="8Yx-RS-yFH" secondAttribute="height" multiplier="1:1" id="Qe0-lI-aQD"/>
+                    </constraints>
+                    <state key="normal" title="Button" backgroundImage="BookCoverPlaceholder"/>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c8f-Tu-WVg">
+                    <rect key="frame" x="0.0" y="147" width="375" height="520"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="bh2-gY-LEk" firstAttribute="bottom" secondItem="c8f-Tu-WVg" secondAttribute="bottom" id="0y3-RT-b1U"/>
+                <constraint firstItem="8Yx-RS-yFH" firstAttribute="height" secondItem="k63-B7-xaX" secondAttribute="height" multiplier="1:6" id="3FQ-kT-egO"/>
+                <constraint firstItem="c8f-Tu-WVg" firstAttribute="width" secondItem="k63-B7-xaX" secondAttribute="width" id="7DS-PP-Izk"/>
+                <constraint firstItem="c8f-Tu-WVg" firstAttribute="centerX" secondItem="bh2-gY-LEk" secondAttribute="centerX" id="GBD-hQ-7u7"/>
+                <constraint firstItem="c8f-Tu-WVg" firstAttribute="top" secondItem="8Yx-RS-yFH" secondAttribute="bottom" constant="8" id="MBN-6d-y1c"/>
+                <constraint firstItem="8Yx-RS-yFH" firstAttribute="centerX" secondItem="bh2-gY-LEk" secondAttribute="centerX" id="eHO-hM-NIM"/>
+                <constraint firstItem="8Yx-RS-yFH" firstAttribute="top" secondItem="bh2-gY-LEk" secondAttribute="top" constant="8" id="j9p-Cw-8u2"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="bh2-gY-LEk"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="BookCoverPlaceholder" width="25" height="25"/>
+    </resources>
+</document>

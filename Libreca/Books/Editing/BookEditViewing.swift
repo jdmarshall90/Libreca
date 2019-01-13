@@ -21,6 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-protocol BookEditViewing {
+protocol BookEditViewing: class {
     //
 }
