@@ -25,6 +25,8 @@ import Alamofire
 import CalibreKit
 import UIKit
 
+// TODO: Save edits to server
+
 protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage) -> Void)
 }

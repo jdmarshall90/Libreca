@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import AVKit
 import UIKit
 
 protocol BookEditRouting {
@@ -29,12 +30,12 @@ protocol BookEditRouting {
     func routeForCancellation()
 }
 
-final class BookEditRouter: BookEditRouting {
-    weak var viewController: BookEditViewController?
+final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    weak var viewController: (BookEditViewing & UIViewController)?
     
     func routeForPicTap() {
         guard let viewController = viewController else { return }
-        let alertController = viewControllerForImageEditActions(from: viewController.bookCoverButton)
+        let alertController = viewControllerForImageEditActions(from: viewController.imageButton)
         viewController.present(alertController, animated: true)
     }
     
@@ -49,13 +50,39 @@ final class BookEditRouter: BookEditRouting {
     private func viewControllerForImageEditActions(from sender: UIButton) -> UIViewController {
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
-            UIAlertAction(title: "Take picture", style: .default) { _ in
-                // TODO: Take pic
+            UIAlertAction(title: "Take picture", style: .default) { [weak self] _ in
+                if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .camera
+                    self?.viewController?.present(imagePicker, animated: true)
+                } else {
+                    let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")?.name ?? ""
+                    let alertController = UIAlertController(title: "Camera access denied", message: "To take a picture of your book, \(appName) needs access to your camera.", preferredStyle: .alert)
+                    
+                    alertController.addAction(
+                        UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    )
+                    alertController.addAction(
+                        UIAlertAction(title: "Settings", style: .default) { _ in
+                            guard let settingsURL = URL(string: UIApplication.openSettingsURLString),
+                                UIApplication.shared.canOpenURL(settingsURL) else {
+                                    return
+                            }
+                            UIApplication.shared.open(settingsURL)
+                        }
+                    )
+                    self?.viewController?.present(alertController, animated: true)
+                }
             }
         )
         alertController.addAction(
-            UIAlertAction(title: "Select from library", style: .default) { _ in
-                // TODO: Select from library
+            UIAlertAction(title: "Select from library", style: .default) { [weak self] _ in
+                // TODO: Fix dark mode colors
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = .photoLibrary
+                self?.viewController?.present(imagePicker, animated: true)
             }
         )
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -67,5 +94,11 @@ final class BookEditRouter: BookEditRouting {
         }
         
         return alertController
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
+        viewController?.didSelect(newImage: selectedImage)
+        picker.dismiss(animated: true)
     }
 }
