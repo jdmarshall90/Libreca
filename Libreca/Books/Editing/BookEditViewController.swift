@@ -39,6 +39,7 @@ final class BookEditViewController: UIViewController, BookEditViewing {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Edit"
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
