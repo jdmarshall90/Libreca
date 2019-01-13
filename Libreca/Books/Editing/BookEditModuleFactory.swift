@@ -26,7 +26,7 @@ import CalibreKit
 struct BookEditModuleFactory {
     private init() {}
     
-    static func viewController(for book: Book) -> BookEditViewController {
+    static func viewController(for book: Book) -> BookEditViewing & UIViewController {
         let router = BookEditRouter()
         let service = BookEditService(coverService: book.cover.hitService)
         let interactor = BookEditInteractor(service: service)
