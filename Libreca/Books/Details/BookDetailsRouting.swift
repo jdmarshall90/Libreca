@@ -38,7 +38,8 @@ struct BookDetailsRouter: BookDetailsRouting {
     
     func routeToEditing(for book: Book) {
         let router = BookEditRouter()
-        let interactor = BookEditInteractor()
+        let service = BookEditService(coverService: book.cover.hitService)
+        let interactor = BookEditInteractor(service: service)
         let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
         let editVC = BookEditViewController(presenter: presenter)
         router.viewController = editVC

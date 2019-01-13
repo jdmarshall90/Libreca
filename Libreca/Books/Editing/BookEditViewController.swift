@@ -52,9 +52,7 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         
         // TODO: Spinner
         presenter.fetchImage { [weak self] image in
-            if let image = image {
-                self?.bookCoverButton.setImage(image, for: .normal)
-            }
+            self?.bookCoverButton.setImage(image, for: .normal)
         }
     }
     

@@ -25,7 +25,7 @@ import CalibreKit
 import UIKit
 
 protocol BookEditPresenting {
-    func fetchImage(completion: @escaping (UIImage?) -> Void)
+    func fetchImage(completion: @escaping (UIImage) -> Void)
     func save()
     func cancel()
 }
@@ -43,11 +43,8 @@ final class BookEditPresenter: BookEditPresenting {
         self.interactor = interactor
     }
     
-    func fetchImage(completion: @escaping (UIImage?) -> Void) {
-        // TODO: This belongs behind an interactor / service
-        book.cover.hitService {
-            completion($0.result.value?.image)
-        }
+    func fetchImage(completion: @escaping (UIImage) -> Void) {
+        interactor.fetchImage(completion: completion)
     }
     
     func save() {
