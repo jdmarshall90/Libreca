@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookEditViewController" customModule="Libreca" customModuleProvider="target">
             <connections>
+                <outlet property="bookCoverButton" destination="8Yx-RS-yFH" id="thi-Oc-AwR"/>
                 <outlet property="view" destination="k63-B7-xaX" id="lLR-Hw-Msi"/>
             </connections>
         </placeholder>
@@ -24,7 +25,8 @@
                     <constraints>
                         <constraint firstAttribute="width" secondItem="8Yx-RS-yFH" secondAttribute="height" multiplier="1:1" id="Qe0-lI-aQD"/>
                     </constraints>
-                    <state key="normal" title="Button" backgroundImage="BookCoverPlaceholder"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <state key="normal" image="BookCoverPlaceholder"/>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c8f-Tu-WVg">
                     <rect key="frame" x="0.0" y="147" width="375" height="520"/>
@@ -39,7 +41,7 @@
                 <constraint firstItem="c8f-Tu-WVg" firstAttribute="centerX" secondItem="bh2-gY-LEk" secondAttribute="centerX" id="GBD-hQ-7u7"/>
                 <constraint firstItem="c8f-Tu-WVg" firstAttribute="top" secondItem="8Yx-RS-yFH" secondAttribute="bottom" constant="8" id="MBN-6d-y1c"/>
                 <constraint firstItem="8Yx-RS-yFH" firstAttribute="centerX" secondItem="bh2-gY-LEk" secondAttribute="centerX" id="eHO-hM-NIM"/>
-                <constraint firstItem="8Yx-RS-yFH" firstAttribute="top" secondItem="bh2-gY-LEk" secondAttribute="top" constant="8" id="j9p-Cw-8u2"/>
+                <constraint firstItem="8Yx-RS-yFH" firstAttribute="top" secondItem="bh2-gY-LEk" secondAttribute="top" constant="8" id="eQd-sI-sJr"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="bh2-gY-LEk"/>
         </view>
