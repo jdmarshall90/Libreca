@@ -30,6 +30,11 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         }
     }
     
+    var imageButton: UIButton {
+        return bookCoverButton
+    }
+    
+    // TODO: End-to-end testing in light mode
     // TODO: Analytics
     // TODO: Implement editing for the rest of the book's fields
     
@@ -57,6 +62,10 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         presenter.fetchImage { [weak self] image in
             self?.bookCoverButton.setImage(image, for: .normal)
         }
+    }
+    
+    func didSelect(newImage: UIImage) {
+        bookCoverButton.setImage(newImage, for: .normal)
     }
     
     @IBAction private func didTapPic(_ sender: UIButton) {

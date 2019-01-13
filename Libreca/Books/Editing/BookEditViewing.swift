@@ -21,6 +21,10 @@
 //  This file is part of project: Libreca
 //
 
+import UIKit
+
 protocol BookEditViewing: class {
-    //
+    var imageButton: UIButton { get }
+    
+    func didSelect(newImage: UIImage)
 }
