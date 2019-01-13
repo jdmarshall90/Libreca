@@ -24,6 +24,12 @@
 import UIKit
 
 final class BookEditViewController: UIViewController, BookEditViewing {
+    @IBOutlet weak var bookCoverButton: UIButton! {
+        didSet {
+            bookCoverButton.imageView?.contentMode = .scaleAspectFit
+        }
+    }
+    
     private let presenter: BookEditPresenting
     
     init(presenter: BookEditPresenting) {
@@ -42,6 +48,11 @@ final class BookEditViewController: UIViewController, BookEditViewing {
         title = "Edit"
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        }
+        
+        // TODO: Spinner
+        presenter.fetchImage { [weak self] image in
+            self?.bookCoverButton.setImage(image, for: .normal)
         }
     }
     

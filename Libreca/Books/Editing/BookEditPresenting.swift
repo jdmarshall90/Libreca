@@ -25,6 +25,7 @@ import CalibreKit
 import UIKit
 
 protocol BookEditPresenting {
+    func fetchImage(completion: @escaping (UIImage) -> Void)
     func save()
     func cancel()
 }
@@ -40,6 +41,10 @@ final class BookEditPresenter: BookEditPresenting {
         self.book = book
         self.router = router
         self.interactor = interactor
+    }
+    
+    func fetchImage(completion: @escaping (UIImage) -> Void) {
+        interactor.fetchImage(completion: completion)
     }
     
     func save() {

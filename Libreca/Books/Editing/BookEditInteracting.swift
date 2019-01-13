@@ -21,10 +21,20 @@
 //  This file is part of project: Libreca
 //
 
+import UIKit
+
 protocol BookEditInteracting {
-    //
+    func fetchImage(completion: @escaping (UIImage) -> Void)
 }
 
 struct BookEditInteractor: BookEditInteracting {
-    //
+    private let service: BookEditServicing
+    
+    init(service: BookEditServicing) {
+        self.service = service
+    }
+    
+    func fetchImage(completion: @escaping (UIImage) -> Void) {
+        service.fetchImage(completion: completion)
+    }
 }
