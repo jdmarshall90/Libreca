@@ -36,6 +36,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return bookCoverButton
     }
     
+    private var isShowingRatingPicker = false
+    
     // TODO: End-to-end testing in light mode
     // TODO: Analytics
     
@@ -74,18 +76,30 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookModel.sections[section].cells.count
+        let section = bookModel.sections[section]
+        var count = section.cells.count
+        if case .rating = section.field,
+            isShowingRatingPicker {
+            count += 1
+        }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = bookModel.sections[indexPath.section]
         let field = section.field
-        let cellModel = section.cells[indexPath.row]
         
         switch field {
         case .rating:
+            if indexPath.row == 1 && indexPath.section == 0 {
+                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+                cell.textLabel?.text = "hello world"
+                return cell
+            }
+            
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
+            let cellModel = section.cells[indexPath.row]
             cell.ratingLabel.attributedText = cellModel.text
             return cell
         case .authors:
@@ -121,8 +135,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch selectedField {
         case .rating:
-            // TODO: Implement me
-            break
+            tableView.deselectRow(at: indexPath, animated: true)
+            isShowingRatingPicker.toggle()
+            let indexPathOfPicker = IndexPath(row: 1, section: 0)
+            if isShowingRatingPicker {
+                tableView.insertRows(at: [indexPathOfPicker], with: .top)
+            } else {
+                tableView.deleteRows(at: [indexPathOfPicker], with: .top)
+            }
         case .authors:
             // TODO: Implement me
             break
