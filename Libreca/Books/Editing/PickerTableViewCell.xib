@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="192" id="KGk-i7-Jjw" customClass="PickerTableViewCell" customModule="Libreca" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="192"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="191.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-Y5-eeL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="191.5"/>
+                    </pickerView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="YEW-Y5-eeL" firstAttribute="height" secondItem="H2p-sc-9uM" secondAttribute="height" id="EZE-cK-ZJV"/>
+                    <constraint firstItem="YEW-Y5-eeL" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="NWk-YG-pxS"/>
+                    <constraint firstItem="YEW-Y5-eeL" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="TOI-tu-PJA"/>
+                    <constraint firstItem="YEW-Y5-eeL" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="ov4-8M-b8S"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="picker" destination="YEW-Y5-eeL" id="GOO-N5-dOz"/>
+            </connections>
+            <point key="canvasLocation" x="52.799999999999997" y="-17.991004497751124"/>
+        </tableViewCell>
+    </objects>
+</document>

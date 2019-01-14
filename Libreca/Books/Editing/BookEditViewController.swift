@@ -23,7 +23,7 @@
 
 import UIKit
 
-final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate {
+final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var bookCoverButton: UIButton! {
         didSet {
             bookCoverButton.imageView?.contentMode = .scaleAspectFit
@@ -37,6 +37,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     private var isShowingRatingPicker = false
+    private let pickerCellID = "pickerCellID"
     
     // TODO: End-to-end testing in light mode
     // TODO: Analytics
@@ -91,9 +92,15 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch field {
         case .rating:
-            if (indexPath.row + 1) > section.cells.count {
-                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                cell.textLabel?.text = "hello world"
+            if isShowingRatingPicker,
+                (indexPath.row + 1) > section.cells.count,
+                let index = presenter.availableRatings.index(of: bookModel.book.rating) {
+                // swiftlint:disable:next force_cast
+                let cell = tableView.dequeueReusableCell(withIdentifier: pickerCellID, for: indexPath) as! PickerTableViewCell
+                cell.picker.delegate = self
+                cell.picker.dataSource = self
+                cell.picker.selectRow(index, inComponent: 0, animated: true)
+                // TODO: This cell is a little too tall
                 return cell
             } else {
                 // swiftlint:disable:next force_cast
@@ -167,6 +174,21 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return presenter.availableRatings.count
+    }
+    
+    // TODO: Update rating cell with changes to picker value
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        // TODO: Dark mode color?
+        return presenter.availableRatings[row].displayValue
+    }
+    
     func didSelect(newImage: UIImage) {
         bookCoverButton.setImage(newImage, for: .normal)
     }
@@ -187,6 +209,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     private func registerCells() {
         tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.rating.reuseIdentifier)
+        tableView.register(PickerTableViewCell.nib, forCellReuseIdentifier: pickerCellID)
     }
 }
 
