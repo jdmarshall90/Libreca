@@ -23,6 +23,8 @@
 
 import UIKit
 
+// TODO: Add `private_outlet` to SwiftLint rule configuration, then make consumers of outlets use setup methods with parameters
+
 final class RatingTableViewCell: UITableViewCell {
     @IBOutlet weak var ratingLabel: UILabel!
 }
