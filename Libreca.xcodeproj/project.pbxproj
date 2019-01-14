@@ -53,6 +53,8 @@
 		D07EC20A21EA883A00AE193B /* BookEditServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20921EA883A00AE193B /* BookEditServicing.swift */; };
 		D07EC20C21EA925C00AE193B /* BookEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC20B21EA925C00AE193B /* BookEditViewController.xib */; };
 		D07EC20E21EAECA100AE193B /* BookEditModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */; };
+		D07EC21021EBE50B00AE193B /* RatingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */; };
+		D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
@@ -155,6 +157,8 @@
 		D07EC20921EA883A00AE193B /* BookEditServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditServicing.swift; sourceTree = "<group>"; };
 		D07EC20B21EA925C00AE193B /* BookEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookEditViewController.xib; sourceTree = "<group>"; };
 		D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditModuleFactory.swift; sourceTree = "<group>"; };
+		D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingTableViewCell.swift; sourceTree = "<group>"; };
+		D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingTableViewCell.xib; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
@@ -319,6 +323,8 @@
 		D07EC1F021EA7B2200AE193B /* Editing */ = {
 			isa = PBXGroup;
 			children = (
+				D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */,
+				D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */,
 				D07EC1F721EA815800AE193B /* BookEditViewController.swift */,
 				D07EC20B21EA925C00AE193B /* BookEditViewController.xib */,
 				D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */,
@@ -522,6 +528,7 @@
 				D044A33E21D525D400FBC7C8 /* dark_mode_icon@3x.png in Resources */,
 				D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */,
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
+				D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
@@ -645,6 +652,7 @@
 				D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */,
 				D07EC20421EA882B00AE193B /* BookEditRouting.swift in Sources */,
 				D07EC20A21EA883A00AE193B /* BookEditServicing.swift in Sources */,
+				D07EC21021EBE50B00AE193B /* RatingTableViewCell.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
 				D042EEE021E5684F0046D00F /* Formatters.swift in Sources */,
 				D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */,

@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookEditViewController" customModule="Libreca" customModuleProvider="target">
             <connections>
                 <outlet property="bookCoverButton" destination="8Yx-RS-yFH" id="thi-Oc-AwR"/>
+                <outlet property="tableView" destination="c8f-Tu-WVg" id="EdR-Lv-BWU"/>
                 <outlet property="view" destination="k63-B7-xaX" id="lLR-Hw-Msi"/>
             </connections>
         </placeholder>
@@ -31,9 +32,13 @@
                         <action selector="didTapPic:" destination="-1" eventType="touchUpInside" id="EQe-Rb-FaE"/>
                     </connections>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c8f-Tu-WVg">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="c8f-Tu-WVg">
                     <rect key="frame" x="0.0" y="147" width="375" height="520"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="hfl-bT-MRv"/>
+                        <outlet property="delegate" destination="-1" id="vcS-uc-dQg"/>
+                    </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

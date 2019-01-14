@@ -25,6 +25,9 @@ import CalibreKit
 import UIKit
 
 protocol BookEditPresenting {
+    var availableRatings: [Book.Rating] { get }
+    var bookModel: BookModel { get }
+    
     func fetchImage(completion: @escaping (UIImage) -> Void)
     func didTapPic()
     func save()
@@ -37,6 +40,14 @@ final class BookEditPresenter: BookEditPresenting {
     weak var view: BookEditViewing?
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
+    
+    var availableRatings: [Book.Rating] {
+        return Book.Rating.allCases
+    }
+    
+    var bookModel: BookModel {
+        return BookModel(book: book)
+    }
     
     init(book: Book, router: BookEditRouting, interactor: BookEditInteracting) {
         self.book = book

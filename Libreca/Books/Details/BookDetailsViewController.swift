@@ -34,7 +34,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     private lazy var viewModel = BookDetailsViewModel(view: self)
     private lazy var presenter: BookDetailsPresenting = BookDetailsPresenter(view: self)
     
-    private var bookModel: BookDetailsViewModel.BookModel? {
+    private var bookModel: BookModel? {
         didSet {
             title = bookModel?.title
         }
