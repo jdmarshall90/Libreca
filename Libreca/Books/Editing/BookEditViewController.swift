@@ -78,12 +78,38 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: Dequeue the correct cell (see `registerCells()` function)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
+        let section = bookModel.sections[indexPath.section]
+        let field = section.field
+        let cellModel = section.cells[indexPath.row]
         
-        let cellModel = bookModel.sections[indexPath.section].cells[indexPath.row]
-        cell.textLabel?.attributedText = cellModel.text
-        return cell
+        switch field {
+        case .rating:
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
+            cell.ratingLabel.attributedText = cellModel.text
+            return cell
+        case .authors:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .series:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .comments:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .publishedOn:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .languages:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .identifiers:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .tags:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -140,6 +166,21 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     private func registerCells() {
-        tableView.register(UINib(nibName: NSStringFromClass(RatingTableViewCell.self), bundle: nil), forCellReuseIdentifier: "ratingCellID")
+        tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.rating.reuseIdentifier)
+    }
+}
+
+private extension BookModel.Section.Field {
+    var reuseIdentifier: String {
+        return "\(self)cellID"
+    }
+}
+
+// TODO: Move this to its own file
+extension UITableViewCell {
+    static var nib: UINib {
+        // swiftlint:disable:next force_unwrapping
+        let classString = String(NSStringFromClass(self).split(separator: ".").last!)
+        return UINib(nibName: classString, bundle: nil)
     }
 }
