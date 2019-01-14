@@ -91,17 +91,17 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch field {
         case .rating:
-            if indexPath.row == 1 && indexPath.section == 0 {
+            if (indexPath.row + 1) > section.cells.count {
                 let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
                 cell.textLabel?.text = "hello world"
                 return cell
+            } else {
+                // swiftlint:disable:next force_cast
+                let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
+                let cellModel = section.cells[indexPath.row]
+                cell.ratingLabel.attributedText = cellModel.text
+                return cell
             }
-            
-            // swiftlint:disable:next force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
-            let cellModel = section.cells[indexPath.row]
-            cell.ratingLabel.attributedText = cellModel.text
-            return cell
         case .authors:
             // TODO: Implement me
             return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
