@@ -42,12 +42,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     // TODO: End-to-end testing in light mode
     // TODO: Analytics
     
-    private let presenter: BookEditPresenting
-    private let bookModel: BookModel
+    private var presenter: BookEditPresenting
+    private var bookModel: BookModel {
+        return presenter.bookModel
+    }
     
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
-        self.bookModel = presenter.bookModel
         super.init(nibName: "BookEditViewController", bundle: nil)
     }
     
@@ -61,7 +62,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         super.viewDidLoad()
         
         registerCells()
-        title = "Edit"
+        title = "Edit Book"
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
@@ -94,7 +95,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .rating:
             if isShowingRatingPicker,
                 (indexPath.row + 1) > section.cells.count,
-                let index = presenter.availableRatings.index(of: bookModel.book.rating) {
+                let index = presenter.availableRatings.index(of: presenter.rating) {
                 // swiftlint:disable:next force_cast
                 let cell = tableView.dequeueReusableCell(withIdentifier: pickerCellID, for: indexPath) as! PickerTableViewCell
                 cell.picker.delegate = self
@@ -105,8 +106,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             } else {
                 // swiftlint:disable:next force_cast
                 let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
-                let cellModel = section.cells[indexPath.row]
-                cell.ratingLabel.attributedText = cellModel.text
+                cell.ratingLabel.text = presenter.rating.displayValue
                 return cell
             }
         case .authors:
@@ -182,7 +182,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return presenter.availableRatings.count
     }
     
-    // TODO: Update rating cell with changes to picker value
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedRating = presenter.availableRatings[row]
+        presenter.rating = selectedRating
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         // TODO: Dark mode color?

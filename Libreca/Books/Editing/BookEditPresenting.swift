@@ -24,7 +24,10 @@
 import CalibreKit
 import UIKit
 
+// TODO: Refactor this to make it completely decoupled from `BookModel`
+// TODO: Refactor this to make the view completely passive
 protocol BookEditPresenting {
+    var rating: Book.Rating { get set }
     var availableRatings: [Book.Rating] { get }
     var bookModel: BookModel { get }
     
@@ -35,22 +38,23 @@ protocol BookEditPresenting {
 }
 
 final class BookEditPresenter: BookEditPresenting {
-    let book: Book
+    private let book: Book
     
     weak var view: BookEditViewing?
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
     
+    var rating: Book.Rating
+    
     var availableRatings: [Book.Rating] {
         return Book.Rating.allCases
     }
     
-    var bookModel: BookModel {
-        return BookModel(book: book)
-    }
+    lazy var bookModel = BookModel(book: book)
     
     init(book: Book, router: BookEditRouting, interactor: BookEditInteracting) {
         self.book = book
+        self.rating = book.rating
         self.router = router
         self.interactor = interactor
     }
