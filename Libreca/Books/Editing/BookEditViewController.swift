@@ -30,7 +30,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.isEditing = true
+        }
+    }
     
     var imageButton: UIButton {
         return bookCoverButton
@@ -79,12 +83,26 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let section = bookModel.sections[section]
-        var count = section.cells.count
-        if case .rating = section.field,
-            isShowingRatingPicker {
-            count += 1
+        
+        switch section.field {
+        case .rating where isShowingRatingPicker:
+            return 2
+        case .rating,
+             .publishedOn:
+            return 1
+        case .comments:
+            return 1
+        case .authors:
+            return presenter.authors.count + 1
+        case .series:
+            return 0
+        case .languages:
+            return 0
+        case .identifiers:
+            return 0
+        case .tags:
+            return 0
         }
-        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,8 +128,17 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 return cell
             }
         case .authors:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+            cell.textLabel?.numberOfLines = 0
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
+            if (indexPath.row + 1) > presenter.authors.count {
+                cell.textLabel?.text = "Add author"
+            } else {
+                cell.textLabel?.text = presenter.authors[indexPath.row].name
+            }
+            return cell
         case .series:
             // TODO: Implement me
             return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
@@ -135,6 +162,53 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return bookModel.sections[section].header
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let field = bookModel.sections[indexPath.section].field
+        
+        switch (field, editingStyle) {
+        case (.authors, .insert):
+            break
+        case (.authors, .delete):
+            presenter.authors.remove(at: indexPath.row)
+        case (.series, .insert):
+            break
+        case (.series, .delete):
+            break
+        case (.languages, .insert):
+            break
+        case (.languages, .delete):
+            break
+        case (.identifiers, .insert):
+            break
+        case (.identifiers, .delete):
+            break
+        case (.tags, .insert):
+            break
+        case (.tags, .delete):
+            break
+        default:
+            // impossible
+            break
+        }
+        
+        if editingStyle == .delete {
+            tableView.deleteRows(at: [indexPath], with: .top)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        let section = bookModel.sections[indexPath.section]
+        
+        let rowCount = tableView.numberOfRows(inSection: indexPath.section)
+        let isAddRow = indexPath.row == rowCount - 1
+        let editingStyle: UITableViewCell.EditingStyle = section.field.isArrayBased && isAddRow ? .insert : .delete
+        return editingStyle
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return bookModel.sections[indexPath.section].field.isArrayBased
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -220,6 +294,21 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
 private extension BookModel.Section.Field {
     var reuseIdentifier: String {
         return "\(self)cellID"
+    }
+    
+    var isArrayBased: Bool {
+        switch self {
+        case .authors,
+             .series,
+             .languages,
+             .identifiers,
+             .tags:
+            return true
+        case .rating,
+             .comments,
+             .publishedOn:
+            return false
+        }
     }
 }
 

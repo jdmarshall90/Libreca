@@ -27,6 +27,7 @@ import UIKit
 // TODO: Refactor this to make it completely decoupled from `BookModel`
 // TODO: Refactor this to make the view completely passive
 protocol BookEditPresenting {
+    var authors: [Book.Author] { get set }
     var rating: Book.Rating { get set }
     var availableRatings: [Book.Rating] { get }
     var bookModel: BookModel { get }
@@ -44,6 +45,7 @@ final class BookEditPresenter: BookEditPresenting {
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
     
+    var authors: [Book.Author]
     var rating: Book.Rating
     
     var availableRatings: [Book.Rating] {
@@ -55,6 +57,7 @@ final class BookEditPresenter: BookEditPresenting {
     init(book: Book, router: BookEditRouting, interactor: BookEditInteracting) {
         self.book = book
         self.rating = book.rating
+        self.authors = book.authors
         self.router = router
         self.interactor = interactor
     }
