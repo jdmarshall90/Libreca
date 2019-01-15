@@ -55,6 +55,8 @@
 		D07EC20E21EAECA100AE193B /* BookEditModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */; };
 		D07EC21021EBE50B00AE193B /* RatingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */; };
 		D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */; };
+		D07EC21921ED51BF00AE193B /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */; };
+		D07EC21A21ED51BF00AE193B /* PickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
@@ -159,6 +161,8 @@
 		D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditModuleFactory.swift; sourceTree = "<group>"; };
 		D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingTableViewCell.swift; sourceTree = "<group>"; };
 		D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingTableViewCell.xib; sourceTree = "<group>"; };
+		D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
+		D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableViewCell.xib; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
@@ -323,6 +327,8 @@
 		D07EC1F021EA7B2200AE193B /* Editing */ = {
 			isa = PBXGroup;
 			children = (
+				D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */,
+				D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */,
 				D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */,
 				D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */,
 				D07EC1F721EA815800AE193B /* BookEditViewController.swift */,
@@ -532,6 +538,7 @@
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
+				D07EC21A21ED51BF00AE193B /* PickerTableViewCell.xib in Resources */,
 				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
 				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
 				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
@@ -641,6 +648,7 @@
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
 				D07EC1F821EA815800AE193B /* BookEditViewController.swift in Sources */,
+				D07EC21921ED51BF00AE193B /* PickerTableViewCell.swift in Sources */,
 				D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */,
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */,

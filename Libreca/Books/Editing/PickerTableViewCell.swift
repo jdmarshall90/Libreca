@@ -1,8 +1,8 @@
 //
-//  RatingTableViewCell.swift
+//  PickerTableViewCell.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 1/13/19.
+//  Created by Justin Marshall on 1/14/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,8 +23,6 @@
 
 import UIKit
 
-// TODO: Add `private_outlet` to SwiftLint rule configuration, then make consumers of outlets use setup methods with parameters
-
-final class RatingTableViewCell: UITableViewCell {
-    @IBOutlet weak var ratingLabel: UILabel!
+final class PickerTableViewCell: UITableViewCell {
+    @IBOutlet weak var picker: UIPickerView!
 }

@@ -23,7 +23,7 @@
 
 import UIKit
 
-final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate {
+final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var bookCoverButton: UIButton! {
         didSet {
             bookCoverButton.imageView?.contentMode = .scaleAspectFit
@@ -36,15 +36,19 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return bookCoverButton
     }
     
+    private var isShowingRatingPicker = false
+    private let pickerCellID = "pickerCellID"
+    
     // TODO: End-to-end testing in light mode
     // TODO: Analytics
     
-    private let presenter: BookEditPresenting
-    private let bookModel: BookModel
+    private var presenter: BookEditPresenting
+    private var bookModel: BookModel {
+        return presenter.bookModel
+    }
     
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
-        self.bookModel = presenter.bookModel
         super.init(nibName: "BookEditViewController", bundle: nil)
     }
     
@@ -58,7 +62,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         super.viewDidLoad()
         
         registerCells()
-        title = "Edit"
+        title = "Edit Book"
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
@@ -74,16 +78,59 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookModel.sections[section].cells.count
+        let section = bookModel.sections[section]
+        var count = section.cells.count
+        if case .rating = section.field,
+            isShowingRatingPicker {
+            count += 1
+        }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: Dequeue the correct cell (see `registerCells()` function)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
+        let section = bookModel.sections[indexPath.section]
+        let field = section.field
         
-        let cellModel = bookModel.sections[indexPath.section].cells[indexPath.row]
-        cell.textLabel?.attributedText = cellModel.text
-        return cell
+        switch field {
+        case .rating:
+            if isShowingRatingPicker,
+                (indexPath.row + 1) > section.cells.count,
+                let index = presenter.availableRatings.index(of: presenter.rating) {
+                // swiftlint:disable:next force_cast
+                let cell = tableView.dequeueReusableCell(withIdentifier: pickerCellID, for: indexPath) as! PickerTableViewCell
+                cell.picker.delegate = self
+                cell.picker.dataSource = self
+                cell.picker.selectRow(index, inComponent: 0, animated: true)
+                // TODO: This cell is a little too tall
+                return cell
+            } else {
+                // swiftlint:disable:next force_cast
+                let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
+                cell.ratingLabel.text = presenter.rating.displayValue
+                return cell
+            }
+        case .authors:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .series:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .comments:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .publishedOn:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .languages:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .identifiers:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .tags:
+            // TODO: Implement me
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -95,8 +142,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch selectedField {
         case .rating:
-            // TODO: Implement me
-            break
+            tableView.deselectRow(at: indexPath, animated: true)
+            isShowingRatingPicker.toggle()
+            let indexPathOfPicker = IndexPath(row: 1, section: 0)
+            if isShowingRatingPicker {
+                tableView.insertRows(at: [indexPathOfPicker], with: .top)
+            } else {
+                tableView.deleteRows(at: [indexPathOfPicker], with: .top)
+            }
         case .authors:
             // TODO: Implement me
             break
@@ -121,6 +174,25 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return presenter.availableRatings.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedRating = presenter.availableRatings[row]
+        presenter.rating = selectedRating
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        // TODO: Dark mode color?
+        return presenter.availableRatings[row].displayValue
+    }
+    
     func didSelect(newImage: UIImage) {
         bookCoverButton.setImage(newImage, for: .normal)
     }
@@ -140,6 +212,22 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     private func registerCells() {
-        tableView.register(UINib(nibName: NSStringFromClass(RatingTableViewCell.self), bundle: nil), forCellReuseIdentifier: "ratingCellID")
+        tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.rating.reuseIdentifier)
+        tableView.register(PickerTableViewCell.nib, forCellReuseIdentifier: pickerCellID)
+    }
+}
+
+private extension BookModel.Section.Field {
+    var reuseIdentifier: String {
+        return "\(self)cellID"
+    }
+}
+
+// TODO: Move this to its own file
+extension UITableViewCell {
+    static var nib: UINib {
+        // swiftlint:disable:next force_unwrapping
+        let classString = String(NSStringFromClass(self).split(separator: ".").last!)
+        return UINib(nibName: classString, bundle: nil)
     }
 }
