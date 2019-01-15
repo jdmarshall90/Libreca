@@ -212,6 +212,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        can no longer tap on a rating ???
         let selectedField = bookModel.sections[indexPath.section].field
         
         switch selectedField {
