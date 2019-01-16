@@ -24,6 +24,8 @@
 import Foundation
 
 protocol BookEditSearchListPresenting {
+    var values: [String] { get }
+    
     func didTapSave()
     func didTapCancel()
 }
@@ -32,6 +34,10 @@ final class BookEditSearchListPresenter: BookEditSearchListPresenting {
     weak var view: BookEditSearchListViewing?
     private let router: BookEditSearchListRouting
     private let interactor: BookEditSearchListInteracting
+    
+    var values: [String] {
+        return interactor.values
+    }
     
     init(router: BookEditSearchListRouting, interactor: BookEditSearchListInteracting) {
         self.router = router
