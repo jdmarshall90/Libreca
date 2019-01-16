@@ -24,17 +24,29 @@
 import Foundation
 
 protocol BookEditSearchListInteracting {
-    //
+    var values: [String] { get }
 }
 
 struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
+    var values: [String] {
+        return ["Author 1", "Author 2"]
+    }
 }
 
 struct BookEditIdentifierSearchListInteractor: BookEditSearchListInteracting {
+    var values: [String] {
+        return ["identifier 1", "id 2"]
+    }
 }
 
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
+    var values: [String] {
+        return ["Language", "Lengua", "Язык"]
+    }
 }
 
 struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
+    var values: [String] {
+        return ["Fantasy", "Science Fiction"]
+    }
 }

@@ -22,10 +22,21 @@
 //
 
 import Foundation
+import UIKit
 
 protocol BookEditSearchListRouting {
-    //
+    func routeForSave()
+    func routeForCancellation()
 }
 
-struct BookEditSearchListRouter: BookEditSearchListRouting {
+final class BookEditSearchListRouter: BookEditSearchListRouting {
+    weak var viewController: (UIViewController & BookEditSearchListViewing)?
+    
+    func routeForSave() {
+        viewController?.dismiss(animated: true)
+    }
+    
+    func routeForCancellation() {
+        viewController?.dismiss(animated: true)
+    }
 }

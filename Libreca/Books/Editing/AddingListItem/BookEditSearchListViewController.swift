@@ -25,7 +25,7 @@ import UIKit
 
 // TODO: Implement me, and the rest of this VIPER module
 
-final class BookEditSearchListViewController: UIViewController, BookEditSearchListViewing {
+final class BookEditSearchListViewController: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
     private let presenter: BookEditSearchListPresenting
     
     init(presenter: BookEditSearchListPresenting) {
@@ -37,13 +37,46 @@ final class BookEditSearchListViewController: UIViewController, BookEditSearchLi
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        if case .dark = Settings.Theme.current {
+            searchController.searchBar.keyboardAppearance = .dark
+        }
+        tableView.tableHeaderView = searchController.searchBar
+    }
+    
     func didTapCancel() {
-        // TODO: Move this to router, match same pattern for naming
-        dismiss(animated: true)
+        presenter.didTapCancel()
     }
     
     func didTapSave() {
-        // TODO: Move this to router, match same pattern for naming
-        dismiss(animated: true)
+        presenter.didTapSave()
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return presenter.values.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchItemCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "searchItemCellID")
+        if case .dark = Settings.Theme.current {
+            cell.textLabel?.textColor = .white
+        }
+        cell.textLabel?.text = presenter.values[indexPath.row]
+        return cell
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        //
     }
 }

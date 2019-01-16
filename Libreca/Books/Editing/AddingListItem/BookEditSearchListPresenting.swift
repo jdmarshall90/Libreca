@@ -24,16 +24,31 @@
 import Foundation
 
 protocol BookEditSearchListPresenting {
-    //
+    var values: [String] { get }
+    
+    func didTapSave()
+    func didTapCancel()
 }
 
-struct BookEditSearchListPresenter: BookEditSearchListPresenting {
+final class BookEditSearchListPresenter: BookEditSearchListPresenting {
     weak var view: BookEditSearchListViewing?
     private let router: BookEditSearchListRouting
     private let interactor: BookEditSearchListInteracting
     
+    var values: [String] {
+        return interactor.values
+    }
+    
     init(router: BookEditSearchListRouting, interactor: BookEditSearchListInteracting) {
         self.router = router
         self.interactor = interactor
+    }
+    
+    func didTapSave() {
+        router.routeForSave()
+    }
+    
+    func didTapCancel() {
+        router.routeForCancellation()
     }
 }
