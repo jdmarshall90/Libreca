@@ -1,8 +1,8 @@
 //
-//  BookDetailsViewing.swift
+//  BookEditSearchListViewing.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 1/12/19.
+//  Created by Justin Marshall on 1/15/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,6 @@
 
 import Foundation
 
-protocol BookDetailsViewing {
+protocol BookEditSearchListViewing {
     //
 }

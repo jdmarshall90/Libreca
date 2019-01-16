@@ -65,6 +65,10 @@
 		D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */; };
 		D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; };
 		D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B5213821EED8F5007FB264 /* BookEditSearchListViewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213721EED8F5007FB264 /* BookEditSearchListViewing.swift */; };
+		D0B5213A21EED8FA007FB264 /* BookEditSearchListRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213921EED8FA007FB264 /* BookEditSearchListRouting.swift */; };
+		D0B5213C21EED8FE007FB264 /* BookEditSearchListPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213B21EED8FE007FB264 /* BookEditSearchListPresenting.swift */; };
+		D0B5213E21EED903007FB264 /* BookEditSearchListInteracting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213D21EED903007FB264 /* BookEditSearchListInteracting.swift */; };
 		D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */; };
 		D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29321782130006F21A4 /* Fabric.framework */; };
 		D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29521782130006F21A4 /* FirebaseCore.framework */; };
@@ -170,6 +174,10 @@
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
 		D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D0B475E9216AF5F3008FDA50 /* CalibreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CalibreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0B5213721EED8F5007FB264 /* BookEditSearchListViewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListViewing.swift; sourceTree = "<group>"; };
+		D0B5213921EED8FA007FB264 /* BookEditSearchListRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListRouting.swift; sourceTree = "<group>"; };
+		D0B5213B21EED8FE007FB264 /* BookEditSearchListPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListPresenting.swift; sourceTree = "<group>"; };
+		D0B5213D21EED903007FB264 /* BookEditSearchListInteracting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListInteracting.swift; sourceTree = "<group>"; };
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		D0D6F29321782130006F21A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
@@ -365,6 +373,10 @@
 			isa = PBXGroup;
 			children = (
 				D07EC21C21EE9B7B00AE193B /* BookEditSearchListViewController.swift */,
+				D0B5213721EED8F5007FB264 /* BookEditSearchListViewing.swift */,
+				D0B5213921EED8FA007FB264 /* BookEditSearchListRouting.swift */,
+				D0B5213B21EED8FE007FB264 /* BookEditSearchListPresenting.swift */,
+				D0B5213D21EED903007FB264 /* BookEditSearchListInteracting.swift */,
 			);
 			path = AddingListItem;
 			sourceTree = "<group>";
@@ -662,12 +674,14 @@
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
+				D0B5213C21EED8FE007FB264 /* BookEditSearchListPresenting.swift in Sources */,
 				D07EC1FC21EA87EA00AE193B /* BookDetailsPresenting.swift in Sources */,
 				D07EC20821EA883400AE193B /* BookEditInteracting.swift in Sources */,
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
 				D07EC1F821EA815800AE193B /* BookEditViewController.swift in Sources */,
 				D07EC21921ED51BF00AE193B /* PickerTableViewCell.swift in Sources */,
+				D0B5213821EED8F5007FB264 /* BookEditSearchListViewing.swift in Sources */,
 				D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */,
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */,
@@ -681,6 +695,7 @@
 				D07EC20A21EA883A00AE193B /* BookEditServicing.swift in Sources */,
 				D07EC21021EBE50B00AE193B /* RatingTableViewCell.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
+				D0B5213A21EED8FA007FB264 /* BookEditSearchListRouting.swift in Sources */,
 				D042EEE021E5684F0046D00F /* Formatters.swift in Sources */,
 				D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */,
 				D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */,
@@ -689,6 +704,7 @@
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */,
 				D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */,
+				D0B5213E21EED903007FB264 /* BookEditSearchListInteracting.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,
 				D07EC1FE21EA87F500AE193B /* BookDetailsInteracting.swift in Sources */,
