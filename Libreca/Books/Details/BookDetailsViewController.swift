@@ -47,6 +47,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         showBookCover()
+        // TODO: Don't allow editing while book fetching is in flight, similarly to how trying to sort / go to settings will show an alert
         editButton.isEnabled = bookModel != nil
         
         if case .dark = Settings.Theme.current {

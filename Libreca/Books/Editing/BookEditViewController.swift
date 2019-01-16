@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import UIKit
 
 final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -30,7 +31,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.isEditing = true
+        }
+    }
     
     var imageButton: UIButton {
         return bookCoverButton
@@ -78,13 +83,23 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = bookModel.sections[section]
-        var count = section.cells.count
-        if case .rating = section.field,
-            isShowingRatingPicker {
-            count += 1
+        let field = bookModel.sections[section].field
+        
+        switch field {
+        case .rating where isShowingRatingPicker:
+            return 2
+        case .rating,
+             .publishedOn,
+             .series:
+            return 1
+        case .comments:
+            return 1
+        case .authors,
+             .languages,
+             .identifiers,
+             .tags:
+            return array(for: field).count + 1
         }
-        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,9 +124,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 cell.ratingLabel.text = presenter.rating.displayValue
                 return cell
             }
-        case .authors:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .authors,
+             .languages,
+             .identifiers,
+             .tags:
+            return createArrayBasedCell(for: field, at: indexPath)
         case .series:
             // TODO: Implement me
             return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
@@ -121,20 +138,59 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .publishedOn:
             // TODO: Implement me
             return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
-        case .languages:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
-        case .identifiers:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
-        case .tags:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
         }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return bookModel.sections[section].header
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let field = bookModel.sections[indexPath.section].field
+        
+        switch (field, editingStyle) {
+        case (.authors, .insert):
+            break
+        case (.languages, .insert):
+            break
+        case (.identifiers, .insert):
+            break
+        case (.tags, .insert):
+            break
+        case (.authors, .delete),
+             (.languages, .delete),
+             (.identifiers, .delete),
+             (.tags, .delete):
+            array(for: field) { originalArray in
+                var newArray = originalArray
+                newArray.remove(at: indexPath.row)
+                return newArray
+            }
+        default:
+            // impossible
+            break
+        }
+        
+        if editingStyle == .delete {
+            tableView.deleteRows(at: [indexPath], with: .top)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        let section = bookModel.sections[indexPath.section]
+        
+        let rowCount = tableView.numberOfRows(inSection: indexPath.section)
+        let isAddRow = indexPath.row == rowCount - 1
+        let editingStyle: UITableViewCell.EditingStyle = section.field.isArrayBased && isAddRow ? .insert : .delete
+        return editingStyle
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return bookModel.sections[indexPath.section].field.isArrayBased
+    }
+    
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return !bookModel.sections[indexPath.section].field.isArrayBased
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -215,11 +271,105 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.rating.reuseIdentifier)
         tableView.register(PickerTableViewCell.nib, forCellReuseIdentifier: pickerCellID)
     }
+    
+    private func createArrayBasedCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        cell.textLabel?.numberOfLines = 0
+        let theArray = array(for: field)
+        if case .dark = Settings.Theme.current {
+            cell.textLabel?.textColor = .white
+        }
+        if (indexPath.row + 1) > theArray.count {
+            cell.textLabel?.text = "Add author"
+        } else {
+            cell.textLabel?.text = theArray[indexPath.row].fieldValue
+        }
+        return cell
+    }
+    
+    private func array(for field: BookModel.Section.Field) -> [ArrayBasedField] {
+        switch field {
+        case .rating,
+             .series,
+             .comments,
+             .publishedOn:
+            return []
+        case .authors:
+            return presenter.authors
+        case .languages:
+            return presenter.languages
+        case .identifiers:
+            return presenter.identifiers
+        case .tags:
+            return presenter.tags
+        }
+    }
+    
+    private func array(for field: BookModel.Section.Field, modifier: ([ArrayBasedField]) -> [ArrayBasedField]) {
+        switch field {
+        case .rating,
+             .series,
+             .comments,
+             .publishedOn:
+            _ = modifier([])
+        case .authors:
+            presenter.authors = modifier(presenter.authors).compactMap { $0 as? Book.Author }
+        case .languages:
+            presenter.languages = modifier(presenter.languages).compactMap { $0 as? Book.Language }
+        case .identifiers:
+            presenter.identifiers = modifier(presenter.identifiers).compactMap { $0 as? Book.Identifier }
+        case .tags:
+            presenter.tags = modifier(presenter.tags).map { $0.fieldValue }
+        }
+    }
+}
+
+private protocol ArrayBasedField {
+    var fieldValue: String { get }
+}
+
+extension Book.Author: ArrayBasedField {
+    var fieldValue: String {
+        return name
+    }
+}
+
+extension String: ArrayBasedField {
+    var fieldValue: String {
+        return self
+    }
+}
+
+extension Book.Language: ArrayBasedField {
+    var fieldValue: String {
+        return displayValue
+    }
+}
+
+extension Book.Identifier: ArrayBasedField {
+    var fieldValue: String {
+        return "\(displayValue): \(uniqueID)"
+    }
 }
 
 private extension BookModel.Section.Field {
     var reuseIdentifier: String {
         return "\(self)cellID"
+    }
+    
+    var isArrayBased: Bool {
+        switch self {
+        case .authors,
+             .languages,
+             .identifiers,
+             .tags:
+            return true
+        case .rating,
+             .series,
+             .comments,
+             .publishedOn:
+            return false
+        }
     }
 }
 
