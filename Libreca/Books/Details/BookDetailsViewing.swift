@@ -23,6 +23,6 @@
 
 import Foundation
 
-protocol BookDetailsViewing: class {
+protocol BookDetailsViewing {
     //
 }
