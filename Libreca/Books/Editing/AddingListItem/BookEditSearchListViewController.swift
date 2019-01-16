@@ -38,12 +38,10 @@ final class BookEditSearchListViewController: UIViewController, BookEditSearchLi
     }
     
     func didTapCancel() {
-        // TODO: Move this to router, match same pattern for naming
-        dismiss(animated: true)
+        presenter.didTapCancel()
     }
     
     func didTapSave() {
-        // TODO: Move this to router, match same pattern for naming
-        dismiss(animated: true)
+        presenter.didTapSave()
     }
 }

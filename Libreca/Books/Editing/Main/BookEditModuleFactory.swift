@@ -57,6 +57,8 @@ struct BookEditModuleFactory {
         let router = BookEditSearchListRouter()
         let presenter = BookEditSearchListPresenter(router: router, interactor: interactor)
         let searchListVC = BookEditSearchListViewController(presenter: presenter)
+        router.viewController = searchListVC
+        presenter.view = searchListVC
         return searchListVC
     }
 }
