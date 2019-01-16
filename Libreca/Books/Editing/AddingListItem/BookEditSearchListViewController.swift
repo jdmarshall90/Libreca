@@ -28,6 +28,22 @@ import UIKit
 final class BookEditSearchListViewController: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
     private let presenter: BookEditSearchListPresenting
     
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        if case .dark = Settings.Theme.current {
+            searchController.searchBar.keyboardAppearance = .dark
+            // only way I could find that would change the cancel button color
+            searchController.searchBar.subviews.forEach { $0.tintColor = .white }
+        }
+        // TODO: Update placeholder text
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        
+        return searchController
+    }()
+    
     init(presenter: BookEditSearchListPresenting) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -39,15 +55,6 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.searchBarStyle = .minimal
-        if case .dark = Settings.Theme.current {
-            searchController.searchBar.keyboardAppearance = .dark
-        }
         tableView.tableHeaderView = searchController.searchBar
     }
     
