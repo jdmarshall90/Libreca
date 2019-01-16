@@ -211,8 +211,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return bookModel.sections[indexPath.section].field.isArrayBased
     }
     
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return !bookModel.sections[indexPath.section].field.isArrayBased
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        can no longer tap on a rating ???
         let selectedField = bookModel.sections[indexPath.section].field
         
         switch selectedField {
