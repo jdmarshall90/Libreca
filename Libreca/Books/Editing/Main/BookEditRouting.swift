@@ -44,19 +44,19 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func routeForAddingAuthor() {
-        
+        viewController?.present(BookEditModuleFactory.viewControllerForAddingAuthor(), animated: true)
     }
     
     func routeForAddingIdentifier() {
-        
+        viewController?.present(BookEditModuleFactory.viewControllerForAddingIdentifier(), animated: true)
     }
     
     func routeForAddingLanguage() {
-        
+        viewController?.present(BookEditModuleFactory.viewControllerForAddingLanguage(), animated: true)
     }
     
     func routeForAddingTag() {
-        
+        viewController?.present(BookEditModuleFactory.viewControllerForAddingTag(), animated: true)
     }
     
     func routeForSuccessfulSave() {

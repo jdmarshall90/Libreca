@@ -36,4 +36,20 @@ struct BookEditModuleFactory {
         presenter.view = editVC
         return editVC
     }
+    
+    static func viewControllerForAddingAuthor() -> BookEditSearchListViewing & UIViewController {
+        fatalError("implement me")
+    }
+    
+    static func viewControllerForAddingIdentifier() -> BookEditSearchListViewing & UIViewController {
+        fatalError("implement me")
+    }
+    
+    static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {
+        fatalError("implement me")
+    }
+    
+    static func viewControllerForAddingTag() -> BookEditSearchListViewing & UIViewController {
+        fatalError("implement me")
+    }
 }
