@@ -26,3 +26,6 @@ import Foundation
 protocol BookEditSearchListRouting {
     //
 }
+
+struct BookEditSearchListRouter: BookEditSearchListRouting {
+}

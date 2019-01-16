@@ -23,6 +23,7 @@
 
 import Foundation
 
-protocol BookEditSearchListViewing {
-    //
+@objc protocol BookEditSearchListViewing: class {
+    func didTapCancel()
+    func didTapSave()
 }

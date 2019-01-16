@@ -44,19 +44,23 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func routeForAddingAuthor() {
-        viewController?.present(BookEditModuleFactory.viewControllerForAddingAuthor(), animated: true)
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingAuthor())
+        viewController?.present(navController, animated: true)
     }
     
     func routeForAddingIdentifier() {
-        viewController?.present(BookEditModuleFactory.viewControllerForAddingIdentifier(), animated: true)
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingIdentifier())
+        viewController?.present(navController, animated: true)
     }
     
     func routeForAddingLanguage() {
-        viewController?.present(BookEditModuleFactory.viewControllerForAddingLanguage(), animated: true)
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingLanguage())
+        viewController?.present(navController, animated: true)
     }
     
     func routeForAddingTag() {
-        viewController?.present(BookEditModuleFactory.viewControllerForAddingTag(), animated: true)
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingTag())
+        viewController?.present(navController, animated: true)
     }
     
     func routeForSuccessfulSave() {
@@ -65,6 +69,16 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     
     func routeForCancellation() {
         viewController?.dismiss(animated: true)
+    }
+    
+    private func navigationController(for searchVC: BookEditSearchListViewing & UIViewController) -> UINavigationController {
+        let searchNav = UINavigationController(rootViewController: searchVC)
+        
+        searchVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: searchVC, action: #selector(BookEditSearchListViewing.didTapCancel))
+        searchVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: searchVC, action: #selector(BookEditSearchListViewing.didTapSave))
+        searchNav.modalPresentationStyle = .formSheet
+        
+        return searchNav
     }
     
     private func viewControllerForImageEditActions(from sender: UIButton) -> UIViewController {

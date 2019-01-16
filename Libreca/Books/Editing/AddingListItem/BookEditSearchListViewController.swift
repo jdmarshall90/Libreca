@@ -23,7 +23,9 @@
 
 import UIKit
 
-final class BookEditSearchListViewController: UIViewController {
+// TODO: Implement me, and the rest of the VIPER module
+
+final class BookEditSearchListViewController: UIViewController, BookEditSearchListViewing {
     private let presenter: BookEditSearchListPresenting
     
     init(presenter: BookEditSearchListPresenting) {
@@ -33,5 +35,15 @@ final class BookEditSearchListViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func didTapCancel() {
+        // TODO: Move this to router, match same pattern for naming
+        dismiss(animated: true)
+    }
+    
+    func didTapSave() {
+        // TODO: Move this to router, match same pattern for naming
+        dismiss(animated: true)
     }
 }
