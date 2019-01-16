@@ -329,19 +329,8 @@
 		D07EC1F021EA7B2200AE193B /* Editing */ = {
 			isa = PBXGroup;
 			children = (
-				D07EC21B21EE9B5500AE193B /* List */,
-				D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */,
-				D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */,
-				D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */,
-				D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */,
-				D07EC1F721EA815800AE193B /* BookEditViewController.swift */,
-				D07EC20B21EA925C00AE193B /* BookEditViewController.xib */,
-				D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */,
-				D07EC20121EA881400AE193B /* BookEditViewing.swift */,
-				D07EC20321EA882B00AE193B /* BookEditRouting.swift */,
-				D07EC20521EA882F00AE193B /* BookEditPresenting.swift */,
-				D07EC20721EA883400AE193B /* BookEditInteracting.swift */,
-				D07EC20921EA883A00AE193B /* BookEditServicing.swift */,
+				D07EC21B21EE9B5500AE193B /* AddingListItem */,
+				D07EC21E21EED78300AE193B /* Main */,
 			);
 			path = Editing;
 			sourceTree = "<group>";
@@ -372,12 +361,31 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D07EC21B21EE9B5500AE193B /* List */ = {
+		D07EC21B21EE9B5500AE193B /* AddingListItem */ = {
 			isa = PBXGroup;
 			children = (
 				D07EC21C21EE9B7B00AE193B /* BookEditSearchListViewController.swift */,
 			);
-			path = List;
+			path = AddingListItem;
+			sourceTree = "<group>";
+		};
+		D07EC21E21EED78300AE193B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */,
+				D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */,
+				D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */,
+				D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */,
+				D07EC1F721EA815800AE193B /* BookEditViewController.swift */,
+				D07EC20B21EA925C00AE193B /* BookEditViewController.xib */,
+				D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */,
+				D07EC20121EA881400AE193B /* BookEditViewing.swift */,
+				D07EC20321EA882B00AE193B /* BookEditRouting.swift */,
+				D07EC20521EA882F00AE193B /* BookEditPresenting.swift */,
+				D07EC20721EA883400AE193B /* BookEditInteracting.swift */,
+				D07EC20921EA883A00AE193B /* BookEditServicing.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {

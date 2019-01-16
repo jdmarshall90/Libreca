@@ -25,7 +25,11 @@ import AVKit
 import UIKit
 
 protocol BookEditRouting {
-    func routeForPicTap()
+    func routeForPicEditing()
+    func routeForAddingAuthor()
+    func routeForAddingIdentifier()
+    func routeForAddingLanguage()
+    func routeForAddingTag()
     func routeForSuccessfulSave()
     func routeForCancellation()
 }
@@ -33,10 +37,26 @@ protocol BookEditRouting {
 final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     weak var viewController: (BookEditViewing & UIViewController)?
     
-    func routeForPicTap() {
+    func routeForPicEditing() {
         guard let viewController = viewController else { return }
         let alertController = viewControllerForImageEditActions(from: viewController.imageButton)
         viewController.present(alertController, animated: true)
+    }
+    
+    func routeForAddingAuthor() {
+        
+    }
+    
+    func routeForAddingIdentifier() {
+        
+    }
+    
+    func routeForAddingLanguage() {
+        
+    }
+    
+    func routeForAddingTag() {
+        
     }
     
     func routeForSuccessfulSave() {

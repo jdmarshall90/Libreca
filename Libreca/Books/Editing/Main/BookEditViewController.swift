@@ -150,13 +150,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch (field, editingStyle) {
         case (.authors, .insert):
-            break
+            presenter.didTapAddAuthor()
         case (.languages, .insert):
-            break
+            presenter.didTapAddLanguage()
         case (.identifiers, .insert):
-            break
+            presenter.didTapAddIdentifier()
         case (.tags, .insert):
-            break
+            presenter.didTapAddTag()
         case (.authors, .delete),
              (.languages, .delete),
              (.identifiers, .delete),
@@ -167,8 +167,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 return newArray
             }
         default:
-            // impossible
-            break
+            break // impossible
         }
         
         if editingStyle == .delete {
@@ -206,9 +205,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             } else {
                 tableView.deleteRows(at: [indexPathOfPicker], with: .top)
             }
-        case .authors:
-            // TODO: Implement me
-            break
+        case .authors,
+             .languages,
+             .identifiers,
+             .tags:
+            break // impossible
         case .series:
             // TODO: Implement me
             break
@@ -216,15 +217,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             // TODO: Implement me
             break
         case .publishedOn:
-            // TODO: Implement me
-            break
-        case .languages:
-            // TODO: Implement me
-            break
-        case .identifiers:
-            // TODO: Implement me
-            break
-        case .tags:
             // TODO: Implement me
             break
         }
