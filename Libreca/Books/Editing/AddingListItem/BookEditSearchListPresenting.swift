@@ -26,3 +26,14 @@ import Foundation
 protocol BookEditSearchListPresenting {
     //
 }
+
+struct BookEditSearchListPresenter: BookEditSearchListPresenting {
+    weak var view: BookEditSearchListViewing?
+    private let router: BookEditSearchListRouting
+    private let interactor: BookEditSearchListInteracting
+    
+    init(router: BookEditSearchListRouting, interactor: BookEditSearchListInteracting) {
+        self.router = router
+        self.interactor = interactor
+    }
+}

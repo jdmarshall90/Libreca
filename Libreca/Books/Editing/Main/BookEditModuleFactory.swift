@@ -38,18 +38,25 @@ struct BookEditModuleFactory {
     }
     
     static func viewControllerForAddingAuthor() -> BookEditSearchListViewing & UIViewController {
-        fatalError("implement me")
+        return viewControllerForAdding(using: BookEditAuthorSearchListInteractor())
     }
     
     static func viewControllerForAddingIdentifier() -> BookEditSearchListViewing & UIViewController {
-        fatalError("implement me")
+        return viewControllerForAdding(using: BookEditIdentifierSearchListInteractor())
     }
     
     static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {
-        fatalError("implement me")
+        return viewControllerForAdding(using: BookEditLanguageSearchListInteractor())
     }
     
     static func viewControllerForAddingTag() -> BookEditSearchListViewing & UIViewController {
-        fatalError("implement me")
+        return viewControllerForAdding(using: BookEditTagSearchListInteractor())
+    }
+    
+    private static func viewControllerForAdding(using interactor: BookEditSearchListInteracting) -> BookEditSearchListViewing & UIViewController {
+        let router = BookEditSearchListRouter()
+        let presenter = BookEditSearchListPresenter(router: router, interactor: interactor)
+        let searchListVC = BookEditSearchListViewController(presenter: presenter)
+        return searchListVC
     }
 }

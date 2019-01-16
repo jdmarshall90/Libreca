@@ -26,3 +26,15 @@ import Foundation
 protocol BookEditSearchListInteracting {
     //
 }
+
+struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
+}
+
+struct BookEditIdentifierSearchListInteractor: BookEditSearchListInteracting {
+}
+
+struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
+}
+
+struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
+}

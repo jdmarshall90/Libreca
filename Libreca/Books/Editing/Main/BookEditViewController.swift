@@ -54,7 +54,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
-        super.init(nibName: "BookEditViewController", bundle: nil)
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {

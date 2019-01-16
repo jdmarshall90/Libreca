@@ -57,7 +57,6 @@
 		D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */; };
 		D07EC21921ED51BF00AE193B /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */; };
 		D07EC21A21ED51BF00AE193B /* PickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */; };
-		D07EC21D21EE9B7B00AE193B /* BookEditSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07EC21C21EE9B7B00AE193B /* BookEditSearchListViewController.swift */; };
 		D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */; };
 		D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */; };
 		D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAA62621D01EC300623608 /* LicensesViewController.framework */; };
@@ -69,6 +68,8 @@
 		D0B5213A21EED8FA007FB264 /* BookEditSearchListRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213921EED8FA007FB264 /* BookEditSearchListRouting.swift */; };
 		D0B5213C21EED8FE007FB264 /* BookEditSearchListPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213B21EED8FE007FB264 /* BookEditSearchListPresenting.swift */; };
 		D0B5213E21EED903007FB264 /* BookEditSearchListInteracting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213D21EED903007FB264 /* BookEditSearchListInteracting.swift */; };
+		D0B5214121EEDBEC007FB264 /* BookEditSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5213F21EEDBEC007FB264 /* BookEditSearchListViewController.swift */; };
+		D0B5214221EEDBEC007FB264 /* BookEditSearchListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0B5214021EEDBEC007FB264 /* BookEditSearchListViewController.xib */; };
 		D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */; };
 		D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29321782130006F21A4 /* Fabric.framework */; };
 		D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29521782130006F21A4 /* FirebaseCore.framework */; };
@@ -168,7 +169,6 @@
 		D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingTableViewCell.xib; sourceTree = "<group>"; };
 		D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
 		D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableViewCell.xib; sourceTree = "<group>"; };
-		D07EC21C21EE9B7B00AE193B /* BookEditSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListViewController.swift; sourceTree = "<group>"; };
 		D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookErrorTableViewCell.swift; sourceTree = "<group>"; };
 		D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetupViewController.swift; sourceTree = "<group>"; };
 		D0AAA62621D01EC300623608 /* LicensesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LicensesViewController.framework; path = Carthage/Build/iOS/LicensesViewController.framework; sourceTree = "<group>"; };
@@ -178,6 +178,8 @@
 		D0B5213921EED8FA007FB264 /* BookEditSearchListRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListRouting.swift; sourceTree = "<group>"; };
 		D0B5213B21EED8FE007FB264 /* BookEditSearchListPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListPresenting.swift; sourceTree = "<group>"; };
 		D0B5213D21EED903007FB264 /* BookEditSearchListInteracting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListInteracting.swift; sourceTree = "<group>"; };
+		D0B5213F21EEDBEC007FB264 /* BookEditSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookEditSearchListViewController.swift; sourceTree = "<group>"; };
+		D0B5214021EEDBEC007FB264 /* BookEditSearchListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookEditSearchListViewController.xib; sourceTree = "<group>"; };
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		D0D6F29321782130006F21A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
@@ -372,7 +374,8 @@
 		D07EC21B21EE9B5500AE193B /* AddingListItem */ = {
 			isa = PBXGroup;
 			children = (
-				D07EC21C21EE9B7B00AE193B /* BookEditSearchListViewController.swift */,
+				D0B5213F21EEDBEC007FB264 /* BookEditSearchListViewController.swift */,
+				D0B5214021EEDBEC007FB264 /* BookEditSearchListViewController.xib */,
 				D0B5213721EED8F5007FB264 /* BookEditSearchListViewing.swift */,
 				D0B5213921EED8FA007FB264 /* BookEditSearchListRouting.swift */,
 				D0B5213B21EED8FE007FB264 /* BookEditSearchListPresenting.swift */,
@@ -563,6 +566,7 @@
 				D04871AD216AF31E0085D22C /* LaunchScreen.storyboard in Resources */,
 				D04871AA216AF31E0085D22C /* Assets.xcassets in Resources */,
 				D044A33E21D525D400FBC7C8 /* dark_mode_icon@3x.png in Resources */,
+				D0B5214221EEDBEC007FB264 /* BookEditSearchListViewController.xib in Resources */,
 				D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */,
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
 				D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */,
@@ -671,6 +675,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D07EC20E21EAECA100AE193B /* BookEditModuleFactory.swift in Sources */,
+				D0B5214121EEDBEC007FB264 /* BookEditSearchListViewController.swift in Sources */,
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
@@ -711,7 +716,6 @@
 				D0195B8B21730DA2006EA713 /* Framework.swift in Sources */,
 				D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */,
 				D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */,
-				D07EC21D21EE9B7B00AE193B /* BookEditSearchListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
