@@ -329,7 +329,7 @@
 		D07EC1F021EA7B2200AE193B /* Editing */ = {
 			isa = PBXGroup;
 			children = (
-				D07EC21B21EE9B5500AE193B /* List */,
+				D07EC21B21EE9B5500AE193B /* AddingListItem */,
 				D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */,
 				D07EC21821ED51BF00AE193B /* PickerTableViewCell.xib */,
 				D07EC20F21EBE50B00AE193B /* RatingTableViewCell.swift */,
@@ -372,12 +372,12 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D07EC21B21EE9B5500AE193B /* List */ = {
+		D07EC21B21EE9B5500AE193B /* AddingListItem */ = {
 			isa = PBXGroup;
 			children = (
 				D07EC21C21EE9B7B00AE193B /* BookEditSearchListViewController.swift */,
 			);
-			path = List;
+			path = AddingListItem;
 			sourceTree = "<group>";
 		};
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {

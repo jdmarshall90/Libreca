@@ -37,6 +37,10 @@ protocol BookEditPresenting {
     
     func fetchImage(completion: @escaping (UIImage) -> Void)
     func didTapPic()
+    func didTapAddAuthor()
+    func didTapAddIdentifier()
+    func didTapAddLanguage()
+    func didTapAddTag()
     func save()
     func cancel()
 }
@@ -76,7 +80,23 @@ final class BookEditPresenter: BookEditPresenting {
     }
     
     func didTapPic() {
-        router.routeForPicTap()
+        router.routeForPicEditing()
+    }
+    
+    func didTapAddAuthor() {
+        router.routeForAddingAuthor()
+    }
+    
+    func didTapAddIdentifier() {
+        router.routeForAddingIdentifier()
+    }
+    
+    func didTapAddLanguage() {
+        router.routeForAddingLanguage()
+    }
+    
+    func didTapAddTag() {
+        router.routeForAddingTag()
     }
     
     func save() {

@@ -150,13 +150,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch (field, editingStyle) {
         case (.authors, .insert):
-            break
+            presenter.didTapAddAuthor()
         case (.languages, .insert):
-            break
+            presenter.didTapAddLanguage()
         case (.identifiers, .insert):
-            break
+            presenter.didTapAddIdentifier()
         case (.tags, .insert):
-            break
+            presenter.didTapAddTag()
         case (.authors, .delete),
              (.languages, .delete),
              (.identifiers, .delete),
