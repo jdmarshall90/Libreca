@@ -272,6 +272,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             cell.textLabel?.textColor = .white
         }
         if (indexPath.row + 1) > theArray.count {
+            // TODO: This text needs to change depending on which thing we are adding
             cell.textLabel?.text = "Add author"
         } else {
             cell.textLabel?.text = theArray[indexPath.row].fieldValue
