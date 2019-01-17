@@ -73,6 +73,8 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         return presenter.values.count
     }
     
+    // TODO: These items need to be selectable / deselectable, and the results passed back to the main edit VC
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchItemCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "searchItemCellID")
         if case .dark = Settings.Theme.current {
