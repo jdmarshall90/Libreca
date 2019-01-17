@@ -30,6 +30,8 @@ protocol BookEditSearchListInteracting {
     func search(for string: String?, completion: @escaping ([String]) -> Void)
 }
 
+// TODO: Test searching with large libraries
+
 extension BookEditSearchListInteracting {
     func search(for string: String?, completion: @escaping ([String]) -> Void) {
         dispatchQueue.async {
