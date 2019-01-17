@@ -52,7 +52,14 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.tableHeaderView = searchController.searchBar
+        
+        // Oddity needed to fix the way that the opaque nav bar was conflicting
+        // with the `searchController.hidesNavigationBarDuringPresentation = true`
+        // line above. When the search bar would become the first responder,
+        // the nav bar would disappear.
+        definesPresentationContext = true
     }
     
     func didTapCancel() {
@@ -72,6 +79,8 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.values.count
     }
+    
+    // TODO: These items need to be selectable / deselectable, and the results passed back to the main edit VC
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchItemCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "searchItemCellID")

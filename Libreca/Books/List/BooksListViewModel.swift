@@ -66,7 +66,7 @@ final class BooksListViewModel {
     private weak var view: BooksListView?
     
     private var shouldSort = true
-    private var books: [BooksListViewModel.BookFetchResult] = [] {
+    private(set) var books: [BooksListViewModel.BookFetchResult] = [] {
         didSet {
             if shouldSort {
                 books = sortBooks(by: Settings.Sort.current)
