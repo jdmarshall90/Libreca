@@ -50,29 +50,36 @@ extension BookEditSearchListInteracting {
 
 struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
-    var values: [String] {
-        return ["Author 1", "Author 2"]
+    let values: [String]
+    
+    init(values: [String]) {
+        self.values = Array(Set(values)).sorted()
     }
 }
 
 struct BookEditIdentifierSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.identifier", qos: .userInitiated)
-    var values: [String] {
-        return ["identifier 1", "id 2"]
+    let values: [String]
+    
+    init(values: [String]) {
+        self.values = Array(Set(values)).sorted()
     }
 }
 
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
-    var values: [String] {
-        return ["Language", "Lengua", "Язык"]
+    let values: [String]
+    
+    init(values: [String]) {
+        self.values = Array(Set(values)).sorted()
     }
 }
 
 struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated)
+    let values: [String]
     
-    var values: [String] {
-        return ["Fantasy", "Science Fiction"]
+    init(values: [String]) {
+        self.values = Array(Set(values)).sorted()
     }
 }

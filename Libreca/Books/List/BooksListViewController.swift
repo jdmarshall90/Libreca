@@ -46,7 +46,7 @@ extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
 
 class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate {
     private var detailViewController: BookDetailsViewController?
-    private lazy var viewModel = BooksListViewModel(view: self)
+    private(set) lazy var viewModel = BooksListViewModel(view: self)
     private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<BooksListViewModel.BookFetchResult>(sectionIndexDisplayables: [])
     
     private var isFetchingBooks = true
