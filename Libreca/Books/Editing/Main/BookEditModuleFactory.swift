@@ -37,6 +37,10 @@ struct BookEditModuleFactory {
         return editVC
     }
     
+    // I believe that the Calibre Content Server API does support just searching for all of
+    // these `values` directly. However, I am purposely trying to minimize service calls so
+    // as to be able to provide a fully offline-capable experience.
+    
     static func viewControllerForAddingAuthor() -> BookEditSearchListViewing & UIViewController {
         let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor())
         viewController.title = "Search Authors"
