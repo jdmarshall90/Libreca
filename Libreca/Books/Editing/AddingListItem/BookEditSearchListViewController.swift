@@ -84,6 +84,7 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         return presenter.values.count
     }
     
+    // TODO: Need to have the currently selected items already selected
     // TODO: These items need to be selectable / deselectable, and the results passed back to the main edit VC
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
