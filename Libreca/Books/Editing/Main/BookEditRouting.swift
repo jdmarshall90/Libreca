@@ -77,6 +77,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         searchVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: searchVC, action: #selector(BookEditSearchListViewing.didTapCancel))
         searchVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: searchVC, action: #selector(BookEditSearchListViewing.didTapSave))
         searchNav.modalPresentationStyle = .formSheet
+        searchNav.navigationBar.isTranslucent = false
         
         return searchNav
     }

@@ -43,6 +43,7 @@ struct BookDetailsRouter: BookDetailsRouting {
         editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewController.didTapCancel))
         editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewController.didTapSave))
         editNav.modalPresentationStyle = .formSheet
+        editNav.navigationBar.isTranslucent = false
         viewController?.present(editNav, animated: true)
     }
     
