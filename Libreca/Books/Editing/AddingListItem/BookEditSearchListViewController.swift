@@ -35,7 +35,6 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
             // only way I could find that would change the cancel button color
             searchController.searchBar.subviews.forEach { $0.tintColor = .white }
         }
-        // TODO: Update placeholder text
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.dimsBackgroundDuringPresentation = false
