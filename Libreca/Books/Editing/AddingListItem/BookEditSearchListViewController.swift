@@ -52,7 +52,14 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.tableHeaderView = searchController.searchBar
+        
+        // Oddity needed to fix the way that the opaque nav bar was conflicting
+        // with the `searchController.hidesNavigationBarDuringPresentation = true`
+        // line above. When the search bar would become the first responder,
+        // the nav bar would disappear.
+        definesPresentationContext = true
     }
     
     func didTapCancel() {
