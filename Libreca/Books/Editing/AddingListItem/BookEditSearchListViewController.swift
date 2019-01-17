@@ -23,8 +23,6 @@
 
 import UIKit
 
-// TODO: Implement me, and the rest of this VIPER module
-
 final class BookEditSearchListViewController: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
     private let presenter: BookEditSearchListPresenting
     
@@ -35,7 +33,6 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
             // only way I could find that would change the cancel button color
             searchController.searchBar.subviews.forEach { $0.tintColor = .white }
         }
-        // TODO: Update placeholder text
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.dimsBackgroundDuringPresentation = false
@@ -86,6 +83,8 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        //
+        presenter.search(for: searchController.searchBar.text) { [tableView] in
+            tableView?.reloadData()
+        }
     }
 }

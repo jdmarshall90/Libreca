@@ -25,8 +25,6 @@ import CalibreKit
 import FirebaseAnalytics
 import UIKit
 
-// TODO: Translucency of edit and search nav bars doesn't match the rest of the app
-
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing {
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!

@@ -26,6 +26,7 @@ import Foundation
 protocol BookEditSearchListPresenting {
     var values: [String] { get }
     
+    func search(for string: String?, completion: @escaping () -> Void)
     func didTapSave()
     func didTapCancel()
 }
@@ -35,13 +36,18 @@ final class BookEditSearchListPresenter: BookEditSearchListPresenting {
     private let router: BookEditSearchListRouting
     private let interactor: BookEditSearchListInteracting
     
-    var values: [String] {
-        return interactor.values
-    }
+    private(set) lazy var values = interactor.values
     
     init(router: BookEditSearchListRouting, interactor: BookEditSearchListInteracting) {
         self.router = router
         self.interactor = interactor
+    }
+    
+    func search(for string: String?, completion: @escaping () -> Void) {
+        interactor.search(for: string) { [weak self] results in
+            self?.values = results
+            completion()
+        }
     }
     
     func didTapSave() {

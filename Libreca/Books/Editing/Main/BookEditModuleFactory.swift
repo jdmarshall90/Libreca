@@ -38,19 +38,27 @@ struct BookEditModuleFactory {
     }
     
     static func viewControllerForAddingAuthor() -> BookEditSearchListViewing & UIViewController {
-        return viewControllerForAdding(using: BookEditAuthorSearchListInteractor())
+        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor())
+        viewController.title = "Search Authors"
+        return viewController
     }
     
     static func viewControllerForAddingIdentifier() -> BookEditSearchListViewing & UIViewController {
-        return viewControllerForAdding(using: BookEditIdentifierSearchListInteractor())
+        let viewController = viewControllerForAdding(using: BookEditIdentifierSearchListInteractor())
+        viewController.title = "Search Identifiers"
+        return viewController
     }
     
     static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {
-        return viewControllerForAdding(using: BookEditLanguageSearchListInteractor())
+        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor())
+        viewController.title = "Search Languages"
+        return viewController
     }
     
     static func viewControllerForAddingTag() -> BookEditSearchListViewing & UIViewController {
-        return viewControllerForAdding(using: BookEditTagSearchListInteractor())
+        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor())
+        viewController.title = "Search Tags"
+        return viewController
     }
     
     private static func viewControllerForAdding(using interactor: BookEditSearchListInteracting) -> BookEditSearchListViewing & UIViewController {
