@@ -23,8 +23,6 @@
 
 import UIKit
 
-// TODO: Implement me, and the rest of this VIPER module
-
 final class BookEditSearchListViewController: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
     private let presenter: BookEditSearchListPresenting
     
