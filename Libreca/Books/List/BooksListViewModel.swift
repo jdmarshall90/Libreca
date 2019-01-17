@@ -105,7 +105,7 @@ final class BooksListViewModel {
             return
         }
         
-        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search", qos: .userInitiated).async { [weak self] in
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.library", qos: .userInitiated).async { [weak self] in
             guard let strongSelf = self else { return }
             let terms = terms.split(separator: " ").map(String.init)
             let dataSet = strongSelf.books.compactMap { $0.book }

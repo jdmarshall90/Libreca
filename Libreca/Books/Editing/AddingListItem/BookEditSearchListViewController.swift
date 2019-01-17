@@ -85,6 +85,8 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        //
+        presenter.search(for: searchController.searchBar.text) { [tableView] in
+            tableView?.reloadData()
+        }
     }
 }

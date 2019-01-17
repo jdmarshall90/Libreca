@@ -24,28 +24,52 @@
 import Foundation
 
 protocol BookEditSearchListInteracting {
+    var dispatchQueue: DispatchQueue { get }
     var values: [String] { get }
+    
+    func search(for string: String?, completion: @escaping ([String]) -> Void)
+}
+
+extension BookEditSearchListInteracting {
+    func search(for string: String?, completion: @escaping ([String]) -> Void) {
+        dispatchQueue.async {
+            let matches = self.values.map { $0.lowercased() }.filter { searchableValue in
+                let terms = string?.split(separator: " ").map(String.init).map { $0.lowercased() } ?? []
+                let matchingTerms = terms.filter(searchableValue.contains)
+                let isMatch = matchingTerms.count == terms.count
+                return isMatch
+            }
+            DispatchQueue.main.async {
+                completion(matches)
+            }
+        }
+    }
 }
 
 struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
+    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
     var values: [String] {
         return ["Author 1", "Author 2"]
     }
 }
 
 struct BookEditIdentifierSearchListInteractor: BookEditSearchListInteracting {
+    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.identifier", qos: .userInitiated)
     var values: [String] {
         return ["identifier 1", "id 2"]
     }
 }
 
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
+    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
     var values: [String] {
         return ["Language", "Lengua", "Язык"]
     }
 }
 
 struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
+    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated)
+    
     var values: [String] {
         return ["Fantasy", "Science Fiction"]
     }
