@@ -35,9 +35,9 @@ protocol BookEditSearchListInteracting {
 extension BookEditSearchListInteracting {
     func search(for string: String?, completion: @escaping ([String]) -> Void) {
         dispatchQueue.async {
-            let matches = self.values.map { $0.lowercased() }.filter { searchableValue in
+            let matches = self.values.filter { searchableValue in
                 let terms = string?.split(separator: " ").map(String.init).map { $0.lowercased() } ?? []
-                let matchingTerms = terms.filter(searchableValue.contains)
+                let matchingTerms = terms.filter(searchableValue.lowercased().contains)
                 let isMatch = matchingTerms.count == terms.count
                 return isMatch
             }
