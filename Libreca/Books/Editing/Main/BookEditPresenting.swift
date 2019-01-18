@@ -32,6 +32,8 @@ protocol BookEditPresenting {
     var languages: [Book.Language] { get set }
     var rating: Book.Rating { get set }
     var tags: [String] { get set }
+    var publicationDate: Date? { get set }
+    var formattedPublicationDate: String? { get }
     var availableRatings: [Book.Rating] { get }
     var bookModel: BookModel { get }
     
@@ -60,6 +62,21 @@ final class BookEditPresenter: BookEditPresenting {
     
     var availableRatings: [Book.Rating] {
         return Book.Rating.allCases
+    }
+    
+    private var _publicationDate: Date?
+    var publicationDate: Date? {
+        get {
+            return _publicationDate ?? book.publishedDate
+        }
+        set {
+            _publicationDate = newValue
+        }
+    }
+    
+    var formattedPublicationDate: String? {
+        guard let publishedDate = publicationDate else { return "Not set" }
+        return Formatters.dateFormatter.string(from: publishedDate)
     }
     
     lazy var bookModel = BookModel(book: book)
