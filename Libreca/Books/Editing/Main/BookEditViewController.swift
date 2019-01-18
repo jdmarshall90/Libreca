@@ -24,7 +24,7 @@
 import CalibreKit
 import UIKit
 
-final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     @IBOutlet weak var bookCoverButton: UIButton! {
         didSet {
             bookCoverButton.imageView?.contentMode = .scaleAspectFit
@@ -75,6 +75,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
         
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        tapGestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGestureRecognizer)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIApplication.keyboardWillShowNotification, object: nil)
+        
         // TODO: Spinner
         presenter.fetchImage { [weak self] image in
             self?.bookCoverButton.setImage(image, for: .normal)
@@ -106,6 +111,16 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 1 && indexPath.section == 0 {
+            return 100
+        } else if indexPath.row == 0 && indexPath.section == 3 {
+            return 200
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = bookModel.sections[indexPath.section]
         let field = section.field
@@ -120,7 +135,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 cell.picker.delegate = self
                 cell.picker.dataSource = self
                 cell.picker.selectRow(index, inComponent: 0, animated: true)
-                // TODO: This cell is a little too tall
                 return cell
             } else {
                 // swiftlint:disable:next force_cast
@@ -137,8 +151,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             // TODO: Implement me
             return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
         case .comments:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+            return createCommentsCell(for: field, at: indexPath)
         case .publishedOn:
             if isShowingDatePicker,
                 indexPath.row == 1 {
@@ -209,6 +222,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        view.endEditing(true)
         let selectedField = bookModel.sections[indexPath.section].field
         
         switch selectedField {
@@ -230,8 +244,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             // TODO: Implement me
             break
         case .comments:
-            // TODO: Implement me
-            break
+            break // intentionally left blank, the text view takes up the entire cell
         case .publishedOn:
             tableView.deselectRow(at: indexPath, animated: true)
             isShowingDatePicker.toggle()
@@ -242,6 +255,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 tableView.deleteRows(at: [indexPathOfPicker], with: .top)
             }
         }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        presenter.comments = textView.text
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        presenter.comments = textView.text
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -281,6 +302,23 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     @objc
+    private func didTapView(_ sender: UIGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    @objc
+    private func keyboardWillShow(_ sender: Notification) {
+        guard let keyboardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+            let animationDuration = sender.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+                return
+        }
+        
+        UIView.animate(withDuration: animationDuration) {
+            self.tableView.contentOffset = CGPoint(x: 0, y: keyboardFrame.height)
+        }
+    }
+    
+    @objc
     private func didChangeDate(_ sender: UIDatePicker) {
         presenter.publicationDate = sender.date
         tableView.reloadRows(at: [IndexPath(row: 0, section: 4)], with: .none)
@@ -291,6 +329,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         tableView.register(PickerTableViewCell.nib, forCellReuseIdentifier: pickerCellID)
         tableView.register(DateTableViewCell.nib, forCellReuseIdentifier: dateCellID)
         tableView.register(PublishedOnTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.publishedOn.reuseIdentifier)
+        tableView.register(CommentsTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.comments.reuseIdentifier)
     }
     
     private func createArrayBasedCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
@@ -304,6 +343,19 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             cell.textLabel?.text = "Add \(field.header)"
         } else {
             cell.textLabel?.text = theArray[indexPath.row].fieldValue
+        }
+        return cell
+    }
+    
+    private func createCommentsCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! CommentsTableViewCell
+        cell.commentsTextView.text = presenter.comments
+        cell.commentsTextView.delegate = self
+        
+        if case .dark = Settings.Theme.current {
+            cell.commentsTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            cell.commentsTextView.textColor = .white
         }
         return cell
     }
