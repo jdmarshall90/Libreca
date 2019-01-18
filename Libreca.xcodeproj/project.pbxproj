@@ -75,6 +75,8 @@
 		D0B5214921F145AD007FB264 /* PublishedOnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5214721F145AD007FB264 /* PublishedOnTableViewCell.swift */; };
 		D0B5214A21F145AD007FB264 /* PublishedOnTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0B5214821F145AD007FB264 /* PublishedOnTableViewCell.xib */; };
 		D0B5214C21F16EC6007FB264 /* UITableViewCell+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5214B21F16EC6007FB264 /* UITableViewCell+Extensions.swift */; };
+		D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5214D21F17727007FB264 /* CommentsTableViewCell.swift */; };
+		D0B5215021F17727007FB264 /* CommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0B5214E21F17727007FB264 /* CommentsTableViewCell.xib */; };
 		D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */; };
 		D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29321782130006F21A4 /* Fabric.framework */; };
 		D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D6F29521782130006F21A4 /* FirebaseCore.framework */; };
@@ -190,6 +192,8 @@
 		D0B5214721F145AD007FB264 /* PublishedOnTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedOnTableViewCell.swift; sourceTree = "<group>"; };
 		D0B5214821F145AD007FB264 /* PublishedOnTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PublishedOnTableViewCell.xib; sourceTree = "<group>"; };
 		D0B5214B21F16EC6007FB264 /* UITableViewCell+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extensions.swift"; sourceTree = "<group>"; };
+		D0B5214D21F17727007FB264 /* CommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsTableViewCell.swift; sourceTree = "<group>"; };
+		D0B5214E21F17727007FB264 /* CommentsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsTableViewCell.xib; sourceTree = "<group>"; };
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		D0D6F29321782130006F21A4 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
@@ -398,6 +402,8 @@
 		D07EC21E21EED78300AE193B /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				D0B5214D21F17727007FB264 /* CommentsTableViewCell.swift */,
+				D0B5214E21F17727007FB264 /* CommentsTableViewCell.xib */,
 				D0B5214321F14394007FB264 /* DateTableViewCell.swift */,
 				D0B5214421F14394007FB264 /* DateTableViewCell.xib */,
 				D07EC21721ED51BF00AE193B /* PickerTableViewCell.swift */,
@@ -589,6 +595,7 @@
 				D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */,
+				D0B5215021F17727007FB264 /* CommentsTableViewCell.xib in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
 				D07EC21A21ED51BF00AE193B /* PickerTableViewCell.xib in Resources */,
 				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
@@ -732,6 +739,7 @@
 				D0B5213E21EED903007FB264 /* BookEditSearchListInteracting.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,
+				D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */,
 				D07EC1FE21EA87F500AE193B /* BookDetailsInteracting.swift in Sources */,
 				D0195B8B21730DA2006EA713 /* Framework.swift in Sources */,
 				D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */,

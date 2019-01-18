@@ -33,6 +33,7 @@ protocol BookEditPresenting {
     var rating: Book.Rating { get set }
     var tags: [String] { get set }
     var publicationDate: Date? { get set }
+    var comments: String? { get set }
     var formattedPublicationDate: String? { get }
     var availableRatings: [Book.Rating] { get }
     var bookModel: BookModel { get }
@@ -59,19 +60,11 @@ final class BookEditPresenter: BookEditPresenting {
     var languages: [Book.Language]
     var rating: Book.Rating
     var tags: [String]
+    var publicationDate: Date?
+    var comments: String?
     
     var availableRatings: [Book.Rating] {
         return Book.Rating.allCases
-    }
-    
-    private var _publicationDate: Date?
-    var publicationDate: Date? {
-        get {
-            return _publicationDate ?? book.publishedDate
-        }
-        set {
-            _publicationDate = newValue
-        }
     }
     
     var formattedPublicationDate: String? {
@@ -88,6 +81,8 @@ final class BookEditPresenter: BookEditPresenting {
         self.languages = book.languages
         self.rating = book.rating
         self.tags = book.tags
+        self.publicationDate = book.publishedDate
+        self.comments = book.comments
         self.router = router
         self.interactor = interactor
     }
