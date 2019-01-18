@@ -50,6 +50,10 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         fatalError("init(coder:) has not been implemented")
     }
     
+    // TODO: Bug (physical device only) - pull table down, you can see white background
+    // TODO: Bug - searching has all values lowercased
+    // TODO: Bug - when search field is first responder, you can scroll items under the nav bar and translucency is screwy
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,6 +84,7 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         return presenter.values.count
     }
     
+    // TODO: Need to have the currently selected items already selected
     // TODO: These items need to be selectable / deselectable, and the results passed back to the main edit VC
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

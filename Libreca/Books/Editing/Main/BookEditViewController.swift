@@ -44,6 +44,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     private var isShowingRatingPicker = false
     private let pickerCellID = "pickerCellID"
     
+    private var isShowingDatePicker = false
+    private let dateCellID = "dateCellID"
+    
     // TODO: End-to-end testing in light mode
     // TODO: Analytics
     
@@ -86,7 +89,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         let field = bookModel.sections[section].field
         
         switch field {
-        case .rating where isShowingRatingPicker:
+        case .rating where isShowingRatingPicker,
+             .publishedOn where isShowingDatePicker:
             return 2
         case .rating,
              .publishedOn,
@@ -136,8 +140,20 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             // TODO: Implement me
             return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
         case .publishedOn:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+            if isShowingDatePicker,
+                indexPath.row == 1 {
+                // swiftlint:disable:next force_cast
+                let cell = tableView.dequeueReusableCell(withIdentifier: dateCellID, for: indexPath) as! DateTableViewCell
+                cell.picker.addTarget(self, action: #selector(didChangeDate), for: .valueChanged)
+                cell.picker.date = presenter.publicationDate ?? Date()
+                // TODO: Dark mode picker color
+                return cell
+            } else {
+                // swiftlint:disable:next force_cast
+                let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! PublishedOnTableViewCell
+                cell.dateLabel.text = presenter.formattedPublicationDate
+                return cell
+            }
         }
     }
     
@@ -217,8 +233,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             // TODO: Implement me
             break
         case .publishedOn:
-            // TODO: Implement me
-            break
+            tableView.deselectRow(at: indexPath, animated: true)
+            isShowingDatePicker.toggle()
+            let indexPathOfPicker = IndexPath(row: 1, section: 4)
+            if isShowingDatePicker {
+                tableView.insertRows(at: [indexPathOfPicker], with: .top)
+            } else {
+                tableView.deleteRows(at: [indexPathOfPicker], with: .top)
+            }
         }
     }
     
@@ -236,9 +258,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        // TODO: Dark mode color?
-        return presenter.availableRatings[row].displayValue
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        return NSAttributedString(string: presenter.availableRatings[row].displayValue, attributes: [.foregroundColor: UIColor.white])
     }
     
     func didSelect(newImage: UIImage) {
@@ -259,9 +280,17 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         presenter.cancel()
     }
     
+    @objc
+    private func didChangeDate(_ sender: UIDatePicker) {
+        presenter.publicationDate = sender.date
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 4)], with: .none)
+    }
+    
     private func registerCells() {
         tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.rating.reuseIdentifier)
         tableView.register(PickerTableViewCell.nib, forCellReuseIdentifier: pickerCellID)
+        tableView.register(DateTableViewCell.nib, forCellReuseIdentifier: dateCellID)
+        tableView.register(PublishedOnTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.publishedOn.reuseIdentifier)
     }
     
     private func createArrayBasedCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
@@ -362,14 +391,5 @@ private extension BookModel.Section.Field {
              .publishedOn:
             return false
         }
-    }
-}
-
-// TODO: Move this to its own file
-extension UITableViewCell {
-    static var nib: UINib {
-        // swiftlint:disable:next force_unwrapping
-        let classString = String(NSStringFromClass(self).split(separator: ".").last!)
-        return UINib(nibName: classString, bundle: nil)
     }
 }
