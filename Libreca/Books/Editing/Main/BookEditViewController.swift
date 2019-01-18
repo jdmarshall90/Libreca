@@ -106,6 +106,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 1 && indexPath.section == 0 {
+            return 100
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = bookModel.sections[indexPath.section]
         let field = section.field
@@ -120,7 +128,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 cell.picker.delegate = self
                 cell.picker.dataSource = self
                 cell.picker.selectRow(index, inComponent: 0, animated: true)
-                // TODO: This cell is a little too tall
                 return cell
             } else {
                 // swiftlint:disable:next force_cast
