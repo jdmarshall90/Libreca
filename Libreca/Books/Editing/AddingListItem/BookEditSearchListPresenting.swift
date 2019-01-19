@@ -24,28 +24,35 @@
 import Foundation
 
 protocol BookEditSearchListPresenting {
-    var values: [String] { get }
+    associatedtype ListItemType: BookEditSearchListDisplayable
+    
+    var items: [BookEditSearchListItem<ListItemType>] { get }
     
     func search(for string: String?, completion: @escaping () -> Void)
     func didTapSave()
     func didTapCancel()
 }
 
-final class BookEditSearchListPresenter: BookEditSearchListPresenting {
+// A `where` clause would let me prevent the force casts below, but adding one creates a "redundant conformance" warning
+final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable, Interacting: BookEditSearchListInteracting>: BookEditSearchListPresenting {
+    typealias ListItemType = ListItem
+    
     weak var view: BookEditSearchListViewing?
     private let router: BookEditSearchListRouting
-    private let interactor: BookEditSearchListInteracting
+    private let interactor: Interacting
     
-    private(set) lazy var values = interactor.values
+    // swiftlint:disable:next force_cast
+    private(set) lazy var items: [BookEditSearchListItem<ListItem>] = interactor.items as! [BookEditSearchListItem<ListItem>]
     
-    init(router: BookEditSearchListRouting, interactor: BookEditSearchListInteracting) {
+    init(router: BookEditSearchListRouting, interactor: Interacting) {
         self.router = router
         self.interactor = interactor
     }
     
     func search(for string: String?, completion: @escaping () -> Void) {
         interactor.search(for: string) { [weak self] results in
-            self?.values = results
+            // swiftlint:disable:next force_cast
+            self?.items = results as! [BookEditSearchListItem<ListItem>]
             completion()
         }
     }

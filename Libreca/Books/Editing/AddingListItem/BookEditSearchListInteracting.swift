@@ -21,23 +21,39 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import Foundation
 
-protocol BookEditSearchListInteracting {
-    var dispatchQueue: DispatchQueue { get }
-    var values: [String] { get }
+protocol BookEditSearchListDisplayable: Hashable {
+    var displayValue: String { get }
+}
+
+struct BookEditSearchListItem<T: BookEditSearchListDisplayable>: SectionIndexDisplayable, Hashable {
+    let item: T
+    var isSelected: Bool
     
-    func search(for string: String?, completion: @escaping ([String]) -> Void)
+    var stringValue: String {
+        return item.displayValue
+    }
+}
+
+protocol BookEditSearchListInteracting {
+    associatedtype ListItemType: BookEditSearchListDisplayable
+    
+    var dispatchQueue: DispatchQueue { get }
+    var items: [BookEditSearchListItem<ListItemType>] { get }
+    
+    func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void)
 }
 
 // TODO: Test searching with large libraries
 
 extension BookEditSearchListInteracting {
-    func search(for string: String?, completion: @escaping ([String]) -> Void) {
+    func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void) {
         dispatchQueue.async {
-            let matches = self.values.filter { searchableValue in
+            let matches = self.items.filter { searchableValue in
                 let terms = string?.split(separator: " ").map(String.init).map { $0.lowercased() } ?? []
-                let matchingTerms = terms.filter(searchableValue.lowercased().contains)
+                let matchingTerms = terms.filter(searchableValue.stringValue.lowercased().contains)
                 let isMatch = matchingTerms.count == terms.count
                 return isMatch
             }
@@ -48,29 +64,43 @@ extension BookEditSearchListInteracting {
     }
 }
 
-struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
-    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
-    let values: [String]
-    
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
+extension Book.Author: BookEditSearchListDisplayable {
+    var displayValue: String {
+        return name
     }
 }
 
+struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
+    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
+    let items: [BookEditSearchListItem<Book.Author>]
+    
+    init(book: Book, items: [Book.Author]) {
+        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.authors.contains($0)) }))
+    }
+}
+
+extension Book.Language: BookEditSearchListDisplayable {}
+
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
-    let values: [String]
+    let items: [BookEditSearchListItem<Book.Language>]
     
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
+    init(book: Book, items: [Book.Language]) {
+        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.languages.contains($0)) }))
+    }
+}
+
+extension String: BookEditSearchListDisplayable {
+    var displayValue: String {
+        return self
     }
 }
 
 struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated)
-    let values: [String]
+    let items: [BookEditSearchListItem<String>]
     
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
+    init(book: Book, items: [String]) {
+        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.tags.contains($0)) }))
     }
 }

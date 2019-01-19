@@ -24,15 +24,9 @@
 import FirebaseAnalytics
 import UIKit
 
-extension String: SectionIndexDisplayable {
-    var stringValue: String {
-        return self
-    }
-}
-
-final class BookEditSearchListViewController: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
-    private let presenter: BookEditSearchListPresenting
-    private let sectionIndexGenerator: TableViewSectionIndexTitleGenerator<String>
+final class BookEditSearchListViewController<Presenting: BookEditSearchListPresenting>: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
+    private let presenter: Presenting
+    private let sectionIndexGenerator: TableViewSectionIndexTitleGenerator<BookEditSearchListItem<Presenting.ListItemType>>
     
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -49,10 +43,10 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         return searchController
     }()
     
-    init(presenter: BookEditSearchListPresenting, usesSections: Bool) {
+    init(presenter: Presenting, usesSections: Bool) {
         self.presenter = presenter
-        self.sectionIndexGenerator = TableViewSectionIndexTitleGenerator<String>(sectionIndexDisplayables: presenter.values, isSectioningEnabled: usesSections)
-        super.init(nibName: nil, bundle: nil)
+        self.sectionIndexGenerator = TableViewSectionIndexTitleGenerator(sectionIndexDisplayables: presenter.items, isSectioningEnabled: usesSections)
+        super.init(style: .grouped)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,7 +84,6 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         return sectionIndexGenerator.sections[section].values.count
     }
     
-    // TODO: Need to have the currently selected items already selected
     // TODO: These items need to be selectable / deselectable, and the results passed back to the main edit VC
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -98,7 +91,10 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         if case .dark = Settings.Theme.current {
             cell.textLabel?.textColor = .white
         }
-        cell.textLabel?.text = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
+        
+        let value = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
+        cell.textLabel?.text = value.stringValue
+        cell.accessoryType = value.isSelected ? .checkmark : .none
         return cell
     }
     
@@ -118,7 +114,7 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     func updateSearchResults(for searchController: UISearchController) {
         presenter.search(for: searchController.searchBar.text) { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.values)
+            strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.items)
             strongSelf.tableView?.reloadData()
         }
     }

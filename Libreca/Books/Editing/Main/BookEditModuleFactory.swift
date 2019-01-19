@@ -47,7 +47,7 @@ struct BookEditModuleFactory {
     private init() {}
     
     static func viewController(for book: Book) -> BookEditViewing & UIViewController {
-        let router = BookEditRouter()
+        let router = BookEditRouter(book: book)
         let service = BookEditService(coverService: book.cover.hitService)
         let interactor = BookEditInteractor(service: service)
         let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
@@ -61,9 +61,9 @@ struct BookEditModuleFactory {
     // these `values` directly. However, I am purposely trying to minimize service calls so
     // as to be able to provide a fully offline-capable experience.
     
-    static func viewControllerForAddingAuthor() -> BookEditSearchListViewing & UIViewController {
-        let allAuthors = allBooks.flatMap { $0.authors }.map { $0.fieldValue }
-        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(values: allAuthors), usesSections: true)
+    static func viewControllerForAddingAuthor(to book: Book) -> BookEditSearchListViewing & UIViewController {
+        let allAuthors = allBooks.flatMap { $0.authors }
+        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(book: book, items: allAuthors), usesSections: true)
         viewController.title = "Search Authors"
         return viewController
     }
@@ -319,24 +319,24 @@ struct BookEditModuleFactory {
         return seriesSelectionAlertController
     }
     
-    static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {
-        let allLanguages = allBooks.flatMap { $0.languages }.map { $0.fieldValue }
+    static func viewControllerForAddingLanguage(to book: Book) -> BookEditSearchListViewing & UIViewController {
+        let allLanguages = allBooks.flatMap { $0.languages }
         // don't use sections for languages because I would never expect there to be enough languages in the list to warrant it
-        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(values: allLanguages), usesSections: false)
+        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(book: book, items: allLanguages), usesSections: false)
         viewController.title = "Search Languages"
         return viewController
     }
     
-    static func viewControllerForAddingTag() -> BookEditSearchListViewing & UIViewController {
-        let allTags = allBooks.flatMap { $0.tags }.map { $0.fieldValue }
-        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(values: allTags), usesSections: true)
+    static func viewControllerForAddingTag(to book: Book) -> BookEditSearchListViewing & UIViewController {
+        let allTags = allBooks.flatMap { $0.tags }
+        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(book: book, items: allTags), usesSections: true)
         viewController.title = "Search Tags"
         return viewController
     }
     
-    private static func viewControllerForAdding(using interactor: BookEditSearchListInteracting, usesSections: Bool) -> BookEditSearchListViewing & UIViewController {
+    private static func viewControllerForAdding<Interacting: BookEditSearchListInteracting>(using interactor: Interacting, usesSections: Bool) -> BookEditSearchListViewing & UIViewController {
         let router = BookEditSearchListRouter()
-        let presenter = BookEditSearchListPresenter(router: router, interactor: interactor)
+        let presenter = BookEditSearchListPresenter<Interacting.ListItemType, Interacting>(router: router, interactor: interactor)
         let searchListVC = BookEditSearchListViewController(presenter: presenter, usesSections: usesSections)
         router.viewController = searchListVC
         presenter.view = searchListVC

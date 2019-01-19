@@ -22,6 +22,7 @@
 //
 
 import AVKit
+import CalibreKit
 import UIKit
 
 protocol BookEditRouting {
@@ -40,6 +41,11 @@ protocol BookEditRouting {
 
 final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     weak var viewController: (BookEditViewing & UIViewController)?
+    private let book: Book
+    
+    init(book: Book) {
+        self.book = book
+    }
     
     func routeForPicEditing() {
         guard let viewController = viewController else { return }
@@ -48,7 +54,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func routeForAddingAuthor() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingAuthor())
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingAuthor(to: book))
         viewController?.present(navController, animated: true)
     }
     
@@ -71,12 +77,12 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func routeForAddingLanguage() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingLanguage())
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingLanguage(to: book))
         viewController?.present(navController, animated: true)
     }
     
     func routeForAddingTag() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingTag())
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingTag(to: book))
         viewController?.present(navController, animated: true)
     }
     
