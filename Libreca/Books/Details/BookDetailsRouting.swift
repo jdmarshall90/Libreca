@@ -40,9 +40,9 @@ struct BookDetailsRouter: BookDetailsRouting {
     func routeToEditing(for book: Book) {
         let editVC = BookEditModuleFactory.viewController(for: book)
         let editNav = UINavigationController(rootViewController: editVC)
-        // TODO: Make these bar button items talk to the protocol instead
-        editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewController.didTapCancel))
-        editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewController.didTapSave))
+        
+        editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewing.didTapCancel))
+        editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewing.didTapSave))
         editNav.modalPresentationStyle = .formSheet
         editNav.navigationBar.isTranslucent = false
         viewController?.present(editNav, animated: true)
