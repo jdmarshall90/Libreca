@@ -37,6 +37,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     var imageButton: UIButton {
         return bookCoverButton
     }
@@ -64,8 +66,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         fatalError("init(coder:) has not been implemented")
     }
     
-    // TODO: Put an edit icon from icons8 on the book image
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,10 +80,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         view.addGestureRecognizer(tapGestureRecognizer)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIApplication.keyboardWillShowNotification, object: nil)
         
-        // TODO: Spinner
-        presenter.fetchImage { [weak self] image in
-            self?.bookCoverButton.setImage(image, for: .normal)
-        }
+        showBookCover()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -396,6 +393,24 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             presenter.series = modifier(array(for: field)).first as? Book.Series
         case .tags:
             presenter.tags = modifier(presenter.tags).map { $0.fieldValue }
+        }
+    }
+    
+    private func showBookCover() {
+        activityIndicator.startAnimating()
+        presenter.fetchImage { [weak self] image in
+            self?.activityIndicator.stopAnimating()
+            self?.activityIndicator.removeFromSuperview()
+            
+            let errorImage = #imageLiteral(resourceName: "BookCoverPlaceholder")
+            // The error image and the actual image seem to scale differently.
+            // Using the error image as the background image and the actual
+            // image as the foreground seems to address that.
+            if image == errorImage {
+                self?.bookCoverButton.setBackgroundImage(image, for: .normal)
+            } else {
+                self?.bookCoverButton.setImage(image, for: .normal)
+            }
         }
     }
 }
