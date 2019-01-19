@@ -144,7 +144,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             }
         case .authors,
              .languages,
-             .identifiers,
+             .identifiers, // TODO: Refactor identifiers to not be this type
              .tags:
             return createArrayBasedCell(for: field, at: indexPath)
         case .series:

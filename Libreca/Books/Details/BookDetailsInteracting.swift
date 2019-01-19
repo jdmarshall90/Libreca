@@ -21,12 +21,48 @@
 //  This file is part of project: Libreca
 //
 
+import UIKit
+
+enum EditAvailability {
+    case editable
+    case stillFetching
+    case unpurchased
+}
+
 protocol BookDetailsInteracting {
-    var hasPurchasedEditing: Bool { get }
+    var editAvailability: EditAvailability { get }
 }
 
 struct BookDetailsInteractor: BookDetailsInteracting {
-    var hasPurchasedEditing: Bool {
+    var editAvailability: EditAvailability {
+        if isFetchingbooks {
+            return .stillFetching
+        }
+        
+        if !hasPurchasedEditing {
+            return .unpurchased
+        }
+        
+        return .editable
+    }
+    
+    private var isFetchingbooks: Bool {
+        // This is a dirty, shameful hack... but it's also the least invasive solution until
+        // `BooksListViewController` and `BookDetailsViewController` are refactored to the new
+        // architecture. I'm not going to bother with a GitLab issue for this hack itself,
+        // because fixing the architecture will reveal this via a compile-time error.
+        
+        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController as? UISplitViewController,
+            let mainNavController = rootViewController.viewControllers.first as? UINavigationController,
+            let booksListViewController = mainNavController.viewControllers.first as? BooksListViewController else {
+                return false
+        }
+        
+        let isFetchingBooks = booksListViewController.isRefreshing
+        return isFetchingBooks
+    }
+    
+    private var hasPurchasedEditing: Bool {
         // TODO: Check for in app purchase. Encapsulate that logic into separate class
         return true
     }

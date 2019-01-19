@@ -57,7 +57,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     /// trying to fetch book metadata, the app would crash when trying to reload a single row in the
     /// table view. A better fix would be to cancel in flight requests when refreshing the data or
     /// changing the content server.
-    private var isRefreshing: Bool {
+    var isRefreshing: Bool {
         return isRetryingFailures || !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView)
     }
     

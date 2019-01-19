@@ -27,6 +27,7 @@ import UIKit
 protocol BookDetailsRouting {
     func routeToEditing(for book: Book)
     func routeToEditPurchaseValueProposition()
+    func routeToStillFetchingMessage()
 }
 
 struct BookDetailsRouter: BookDetailsRouting {
@@ -49,5 +50,12 @@ struct BookDetailsRouter: BookDetailsRouting {
     
     func routeToEditPurchaseValueProposition() {
         // TODO: Show value prop
+    }
+    
+    func routeToStillFetchingMessage() {
+        let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        viewController?.present(alertController, animated: true)
     }
 }
