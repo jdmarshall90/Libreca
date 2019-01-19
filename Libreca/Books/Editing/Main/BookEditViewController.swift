@@ -291,13 +291,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         presenter.didTapPic()
     }
     
-    @objc
-    func didTapSave(_ sender: UIBarButtonItem) {
+    func didTapSave() {
         presenter.save()
     }
     
-    @objc
-    func didTapCancel(_ sender: UIBarButtonItem) {
+    func didTapCancel() {
         presenter.cancel()
     }
     
