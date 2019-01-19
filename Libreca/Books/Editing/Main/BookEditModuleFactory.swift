@@ -62,7 +62,7 @@ struct BookEditModuleFactory {
     
     static func viewControllerForAddingAuthor() -> BookEditSearchListViewing & UIViewController {
         let allAuthors = allBooks.flatMap { $0.authors }.map { $0.fieldValue }
-        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(values: allAuthors))
+        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(values: allAuthors), usesSections: true)
         viewController.title = "Search Authors"
         return viewController
     }
@@ -196,22 +196,23 @@ struct BookEditModuleFactory {
     
     static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {
         let allLanguages = allBooks.flatMap { $0.languages }.map { $0.fieldValue }
-        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(values: allLanguages))
+        // don't use sections for languages because I would never expect there to be enough languages in the list to warrant it
+        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(values: allLanguages), usesSections: false)
         viewController.title = "Search Languages"
         return viewController
     }
     
     static func viewControllerForAddingTag() -> BookEditSearchListViewing & UIViewController {
         let allTags = allBooks.flatMap { $0.tags }.map { $0.fieldValue }
-        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(values: allTags))
+        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(values: allTags), usesSections: true)
         viewController.title = "Search Tags"
         return viewController
     }
     
-    private static func viewControllerForAdding(using interactor: BookEditSearchListInteracting) -> BookEditSearchListViewing & UIViewController {
+    private static func viewControllerForAdding(using interactor: BookEditSearchListInteracting, usesSections: Bool) -> BookEditSearchListViewing & UIViewController {
         let router = BookEditSearchListRouter()
         let presenter = BookEditSearchListPresenter(router: router, interactor: interactor)
-        let searchListVC = BookEditSearchListViewController(presenter: presenter)
+        let searchListVC = BookEditSearchListViewController(presenter: presenter, usesSections: usesSections)
         router.viewController = searchListVC
         presenter.view = searchListVC
         return searchListVC
