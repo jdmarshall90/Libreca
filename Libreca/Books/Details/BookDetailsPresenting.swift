@@ -40,9 +40,12 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     }
     
     func edit(_ book: Book) {
-        if interactor.hasPurchasedEditing {
+        switch interactor.editAvailability {
+        case .editable:
             router.routeToEditing(for: book)
-        } else {
+        case .stillFetching:
+            router.routeToStillFetchingMessage()
+        case .unpurchased:
             router.routeToEditPurchaseValueProposition()
         }
     }
