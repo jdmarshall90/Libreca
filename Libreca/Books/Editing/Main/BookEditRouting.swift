@@ -25,9 +25,11 @@ import AVKit
 import UIKit
 
 protocol BookEditRouting {
+    typealias Identifier = BookEditModuleFactory.Identifier
+    
     func routeForPicEditing()
     func routeForAddingAuthor()
-    func routeForAddingIdentifier()
+    func routeForAddingIdentifier(completion: @escaping (Identifier?) -> Void)
     func routeForAddingLanguage()
     func routeForAddingTag()
     func routeForSuccessfulSave()
@@ -48,9 +50,13 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController?.present(navController, animated: true)
     }
     
-    func routeForAddingIdentifier() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingIdentifier())
-        viewController?.present(navController, animated: true)
+    func routeForAddingIdentifier(completion: @escaping (Identifier?) -> Void) {
+        guard let viewController = viewController else { return }
+        let identifierViewController = BookEditModuleFactory.viewControllerForAddingIdentifier(
+            presentingViewController: viewController,
+            completion: completion
+        )
+        viewController.present(identifierViewController, animated: true)
     }
     
     func routeForAddingLanguage() {

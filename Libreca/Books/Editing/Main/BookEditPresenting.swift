@@ -41,7 +41,7 @@ protocol BookEditPresenting {
     func fetchImage(completion: @escaping (UIImage) -> Void)
     func didTapPic()
     func didTapAddAuthor()
-    func didTapAddIdentifier()
+    func didTapAddIdentifier(completion: @escaping () -> Void)
     func didTapAddLanguage()
     func didTapAddTag()
     func save()
@@ -99,8 +99,13 @@ final class BookEditPresenter: BookEditPresenting {
         router.routeForAddingAuthor()
     }
     
-    func didTapAddIdentifier() {
-        router.routeForAddingIdentifier()
+    func didTapAddIdentifier(completion: @escaping () -> Void) {
+        router.routeForAddingIdentifier { [weak self] identifier in
+            if let identifier = identifier {
+                self?.identifiers.append(Book.Identifier(source: identifier.displayValue, uniqueID: identifier.uniqueID))
+            }
+            completion()
+        }
     }
     
     func didTapAddLanguage() {

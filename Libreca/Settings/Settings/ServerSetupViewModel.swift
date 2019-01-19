@@ -73,14 +73,3 @@ struct ServerSetupViewModel {
         }
     }
 }
-
-private extension Optional where Wrapped == String {
-    var isNilOrEmpty: Bool {
-        switch self {
-        case .some(let string):
-            return string.isEmpty
-        case .none:
-            return true
-        }
-    }
-}

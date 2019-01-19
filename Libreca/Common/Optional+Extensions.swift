@@ -1,8 +1,8 @@
 //
-//  RatingTableViewCell.swift
+//  Optional+Extensions.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 1/13/19.
+//  Created by Justin Marshall on 1/18/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,8 +21,15 @@
 //  This file is part of project: Libreca
 //
 
-import UIKit
+import Foundation
 
-final class RatingTableViewCell: UITableViewCell {
-    @IBOutlet weak var ratingLabel: UILabel!
+extension Optional where Wrapped == String {
+    var isNilOrEmpty: Bool {
+        switch self {
+        case .some(let string):
+            return string.isEmpty
+        case .none:
+            return true
+        }
+    }
 }

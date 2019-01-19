@@ -49,9 +49,9 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         return searchController
     }()
     
-    init(presenter: BookEditSearchListPresenting) {
+    init(presenter: BookEditSearchListPresenting, usesSections: Bool) {
         self.presenter = presenter
-        self.sectionIndexGenerator = TableViewSectionIndexTitleGenerator<String>(sectionIndexDisplayables: presenter.values, isSectioningEnabled: true)
+        self.sectionIndexGenerator = TableViewSectionIndexTitleGenerator<String>(sectionIndexDisplayables: presenter.values, isSectioningEnabled: usesSections)
         super.init(nibName: nil, bundle: nil)
     }
     
