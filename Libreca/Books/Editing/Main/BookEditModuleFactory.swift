@@ -24,6 +24,8 @@
 import CalibreKit
 
 struct BookEditModuleFactory {
+    typealias Identifier = (displayValue: String, uniqueID: String)
+    
     private static var allBooks: [Book] {
         // This is a dirty, shameful hack... but it's also the least invasive solution until
         // `BooksListViewController` and `BookDetailsViewController` are refactored to the new
@@ -65,11 +67,131 @@ struct BookEditModuleFactory {
         return viewController
     }
     
-    static func viewControllerForAddingIdentifier() -> BookEditSearchListViewing & UIViewController {
-        let allIdentifiers = allBooks.flatMap { $0.identifiers }.map { $0.fieldValue }
-        let viewController = viewControllerForAdding(using: BookEditIdentifierSearchListInteractor(values: allIdentifiers))
-        viewController.title = "Search Identifiers"
-        return viewController
+    // Disabling this because I don't think this is high priority, given that:
+    // a.) I don't expect editing of this field to be used much, and
+    // b.) there is an open GitLab ticket (https://gitlab.com/calibre-utils/Libreca/issues/210)
+    //     to eventually redesign this screen
+    //     anyway.
+    // Ergo, not worth the time to refactor and retest.
+    // swiftlint:disable:next function_body_length
+    static func viewControllerForAddingIdentifier(presentingViewController: UIViewController, completion: @escaping (Identifier?) -> Void) -> UIViewController {
+        var allIdentifiers = allBooks.flatMap { $0.identifiers }.map { $0.displayValue }
+        let interactor = BookEditIdentifierSearchListInteractor(values: allIdentifiers)
+        allIdentifiers = interactor.values
+        
+        let identifierSelectionAlertController = UIAlertController(title: "Select Identifier", message: nil, preferredStyle: .actionSheet)
+        var newIdentifierName: String?
+        var newUniqueID: String?
+        
+        var uniqueIDAlertController: UIAlertController {
+            let uniqueIDAlertController = UIAlertController(title: "Enter unique identifier", message: "Such as the ISBN number", preferredStyle: .alert)
+            
+            var token: NSObjectProtocol?
+            
+            uniqueIDAlertController.addAction(
+                UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                    guard let token = token else { return }
+                    NotificationCenter.default.removeObserver(token)
+                    newIdentifierName = nil
+                    newUniqueID = nil
+                    completion(nil)
+                }
+            )
+            let addAction = UIAlertAction(title: "Add", style: .default) { _ in
+                guard let token = token else { return }
+                NotificationCenter.default.removeObserver(token)
+                
+                guard let identifier = newIdentifierName,
+                    let uniqueID = newUniqueID else {
+                        newIdentifierName = nil
+                        newUniqueID = nil
+                        return completion(nil)
+                }
+                
+                completion((displayValue: identifier, uniqueID: uniqueID))
+            }
+            addAction.isEnabled = false
+            uniqueIDAlertController.addAction(addAction)
+            
+            uniqueIDAlertController.addTextField { textField in
+                textField.placeholder = "ISBN"
+                textField.keyboardType = .numberPad
+                if case .dark = Settings.Theme.current {
+                    textField.keyboardAppearance = .dark
+                    textField.textColor = UITextField().textColor
+                }
+                token = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: nil) { _ in
+                    let isValid = !textField.text.isNilOrEmpty
+                    addAction.isEnabled = isValid
+                    newUniqueID = textField.text
+                }
+                return
+            }
+            
+            return uniqueIDAlertController
+        }
+        
+        identifierSelectionAlertController.addAction(
+            UIAlertAction(title: "Add new", style: .default) { _ in
+                let newIdentifierAlertController = UIAlertController(title: "Enter new identifier name", message: "Examples include: \"ISBN\", \"Google\", \"Amazon\", etc.", preferredStyle: .alert)
+                
+                var token: NSObjectProtocol?
+                
+                newIdentifierAlertController.addAction(
+                    UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                        guard let token = token else { return }
+                        NotificationCenter.default.removeObserver(token)
+                        newIdentifierName = nil
+                        newUniqueID = nil
+                        completion(nil)
+                    }
+                )
+                let addAction = UIAlertAction(title: "Add", style: .default) { _ in
+                    guard let token = token else { return }
+                    NotificationCenter.default.removeObserver(token)
+                    presentingViewController.present(uniqueIDAlertController, animated: true)
+                }
+                addAction.isEnabled = false
+                newIdentifierAlertController.addAction(addAction)
+                
+                newIdentifierAlertController.addTextField { textField in
+                    textField.placeholder = "Identifier name"
+                    textField.autocapitalizationType = .words
+                    textField.autocorrectionType = .default
+                    if case .dark = Settings.Theme.current {
+                        textField.keyboardAppearance = .dark
+                        textField.textColor = UITextField().textColor
+                    }
+                    token = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: nil) { _ in
+                        let isValid = !textField.text.isNilOrEmpty
+                        addAction.isEnabled = isValid
+                        newIdentifierName = textField.text
+                    }
+                    return
+                }
+                
+                presentingViewController.present(newIdentifierAlertController, animated: true)
+            }
+        )
+        
+        allIdentifiers.forEach { identifier in
+            identifierSelectionAlertController.addAction(
+                UIAlertAction(title: identifier, style: .default) { _ in
+                    newIdentifierName = identifier
+                    presentingViewController.present(uniqueIDAlertController, animated: true)
+                }
+            )
+        }
+        
+        identifierSelectionAlertController.addAction(
+            UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                newIdentifierName = nil
+                newUniqueID = nil
+                completion(nil)
+            }
+        )
+        
+        return identifierSelectionAlertController
     }
     
     static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {

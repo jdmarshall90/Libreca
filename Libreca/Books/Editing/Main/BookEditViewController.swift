@@ -144,7 +144,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             }
         case .authors,
              .languages,
-             .identifiers, // TODO: Refactor identifiers to not be this type
+             .identifiers,
              .tags:
             return createArrayBasedCell(for: field, at: indexPath)
         case .series:
@@ -183,7 +183,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case (.languages, .insert):
             presenter.didTapAddLanguage()
         case (.identifiers, .insert):
-            presenter.didTapAddIdentifier()
+            presenter.didTapAddIdentifier {
+                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+            }
         case (.tags, .insert):
             presenter.didTapAddTag()
         case (.authors, .delete),
