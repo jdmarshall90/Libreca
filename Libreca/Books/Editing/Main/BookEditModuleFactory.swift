@@ -25,6 +25,7 @@ import CalibreKit
 
 struct BookEditModuleFactory {
     typealias Identifier = (displayValue: String, uniqueID: String)
+    typealias Series = (name: String, index: Double)
     
     private static var allBooks: [Book] {
         // This is a dirty, shameful hack... but it's also the least invasive solution until
@@ -192,6 +193,131 @@ struct BookEditModuleFactory {
         )
         
         return identifierSelectionAlertController
+    }
+    
+    // Disabling this because I don't think this is high priority.
+    // Instead, there is an open GitLab ticket (https://gitlab.com/calibre-utils/Libreca/issues/210)
+    // to eventually redesign this screen anyway.
+    // Ergo, not worth the time to refactor and retest.
+    // swiftlint:disable:next function_body_length
+    static func viewControllerForAddingSeries(presentingViewController: UIViewController, completion: @escaping (Series?) -> Void) -> UIViewController {
+        var allSeries = allBooks.compactMap { $0.series }.map { $0.name }
+        allSeries = Array(Set(allSeries)).sorted()
+        
+        let seriesSelectionAlertController = UIAlertController(title: "Select Series", message: nil, preferredStyle: .actionSheet)
+        var newSeriesName: String?
+        var newIndex: String?
+        
+        var seriesIndexAlertController: UIAlertController {
+            let seriesIndexAlertController = UIAlertController(title: "Enter series index", message: "Such as 0.5, 1, 2, 2.5, etc.", preferredStyle: .alert)
+            
+            var token: NSObjectProtocol?
+            
+            seriesIndexAlertController.addAction(
+                UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                    guard let token = token else { return }
+                    NotificationCenter.default.removeObserver(token)
+                    newSeriesName = nil
+                    newIndex = nil
+                    completion(nil)
+                }
+            )
+            let addAction = UIAlertAction(title: "Add", style: .default) { _ in
+                guard let token = token else { return }
+                NotificationCenter.default.removeObserver(token)
+                
+                guard let name = newSeriesName,
+                    let unwrappedIndex = newIndex,
+                    let index = Double(unwrappedIndex) else {
+                        newSeriesName = nil
+                        newIndex = nil
+                        return completion(nil)
+                }
+                
+                completion((name: name, index: index))
+            }
+            addAction.isEnabled = false
+            seriesIndexAlertController.addAction(addAction)
+            
+            seriesIndexAlertController.addTextField { textField in
+                textField.placeholder = "Index"
+                textField.keyboardType = .decimalPad
+                if case .dark = Settings.Theme.current {
+                    textField.keyboardAppearance = .dark
+                    textField.textColor = UITextField().textColor
+                }
+                token = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: nil) { _ in
+                    let isValid = !textField.text.isNilOrEmpty && Double(textField.text ?? "") != nil
+                    addAction.isEnabled = isValid
+                    newIndex = textField.text
+                }
+                return
+            }
+            
+            return seriesIndexAlertController
+        }
+        
+        seriesSelectionAlertController.addAction(
+            UIAlertAction(title: "Add new", style: .default) { _ in
+                let newSeriesAlertController = UIAlertController(title: "Enter new series name", message: nil, preferredStyle: .alert)
+                
+                var token: NSObjectProtocol?
+                
+                newSeriesAlertController.addAction(
+                    UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                        guard let token = token else { return }
+                        NotificationCenter.default.removeObserver(token)
+                        newSeriesName = nil
+                        newIndex = nil
+                        completion(nil)
+                    }
+                )
+                let addAction = UIAlertAction(title: "Add", style: .default) { _ in
+                    guard let token = token else { return }
+                    NotificationCenter.default.removeObserver(token)
+                    presentingViewController.present(seriesIndexAlertController, animated: true)
+                }
+                addAction.isEnabled = false
+                newSeriesAlertController.addAction(addAction)
+                
+                newSeriesAlertController.addTextField { textField in
+                    textField.placeholder = "Series name"
+                    textField.autocapitalizationType = .words
+                    textField.autocorrectionType = .default
+                    if case .dark = Settings.Theme.current {
+                        textField.keyboardAppearance = .dark
+                        textField.textColor = UITextField().textColor
+                    }
+                    token = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: nil) { _ in
+                        let isValid = !textField.text.isNilOrEmpty
+                        addAction.isEnabled = isValid
+                        newSeriesName = textField.text
+                    }
+                    return
+                }
+                
+                presentingViewController.present(newSeriesAlertController, animated: true)
+            }
+        )
+        
+        allSeries.forEach { identifier in
+            seriesSelectionAlertController.addAction(
+                UIAlertAction(title: identifier, style: .default) { _ in
+                    newSeriesName = identifier
+                    presentingViewController.present(seriesIndexAlertController, animated: true)
+                }
+            )
+        }
+        
+        seriesSelectionAlertController.addAction(
+            UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                newSeriesName = nil
+                newIndex = nil
+                completion(nil)
+            }
+        )
+        
+        return seriesSelectionAlertController
     }
     
     static func viewControllerForAddingLanguage() -> BookEditSearchListViewing & UIViewController {
