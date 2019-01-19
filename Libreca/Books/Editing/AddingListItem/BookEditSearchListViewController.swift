@@ -90,7 +90,7 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         return sectionIndexGenerator.sections[section].values.count
     }
     
-    // TODO: These items need to be selectable / deselectable, and the results passed back to the main edit VC
+    // TODO: The selected items need to be passed back to the main edit VC
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchItemCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "searchItemCellID")
@@ -98,10 +98,17 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
             cell.textLabel?.textColor = .white
         }
         
-        let value = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
-        cell.textLabel?.text = value.stringValue
-        cell.accessoryType = value.isSelected ? .checkmark : .none
+        cell.textLabel?.text = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row].stringValue
+        setAccessoryType(on: cell, at: indexPath)
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        presenter.select(sectionIndexGenerator.sections[indexPath.section].values[indexPath.row])
+        sectionIndexGenerator.reset(with: presenter.items)
+        guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
+        setAccessoryType(on: selectedCell, at: indexPath)
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String] {
@@ -123,5 +130,10 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
             strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.items)
             strongSelf.tableView?.reloadData()
         }
+    }
+    
+    private func setAccessoryType(on cell: UITableViewCell, at indexPath: IndexPath) {
+        let value = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
+        cell.accessoryType = value.isSelected ? .checkmark : .none
     }
 }

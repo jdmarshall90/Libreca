@@ -29,6 +29,7 @@ protocol BookEditSearchListPresenting {
     var items: [BookEditSearchListItem<ListItemType>] { get }
     
     func search(for string: String?, completion: @escaping () -> Void)
+    func select(_ item: BookEditSearchListItem<ListItemType>)
     func didTapSave()
     func didTapCancel()
 }
@@ -55,6 +56,10 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
             self?.items = results as! [BookEditSearchListItem<ListItem>]
             completion()
         }
+    }
+    
+    func select(_ item: BookEditSearchListItem<ListItem>) {
+        item.isSelected.toggle() // TODO: Move this to interactor
     }
     
     func didTapSave() {

@@ -28,9 +28,23 @@ protocol BookEditSearchListDisplayable: Hashable {
     var displayValue: String { get }
 }
 
-struct BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
+final class BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
     let item: T
     var isSelected: Bool
+    
+    init(item: T, isSelected: Bool) {
+        self.item = item
+        self.isSelected = isSelected
+    }
+    
+    static func ==(lhs: BookEditSearchListItem<T>, rhs: BookEditSearchListItem<T>) -> Bool {
+        return lhs.item == rhs.item && lhs.isSelected == rhs.isSelected
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(item)
+        hasher.combine(isSelected)
+    }
 }
 
 protocol BookEditSearchListInteracting {
