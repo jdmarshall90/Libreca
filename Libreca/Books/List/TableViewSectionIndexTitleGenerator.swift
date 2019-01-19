@@ -20,16 +20,7 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     
     private var sectionIndexDisplayables: [T] {
         didSet {
-            if isSectioningEnabled {
-                sections = sortedTitles.map { sortedTitle in
-                    let values = sectionIndexDisplayables.filter { displayable in
-                        sortedTitle == displayable.stringValue.firstLetter()
-                    }
-                    return Section(header: sortedTitle, values: values)
-                }
-            } else {
-                sections = [Section(header: nil, values: sectionIndexDisplayables)]
-            }
+            setupSections()
         }
     }
     
@@ -44,14 +35,29 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     }
     
     private(set) var sections: [Section] = []
-    var isSectioningEnabled = false
+    var isSectioningEnabled: Bool
     
-    init(sectionIndexDisplayables: [T]) {
+    init(sectionIndexDisplayables: [T], isSectioningEnabled: Bool = false) {
+        self.isSectioningEnabled = isSectioningEnabled
         self.sectionIndexDisplayables = sectionIndexDisplayables
+        setupSections()
     }
     
     func reset(with sectionIndexDisplayables: [T]) {
         self.sectionIndexDisplayables = sectionIndexDisplayables
+    }
+    
+    private func setupSections() {
+        if isSectioningEnabled {
+            sections = sortedTitles.map { sortedTitle in
+                let values = sectionIndexDisplayables.filter { displayable in
+                    sortedTitle == displayable.stringValue.firstLetter()
+                }
+                return Section(header: sortedTitle, values: values)
+            }
+        } else {
+            sections = [Section(header: nil, values: sectionIndexDisplayables)]
+        }
     }
 }
 
