@@ -28,13 +28,9 @@ protocol BookEditSearchListDisplayable: Hashable {
     var displayValue: String { get }
 }
 
-struct BookEditSearchListItem<T: BookEditSearchListDisplayable>: SectionIndexDisplayable, Hashable {
+struct BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
     let item: T
     var isSelected: Bool
-    
-    var stringValue: String {
-        return item.displayValue
-    }
 }
 
 protocol BookEditSearchListInteracting {
@@ -53,7 +49,7 @@ extension BookEditSearchListInteracting {
         dispatchQueue.async {
             let matches = self.items.filter { searchableValue in
                 let terms = string?.split(separator: " ").map(String.init).map { $0.lowercased() } ?? []
-                let matchingTerms = terms.filter(searchableValue.stringValue.lowercased().contains)
+                let matchingTerms = terms.filter(searchableValue.item.displayValue.lowercased().contains)
                 let isMatch = matchingTerms.count == terms.count
                 return isMatch
             }

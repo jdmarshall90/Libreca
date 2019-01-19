@@ -24,6 +24,12 @@
 import FirebaseAnalytics
 import UIKit
 
+extension BookEditSearchListItem: SectionIndexDisplayable {
+    var stringValue: String {
+        return item.displayValue
+    }
+}
+
 final class BookEditSearchListViewController<Presenting: BookEditSearchListPresenting>: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
     private let presenter: Presenting
     private let sectionIndexGenerator: TableViewSectionIndexTitleGenerator<BookEditSearchListItem<Presenting.ListItemType>>
