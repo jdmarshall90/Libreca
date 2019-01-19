@@ -26,10 +26,12 @@ import UIKit
 
 protocol BookEditRouting {
     typealias Identifier = BookEditModuleFactory.Identifier
+    typealias Series = BookEditModuleFactory.Series
     
     func routeForPicEditing()
     func routeForAddingAuthor()
     func routeForAddingIdentifier(completion: @escaping (Identifier?) -> Void)
+    func routeForAddingSeries(completion: @escaping (Series?) -> Void)
     func routeForAddingLanguage()
     func routeForAddingTag()
     func routeForSuccessfulSave()
@@ -57,6 +59,15 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
             completion: completion
         )
         viewController.present(identifierViewController, animated: true)
+    }
+    
+    func routeForAddingSeries(completion: @escaping (Series?) -> Void) {
+        guard let viewController = viewController else { return }
+        let seriesViewController = BookEditModuleFactory.viewControllerForAddingSeries(
+            presentingViewController: viewController,
+            completion: completion
+        )
+        viewController.present(seriesViewController, animated: true)
     }
     
     func routeForAddingLanguage() {

@@ -98,14 +98,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
              .publishedOn where isShowingDatePicker:
             return 2
         case .rating,
-             .publishedOn,
-             .series:
+             .publishedOn:
             return 1
         case .comments:
             return 1
         case .authors,
              .languages,
              .identifiers,
+             .series,
              .tags:
             return array(for: field).count + 1
         }
@@ -145,11 +145,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .authors,
              .languages,
              .identifiers,
+             .series,
              .tags:
             return createArrayBasedCell(for: field, at: indexPath)
-        case .series:
-            // TODO: Implement me
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
         case .comments:
             return createCommentsCell(for: field, at: indexPath)
         case .publishedOn:
@@ -188,9 +186,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             }
         case (.tags, .insert):
             presenter.didTapAddTag()
+        case (.series, .insert):
+            presenter.didTapAddSeries {
+                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+            }
         case (.authors, .delete),
              (.languages, .delete),
              (.identifiers, .delete),
+             (.series, .delete),
              (.tags, .delete):
             array(for: field) { originalArray in
                 var newArray = originalArray
@@ -240,11 +243,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .authors,
              .languages,
              .identifiers,
+             .series,
              .tags:
             break // impossible
-        case .series:
-            // TODO: Implement me
-            break
         case .comments:
             break // intentionally left blank, the text view takes up the entire cell
         case .publishedOn:
@@ -363,10 +364,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     private func array(for field: BookModel.Section.Field) -> [ArrayBasedField] {
         switch field {
         case .rating,
-             .series,
              .comments,
              .publishedOn:
             return []
+        case .series:
+            return [presenter.series].compactMap { $0 }
         case .authors:
             return presenter.authors
         case .languages:
@@ -381,7 +383,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     private func array(for field: BookModel.Section.Field, modifier: ([ArrayBasedField]) -> [ArrayBasedField]) {
         switch field {
         case .rating,
-             .series,
              .comments,
              .publishedOn:
             _ = modifier([])
@@ -391,6 +392,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             presenter.languages = modifier(presenter.languages).compactMap { $0 as? Book.Language }
         case .identifiers:
             presenter.identifiers = modifier(presenter.identifiers).compactMap { $0 as? Book.Identifier }
+        case .series:
+            presenter.series = modifier(array(for: field)).first as? Book.Series
         case .tags:
             presenter.tags = modifier(presenter.tags).map { $0.fieldValue }
         }
@@ -410,6 +413,12 @@ extension Book.Author: ArrayBasedField {
 extension String: ArrayBasedField {
     var fieldValue: String {
         return self
+    }
+}
+
+extension Book.Series: ArrayBasedField {
+    var fieldValue: String {
+        return displayValue
     }
 }
 
@@ -435,10 +444,10 @@ private extension BookModel.Section.Field {
         case .authors,
              .languages,
              .identifiers,
+             .series,
              .tags:
             return true
         case .rating,
-             .series,
              .comments,
              .publishedOn:
             return false

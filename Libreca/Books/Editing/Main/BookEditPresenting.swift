@@ -31,6 +31,7 @@ protocol BookEditPresenting {
     var identifiers: [Book.Identifier] { get set }
     var languages: [Book.Language] { get set }
     var rating: Book.Rating { get set }
+    var series: Book.Series? { get set }
     var tags: [String] { get set }
     var publicationDate: Date? { get set }
     var comments: String? { get set }
@@ -42,6 +43,7 @@ protocol BookEditPresenting {
     func didTapPic()
     func didTapAddAuthor()
     func didTapAddIdentifier(completion: @escaping () -> Void)
+    func didTapAddSeries(completion: @escaping () -> Void)
     func didTapAddLanguage()
     func didTapAddTag()
     func save()
@@ -59,6 +61,7 @@ final class BookEditPresenter: BookEditPresenting {
     var identifiers: [Book.Identifier]
     var languages: [Book.Language]
     var rating: Book.Rating
+    var series: Book.Series?
     var tags: [String]
     var publicationDate: Date?
     var comments: String?
@@ -80,6 +83,7 @@ final class BookEditPresenter: BookEditPresenting {
         self.identifiers = book.identifiers
         self.languages = book.languages
         self.rating = book.rating
+        self.series = book.series
         self.tags = book.tags
         self.publicationDate = book.publishedDate
         self.comments = book.comments
@@ -103,6 +107,15 @@ final class BookEditPresenter: BookEditPresenting {
         router.routeForAddingIdentifier { [weak self] identifier in
             if let identifier = identifier {
                 self?.identifiers.append(Book.Identifier(source: identifier.displayValue, uniqueID: identifier.uniqueID))
+            }
+            completion()
+        }
+    }
+    
+    func didTapAddSeries(completion: @escaping () -> Void) {
+        router.routeForAddingSeries { [weak self] series in
+            if let series = series {
+                self?.series = Book.Series(name: series.name, index: series.index)
             }
             completion()
         }
