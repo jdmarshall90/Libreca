@@ -21,10 +21,18 @@
 //  This file is part of project: Libreca
 //
 
+import FirebaseAnalytics
 import UIKit
+
+extension String: SectionIndexDisplayable {
+    var stringValue: String {
+        return self
+    }
+}
 
 final class BookEditSearchListViewController: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
     private let presenter: BookEditSearchListPresenting
+    private let sectionIndexGenerator: TableViewSectionIndexTitleGenerator<String>
     
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -43,6 +51,7 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
     
     init(presenter: BookEditSearchListPresenting) {
         self.presenter = presenter
+        self.sectionIndexGenerator = TableViewSectionIndexTitleGenerator<String>(sectionIndexDisplayables: presenter.values, isSectioningEnabled: true)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -57,6 +66,9 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         super.viewDidLoad()
         
         tableView.tableHeaderView = searchController.searchBar
+        if case .dark = Settings.Theme.current {
+            tableView.sectionIndexColor = .white
+        }
         
         // Oddity needed to fix the way that the opaque nav bar was conflicting
         // with the `searchController.hidesNavigationBarDuringPresentation = true`
@@ -73,14 +85,12 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         presenter.didTapSave()
     }
     
-    // TODO: Section index titles
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sectionIndexGenerator.sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.values.count
+        return sectionIndexGenerator.sections[section].values.count
     }
     
     // TODO: Need to have the currently selected items already selected
@@ -91,13 +101,28 @@ final class BookEditSearchListViewController: UITableViewController, BookEditSea
         if case .dark = Settings.Theme.current {
             cell.textLabel?.textColor = .white
         }
-        cell.textLabel?.text = presenter.values[indexPath.row]
+        cell.textLabel?.text = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
         return cell
     }
     
+    override func sectionIndexTitles(for tableView: UITableView) -> [String] {
+        return sectionIndexGenerator.sectionIndexTitles
+    }
+    
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        Analytics.logEvent("edit_search_section_index_title_tapped", parameters: nil)
+        return index
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
-        presenter.search(for: searchController.searchBar.text) { [tableView] in
-            tableView?.reloadData()
+        presenter.search(for: searchController.searchBar.text) { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.values)
+            strongSelf.tableView?.reloadData()
         }
     }
 }
