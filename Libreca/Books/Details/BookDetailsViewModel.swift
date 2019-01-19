@@ -30,7 +30,6 @@ protocol BookDetailsView: class {
 
 typealias BookModel = BookDetailsViewModel.BookModel
 
-@available(*, deprecated, message: "Migrate usage of this to VIPER architecture (BookEditPresenting and friends).")
 final class BookDetailsViewModel {
     struct BookModel {
         struct Section {
