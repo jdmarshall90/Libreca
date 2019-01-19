@@ -77,8 +77,7 @@ struct BookEditModuleFactory {
     // swiftlint:disable:next function_body_length
     static func viewControllerForAddingIdentifier(presentingViewController: UIViewController, completion: @escaping (Identifier?) -> Void) -> UIViewController {
         var allIdentifiers = allBooks.flatMap { $0.identifiers }.map { $0.displayValue }
-        let interactor = BookEditIdentifierSearchListInteractor(values: allIdentifiers)
-        allIdentifiers = interactor.values
+        allIdentifiers = Array(Set(allIdentifiers)).sorted()
         
         let identifierSelectionAlertController = UIAlertController(title: "Select Identifier", message: nil, preferredStyle: .actionSheet)
         var newIdentifierName: String?

@@ -57,15 +57,6 @@ struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
     }
 }
 
-struct BookEditIdentifierSearchListInteractor: BookEditSearchListInteracting {
-    let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.identifier", qos: .userInitiated)
-    let values: [String]
-    
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
-    }
-}
-
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
     let values: [String]
