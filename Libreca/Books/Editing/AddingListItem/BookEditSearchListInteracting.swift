@@ -53,6 +53,7 @@ protocol BookEditSearchListInteracting {
     var dispatchQueue: DispatchQueue { get }
     var items: [BookEditSearchListItem<ListItemType>] { get }
     
+    func select(_ item: BookEditSearchListItem<ListItemType>)
     func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void)
 }
 
@@ -71,6 +72,10 @@ extension BookEditSearchListInteracting {
                 completion(matches)
             }
         }
+    }
+    
+    func select(_ item: BookEditSearchListItem<ListItemType>) {
+        item.isSelected.toggle()
     }
 }
 

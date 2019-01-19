@@ -59,7 +59,8 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
     }
     
     func select(_ item: BookEditSearchListItem<ListItem>) {
-        item.isSelected.toggle() // TODO: Move this to interactor
+        // swiftlint:disable:next force_cast
+        interactor.select(item as! BookEditSearchListItem<Interacting.ListItemType>)
     }
     
     func didTapSave() {
