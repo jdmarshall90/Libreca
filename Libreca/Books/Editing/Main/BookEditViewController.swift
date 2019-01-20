@@ -127,9 +127,31 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch field {
         case .title:
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+            // TODO: Store changes to this text onto presenter
+            // TODO: Fix auto-scrolling when keyboard appears
+            
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleTableViewCell
+            cell.titleTextView.text = presenter.title
+            if case .dark = Settings.Theme.current {
+                cell.titleTextView.keyboardAppearance = .dark
+                cell.titleTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+                cell.titleTextView.textColor = .white
+            }
+            return cell
         case .titleSort:
-            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+            // TODO: Store changes to this text onto presenter
+            // TODO: Fix auto-scrolling when keyboard appears
+            
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleSortTableViewCell
+            cell.titleSortTextView.text = presenter.titleSort
+            if case .dark = Settings.Theme.current {
+                cell.titleSortTextView.keyboardAppearance = .dark
+                cell.titleSortTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+                cell.titleSortTextView.textColor = .white
+            }
+            return cell
         case .rating:
             if isShowingRatingPicker,
                 (indexPath.row + 1) > section.cells.count,
@@ -330,6 +352,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         tableView.register(DateTableViewCell.nib, forCellReuseIdentifier: dateCellID)
         tableView.register(PublishedOnTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.publishedOn.reuseIdentifier)
         tableView.register(CommentsTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.comments.reuseIdentifier)
+        tableView.register(TitleTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.title.reuseIdentifier)
+        tableView.register(TitleSortTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.titleSort.reuseIdentifier)
     }
     
     private func createArrayBasedCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
@@ -354,6 +378,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         cell.commentsTextView.delegate = self
         
         if case .dark = Settings.Theme.current {
+            cell.commentsTextView.keyboardAppearance = .dark
             cell.commentsTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
             cell.commentsTextView.textColor = .white
         }
