@@ -43,10 +43,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return bookCoverButton
     }
     
-    // TODO: Allow title editing
-    // TODO: Allow title sort editing
-    // TODO: Allow author sort editing
-    
     private var isShowingRatingPicker = false
     private let pickerCellID = "pickerCellID"
     
@@ -100,10 +96,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .rating where isShowingRatingPicker,
              .publishedOn where isShowingDatePicker:
             return 2
-        case .rating,
-             .publishedOn:
-            return 1
-        case .comments:
+        case .title,
+             .titleSort,
+             .rating,
+             .publishedOn,
+             .comments:
             return 1
         case .authors,
              .languages,
@@ -115,9 +112,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 1 && indexPath.section == 0 {
+        if indexPath.row == 1 && indexPath.section == 2 {
             return 100
-        } else if indexPath.row == 0 && indexPath.section == 3 {
+        } else if indexPath.row == 0 && indexPath.section == 5 {
             return 200
         } else {
             return UITableView.automaticDimension
@@ -129,6 +126,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         let field = section.field
         
         switch field {
+        case .title:
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
+        case .titleSort:
+            return tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
         case .rating:
             if isShowingRatingPicker,
                 (indexPath.row + 1) > section.cells.count,
@@ -154,23 +155,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .comments:
             return createCommentsCell(for: field, at: indexPath)
         case .publishedOn:
-            if isShowingDatePicker,
-                indexPath.row == 1 {
-                // swiftlint:disable:next force_cast
-                let cell = tableView.dequeueReusableCell(withIdentifier: dateCellID, for: indexPath) as! DateTableViewCell
-                cell.picker.addTarget(self, action: #selector(didChangeDate), for: .valueChanged)
-                cell.picker.date = presenter.publicationDate ?? Date()
-                if case .dark = Settings.Theme.current {
-                    // I am well aware of the technical implications of this approach and am willing to take the risk.
-                    cell.picker.setValue(UIColor.white, forKey: "textColor")
-                }
-                return cell
-            } else {
-                // swiftlint:disable:next force_cast
-                let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! PublishedOnTableViewCell
-                cell.dateLabel.text = presenter.formattedPublicationDate
-                return cell
-            }
+            return createPublishedOnCell(for: field, at: indexPath)
         }
     }
     
@@ -235,8 +220,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        let field = bookModel.sections[indexPath.section].field
-        return !field.isArrayBased && field != .comments
+        return bookModel.sections[indexPath.section].field.isHighlightable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -247,13 +231,15 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .rating:
             tableView.deselectRow(at: indexPath, animated: true)
             isShowingRatingPicker.toggle()
-            let indexPathOfPicker = IndexPath(row: 1, section: 0)
+            let indexPathOfPicker = IndexPath(row: 1, section: 2)
             if isShowingRatingPicker {
                 tableView.insertRows(at: [indexPathOfPicker], with: .top)
             } else {
                 tableView.deleteRows(at: [indexPathOfPicker], with: .top)
             }
-        case .authors,
+        case .title,
+             .titleSort,
+             .authors,
              .languages,
              .identifiers,
              .series,
@@ -264,7 +250,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         case .publishedOn:
             tableView.deselectRow(at: indexPath, animated: true)
             isShowingDatePicker.toggle()
-            let indexPathOfPicker = IndexPath(row: 1, section: 4)
+            let indexPathOfPicker = IndexPath(row: 1, section: 6)
             if isShowingDatePicker {
                 tableView.insertRows(at: [indexPathOfPicker], with: .top)
             } else {
@@ -292,7 +278,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedRating = presenter.availableRatings[row]
         presenter.rating = selectedRating
-        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 2)], with: .automatic)
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -335,7 +321,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     @objc
     private func didChangeDate(_ sender: UIDatePicker) {
         presenter.publicationDate = sender.date
-        tableView.reloadRows(at: [IndexPath(row: 0, section: 4)], with: .none)
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 6)], with: .none)
     }
     
     private func registerCells() {
@@ -374,9 +360,31 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return cell
     }
     
+    private func createPublishedOnCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        if isShowingDatePicker,
+            indexPath.row == 1 {
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: dateCellID, for: indexPath) as! DateTableViewCell
+            cell.picker.addTarget(self, action: #selector(didChangeDate), for: .valueChanged)
+            cell.picker.date = presenter.publicationDate ?? Date()
+            if case .dark = Settings.Theme.current {
+                // I am well aware of the technical implications of this approach and am willing to take the risk.
+                cell.picker.setValue(UIColor.white, forKey: "textColor")
+            }
+            return cell
+        } else {
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! PublishedOnTableViewCell
+            cell.dateLabel.text = presenter.formattedPublicationDate
+            return cell
+        }
+    }
+    
     private func array(for field: BookModel.Section.Field) -> [ArrayBasedField] {
         switch field {
-        case .rating,
+        case .title,
+             .titleSort,
+             .rating,
              .comments,
              .publishedOn:
             return []
@@ -395,7 +403,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     private func array(for field: BookModel.Section.Field, modifier: ([ArrayBasedField]) -> [ArrayBasedField]) {
         switch field {
-        case .rating,
+        case .title,
+             .titleSort,
+             .rating,
              .comments,
              .publishedOn:
             _ = modifier([])
@@ -478,10 +488,18 @@ private extension BookModel.Section.Field {
              .series,
              .tags:
             return true
-        case .rating,
+        case .title,
+             .titleSort,
+             .rating,
              .comments,
              .publishedOn:
             return false
         }
+    }
+    
+    var isHighlightable: Bool {
+        let isTextField = self == .comments || self == .title || self == .titleSort
+        let isHighlightable = !isArrayBased && !isTextField
+        return isHighlightable
     }
 }
