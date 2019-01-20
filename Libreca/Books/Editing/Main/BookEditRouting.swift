@@ -109,8 +109,8 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: "Take picture", style: .default) { [weak self] _ in
-                // TODO: This doesn't work for a fresh install of the app
-                if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+                if authorizationStatus == .authorized || authorizationStatus == .notDetermined {
                     let imagePicker = UIImagePickerController()
                     imagePicker.delegate = self
                     imagePicker.sourceType = .camera
