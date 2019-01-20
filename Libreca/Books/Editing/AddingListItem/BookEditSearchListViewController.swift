@@ -74,12 +74,12 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         definesPresentationContext = true
     }
     
-    func didTapCancel() {
-        presenter.didTapCancel()
-    }
-    
     func didTapSave() {
         presenter.didTapSave()
+    }
+    
+    func didTapCancel() {
+        presenter.didTapCancel()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
