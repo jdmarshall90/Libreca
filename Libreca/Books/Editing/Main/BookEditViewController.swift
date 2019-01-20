@@ -61,6 +61,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return presenter.bookModel
     }
     
+    // TODO: Editing comments on iPad via software keyboard pushes table content up too high
+    
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -233,7 +235,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return !bookModel.sections[indexPath.section].field.isArrayBased
+        let field = bookModel.sections[indexPath.section].field
+        return !field.isArrayBased && field != .comments
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
