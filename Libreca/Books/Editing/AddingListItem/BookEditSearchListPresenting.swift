@@ -30,6 +30,7 @@ protocol BookEditSearchListPresenting {
     
     func search(for string: String?, completion: @escaping () -> Void)
     func select(_ item: BookEditSearchListItem<ListItemType>)
+    func didTapAdd(completion: @escaping () -> Void)
     func didTapSave()
     func didTapCancel()
 }
@@ -40,7 +41,7 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
     
     weak var view: BookEditSearchListViewing?
     private let router: Routing
-    private let interactor: Interacting
+    private var interactor: Interacting
     
     // swiftlint:disable:next force_cast
     private(set) lazy var items: [BookEditSearchListItem<ListItem>] = interactor.items as! [BookEditSearchListItem<ListItem>]
@@ -61,6 +62,19 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
     func select(_ item: BookEditSearchListItem<ListItem>) {
         // swiftlint:disable:next force_cast
         interactor.select(item as! BookEditSearchListItem<Interacting.ListItemType>)
+    }
+    
+    func didTapAdd(completion: @escaping () -> Void) {
+        router.routeForAdd { [weak self] newItem in
+            if let newItem = newItem {
+                let newSearchListItem = BookEditSearchListItem(item: newItem, isSelected: true)
+                // swiftlint:disable force_cast
+                self?.interactor.items.append(newSearchListItem as! BookEditSearchListItem<Interacting.ListItemType>)
+                self?.items = self?.interactor.items as! [BookEditSearchListItem<ListItem>]
+                // swiftlint:enable force_cast
+            }
+            completion()
+        }
     }
     
     func didTapSave() {

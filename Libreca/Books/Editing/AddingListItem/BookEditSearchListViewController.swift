@@ -74,12 +74,20 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         definesPresentationContext = true
     }
     
-    func didTapCancel() {
-        presenter.didTapCancel()
+    func didTapAdd() {
+        presenter.didTapAdd { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.items)
+            strongSelf.tableView?.reloadData()
+        }
     }
     
     func didTapSave() {
         presenter.didTapSave()
+    }
+    
+    func didTapCancel() {
+        presenter.didTapCancel()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

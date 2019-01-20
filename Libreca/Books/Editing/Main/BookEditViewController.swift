@@ -46,7 +46,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     // TODO: Allow title editing
     // TODO: Allow title sort editing
     // TODO: Allow author sort editing
-    // TODO: Allow adding new items via the search screen
     
     private var isShowingRatingPicker = false
     private let pickerCellID = "pickerCellID"
@@ -159,7 +158,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 let cell = tableView.dequeueReusableCell(withIdentifier: dateCellID, for: indexPath) as! DateTableViewCell
                 cell.picker.addTarget(self, action: #selector(didChangeDate), for: .valueChanged)
                 cell.picker.date = presenter.publicationDate ?? Date()
-                // TODO: Dark mode picker color
+                if case .dark = Settings.Theme.current {
+                    // I am well aware of the technical implications of this approach and am willing to take the risk.
+                    cell.picker.setValue(UIColor.white, forKey: "textColor")
+                }
                 return cell
             } else {
                 // swiftlint:disable:next force_cast

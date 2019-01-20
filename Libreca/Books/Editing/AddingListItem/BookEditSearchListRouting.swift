@@ -27,6 +27,7 @@ import UIKit
 protocol BookEditSearchListRouting {
     associatedtype ListItemType: BookEditSearchListDisplayable
     
+    func routeForAdd(completion: @escaping (ListItemType?) -> Void)
     func routeForSave(of items: [ListItemType])
     func routeForCancellation()
 }
@@ -37,6 +38,50 @@ final class BookEditSearchListRouter<T: BookEditSearchListDisplayable>: BookEdit
     
     init(onSaveItems: @escaping ([T]) -> Void) {
         self.onSaveItems = onSaveItems
+    }
+    
+    func routeForAdd(completion: @escaping (T?) -> Void) {
+        // hack
+        let itemBeingAddedString = viewController?.title?.split(separator: " ").last?.dropLast() ?? ""
+        let alertTitle = "Add \(itemBeingAddedString)"
+        
+        var newItemName: String?
+        var token: NSObjectProtocol?
+        
+        let addAlertController = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+        addAlertController.addAction(
+            UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                guard let token = token else { return }
+                NotificationCenter.default.removeObserver(token)
+                completion(nil)
+            }
+        )
+        let addAction = UIAlertAction(title: "Add", style: .default) { _ in
+            guard let token = token else { return }
+            NotificationCenter.default.removeObserver(token)
+            guard let newItemName = newItemName else { return }
+            completion(T(displayValue: newItemName))
+        }
+        addAction.isEnabled = false
+        addAlertController.addAction(addAction)
+        
+        addAlertController.addTextField { textField in
+            textField.placeholder = String(itemBeingAddedString)
+            textField.autocapitalizationType = .words
+            textField.autocorrectionType = .default
+            if case .dark = Settings.Theme.current {
+                textField.keyboardAppearance = .dark
+                textField.textColor = UITextField().textColor
+            }
+            token = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: nil) { _ in
+                let isValid = !textField.text.isNilOrEmpty
+                addAction.isEnabled = isValid
+                newItemName = textField.text
+            }
+            return
+        }
+        
+        viewController?.present(addAlertController, animated: true)
     }
     
     func routeForSave(of items: [T]) {
