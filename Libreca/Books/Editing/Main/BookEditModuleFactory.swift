@@ -61,9 +61,9 @@ struct BookEditModuleFactory {
     // these `values` directly. However, I am purposely trying to minimize service calls so
     // as to be able to provide a fully offline-capable experience.
     
-    static func viewControllerForAddingAuthor(to book: Book, completion: @escaping ([Book.Author]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    static func viewControllerForAddingAuthor(to book: Book, currentList: [Book.Author], completion: @escaping ([Book.Author]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allAuthors = allBooks.flatMap { $0.authors }
-        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(book: book, items: allAuthors), usesSections: true, completion: completion)
+        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(currentList: currentList, allItems: allAuthors), usesSections: true, completion: completion)
         viewController.title = "Search Authors"
         return viewController
     }
@@ -319,17 +319,17 @@ struct BookEditModuleFactory {
         return seriesSelectionAlertController
     }
     
-    static func viewControllerForAddingLanguage(to book: Book, completion: @escaping ([Book.Language]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    static func viewControllerForAddingLanguage(to book: Book, currentList: [Book.Language], completion: @escaping ([Book.Language]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allLanguages = allBooks.flatMap { $0.languages }
         // don't use sections for languages because I would never expect there to be enough languages in the list to warrant it
-        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(book: book, items: allLanguages), usesSections: false, completion: completion)
+        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(currentList: currentList, allItems: allLanguages), usesSections: false, completion: completion)
         viewController.title = "Search Languages"
         return viewController
     }
     
-    static func viewControllerForAddingTag(to book: Book, completion: @escaping ([String]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    static func viewControllerForAddingTag(to book: Book, currentList: [String], completion: @escaping ([String]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allTags = allBooks.flatMap { $0.tags }
-        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(book: book, items: allTags), usesSections: true, completion: completion)
+        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(currentList: currentList, allItems: allTags), usesSections: true, completion: completion)
         viewController.title = "Search Tags"
         return viewController
     }

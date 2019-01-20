@@ -94,8 +94,8 @@ struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
     let items: [BookEditSearchListItem<Book.Author>]
     
-    init(book: Book, items: [Book.Author]) {
-        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.authors.contains($0)) }))
+    init(currentList: [Book.Author], allItems: [Book.Author]) {
+        self.items = Array(Set<BookEditSearchListItem>(allItems.map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
     }
 }
 
@@ -105,8 +105,8 @@ struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
     let items: [BookEditSearchListItem<Book.Language>]
     
-    init(book: Book, items: [Book.Language]) {
-        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.languages.contains($0)) }))
+    init(currentList: [Book.Language], allItems: [Book.Language]) {
+        self.items = Array(Set<BookEditSearchListItem>(allItems.map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
     }
 }
 
@@ -120,7 +120,7 @@ struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated)
     let items: [BookEditSearchListItem<String>]
     
-    init(book: Book, items: [String]) {
-        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.tags.contains($0)) }))
+    init(currentList: [String], allItems: [String]) {
+        self.items = Array(Set<BookEditSearchListItem>(allItems.map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
     }
 }
