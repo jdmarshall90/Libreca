@@ -179,15 +179,21 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch (field, editingStyle) {
         case (.authors, .insert):
-            presenter.didTapAddAuthor()
+            presenter.didTapAddAuthor {
+                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+            }
         case (.languages, .insert):
-            presenter.didTapAddLanguage()
+            presenter.didTapAddLanguage {
+                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+            }
         case (.identifiers, .insert):
             presenter.didTapAddIdentifier {
                 tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
             }
         case (.tags, .insert):
-            presenter.didTapAddTag()
+            presenter.didTapAddTag {
+                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+            }
         case (.series, .insert):
             presenter.didTapAddSeries {
                 tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)

@@ -35,17 +35,17 @@ protocol BookEditSearchListPresenting {
 }
 
 // A `where` clause would let me prevent the force casts below, but adding one creates a "redundant conformance" warning
-final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable, Interacting: BookEditSearchListInteracting>: BookEditSearchListPresenting {
+final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable, Interacting: BookEditSearchListInteracting, Routing: BookEditSearchListRouting>: BookEditSearchListPresenting {
     typealias ListItemType = ListItem
     
     weak var view: BookEditSearchListViewing?
-    private let router: BookEditSearchListRouting
+    private let router: Routing
     private let interactor: Interacting
     
     // swiftlint:disable:next force_cast
     private(set) lazy var items: [BookEditSearchListItem<ListItem>] = interactor.items as! [BookEditSearchListItem<ListItem>]
     
-    init(router: BookEditSearchListRouting, interactor: Interacting) {
+    init(router: Routing, interactor: Interacting) {
         self.router = router
         self.interactor = interactor
     }
@@ -64,7 +64,8 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
     }
     
     func didTapSave() {
-        router.routeForSave()
+        // swiftlint:disable:next force_cast
+        router.routeForSave(of: interactor.selectedItems.map { $0.item } as! [Routing.ListItemType])
     }
     
     func didTapCancel() {

@@ -52,6 +52,7 @@ protocol BookEditSearchListInteracting {
     
     var dispatchQueue: DispatchQueue { get }
     var items: [BookEditSearchListItem<ListItemType>] { get }
+    var selectedItems: [BookEditSearchListItem<ListItemType>] { get }
     
     func select(_ item: BookEditSearchListItem<ListItemType>)
     func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void)
@@ -60,6 +61,10 @@ protocol BookEditSearchListInteracting {
 // TODO: Test searching with large libraries
 
 extension BookEditSearchListInteracting {
+    var selectedItems: [BookEditSearchListItem<ListItemType>] {
+        return items.filter { $0.isSelected }
+    }
+    
     func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void) {
         dispatchQueue.async {
             let matches = self.items.filter { searchableValue in

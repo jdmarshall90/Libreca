@@ -41,11 +41,11 @@ protocol BookEditPresenting {
     
     func fetchImage(completion: @escaping (UIImage) -> Void)
     func didTapPic()
-    func didTapAddAuthor()
+    func didTapAddAuthor(completion: @escaping () -> Void)
     func didTapAddIdentifier(completion: @escaping () -> Void)
     func didTapAddSeries(completion: @escaping () -> Void)
-    func didTapAddLanguage()
-    func didTapAddTag()
+    func didTapAddLanguage(completion: @escaping () -> Void)
+    func didTapAddTag(completion: @escaping () -> Void)
     func save()
     func cancel()
 }
@@ -99,8 +99,11 @@ final class BookEditPresenter: BookEditPresenting {
         router.routeForPicEditing()
     }
     
-    func didTapAddAuthor() {
-        router.routeForAddingAuthor()
+    func didTapAddAuthor(completion: @escaping () -> Void) {
+        router.routeForAddingAuthor { [weak self] authors in
+            self?.authors = authors
+            completion()
+        }
     }
     
     func didTapAddIdentifier(completion: @escaping () -> Void) {
@@ -121,12 +124,19 @@ final class BookEditPresenter: BookEditPresenting {
         }
     }
     
-    func didTapAddLanguage() {
-        router.routeForAddingLanguage()
+    // TODO: Bug in all of these: make changes, come back, now only the original items are selected
+    func didTapAddLanguage(completion: @escaping () -> Void) {
+        router.routeForAddingLanguage { [weak self] languages in
+            self?.languages = languages
+            completion()
+        }
     }
     
-    func didTapAddTag() {
-        router.routeForAddingTag()
+    func didTapAddTag(completion: @escaping () -> Void) {
+        router.routeForAddingTag { [weak self] tags in
+            self?.tags = tags
+            completion()
+        }
     }
     
     func save() {

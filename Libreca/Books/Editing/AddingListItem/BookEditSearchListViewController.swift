@@ -90,8 +90,6 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         return sectionIndexGenerator.sections[section].values.count
     }
     
-    // TODO: The selected items need to be passed back to the main edit VC
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchItemCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "searchItemCellID")
         if case .dark = Settings.Theme.current {
