@@ -100,7 +100,7 @@ final class BookEditPresenter: BookEditPresenting {
     }
     
     func didTapAddAuthors(completion: @escaping () -> Void) {
-        router.routeForAddingAuthors { [weak self] authors in
+        router.routeForAddingAuthors(currentList: authors) { [weak self] authors in
             self?.authors = authors
             completion()
         }
@@ -124,16 +124,15 @@ final class BookEditPresenter: BookEditPresenting {
         }
     }
     
-    // TODO: Bug in all of these: make changes, come back, now only the original items are selected
     func didTapAddLanguages(completion: @escaping () -> Void) {
-        router.routeForAddingLanguages { [weak self] languages in
+        router.routeForAddingLanguages(currentList: languages) { [weak self] languages in
             self?.languages = languages
             completion()
         }
     }
     
     func didTapAddTags(completion: @escaping () -> Void) {
-        router.routeForAddingTags { [weak self] tags in
+        router.routeForAddingTags(currentList: tags) { [weak self] tags in
             self?.tags = tags
             completion()
         }
