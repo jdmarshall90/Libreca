@@ -46,7 +46,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     // TODO: Allow title editing
     // TODO: Allow title sort editing
     // TODO: Allow author sort editing
-    // TODO: Allow adding new items via the search screen
     
     private var isShowingRatingPicker = false
     private let pickerCellID = "pickerCellID"

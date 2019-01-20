@@ -74,6 +74,14 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         definesPresentationContext = true
     }
     
+    func didTapAdd() {
+        presenter.didTapAdd { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.items)
+            strongSelf.tableView?.reloadData()
+        }
+    }
+    
     func didTapSave() {
         presenter.didTapSave()
     }

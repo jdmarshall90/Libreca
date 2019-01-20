@@ -24,6 +24,7 @@
 import Foundation
 
 @objc protocol BookEditSearchListViewing {
+    func didTapAdd()
     func didTapSave()
     func didTapCancel()
 }

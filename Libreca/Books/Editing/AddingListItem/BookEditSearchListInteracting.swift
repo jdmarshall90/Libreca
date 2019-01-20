@@ -26,6 +26,8 @@ import Foundation
 
 protocol BookEditSearchListDisplayable: Hashable {
     var displayValue: String { get }
+    
+    init(displayValue: String)
 }
 
 final class BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
@@ -51,7 +53,7 @@ protocol BookEditSearchListInteracting {
     associatedtype ListItemType: BookEditSearchListDisplayable
     
     var dispatchQueue: DispatchQueue { get }
-    var items: [BookEditSearchListItem<ListItemType>] { get }
+    var items: [BookEditSearchListItem<ListItemType>] { get set }
     var selectedItems: [BookEditSearchListItem<ListItemType>] { get }
     
     func select(_ item: BookEditSearchListItem<ListItemType>)
@@ -88,14 +90,18 @@ extension Book.Author: BookEditSearchListDisplayable {
     var displayValue: String {
         return name
     }
+    
+    init(displayValue: String) {
+        self.init(name: displayValue, sort: displayValue)
+    }
 }
 
 struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
-    let items: [BookEditSearchListItem<Book.Author>]
+    var items: [BookEditSearchListItem<Book.Author>]
     
     init(currentList: [Book.Author], allItems: [Book.Author]) {
-        self.items = Array(Set<BookEditSearchListItem>(allItems.map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
+        self.items = Array(Set<BookEditSearchListItem>((allItems + currentList).map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
     }
 }
 
@@ -103,10 +109,10 @@ extension Book.Language: BookEditSearchListDisplayable {}
 
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
-    let items: [BookEditSearchListItem<Book.Language>]
+    var items: [BookEditSearchListItem<Book.Language>]
     
     init(currentList: [Book.Language], allItems: [Book.Language]) {
-        self.items = Array(Set<BookEditSearchListItem>(allItems.map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
+        self.items = Array(Set<BookEditSearchListItem>((allItems + currentList).map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
     }
 }
 
@@ -114,13 +120,17 @@ extension String: BookEditSearchListDisplayable {
     var displayValue: String {
         return self
     }
+    
+    init(displayValue: String) {
+        self = displayValue
+    }
 }
 
 struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated)
-    let items: [BookEditSearchListItem<String>]
+    var items: [BookEditSearchListItem<String>]
     
     init(currentList: [String], allItems: [String]) {
-        self.items = Array(Set<BookEditSearchListItem>(allItems.map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
+        self.items = Array(Set<BookEditSearchListItem>((allItems + currentList).map { BookEditSearchListItem(item: $0, isSelected: currentList.contains($0)) }))
     }
 }
