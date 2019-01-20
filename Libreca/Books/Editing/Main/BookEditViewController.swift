@@ -61,6 +61,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return presenter.bookModel
     }
     
+    // TODO: Fix leading and trailing margins of comments text view
+    // TODO: Editing comments on iPad via software keyboard pushes table content up too high
+    
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
