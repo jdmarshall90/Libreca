@@ -22,6 +22,7 @@
 //
 
 import AVKit
+import CalibreKit
 import UIKit
 
 protocol BookEditRouting {
@@ -29,17 +30,22 @@ protocol BookEditRouting {
     typealias Series = BookEditModuleFactory.Series
     
     func routeForPicEditing()
-    func routeForAddingAuthor()
-    func routeForAddingIdentifier(completion: @escaping (Identifier?) -> Void)
+    func routeForAddingAuthors(completion: @escaping ([Book.Author]) -> Void)
+    func routeForAddingIdentifiers(completion: @escaping (Identifier?) -> Void)
     func routeForAddingSeries(completion: @escaping (Series?) -> Void)
-    func routeForAddingLanguage()
-    func routeForAddingTag()
+    func routeForAddingLanguages(completion: @escaping ([Book.Language]) -> Void)
+    func routeForAddingTags(completion: @escaping ([String]) -> Void)
     func routeForSuccessfulSave()
     func routeForCancellation()
 }
 
 final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     weak var viewController: (BookEditViewing & UIViewController)?
+    private let book: Book
+    
+    init(book: Book) {
+        self.book = book
+    }
     
     func routeForPicEditing() {
         guard let viewController = viewController else { return }
@@ -47,12 +53,12 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController.present(alertController, animated: true)
     }
     
-    func routeForAddingAuthor() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingAuthor())
+    func routeForAddingAuthors(completion: @escaping ([Book.Author]) -> Void) {
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingAuthor(to: book, completion: completion))
         viewController?.present(navController, animated: true)
     }
     
-    func routeForAddingIdentifier(completion: @escaping (Identifier?) -> Void) {
+    func routeForAddingIdentifiers(completion: @escaping (Identifier?) -> Void) {
         guard let viewController = viewController else { return }
         let identifierViewController = BookEditModuleFactory.viewControllerForAddingIdentifier(
             presentingViewController: viewController,
@@ -70,13 +76,13 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController.present(seriesViewController, animated: true)
     }
     
-    func routeForAddingLanguage() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingLanguage())
+    func routeForAddingLanguages(completion: @escaping ([Book.Language]) -> Void) {
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingLanguage(to: book, completion: completion))
         viewController?.present(navController, animated: true)
     }
     
-    func routeForAddingTag() {
-        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingTag())
+    func routeForAddingTags(completion: @escaping ([String]) -> Void) {
+        let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingTag(to: book, completion: completion))
         viewController?.present(navController, animated: true)
     }
     

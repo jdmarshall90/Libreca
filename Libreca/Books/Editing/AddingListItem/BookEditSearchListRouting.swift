@@ -25,14 +25,22 @@ import Foundation
 import UIKit
 
 protocol BookEditSearchListRouting {
-    func routeForSave()
+    associatedtype ListItemType: BookEditSearchListDisplayable
+    
+    func routeForSave(of items: [ListItemType])
     func routeForCancellation()
 }
 
-final class BookEditSearchListRouter: BookEditSearchListRouting {
+final class BookEditSearchListRouter<T: BookEditSearchListDisplayable>: BookEditSearchListRouting {
+    private let onSaveItems: ([T]) -> Void
     weak var viewController: (UIViewController & BookEditSearchListViewing)?
     
-    func routeForSave() {
+    init(onSaveItems: @escaping ([T]) -> Void) {
+        self.onSaveItems = onSaveItems
+    }
+    
+    func routeForSave(of items: [T]) {
+        onSaveItems(items)
         viewController?.dismiss(animated: true)
     }
     

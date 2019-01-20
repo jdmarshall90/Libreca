@@ -21,23 +21,55 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import Foundation
 
-protocol BookEditSearchListInteracting {
-    var dispatchQueue: DispatchQueue { get }
-    var values: [String] { get }
+protocol BookEditSearchListDisplayable: Hashable {
+    var displayValue: String { get }
+}
+
+final class BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
+    let item: T
+    var isSelected: Bool
     
-    func search(for string: String?, completion: @escaping ([String]) -> Void)
+    init(item: T, isSelected: Bool) {
+        self.item = item
+        self.isSelected = isSelected
+    }
+    
+    static func ==(lhs: BookEditSearchListItem<T>, rhs: BookEditSearchListItem<T>) -> Bool {
+        return lhs.item == rhs.item && lhs.isSelected == rhs.isSelected
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(item)
+        hasher.combine(isSelected)
+    }
+}
+
+protocol BookEditSearchListInteracting {
+    associatedtype ListItemType: BookEditSearchListDisplayable
+    
+    var dispatchQueue: DispatchQueue { get }
+    var items: [BookEditSearchListItem<ListItemType>] { get }
+    var selectedItems: [BookEditSearchListItem<ListItemType>] { get }
+    
+    func select(_ item: BookEditSearchListItem<ListItemType>)
+    func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void)
 }
 
 // TODO: Test searching with large libraries
 
 extension BookEditSearchListInteracting {
-    func search(for string: String?, completion: @escaping ([String]) -> Void) {
+    var selectedItems: [BookEditSearchListItem<ListItemType>] {
+        return items.filter { $0.isSelected }
+    }
+    
+    func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void) {
         dispatchQueue.async {
-            let matches = self.values.filter { searchableValue in
+            let matches = self.items.filter { searchableValue in
                 let terms = string?.split(separator: " ").map(String.init).map { $0.lowercased() } ?? []
-                let matchingTerms = terms.filter(searchableValue.lowercased().contains)
+                let matchingTerms = terms.filter(searchableValue.item.displayValue.lowercased().contains)
                 let isMatch = matchingTerms.count == terms.count
                 return isMatch
             }
@@ -46,31 +78,49 @@ extension BookEditSearchListInteracting {
             }
         }
     }
+    
+    func select(_ item: BookEditSearchListItem<ListItemType>) {
+        item.isSelected.toggle()
+    }
+}
+
+extension Book.Author: BookEditSearchListDisplayable {
+    var displayValue: String {
+        return name
+    }
 }
 
 struct BookEditAuthorSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.author", qos: .userInitiated)
-    let values: [String]
+    let items: [BookEditSearchListItem<Book.Author>]
     
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
+    init(book: Book, items: [Book.Author]) {
+        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.authors.contains($0)) }))
     }
 }
 
+extension Book.Language: BookEditSearchListDisplayable {}
+
 struct BookEditLanguageSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.language", qos: .userInitiated)
-    let values: [String]
+    let items: [BookEditSearchListItem<Book.Language>]
     
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
+    init(book: Book, items: [Book.Language]) {
+        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.languages.contains($0)) }))
+    }
+}
+
+extension String: BookEditSearchListDisplayable {
+    var displayValue: String {
+        return self
     }
 }
 
 struct BookEditTagSearchListInteractor: BookEditSearchListInteracting {
     let dispatchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated)
-    let values: [String]
+    let items: [BookEditSearchListItem<String>]
     
-    init(values: [String]) {
-        self.values = Array(Set(values)).sorted()
+    init(book: Book, items: [String]) {
+        self.items = Array(Set<BookEditSearchListItem>(items.map { BookEditSearchListItem(item: $0, isSelected: book.tags.contains($0)) }))
     }
 }

@@ -41,11 +41,11 @@ protocol BookEditPresenting {
     
     func fetchImage(completion: @escaping (UIImage) -> Void)
     func didTapPic()
-    func didTapAddAuthor()
-    func didTapAddIdentifier(completion: @escaping () -> Void)
+    func didTapAddAuthors(completion: @escaping () -> Void)
+    func didTapAddIdentifiers(completion: @escaping () -> Void)
     func didTapAddSeries(completion: @escaping () -> Void)
-    func didTapAddLanguage()
-    func didTapAddTag()
+    func didTapAddLanguages(completion: @escaping () -> Void)
+    func didTapAddTags(completion: @escaping () -> Void)
     func save()
     func cancel()
 }
@@ -99,12 +99,15 @@ final class BookEditPresenter: BookEditPresenting {
         router.routeForPicEditing()
     }
     
-    func didTapAddAuthor() {
-        router.routeForAddingAuthor()
+    func didTapAddAuthors(completion: @escaping () -> Void) {
+        router.routeForAddingAuthors { [weak self] authors in
+            self?.authors = authors
+            completion()
+        }
     }
     
-    func didTapAddIdentifier(completion: @escaping () -> Void) {
-        router.routeForAddingIdentifier { [weak self] identifier in
+    func didTapAddIdentifiers(completion: @escaping () -> Void) {
+        router.routeForAddingIdentifiers { [weak self] identifier in
             if let identifier = identifier {
                 self?.identifiers.append(Book.Identifier(source: identifier.displayValue, uniqueID: identifier.uniqueID))
             }
@@ -121,12 +124,19 @@ final class BookEditPresenter: BookEditPresenting {
         }
     }
     
-    func didTapAddLanguage() {
-        router.routeForAddingLanguage()
+    // TODO: Bug in all of these: make changes, come back, now only the original items are selected
+    func didTapAddLanguages(completion: @escaping () -> Void) {
+        router.routeForAddingLanguages { [weak self] languages in
+            self?.languages = languages
+            completion()
+        }
     }
     
-    func didTapAddTag() {
-        router.routeForAddingTag()
+    func didTapAddTags(completion: @escaping () -> Void) {
+        router.routeForAddingTags { [weak self] tags in
+            self?.tags = tags
+            completion()
+        }
     }
     
     func save() {
