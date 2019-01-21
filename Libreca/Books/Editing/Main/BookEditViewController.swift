@@ -124,50 +124,15 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = bookModel.sections[indexPath.section]
-        let field = section.field
+        let field = bookModel.sections[indexPath.section].field
         
         switch field {
         case .title:
-            // swiftlint:disable:next force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleTableViewCell
-            cell.titleTextView.text = presenter.title
-            cell.titleTextView.delegate = self
-            titleTextView = cell.titleTextView
-            if case .dark = Settings.Theme.current {
-                cell.titleTextView.keyboardAppearance = .dark
-                cell.titleTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
-                cell.titleTextView.textColor = .white
-            }
-            return cell
+            return createTitleCell(for: field, at: indexPath)
         case .titleSort:
-            // swiftlint:disable:next force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleSortTableViewCell
-            cell.titleSortTextView.text = presenter.titleSort
-            cell.titleSortTextView.delegate = self
-            titleSortTextView = cell.titleSortTextView
-            if case .dark = Settings.Theme.current {
-                cell.titleSortTextView.keyboardAppearance = .dark
-                cell.titleSortTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
-                cell.titleSortTextView.textColor = .white
-            }
-            return cell
+            return createTitleSortCell(for: field, at: indexPath)
         case .rating:
-            if isShowingRatingPicker,
-                (indexPath.row + 1) > section.cells.count,
-                let index = presenter.availableRatings.index(of: presenter.rating) {
-                // swiftlint:disable:next force_cast
-                let cell = tableView.dequeueReusableCell(withIdentifier: pickerCellID, for: indexPath) as! PickerTableViewCell
-                cell.picker.delegate = self
-                cell.picker.dataSource = self
-                cell.picker.selectRow(index, inComponent: 0, animated: true)
-                return cell
-            } else {
-                // swiftlint:disable:next force_cast
-                let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
-                cell.ratingLabel.text = presenter.rating.displayValue
-                return cell
-            }
+            return createRatingCell(for: field, at: indexPath)
         case .authors,
              .languages,
              .identifiers,
@@ -420,6 +385,53 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! PublishedOnTableViewCell
             cell.dateLabel.text = presenter.formattedPublicationDate
+            return cell
+        }
+    }
+    
+    private func createTitleCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleTableViewCell
+        cell.titleTextView.text = presenter.title
+        cell.titleTextView.delegate = self
+        titleTextView = cell.titleTextView
+        if case .dark = Settings.Theme.current {
+            cell.titleTextView.keyboardAppearance = .dark
+            cell.titleTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            cell.titleTextView.textColor = .white
+        }
+        return cell
+    }
+    
+    private func createTitleSortCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleSortTableViewCell
+        cell.titleSortTextView.text = presenter.titleSort
+        cell.titleSortTextView.delegate = self
+        titleSortTextView = cell.titleSortTextView
+        if case .dark = Settings.Theme.current {
+            cell.titleSortTextView.keyboardAppearance = .dark
+            cell.titleSortTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            cell.titleSortTextView.textColor = .white
+        }
+        return cell
+    }
+    
+    private func createRatingCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        let section = bookModel.sections[indexPath.section]
+        if isShowingRatingPicker,
+            (indexPath.row + 1) > section.cells.count,
+            let index = presenter.availableRatings.index(of: presenter.rating) {
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: pickerCellID, for: indexPath) as! PickerTableViewCell
+            cell.picker.delegate = self
+            cell.picker.dataSource = self
+            cell.picker.selectRow(index, inComponent: 0, animated: true)
+            return cell
+        } else {
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! RatingTableViewCell
+            cell.ratingLabel.text = presenter.rating.displayValue
             return cell
         }
     }
