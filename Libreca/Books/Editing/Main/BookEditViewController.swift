@@ -37,6 +37,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         }
     }
     
+    private weak var titleTextView: UITextView?
+    private weak var titleSortTextView: UITextView?
+    private weak var commentsTextView: UITextView?
+    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var imageButton: UIButton {
@@ -127,12 +131,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch field {
         case .title:
-            // TODO: Store changes to this text onto presenter
             // TODO: Fix auto-scrolling when keyboard appears
             
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleTableViewCell
             cell.titleTextView.text = presenter.title
+            cell.titleTextView.delegate = self
+            titleTextView = cell.titleTextView
             if case .dark = Settings.Theme.current {
                 cell.titleTextView.keyboardAppearance = .dark
                 cell.titleTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
@@ -140,12 +145,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             }
             return cell
         case .titleSort:
-            // TODO: Store changes to this text onto presenter
             // TODO: Fix auto-scrolling when keyboard appears
             
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleSortTableViewCell
             cell.titleSortTextView.text = presenter.titleSort
+            cell.titleSortTextView.delegate = self
+            titleSortTextView = cell.titleSortTextView
             if case .dark = Settings.Theme.current {
                 cell.titleSortTextView.keyboardAppearance = .dark
                 cell.titleSortTextView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
@@ -282,11 +288,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        presenter.comments = textView.text
+        updatePresenter(from: textView)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        presenter.comments = textView.text
+        updatePresenter(from: textView)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -321,6 +327,19 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     func didTapCancel() {
         presenter.cancel()
+    }
+    
+    private func updatePresenter(from textView: UITextView) {
+        switch textView {
+        case titleTextView:
+            presenter.title = textView.text
+        case titleSortTextView:
+            presenter.titleSort = textView.text
+        case commentsTextView:
+            presenter.comments = textView.text
+        default:
+            break
+        }
     }
     
     @objc
@@ -376,6 +395,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! CommentsTableViewCell
         cell.commentsTextView.text = presenter.comments
         cell.commentsTextView.delegate = self
+        commentsTextView = cell.commentsTextView
         
         if case .dark = Settings.Theme.current {
             cell.commentsTextView.keyboardAppearance = .dark
