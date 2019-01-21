@@ -30,6 +30,8 @@ protocol BookEditPresenting {
     var authors: [Book.Author] { get set }
     var identifiers: [Book.Identifier] { get set }
     var languages: [Book.Language] { get set }
+    var title: String { get set }
+    var titleSort: String { get set }
     var rating: Book.Rating { get set }
     var series: Book.Series? { get set }
     var tags: [String] { get set }
@@ -60,6 +62,8 @@ final class BookEditPresenter: BookEditPresenting {
     var authors: [Book.Author]
     var identifiers: [Book.Identifier]
     var languages: [Book.Language]
+    var title: String
+    var titleSort: String
     var rating: Book.Rating
     var series: Book.Series?
     var tags: [String]
@@ -82,6 +86,8 @@ final class BookEditPresenter: BookEditPresenting {
         self.authors = book.authors
         self.identifiers = book.identifiers
         self.languages = book.languages
+        self.title = book.title.name
+        self.titleSort = book.title.sort
         self.rating = book.rating
         self.series = book.series
         self.tags = book.tags

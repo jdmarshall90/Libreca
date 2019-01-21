@@ -71,27 +71,27 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return bookModel?.sections.count ?? 0
+        return bookModel?.detailsScreenSections.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookModel?.sections[section].cells.count ?? 0
+        return bookModel?.detailsScreenSections[section].cells.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
         
-        let cellModel = bookModel?.sections[indexPath.section].cells[indexPath.row]
+        let cellModel = bookModel?.detailsScreenSections[indexPath.section].cells[indexPath.row]
         cell.textLabel?.attributedText = cellModel?.text
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return bookModel?.sections[section].header
+        return bookModel?.detailsScreenSections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return bookModel?.sections[section].footer
+        return bookModel?.detailsScreenSections[section].footer
     }
     
     private func showBookCover() {

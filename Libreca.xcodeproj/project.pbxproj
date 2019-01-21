@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
+		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
+		D016508121F51DE700C2326D /* TitleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D016507F21F51DE700C2326D /* TitleTableViewCell.xib */; };
+		D016508621F51E3F00C2326D /* TitleSortTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */; };
+		D016508721F51E3F00C2326D /* TitleSortTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D016508521F51E3F00C2326D /* TitleSortTableViewCell.xib */; };
 		D0195B7E2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */; };
 		D0195B812172EEA8006EA713 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B802172EEA8006EA713 /* Settings.swift */; };
 		D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B8421730794006EA713 /* SettingsTableViewController.swift */; };
@@ -126,6 +130,10 @@
 /* Begin PBXFileReference section */
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
+		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
+		D016507F21F51DE700C2326D /* TitleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleTableViewCell.xib; sourceTree = "<group>"; };
+		D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSortTableViewCell.swift; sourceTree = "<group>"; };
+		D016508521F51E3F00C2326D /* TitleSortTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleSortTableViewCell.xib; sourceTree = "<group>"; };
 		D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionIndexTitleGenerator.swift; sourceTree = "<group>"; };
 		D0195B802172EEA8006EA713 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D0195B8421730794006EA713 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -412,6 +420,10 @@
 				D07EC21121EBE67700AE193B /* RatingTableViewCell.xib */,
 				D0B5214721F145AD007FB264 /* PublishedOnTableViewCell.swift */,
 				D0B5214821F145AD007FB264 /* PublishedOnTableViewCell.xib */,
+				D016507E21F51DE700C2326D /* TitleTableViewCell.swift */,
+				D016507F21F51DE700C2326D /* TitleTableViewCell.xib */,
+				D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */,
+				D016508521F51E3F00C2326D /* TitleSortTableViewCell.xib */,
 				D07EC1F721EA815800AE193B /* BookEditViewController.swift */,
 				D07EC20B21EA925C00AE193B /* BookEditViewController.xib */,
 				D07EC20D21EAECA100AE193B /* BookEditModuleFactory.swift */,
@@ -590,12 +602,14 @@
 				D0B5214621F14394007FB264 /* DateTableViewCell.xib in Resources */,
 				D0B5214A21F145AD007FB264 /* PublishedOnTableViewCell.xib in Resources */,
 				D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */,
+				D016508121F51DE700C2326D /* TitleTableViewCell.xib in Resources */,
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
 				D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
 				D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */,
 				D0B5215021F17727007FB264 /* CommentsTableViewCell.xib in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
+				D016508721F51E3F00C2326D /* TitleSortTableViewCell.xib in Resources */,
 				D07EC21A21ED51BF00AE193B /* PickerTableViewCell.xib in Resources */,
 				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
 				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
@@ -720,6 +734,7 @@
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
 				D09D7C0521742A5500E8232E /* ServerSetupViewController.swift in Sources */,
+				D016508621F51E3F00C2326D /* TitleSortTableViewCell.swift in Sources */,
 				D07EC20421EA882B00AE193B /* BookEditRouting.swift in Sources */,
 				D0B5215221F2D3CD007FB264 /* Optional+Extensions.swift in Sources */,
 				D07EC20A21EA883A00AE193B /* BookEditServicing.swift in Sources */,
@@ -737,6 +752,7 @@
 				D0B5214521F14394007FB264 /* DateTableViewCell.swift in Sources */,
 				D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */,
 				D0B5213E21EED903007FB264 /* BookEditSearchListInteracting.swift in Sources */,
+				D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,
 				D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */,

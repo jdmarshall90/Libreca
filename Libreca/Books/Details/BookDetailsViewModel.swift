@@ -42,6 +42,8 @@ final class BookDetailsViewModel {
             }
             
             enum Field: Int {
+                case title
+                case titleSort
                 case rating
                 case authors
                 case series
@@ -53,7 +55,8 @@ final class BookDetailsViewModel {
                 
                 var header: String {
                     switch self {
-                    case .rating,
+                    case .title,
+                         .rating,
                          .authors,
                          .series,
                          .comments,
@@ -63,6 +66,25 @@ final class BookDetailsViewModel {
                         return "\(self)"
                     case .publishedOn:
                         return "Published On"
+                    case .titleSort:
+                        return "Title sort"
+                    }
+                }
+                
+                fileprivate var isEditOnly: Bool {
+                    switch self {
+                    case .title,
+                         .titleSort:
+                         return true
+                    case .publishedOn,
+                         .rating,
+                         .authors,
+                         .series,
+                         .comments,
+                         .languages,
+                         .identifiers,
+                         .tags:
+                        return false
                     }
                 }
             }
@@ -85,9 +107,16 @@ final class BookDetailsViewModel {
         let sections: [Section]
         let book: Book
         
+        var detailsScreenSections: [Section] {
+            return sections.filter { !$0.field.isEditOnly }
+        }
+        
         init(book: Book) {
             self.book = book
             self.title = book.title.name
+            
+            let titleSection = Section(field: .title, cellRepresentations: [book.title.name], footer: nil, shouldSingularize: false)
+            let titleSortSection = Section(field: .titleSort, cellRepresentations: [book.title.sort], footer: nil, shouldSingularize: false)
             
             let ratingSection = Section(field: .rating, cellRepresentations: [book.rating], footer: nil, shouldSingularize: false)
             let authorsSection = Section(field: .authors, cellRepresentations: book.authors, footer: nil)
@@ -122,7 +151,7 @@ final class BookDetailsViewModel {
             let tagsFooter = "\n\(addedToCaliberFooter)\n\n\(lastUpdatedFooter)"
             let tagsSection = Section(field: .tags, cellRepresentations: book.tags, footer: tagsFooter)
             
-            self.sections = [ratingSection, authorsSection, seriesSection, commentsSection, publishedSection, languagesSection, identifiersSection, tagsSection]
+            self.sections = [titleSection, titleSortSection, ratingSection, authorsSection, seriesSection, commentsSection, publishedSection, languagesSection, identifiersSection, tagsSection]
             
             self.cover = { completion in
                 book.cover.hitService { response in
