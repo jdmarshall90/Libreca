@@ -61,8 +61,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return presenter.bookModel
     }
     
-    // TODO: Editing comments on iPad via software keyboard pushes table content up too high
-    
     init(presenter: BookEditPresenting) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -131,8 +129,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         
         switch field {
         case .title:
-            // TODO: Fix auto-scrolling when keyboard appears
-            
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleTableViewCell
             cell.titleTextView.text = presenter.title
@@ -145,8 +141,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
             }
             return cell
         case .titleSort:
-            // TODO: Fix auto-scrolling when keyboard appears
-            
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleSortTableViewCell
             cell.titleSortTextView.text = presenter.titleSort
@@ -349,13 +343,18 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     @objc
     private func keyboardWillShow(_ sender: Notification) {
-        guard let keyboardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
-            let animationDuration = sender.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
-                return
-        }
+        guard let animationDuration = sender.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
         
         UIView.animate(withDuration: animationDuration) {
-            self.tableView.contentOffset = CGPoint(x: 0, y: keyboardFrame.height)
+            // my past experience has shown this to be difficult to get right all the time, so going with this approach instead
+            // nasty, but it does the job...
+            if self.titleTextView?.isFirstResponder == true {
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .middle, animated: true)
+            } else if self.titleSortTextView?.isFirstResponder == true {
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .middle, animated: true)
+            } else if self.commentsTextView?.isFirstResponder == true {
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 5), at: .middle, animated: true)
+            }
         }
     }
     
