@@ -53,7 +53,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     private var isShowingDatePicker = false
     private let dateCellID = "dateCellID"
     
-    // TODO: End-to-end testing in light mode
     // TODO: Analytics
     
     private var presenter: BookEditPresenting
@@ -269,7 +268,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        return NSAttributedString(string: presenter.availableRatings[row].displayValue, attributes: [.foregroundColor: UIColor.white])
+        let attributedTitle = NSMutableAttributedString(string: presenter.availableRatings[row].displayValue)
+        if case .dark = Settings.Theme.current {
+            attributedTitle.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedTitle.length))
+        }
+        return attributedTitle
     }
     
     func didSelect(newImage: UIImage) {
