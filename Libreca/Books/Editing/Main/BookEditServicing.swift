@@ -26,6 +26,8 @@ import CalibreKit
 import UIKit
 
 // TODO: Save edits to server
+// TODO: Test trying to save changes while unauthenticated
+// TODO: Test trying to save changes while authenticated with user with no write access
 
 protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage) -> Void)
