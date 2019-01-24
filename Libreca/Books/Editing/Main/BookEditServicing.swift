@@ -33,15 +33,15 @@ protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage) -> Void)
 }
 
-struct BookEditService: BookEditServicing {
-    private let coverService: (@escaping (DataResponse<Image>) -> Void) -> Void
+struct BookEditService<CoverService: Endpoint>: BookEditServicing where CoverService.ParsedResponse == Image {
+    private let coverService: CoverService
     
-    init(coverService: @escaping (@escaping (DataResponse<Image>) -> Void) -> Void) {
+    init(coverService: CoverService) {
         self.coverService = coverService
     }
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
-        coverService { response in
+        coverService.hitService { response in
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
         }
     }
