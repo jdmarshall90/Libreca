@@ -54,6 +54,7 @@ struct BookEditInteractor: BookEditInteracting {
         service.fetchImage(completion: completion)
     }
     
+    // TODO: It would be really inefficient to have to reload entire library after saving an edit. See if you can get it working via the responses provided by the `loadedBooks` parameter. 
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<SetFields>) -> Void) {
         // TODO: See what happens if you pass `.noChange` into CalibreKit
         let change: SetFieldsEndpoint.Change = .change([
