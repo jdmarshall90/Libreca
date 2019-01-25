@@ -25,19 +25,27 @@ import Alamofire
 import CalibreKit
 import UIKit
 
-// TODO: Save edits to server
 // TODO: Test trying to save changes while unauthenticated
 // TODO: Test trying to save changes while authenticated with user with no write access
 
 protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage) -> Void)
+    func save(_ change: SetFieldsEndpoint.Change, completion: @escaping (Result<SetFields>) -> Void)
 }
 
-struct BookEditService<CoverService: Endpoint>: BookEditServicing where CoverService.ParsedResponse == Image {
-    private let coverService: CoverService
+struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: BookEditServicing where CoverService.ParsedResponse == Image, SetFieldsService.ParsedResponse == SetFields {
+    typealias SetFieldsServiceInit = (Book, SetFieldsEndpoint.Change, [Book]) -> SetFieldsService
     
-    init(coverService: CoverService) {
+    private let coverService: CoverService
+    private let setFieldsInit: SetFieldsServiceInit
+    private let book: Book
+    private let loadedBooks: [Book]
+    
+    init(coverService: CoverService, book: Book, loadedBooks: [Book], setFieldsInit: @escaping SetFieldsServiceInit) {
         self.coverService = coverService
+        self.book = book
+        self.loadedBooks = loadedBooks
+        self.setFieldsInit = setFieldsInit
     }
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
@@ -45,4 +53,22 @@ struct BookEditService<CoverService: Endpoint>: BookEditServicing where CoverSer
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
         }
     }
+    
+    func save(_ change: SetFieldsEndpoint.Change, completion: @escaping (Result<SetFields>) -> Void) {
+        // TODO: Changing your book, 'Salem's Lot, is always changing the title sort to just Salem's Lot. See if this still happens after you implement title sort support in CalibreKit
+        setFieldsInit(book, change, loadedBooks).hitService { response in
+            switch response.result {
+            case .success(let payload):
+                completion(.success(payload))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}
+
+// TODO: Move this to its own file
+enum Result<Value> {
+    case success(Value)
+    case failure(Error)
 }

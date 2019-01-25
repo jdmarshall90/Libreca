@@ -277,6 +277,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     
     func didSelect(newImage: UIImage) {
         bookCoverButton.setImage(newImage, for: .normal)
+        presenter.image = newImage
     }
     
     @IBAction private func didTapPic(_ sender: UIButton) {
@@ -284,7 +285,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func didTapSave() {
-        presenter.save()
+        // TODO: show loader
+        presenter.save {
+            // TODO: hide loader
+        }
     }
     
     func didTapCancel() {
