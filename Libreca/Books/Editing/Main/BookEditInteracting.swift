@@ -21,10 +21,26 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import UIKit
+
+struct BookEditChanges {
+    let authors: [Book.Author]
+    let comments: String?
+    let identifiers: [Book.Identifier]
+    let image: UIImage?
+    let languages: [Book.Language]
+    let publicationDate: Date?
+    let rating: Book.Rating
+    let series: Book.Series?
+    let tags: [String]
+    let title: String
+    let titleSort: String
+}
 
 protocol BookEditInteracting {
     func fetchImage(completion: @escaping (UIImage) -> Void)
+    func save(using editChanges: BookEditChanges, completion: @escaping (Result<SetFields>) -> Void)
 }
 
 struct BookEditInteractor: BookEditInteracting {
@@ -36,5 +52,22 @@ struct BookEditInteractor: BookEditInteracting {
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
         service.fetchImage(completion: completion)
+    }
+    
+    func save(using editChanges: BookEditChanges, completion: @escaping (Result<SetFields>) -> Void) {
+        // TODO: See what happens if you pass `.noChange` into CalibreKit
+        let change: SetFieldsEndpoint.Change = .change([
+            .authors(editChanges.authors),
+            .comments(editChanges.comments),
+            .identifiers(editChanges.identifiers),
+//            .image(editChanges.image), // TODO: pass in image
+            .languages(editChanges.languages),
+            .publishedDate(editChanges.publicationDate),
+            .rating(editChanges.rating),
+            .series(editChanges.series),
+            .tags(editChanges.tags),
+            .title(Book.Title(name: editChanges.title, sort: editChanges.titleSort))
+        ])
+        service.save(change, completion: completion)
     }
 }

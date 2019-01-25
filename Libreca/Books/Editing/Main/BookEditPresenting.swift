@@ -28,15 +28,17 @@ import UIKit
 // TODO: Refactor this to make the view completely passive
 protocol BookEditPresenting {
     var authors: [Book.Author] { get set }
+    var comments: String? { get set }
     var identifiers: [Book.Identifier] { get set }
+    var image: UIImage? { get set }
     var languages: [Book.Language] { get set }
-    var title: String { get set }
-    var titleSort: String { get set }
+    var publicationDate: Date? { get set }
     var rating: Book.Rating { get set }
     var series: Book.Series? { get set }
     var tags: [String] { get set }
-    var publicationDate: Date? { get set }
-    var comments: String? { get set }
+    var title: String { get set }
+    var titleSort: String { get set }
+    
     var formattedPublicationDate: String? { get }
     var availableRatings: [Book.Rating] { get }
     var bookModel: BookModel { get }
@@ -48,7 +50,7 @@ protocol BookEditPresenting {
     func didTapAddSeries(completion: @escaping () -> Void)
     func didTapAddLanguages(completion: @escaping () -> Void)
     func didTapAddTags(completion: @escaping () -> Void)
-    func save()
+    func save(completion: @escaping () -> Void)
     func cancel()
 }
 
@@ -60,15 +62,16 @@ final class BookEditPresenter: BookEditPresenting {
     private let interactor: BookEditInteracting
     
     var authors: [Book.Author]
+    var comments: String?
     var identifiers: [Book.Identifier]
+    var image: UIImage?
     var languages: [Book.Language]
-    var title: String
-    var titleSort: String
+    var publicationDate: Date?
     var rating: Book.Rating
     var series: Book.Series?
     var tags: [String]
-    var publicationDate: Date?
-    var comments: String?
+    var title: String
+    var titleSort: String
     
     var availableRatings: [Book.Rating] {
         return Book.Rating.allCases
@@ -84,15 +87,15 @@ final class BookEditPresenter: BookEditPresenting {
     init(book: Book, router: BookEditRouting, interactor: BookEditInteracting) {
         self.book = book
         self.authors = book.authors
+        self.comments = book.comments
         self.identifiers = book.identifiers
         self.languages = book.languages
-        self.title = book.title.name
-        self.titleSort = book.title.sort
+        self.publicationDate = book.publishedDate
         self.rating = book.rating
         self.series = book.series
         self.tags = book.tags
-        self.publicationDate = book.publishedDate
-        self.comments = book.comments
+        self.title = book.title.name
+        self.titleSort = book.title.sort
         self.router = router
         self.interactor = interactor
     }
@@ -144,8 +147,24 @@ final class BookEditPresenter: BookEditPresenting {
         }
     }
     
-    func save() {
-        router.routeForSuccessfulSave()
+    func save(completion: @escaping () -> Void) {
+        let changes = BookEditChanges(
+            authors: authors,
+            comments: comments,
+            identifiers: identifiers,
+            image: image,
+            languages: languages,
+            publicationDate: publicationDate,
+            rating: rating,
+            series: series,
+            tags: tags,
+            title: title,
+            titleSort: titleSort
+        )
+        interactor.save(using: changes) { [weak self] _ in
+            // TODO: handle error messages with an alert
+            self?.router.routeForSuccessfulSave()
+        }
     }
     
     func cancel() {
