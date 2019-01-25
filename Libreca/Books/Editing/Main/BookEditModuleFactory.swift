@@ -48,7 +48,9 @@ struct BookEditModuleFactory {
     
     static func viewController(for book: Book) -> BookEditViewing & UIViewController {
         let router = BookEditRouter(book: book)
-        let service = BookEditService(coverService: book.cover.hitService)
+        let coverEndpoint = book.cover
+        let loadedBooks: [Book] = [] // TODO: fill this in
+        let service = BookEditService(coverService: coverEndpoint, book: book, loadedBooks: loadedBooks, setFieldsInit: SetFieldsEndpoint.init)
         let interactor = BookEditInteractor(service: service)
         let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
         let editVC = BookEditViewController(presenter: presenter)
