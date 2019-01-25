@@ -54,6 +54,7 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         }
     }
     
+    // TODO: Can get Caliber server version via response heeaders -- check if running version that contains new field for this service, and use it if able
     func save(_ change: SetFieldsEndpoint.Change, completion: @escaping (Result<SetFields>) -> Void) {
         // TODO: Changing your book, 'Salem's Lot, is always changing the title sort to just Salem's Lot. See if this still happens after you implement title sort support in CalibreKit
         setFieldsInit(book, change, loadedBooks).hitService { response in
