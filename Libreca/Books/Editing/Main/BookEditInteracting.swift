@@ -40,7 +40,7 @@ struct BookEditChanges {
 
 protocol BookEditInteracting {
     func fetchImage(completion: @escaping (UIImage) -> Void)
-    func save(using editChanges: BookEditChanges, completion: @escaping (Result<SetFields>) -> Void)
+    func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void)
 }
 
 struct BookEditInteractor: BookEditInteracting {
@@ -54,7 +54,7 @@ struct BookEditInteractor: BookEditInteracting {
         service.fetchImage(completion: completion)
     }
     
-    func save(using editChanges: BookEditChanges, completion: @escaping (Result<SetFields>) -> Void) {
+    func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
         // TODO: See what happens if you pass `.noChange` into CalibreKit
         let change: SetFieldsEndpoint.Change = .change([
             .authors(editChanges.authors),
