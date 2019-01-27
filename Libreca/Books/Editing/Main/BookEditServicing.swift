@@ -55,7 +55,6 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
     }
     
     func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void) {
-        // TODO: Changing your book, 'Salem's Lot, is always changing the title sort to just Salem's Lot. See if this still happens after you implement title sort support in CalibreKit
         setFieldsInit(book, changes, loadedBooks).hitService { response in
             switch response.result {
             case .success(let payload):
@@ -66,10 +65,4 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
             }
         }
     }
-}
-
-// TODO: Move this to its own file
-enum Result<Value> {
-    case success(Value)
-    case failure(Error)
 }
