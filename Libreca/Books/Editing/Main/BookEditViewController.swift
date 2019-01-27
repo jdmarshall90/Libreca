@@ -149,6 +149,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return bookModel.sections[section].header
     }
     
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return bookModel.sections[section].footer
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let field = bookModel.sections[indexPath.section].field
         
