@@ -55,8 +55,7 @@ struct BookEditInteractor: BookEditInteracting {
     }
     
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
-        // TODO: See what happens if you pass `.noChange` into CalibreKit
-        let change: SetFieldsEndpoint.Change = .change([
+        let change: Set<SetFieldsEndpoint.Change> = [
             .authors(editChanges.authors),
             .comments(editChanges.comments),
             .identifiers(editChanges.identifiers),
@@ -67,7 +66,7 @@ struct BookEditInteractor: BookEditInteracting {
             .series(editChanges.series),
             .tags(editChanges.tags),
             .title(Book.Title(name: editChanges.title, sort: editChanges.titleSort))
-        ])
+        ]
         service.save(change, completion: completion)
     }
 }
