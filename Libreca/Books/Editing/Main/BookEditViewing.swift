@@ -26,7 +26,7 @@ import UIKit
 @objc protocol BookEditViewing: class {
     var imageButton: UIButton { get }
     
-    func didSelect(newImage: UIImage)
+    func didSelect(newImage: UIImage?)
     func didTapCancel()
     func didTapSave()
 }

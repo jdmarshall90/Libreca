@@ -149,6 +149,13 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
                 self?.viewController?.present(imagePicker, animated: true)
             }
         )
+        
+        alertController.addAction(
+            UIAlertAction(title: "Delete cover", style: .destructive) { [weak self] _ in
+                self?.viewController?.didSelect(newImage: nil)
+            }
+        )
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         if let popoverController = alertController.popoverPresentationController {

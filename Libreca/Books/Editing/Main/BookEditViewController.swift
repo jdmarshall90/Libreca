@@ -279,8 +279,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return attributedTitle
     }
     
-    func didSelect(newImage: UIImage) {
-        bookCoverButton.setImage(newImage, for: .normal)
+    func didSelect(newImage: UIImage?) {
+        if let newImage = newImage {
+            bookCoverButton.setImage(newImage, for: .normal)
+        } else {
+            bookCoverButton.setImage(nil, for: .normal)
+            bookCoverButton.setBackgroundImage(#imageLiteral(resourceName: "BookCoverPlaceholder"), for: .normal)
+        }
         presenter.image = newImage
     }
     
