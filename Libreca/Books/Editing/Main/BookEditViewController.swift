@@ -149,6 +149,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return bookModel.sections[section].header
     }
     
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return bookModel.sections[section].footer
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let field = bookModel.sections[indexPath.section].field
         
@@ -275,8 +279,13 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
         return attributedTitle
     }
     
-    func didSelect(newImage: UIImage) {
-        bookCoverButton.setImage(newImage, for: .normal)
+    func didSelect(newImage: UIImage?) {
+        if let newImage = newImage {
+            bookCoverButton.setImage(newImage, for: .normal)
+        } else {
+            bookCoverButton.setImage(nil, for: .normal)
+            bookCoverButton.setBackgroundImage(#imageLiteral(resourceName: "BookCoverPlaceholder"), for: .normal)
+        }
         presenter.image = newImage
     }
     
@@ -499,6 +508,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 self?.bookCoverButton.setBackgroundImage(image, for: .normal)
             } else {
                 self?.bookCoverButton.setImage(image, for: .normal)
+                self?.presenter.image = image
             }
         }
     }

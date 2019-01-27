@@ -110,6 +110,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     
     private func viewControllerForImageEditActions(from sender: UIButton) -> UIViewController {
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
+        #if !targetEnvironment(simulator)
         alertController.addAction(
             UIAlertAction(title: "Take picture", style: .default) { [weak self] _ in
                 let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
@@ -138,6 +139,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
                 }
             }
         )
+        #endif
         alertController.addAction(
             UIAlertAction(title: "Select from library", style: .default) { [weak self] _ in
                 // TODO: Fix dark mode colors
@@ -147,6 +149,13 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
                 self?.viewController?.present(imagePicker, animated: true)
             }
         )
+        
+        alertController.addAction(
+            UIAlertAction(title: "Delete cover", style: .destructive) { [weak self] _ in
+                self?.viewController?.didSelect(newImage: nil)
+            }
+        )
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         if let popoverController = alertController.popoverPresentationController {

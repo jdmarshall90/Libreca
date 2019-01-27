@@ -116,7 +116,7 @@ final class BookDetailsViewModel {
             self.title = book.title.name
             
             let titleSection = Section(field: .title, cellRepresentations: [book.title.name], footer: nil, shouldSingularize: false)
-            let titleSortSection = Section(field: .titleSort, cellRepresentations: [book.title.sort], footer: nil, shouldSingularize: false)
+            let titleSortSection = Section(field: .titleSort, cellRepresentations: [book.title.sort], footer: "Leave blank to use default Calibre sorting.", shouldSingularize: false)
             
             let ratingSection = Section(field: .rating, cellRepresentations: [book.rating], footer: nil, shouldSingularize: false)
             let authorsSection = Section(field: .authors, cellRepresentations: book.authors, footer: nil)

@@ -60,7 +60,7 @@ struct BookEditInteractor: BookEditInteracting {
             .authors(editChanges.authors),
             .comments(editChanges.comments),
             .identifiers(editChanges.identifiers),
-//            .image(editChanges.image), // TODO: pass in image
+            .cover(editChanges.image?.jpegData(compressionQuality: 1.0)),
             .languages(editChanges.languages),
             .publishedDate(editChanges.publicationDate),
             .rating(editChanges.rating),
