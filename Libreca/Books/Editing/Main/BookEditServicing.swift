@@ -30,11 +30,11 @@ import UIKit
 
 protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage) -> Void)
-    func save(_ change: SetFieldsEndpoint.Change, completion: @escaping (Result<[Book]>) -> Void)
+    func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void)
 }
 
 struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: BookEditServicing where CoverService.ParsedResponse == Image, SetFieldsService.ParsedResponse == [Book] {
-    typealias SetFieldsServiceInit = (Book, SetFieldsEndpoint.Change, [Book]) -> SetFieldsService
+    typealias SetFieldsServiceInit = (Book, Set<SetFieldsEndpoint.Change>, [Book]) -> SetFieldsService
     
     private let coverService: CoverService
     private let setFieldsInit: SetFieldsServiceInit
@@ -54,9 +54,9 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         }
     }
     
-    func save(_ change: SetFieldsEndpoint.Change, completion: @escaping (Result<[Book]>) -> Void) {
+    func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void) {
         // TODO: Changing your book, 'Salem's Lot, is always changing the title sort to just Salem's Lot. See if this still happens after you implement title sort support in CalibreKit
-        setFieldsInit(book, change, loadedBooks).hitService { response in
+        setFieldsInit(book, changes, loadedBooks).hitService { response in
             switch response.result {
             case .success(let payload):
                 // TODO: Need to refresh UI for all changed books (including the one you just "saved") with this updated Books array
