@@ -67,9 +67,3 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         }
     }
 }
-
-// TODO: Move this to its own file
-enum Result<Value> {
-    case success(Value)
-    case failure(Error)
-}
