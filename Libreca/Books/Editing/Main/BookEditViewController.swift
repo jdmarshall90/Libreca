@@ -508,6 +508,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
                 self?.bookCoverButton.setBackgroundImage(image, for: .normal)
             } else {
                 self?.bookCoverButton.setImage(image, for: .normal)
+                self?.presenter.image = image
             }
         }
     }
