@@ -110,6 +110,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     
     private func viewControllerForImageEditActions(from sender: UIButton) -> UIViewController {
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
+        #if !targetEnvironment(simulator)
         alertController.addAction(
             UIAlertAction(title: "Take picture", style: .default) { [weak self] _ in
                 let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
@@ -138,6 +139,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
                 }
             }
         )
+        #endif
         alertController.addAction(
             UIAlertAction(title: "Select from library", style: .default) { [weak self] _ in
                 // TODO: Fix dark mode colors
