@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */; };
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
 		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
@@ -129,6 +130,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageShowing.swift; sourceTree = "<group>"; };
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 		D042EEDE21E568380046D00F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */,
 				D042EEDF21E5684F0046D00F /* Formatters.swift */,
 				D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */,
 				D039CEE121FD72D5007A3F80 /* Result.swift */,
@@ -719,6 +722,7 @@
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
+				D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */,
 				D0B5213C21EED8FE007FB264 /* BookEditSearchListPresenting.swift in Sources */,
 				D039CEE221FD72D5007A3F80 /* Result.swift in Sources */,
 				D07EC1FC21EA87EA00AE193B /* BookDetailsPresenting.swift in Sources */,

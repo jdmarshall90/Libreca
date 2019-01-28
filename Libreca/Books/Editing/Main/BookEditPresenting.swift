@@ -57,7 +57,7 @@ protocol BookEditPresenting {
 final class BookEditPresenter: BookEditPresenting {
     private let book: Book
     
-    weak var view: BookEditViewing?
+    weak var view: (BookEditViewing & ErrorMessageShowing)?
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
     
@@ -161,9 +161,23 @@ final class BookEditPresenter: BookEditPresenting {
             title: title,
             titleSort: titleSort
         )
-        interactor.save(using: changes) { [weak self] _ in
-            // TODO: handle error messages with an alert
-            self?.router.routeForSuccessfulSave()
+        interactor.save(using: changes) { [weak self] result in
+            completion()
+            
+            // At some point, there will need to be an error handling utility to centralize error message creation.
+            switch result {
+            case .success:
+                self?.router.routeForSuccessfulSave()
+            case .failure(let error):
+                // swiftlint:disable:next force_unwrapping
+                let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
+                let message = """
+                \(error.localizedDescription)
+                
+                For more information, check the server logs. If this problem persists, please send an email to \(appName) support.
+                """
+                self?.view?.show(errorMessage: message)
+            }
         }
     }
     

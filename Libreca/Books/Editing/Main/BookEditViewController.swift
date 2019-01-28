@@ -24,7 +24,7 @@
 import CalibreKit
 import UIKit
 
-final class BookEditViewController: UIViewController, BookEditViewing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
+final class BookEditViewController: UIViewController, BookEditViewing, ErrorMessageShowing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     @IBOutlet weak var bookCoverButton: UIButton! {
         didSet {
             bookCoverButton.imageView?.contentMode = .scaleAspectFit
