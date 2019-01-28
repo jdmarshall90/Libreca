@@ -160,10 +160,10 @@ final class BookEditPresenter: BookEditPresenting {
         }
         
         // This is kinda nasty, but the goal is to prevent an accidental changing
-        // of the user's image to the error = placeholder image.
+        // of the user's image to the error / placeholder image.
         if fetchedImage == #imageLiteral(resourceName: "BookCoverPlaceholder") {
             fetchImage { [weak self] newImage in
-                // If it's still the error = placeholder image, then don't allow the save.
+                // If it's still the error / placeholder image, then don't allow the save.
                 if newImage == #imageLiteral(resourceName: "BookCoverPlaceholder") {
                     self?.view?.showError(withTitle: "An error occurred", message: "Unable to retrieve image for this book. Please try again.")
                     completion()
