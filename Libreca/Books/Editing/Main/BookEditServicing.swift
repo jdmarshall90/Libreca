@@ -49,6 +49,7 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
         coverService.hitService { response in
+            // TODO: Move this nil coalescing to the interactor
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
         }
     }
