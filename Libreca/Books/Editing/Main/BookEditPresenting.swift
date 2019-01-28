@@ -60,6 +60,7 @@ final class BookEditPresenter: BookEditPresenting {
     weak var view: (BookEditViewing & ErrorMessageShowing)?
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
+    private var fetchedImage: UIImage?
     
     var authors: [Book.Author]
     var comments: String?
@@ -101,7 +102,11 @@ final class BookEditPresenter: BookEditPresenting {
     }
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
-        interactor.fetchImage(completion: completion)
+        interactor.fetchImage { [weak self] newImage in
+            self?.image = newImage
+            self?.fetchedImage = newImage
+            completion(newImage)
+        }
     }
     
     func didTapPic() {
@@ -148,6 +153,34 @@ final class BookEditPresenter: BookEditPresenting {
     }
     
     func save(completion: @escaping () -> Void) {
+        guard let fetchedImage = fetchedImage else {
+            view?.showError(withTitle: "Book cover image loading", message: "Please try again after loading completes.")
+            completion()
+            return
+        }
+        
+        // This is kinda nasty, but the goal is to prevent an accidental changing
+        // of the user's image to the error = placeholder image.
+        if fetchedImage == #imageLiteral(resourceName: "BookCoverPlaceholder") {
+            fetchImage { [weak self] newImage in
+                // If it's still the error = placeholder image, then don't allow the save.
+                if newImage == #imageLiteral(resourceName: "BookCoverPlaceholder") {
+                    self?.view?.showError(withTitle: "An error occurred", message: "Unable to retrieve image for this book. Please try again.")
+                    completion()
+                } else {
+                    self?.actuallySave(usingImage: newImage, completion: completion)
+                }
+            }
+        } else {
+            actuallySave(usingImage: image, completion: completion)
+        }
+    }
+    
+    func cancel() {
+        router.routeForCancellation()
+    }
+    
+    private func actuallySave(usingImage image: UIImage?, completion: @escaping () -> Void) {
         let changes = BookEditChanges(
             authors: authors,
             comments: comments,
@@ -176,12 +209,8 @@ final class BookEditPresenter: BookEditPresenting {
                 
                 For more information, check the server logs. If this problem persists, please send an email to \(appName) support.
                 """
-                self?.view?.show(errorMessage: message)
+                self?.view?.showError(withTitle: "An error occurred", message: message)
             }
         }
-    }
-    
-    func cancel() {
-        router.routeForCancellation()
     }
 }

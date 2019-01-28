@@ -24,12 +24,12 @@
 import UIKit
 
 protocol ErrorMessageShowing {
-    func show(errorMessage: String)
+    func showError(withTitle: String, message: String)
 }
 
 extension ErrorMessageShowing where Self: UIViewController {
-    func show(errorMessage: String) {
-        let alertController = UIAlertController(title: "An error occurred", message: errorMessage, preferredStyle: .alert)
+    func showError(withTitle title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         
         present(alertController, animated: true)
