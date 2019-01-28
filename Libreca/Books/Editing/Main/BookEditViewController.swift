@@ -294,10 +294,58 @@ final class BookEditViewController: UIViewController, BookEditViewing, UITableVi
     }
     
     func didTapSave() {
-        // TODO: show loader
-        presenter.save {
-            // TODO: hide loader
+        showSpinner()
+        presenter.save { [weak self] in
+            self?.hideSpinner()
         }
+    }
+    
+    private var spinnerView: UIView?
+    
+    private func showSpinner() {
+        view.endEditing(true)
+        
+        let loader = UIView()
+        spinnerView = loader
+        loader.backgroundColor = .black
+        loader.alpha = 0.0
+        loader.translatesAutoresizingMaskIntoConstraints = false
+        
+        let spinner = UIActivityIndicatorView(style: .white)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        
+        view.addSubview(loader)
+        view.addConstraint(NSLayoutConstraint(item: loader, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: loader, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0))
+        
+        view.addConstraint(NSLayoutConstraint(item: loader, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: loader, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0))
+        
+        loader.addSubview(spinner)
+        loader.addConstraint(NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: loader, attribute: .centerX, multiplier: 1, constant: 0))
+        loader.addConstraint(NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: loader, attribute: .centerY, multiplier: 1, constant: 0))
+        
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        UIView.animate(withDuration: 0.5) {
+            loader.alpha = 0.5
+        }
+    }
+    
+    private func hideSpinner() {
+        UIView.animate(
+            withDuration: 0.5,
+            animations: {
+                self.spinnerView?.alpha = 0
+            }, completion: { _ in
+                self.spinnerView?.removeFromSuperview()
+                self.spinnerView = nil
+                self.navigationItem.leftBarButtonItem?.isEnabled = true
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+            }
+        )
     }
     
     func didTapCancel() {
