@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import Alamofire
 import CalibreKit
 import UIKit
 

@@ -55,6 +55,7 @@ struct BookEditInteractor: BookEditInteracting {
     }
     
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
+        // TODO: Taking a picture of a book saves it in the wrong orientation to the server
         let change: Set<SetFieldsEndpoint.Change> = [
             .authors(editChanges.authors),
             .comments(editChanges.comments),
