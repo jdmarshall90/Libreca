@@ -28,7 +28,7 @@ protocol BookDetailsView: class {
     func removeBookDetails()
 }
 
-typealias BookModel = BookDetailsViewModel.BookModel
+typealias BookViewModel = BookDetailsViewModel.BookModel
 
 final class BookDetailsViewModel {
     struct BookModel {
@@ -178,7 +178,7 @@ final class BookDetailsViewModel {
     }
 }
 
-private typealias Cell = BookModel.Section.Cell
+private typealias Cell = BookViewModel.Section.Cell
 
 private protocol CellRepresentable {
     var cellRepresentation: Cell { get }

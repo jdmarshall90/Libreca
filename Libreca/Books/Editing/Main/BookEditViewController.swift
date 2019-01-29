@@ -56,8 +56,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     // TODO: Analytics
     
     private var presenter: BookEditPresenting
-    private var bookModel: BookModel {
-        return presenter.bookModel
+    private var bookViewModel: BookViewModel {
+        return presenter.bookViewModel
     }
     
     init(presenter: BookEditPresenting) {
@@ -87,11 +87,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return bookModel.sections.count
+        return bookViewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let field = bookModel.sections[section].field
+        let field = bookViewModel.sections[section].field
         
         switch field {
         case .rating where isShowingRatingPicker,
@@ -123,7 +123,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let field = bookModel.sections[indexPath.section].field
+        let field = bookViewModel.sections[indexPath.section].field
         
         switch field {
         case .title:
@@ -146,15 +146,15 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return bookModel.sections[section].header
+        return bookViewModel.sections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return bookModel.sections[section].footer
+        return bookViewModel.sections[section].footer
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let field = bookModel.sections[indexPath.section].field
+        let field = bookViewModel.sections[indexPath.section].field
         
         switch (field, editingStyle) {
         case (.authors, .insert):
@@ -197,7 +197,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        let section = bookModel.sections[indexPath.section]
+        let section = bookViewModel.sections[indexPath.section]
         
         let rowCount = tableView.numberOfRows(inSection: indexPath.section)
         let isAddRow = indexPath.row == rowCount - 1
@@ -206,16 +206,16 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return bookModel.sections[indexPath.section].field.isArrayBased
+        return bookViewModel.sections[indexPath.section].field.isArrayBased
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return bookModel.sections[indexPath.section].field.isHighlightable
+        return bookViewModel.sections[indexPath.section].field.isHighlightable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         view.endEditing(true)
-        let selectedField = bookModel.sections[indexPath.section].field
+        let selectedField = bookViewModel.sections[indexPath.section].field
         
         switch selectedField {
         case .rating:
@@ -394,16 +394,16 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     private func registerCells() {
-        tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.rating.reuseIdentifier)
+        tableView.register(RatingTableViewCell.nib, forCellReuseIdentifier: BookViewModel.Section.Field.rating.reuseIdentifier)
         tableView.register(PickerTableViewCell.nib, forCellReuseIdentifier: pickerCellID)
         tableView.register(DateTableViewCell.nib, forCellReuseIdentifier: dateCellID)
-        tableView.register(PublishedOnTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.publishedOn.reuseIdentifier)
-        tableView.register(CommentsTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.comments.reuseIdentifier)
-        tableView.register(TitleTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.title.reuseIdentifier)
-        tableView.register(TitleSortTableViewCell.nib, forCellReuseIdentifier: BookModel.Section.Field.titleSort.reuseIdentifier)
+        tableView.register(PublishedOnTableViewCell.nib, forCellReuseIdentifier: BookViewModel.Section.Field.publishedOn.reuseIdentifier)
+        tableView.register(CommentsTableViewCell.nib, forCellReuseIdentifier: BookViewModel.Section.Field.comments.reuseIdentifier)
+        tableView.register(TitleTableViewCell.nib, forCellReuseIdentifier: BookViewModel.Section.Field.title.reuseIdentifier)
+        tableView.register(TitleSortTableViewCell.nib, forCellReuseIdentifier: BookViewModel.Section.Field.titleSort.reuseIdentifier)
     }
     
-    private func createArrayBasedCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+    private func createArrayBasedCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: field.reuseIdentifier)
         cell.textLabel?.numberOfLines = 0
         let theArray = array(for: field)
@@ -418,7 +418,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         return cell
     }
     
-    private func createCommentsCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+    private func createCommentsCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
         // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! CommentsTableViewCell
         cell.commentsTextView.text = presenter.comments
@@ -433,7 +433,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         return cell
     }
     
-    private func createPublishedOnCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+    private func createPublishedOnCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
         if isShowingDatePicker,
             indexPath.row == 1 {
             // swiftlint:disable:next force_cast
@@ -453,7 +453,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         }
     }
     
-    private func createTitleCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+    private func createTitleCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
         // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleTableViewCell
         cell.titleTextView.text = presenter.title
@@ -467,7 +467,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         return cell
     }
     
-    private func createTitleSortCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+    private func createTitleSortCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
         // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: field.reuseIdentifier, for: indexPath) as! TitleSortTableViewCell
         cell.titleSortTextView.text = presenter.titleSort
@@ -481,8 +481,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         return cell
     }
     
-    private func createRatingCell(for field: BookModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
-        let section = bookModel.sections[indexPath.section]
+    private func createRatingCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
+        let section = bookViewModel.sections[indexPath.section]
         if isShowingRatingPicker,
             (indexPath.row + 1) > section.cells.count,
             let index = presenter.availableRatings.index(of: presenter.rating) {
@@ -500,7 +500,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         }
     }
     
-    private func array(for field: BookModel.Section.Field) -> [ArrayBasedField] {
+    private func array(for field: BookViewModel.Section.Field) -> [ArrayBasedField] {
         switch field {
         case .title,
              .titleSort,
@@ -521,7 +521,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         }
     }
     
-    private func array(for field: BookModel.Section.Field, modifier: ([ArrayBasedField]) -> [ArrayBasedField]) {
+    private func array(for field: BookViewModel.Section.Field, modifier: ([ArrayBasedField]) -> [ArrayBasedField]) {
         switch field {
         case .title,
              .titleSort,
@@ -595,7 +595,7 @@ extension Book.Identifier: ArrayBasedField {
     }
 }
 
-private extension BookModel.Section.Field {
+private extension BookViewModel.Section.Field {
     var reuseIdentifier: String {
         return "\(self)cellID"
     }

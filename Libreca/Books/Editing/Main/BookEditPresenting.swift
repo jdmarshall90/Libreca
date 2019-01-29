@@ -24,7 +24,6 @@
 import CalibreKit
 import UIKit
 
-// TODO: Refactor this to make it completely decoupled from `BookModel`
 // TODO: Refactor this to make the view completely passive
 protocol BookEditPresenting {
     var authors: [Book.Author] { get set }
@@ -41,7 +40,7 @@ protocol BookEditPresenting {
     
     var formattedPublicationDate: String? { get }
     var availableRatings: [Book.Rating] { get }
-    var bookModel: BookModel { get }
+    var bookViewModel: BookViewModel { get }
     
     func fetchImage(completion: @escaping (UIImage) -> Void)
     func didTapPic()
@@ -83,7 +82,7 @@ final class BookEditPresenter: BookEditPresenting {
         return Formatters.dateFormatter.string(from: publishedDate)
     }
     
-    lazy var bookModel = BookModel(book: book)
+    lazy var bookViewModel = BookViewModel(book: book)
     
     init(book: Book, router: BookEditRouting, interactor: BookEditInteracting) {
         self.book = book
