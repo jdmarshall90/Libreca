@@ -34,20 +34,20 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     private lazy var viewModel = BookDetailsViewModel(view: self)
     private lazy var presenter: BookDetailsPresenting = BookDetailsPresenter(view: self)
     
-    private var bookModel: BookModel? {
+    private var bookViewModel: BookViewModel? {
         didSet {
-            title = bookModel?.title
+            title = bookViewModel?.title
         }
     }
     
     func prepare(for book: Book) {
-        bookModel = viewModel.createBookModel(for: book)
+        bookViewModel = viewModel.createBookModel(for: book)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         showBookCover()
-        editButton.isEnabled = bookModel != nil
+        editButton.isEnabled = bookViewModel != nil
         
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
@@ -60,43 +60,43 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
-        guard let bookModel = bookModel else { return }
-        presenter.edit(bookModel.book)
+        guard let bookViewModel = bookViewModel else { return }
+        presenter.edit(bookViewModel.book)
     }
     
     func removeBookDetails() {
-        bookModel = nil
+        bookViewModel = nil
         tableView.reloadData()
         coverImageView.image = nil
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return bookModel?.detailsScreenSections.count ?? 0
+        return bookViewModel?.detailsScreenSections.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookModel?.detailsScreenSections[section].cells.count ?? 0
+        return bookViewModel?.detailsScreenSections[section].cells.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
         
-        let cellModel = bookModel?.detailsScreenSections[indexPath.section].cells[indexPath.row]
+        let cellModel = bookViewModel?.detailsScreenSections[indexPath.section].cells[indexPath.row]
         cell.textLabel?.attributedText = cellModel?.text
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return bookModel?.detailsScreenSections[section].header
+        return bookViewModel?.detailsScreenSections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return bookModel?.detailsScreenSections[section].footer
+        return bookViewModel?.detailsScreenSections[section].footer
     }
     
     private func showBookCover() {
         // if bookModel is nil here, then we are likely on app launch running on a pad
-        guard let bookModel = bookModel else { return title = nil }
+        guard let bookModel = bookViewModel else { return title = nil }
         activityIndicator.startAnimating()
         bookModel.cover { [weak self] cover in
             self?.activityIndicator.stopAnimating()
