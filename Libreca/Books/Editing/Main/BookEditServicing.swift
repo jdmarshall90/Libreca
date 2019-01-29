@@ -24,11 +24,8 @@
 import CalibreKit
 import UIKit
 
-// TODO: Test trying to save changes while unauthenticated
-// TODO: Test trying to save changes while authenticated with user with no write access
-
 protocol BookEditServicing {
-    func fetchImage(completion: @escaping (UIImage) -> Void)
+    func fetchImage(completion: @escaping (UIImage?) -> Void)
     func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void)
 }
 
@@ -47,9 +44,9 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         self.setFieldsInit = setFieldsInit
     }
     
-    func fetchImage(completion: @escaping (UIImage) -> Void) {
+    func fetchImage(completion: @escaping (UIImage?) -> Void) {
         coverService.hitService { response in
-            completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+            completion(response.result.value?.image)
         }
     }
     
@@ -57,7 +54,7 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         setFieldsInit(book, changes, loadedBooks).hitService { response in
             switch response.result {
             case .success(let payload):
-                // TODO: Need to refresh UI for all changed books (including the one you just "saved") with this updated Books array
+                // TODO: Need to refresh UI for all changed books (including the one you just "saved") with this updated Books array. This belongs in the interactor
                 completion(.success(payload))
             case .failure(let error):
                 completion(.failure(error))
