@@ -28,7 +28,7 @@ import UIKit
 // TODO: Test trying to save changes while authenticated with user with no write access
 
 protocol BookEditServicing {
-    func fetchImage(completion: @escaping (UIImage) -> Void)
+    func fetchImage(completion: @escaping (UIImage?) -> Void)
     func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void)
 }
 
@@ -47,10 +47,9 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         self.setFieldsInit = setFieldsInit
     }
     
-    func fetchImage(completion: @escaping (UIImage) -> Void) {
+    func fetchImage(completion: @escaping (UIImage?) -> Void) {
         coverService.hitService { response in
-            // TODO: Move this nil coalescing to the interactor
-            completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+            completion(response.result.value?.image)
         }
     }
     

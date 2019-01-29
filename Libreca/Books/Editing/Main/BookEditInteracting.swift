@@ -51,7 +51,9 @@ struct BookEditInteractor: BookEditInteracting {
     }
     
     func fetchImage(completion: @escaping (UIImage) -> Void) {
-        service.fetchImage(completion: completion)
+        service.fetchImage { image in
+            completion(image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+        }
     }
     
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
