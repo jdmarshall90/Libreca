@@ -57,12 +57,11 @@ struct BookEditInteractor: BookEditInteracting {
     }
     
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
-        // TODO: Taking a picture of a book saves it in the wrong orientation to the server
         let change: Set<SetFieldsEndpoint.Change> = [
             .authors(editChanges.authors),
             .comments(editChanges.comments),
             .identifiers(editChanges.identifiers),
-            .cover(editChanges.image?.jpegData(compressionQuality: 1.0)),
+            .cover(editChanges.image?.correctedOrientation.pngData()),
             .languages(editChanges.languages),
             .publishedDate(editChanges.publicationDate),
             .rating(editChanges.rating),
@@ -71,5 +70,25 @@ struct BookEditInteractor: BookEditInteracting {
             .title(Book.Title(name: editChanges.title, sort: editChanges.titleSort))
         ]
         service.save(change, completion: completion)
+    }
+}
+
+// source: https://stackoverflow.com/questions/10307521/ios-png-image-rotated-90-degrees
+// I coverted it from Obj-C --> Swift
+private extension UIImage {
+    /// Corrects the orientation of an image to be up. Fixes an issue where images
+    /// taken by the device camera were being uploaded as a sideways image.
+    var correctedOrientation: UIImage {
+        var image = self
+        
+        // Have the image draw itself in the correct orientation if necessary
+        if image.imageOrientation != .up && image.imageOrientation != .upMirrored {
+            UIGraphicsBeginImageContext(size)
+            draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            image = UIGraphicsGetImageFromCurrentImageContext() ?? image
+            UIGraphicsEndImageContext()
+        }
+        
+        return image
     }
 }
