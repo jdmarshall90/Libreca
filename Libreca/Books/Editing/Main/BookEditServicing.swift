@@ -24,9 +24,6 @@
 import CalibreKit
 import UIKit
 
-// TODO: Test trying to save changes while unauthenticated
-// TODO: Test trying to save changes while authenticated with user with no write access
-
 protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage?) -> Void)
     func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void)
