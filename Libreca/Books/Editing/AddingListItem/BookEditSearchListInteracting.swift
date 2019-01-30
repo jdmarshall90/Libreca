@@ -60,8 +60,6 @@ protocol BookEditSearchListInteracting {
     func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void)
 }
 
-// TODO: Test searching with large libraries
-
 extension BookEditSearchListInteracting {
     var selectedItems: [BookEditSearchListItem<ListItemType>] {
         return items.filter { $0.isSelected }

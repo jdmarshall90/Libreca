@@ -39,7 +39,6 @@ struct BookEditModuleFactory {
                 return []
         }
         
-        // TODO: Test this with large libraries
         let allBooks = booksListViewController.viewModel.books.compactMap { $0.book }
         return allBooks
     }
