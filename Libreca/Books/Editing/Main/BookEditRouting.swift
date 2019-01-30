@@ -35,16 +35,18 @@ protocol BookEditRouting {
     func routeForAddingSeries(completion: @escaping (Series?) -> Void)
     func routeForAddingLanguages(currentList: [Book.Language], completion: @escaping ([Book.Language]) -> Void)
     func routeForAddingTags(currentList: [String], completion: @escaping ([String]) -> Void)
-    func routeForSuccessfulSave()
+    func routeForSuccessfulSave(of updatedBook: Book, andOthers otherUpdatedBooks: [Book])
     func routeForCancellation()
 }
 
 final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     weak var viewController: (BookEditViewing & UIViewController)?
     private let book: Book
+    private let completion: (Book) -> Void
     
-    init(book: Book) {
+    init(book: Book, completion: @escaping (Book) -> Void) {
         self.book = book
+        self.completion = completion
     }
     
     func routeForPicEditing() {
@@ -86,8 +88,22 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController?.present(navController, animated: true)
     }
     
-    func routeForSuccessfulSave() {
+    func routeForSuccessfulSave(of updatedBook: Book, andOthers otherUpdatedBooks: [Book]) {
+        completion(updatedBook)
         viewController?.dismiss(animated: true)
+        
+        // This is a dirty, shameful hack... but it's also the least invasive solution until
+        // `BooksListViewController` and `BookDetailsViewController` are refactored to the new
+        // architecture. I'm not going to bother with a GitLab issue for this hack itself,
+        // because fixing the architecture will reveal this via a compile-time error.
+        
+        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController as? UISplitViewController,
+            let mainNavController = rootViewController.viewControllers.first as? UINavigationController,
+            let booksListViewController = mainNavController.viewControllers.first as? BooksListViewController else {
+                return
+        }
+        
+        booksListViewController.viewModel.updateBooks(matching: otherUpdatedBooks)
     }
     
     func routeForCancellation() {

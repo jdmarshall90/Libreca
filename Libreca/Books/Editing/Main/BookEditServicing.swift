@@ -54,7 +54,6 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         setFieldsInit(book, changes, loadedBooks).hitService { response in
             switch response.result {
             case .success(let payload):
-                // TODO: Need to refresh UI for all changed books (including the one you just "saved") with this updated Books array. This belongs in the interactor
                 completion(.success(payload))
             case .failure(let error):
                 completion(.failure(error))

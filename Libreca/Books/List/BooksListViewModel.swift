@@ -92,6 +92,25 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
+    func updateBooks(matching updatedBooks: [Book]) {
+        // this is ugly, but I plan to rip it out as part of https://gitlab.com/calibre-utils/Libreca/issues/54
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.edit.updateBooks", qos: .userInitiated).async { [weak self] in
+            guard let strongSelf = self else { return }
+            var newBookList = strongSelf.books
+            for index in 0..<newBookList.count {
+                if let thisBook = newBookList[index].book,
+                    let updatedBook = updatedBooks.first(where: { $0 == thisBook }) {
+                    newBookList.remove(at: index)
+                    newBookList.insert(.book(updatedBook), at: index)
+                }
+            }
+            strongSelf.books = newBookList
+            DispatchQueue.main.async {
+                strongSelf.view?.reload(all: strongSelf.books)
+            }
+        }
+    }
+    
     func search(using terms: String, results: @escaping ([BookFetchResult]) -> Void) {
         let noResultsFoundMessage = "No results found. Try different search terms, separated by spaces."
         view?.show(message: "Searching...")
