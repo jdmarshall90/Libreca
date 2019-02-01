@@ -108,6 +108,11 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         reload()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Settings.Theme.current.stylizeApp()
+    }
+    
     private func presentSafariViewController(with url: URL) {
         UIButton.appearance().tintColor = UIButton().tintColor
         let safariVC = SFSafariViewController(url: url)
