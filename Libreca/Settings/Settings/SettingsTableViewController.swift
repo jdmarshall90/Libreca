@@ -103,6 +103,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if case .dark = Settings.Theme.current {
+            popoverPresentationController?.backgroundColor = navigationController?.navigationBar.barTintColor
             UIButton.appearance().tintColor = .white
         }
         reload()
