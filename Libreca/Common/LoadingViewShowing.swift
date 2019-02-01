@@ -1,8 +1,8 @@
 //
-//  BookEditViewing.swift
+//  LoadingViewShowing.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 1/12/19.
+//  Created by Justin Marshall on 1/31/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,18 +21,9 @@
 //  This file is part of project: Libreca
 //
 
-import UIKit
+import Foundation
 
-@objc protocol BookEditViewing: class {
-    var imageButton: UIButton { get }
-    
-    func update(image: UIImage?)
-    func updateAuthors()
-    func updateIdentifiers()
-    func updateSeries()
-    func updateLanguages()
-    func updateTags()
-    func didTapCancel()
-    func didTapSave()
-    func didSave()
+protocol LoadingViewShowing {
+    func showLoader()
+    func removeLoader()
 }

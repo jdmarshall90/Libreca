@@ -103,9 +103,15 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if case .dark = Settings.Theme.current {
+            popoverPresentationController?.backgroundColor = navigationController?.navigationBar.barTintColor
             UIButton.appearance().tintColor = .white
         }
         reload()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Settings.Theme.current.stylizeApp()
     }
     
     private func presentSafariViewController(with url: URL) {

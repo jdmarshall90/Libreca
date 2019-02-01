@@ -47,7 +47,7 @@
                     </constraints>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <constraints>
                 <constraint firstItem="bh2-gY-LEk" firstAttribute="bottom" secondItem="c8f-Tu-WVg" secondAttribute="bottom" id="0y3-RT-b1U"/>
                 <constraint firstItem="8Yx-RS-yFH" firstAttribute="height" secondItem="k63-B7-xaX" secondAttribute="height" multiplier="1:6" id="3FQ-kT-egO"/>

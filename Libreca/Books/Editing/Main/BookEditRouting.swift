@@ -158,7 +158,9 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         #endif
         alertController.addAction(
             UIAlertAction(title: "Select from library", style: .default) { [weak self] _ in
-                // TODO: Fix dark mode colors
+                if case .dark = Settings.Theme.current {
+                    UITableViewCell.appearance().backgroundColor = UITableViewCell().backgroundColor
+                }
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
                 imagePicker.sourceType = .photoLibrary
@@ -168,7 +170,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         
         alertController.addAction(
             UIAlertAction(title: "Delete cover", style: .destructive) { [weak self] _ in
-                self?.viewController?.didSelect(newImage: nil)
+                self?.viewController?.update(image: nil)
             }
         )
         
@@ -184,8 +186,14 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        Settings.Theme.current.stylizeApp()
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-        viewController?.didSelect(newImage: selectedImage)
+        viewController?.update(image: selectedImage)
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        Settings.Theme.current.stylizeApp()
         picker.dismiss(animated: true)
     }
 }
