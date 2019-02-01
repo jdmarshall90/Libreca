@@ -24,8 +24,8 @@
 import CalibreKit
 import UIKit
 
-// TODO: Refactor this to make the view completely passive
 protocol BookEditPresenting {
+    var view: (BookEditViewing & ErrorMessageShowing & LoadingViewShowing)? { get }
     var authors: [Book.Author] { get set }
     var comments: String? { get set }
     var identifiers: [Book.Identifier] { get set }
@@ -42,21 +42,21 @@ protocol BookEditPresenting {
     var availableRatings: [Book.Rating] { get }
     var bookViewModel: BookViewModel { get }
     
-    func fetchImage(completion: @escaping (UIImage) -> Void)
+    func fetchImage()
     func didTapPic()
-    func didTapAddAuthors(completion: @escaping () -> Void)
-    func didTapAddIdentifiers(completion: @escaping () -> Void)
-    func didTapAddSeries(completion: @escaping () -> Void)
-    func didTapAddLanguages(completion: @escaping () -> Void)
-    func didTapAddTags(completion: @escaping () -> Void)
-    func save(completion: @escaping () -> Void)
+    func didTapAddAuthors()
+    func didTapAddIdentifiers()
+    func didTapAddSeries()
+    func didTapAddLanguages()
+    func didTapAddTags()
+    func save()
     func cancel()
 }
 
 final class BookEditPresenter: BookEditPresenting {
     private let book: Book
     
-    weak var view: (BookEditViewing & ErrorMessageShowing)?
+    weak var view: (BookEditViewing & ErrorMessageShowing & LoadingViewShowing)?
     private let router: BookEditRouting
     private let interactor: BookEditInteracting
     private var fetchedImage: UIImage?
@@ -100,11 +100,9 @@ final class BookEditPresenter: BookEditPresenting {
         self.interactor = interactor
     }
     
-    func fetchImage(completion: @escaping (UIImage) -> Void) {
-        interactor.fetchImage { [weak self] newImage in
-            self?.image = newImage
-            self?.fetchedImage = newImage
-            completion(newImage)
+    func fetchImage() {
+        fetchImage { [weak self] newImage in
+            self?.view?.update(image: newImage)
         }
     }
     
@@ -112,49 +110,51 @@ final class BookEditPresenter: BookEditPresenting {
         router.routeForPicEditing()
     }
     
-    func didTapAddAuthors(completion: @escaping () -> Void) {
+    func didTapAddAuthors() {
         router.routeForAddingAuthors(currentList: authors) { [weak self] authors in
             self?.authors = authors
-            completion()
+            self?.view?.updateAuthors()
         }
     }
     
-    func didTapAddIdentifiers(completion: @escaping () -> Void) {
+    func didTapAddIdentifiers() {
         router.routeForAddingIdentifiers { [weak self] identifier in
             if let identifier = identifier {
                 self?.identifiers.append(Book.Identifier(source: identifier.displayValue, uniqueID: identifier.uniqueID))
             }
-            completion()
+            self?.view?.updateIdentifiers()
         }
     }
     
-    func didTapAddSeries(completion: @escaping () -> Void) {
+    func didTapAddSeries() {
         router.routeForAddingSeries { [weak self] series in
             if let series = series {
                 self?.series = Book.Series(name: series.name, index: series.index)
             }
-            completion()
+            self?.view?.updateSeries()
         }
     }
     
-    func didTapAddLanguages(completion: @escaping () -> Void) {
+    func didTapAddLanguages() {
         router.routeForAddingLanguages(currentList: languages) { [weak self] languages in
             self?.languages = languages
-            completion()
+            self?.view?.updateLanguages()
         }
     }
     
-    func didTapAddTags(completion: @escaping () -> Void) {
+    func didTapAddTags() {
         router.routeForAddingTags(currentList: tags) { [weak self] tags in
             self?.tags = tags
-            completion()
+            self?.view?.updateTags()
         }
     }
     
-    func save(completion: @escaping () -> Void) {
+    func save() {
+        view?.showLoader()
         guard let fetchedImage = fetchedImage else {
             view?.showError(withTitle: "Book cover image loading", message: "Please try again after loading completes.")
-            completion()
+            view?.removeLoader()
+            view?.didSave()
             return
         }
         
@@ -165,18 +165,33 @@ final class BookEditPresenter: BookEditPresenting {
                 // If it's still the error / placeholder image, then don't allow the save.
                 if newImage == #imageLiteral(resourceName: "BookCoverPlaceholder") {
                     self?.view?.showError(withTitle: "An error occurred", message: "Unable to retrieve image for this book. Please try again.")
-                    completion()
+                    self?.view?.removeLoader()
+                    self?.view?.didSave()
                 } else {
-                    self?.actuallySave(usingImage: newImage, completion: completion)
+                    self?.actuallySave(usingImage: newImage) { [weak self] in
+                        self?.view?.removeLoader()
+                        self?.view?.didSave()
+                    }
                 }
             }
         } else {
-            actuallySave(usingImage: image, completion: completion)
+            actuallySave(usingImage: image) { [weak self] in
+                self?.view?.removeLoader()
+                self?.view?.didSave()
+            }
         }
     }
     
     func cancel() {
         router.routeForCancellation()
+    }
+    
+    private func fetchImage(completion: @escaping (UIImage) -> Void) {
+        interactor.fetchImage { [weak self] newImage in
+            self?.image = newImage
+            self?.fetchedImage = newImage
+            completion(newImage)
+        }
     }
     
     private func actuallySave(usingImage image: UIImage?, completion: @escaping () -> Void) {
