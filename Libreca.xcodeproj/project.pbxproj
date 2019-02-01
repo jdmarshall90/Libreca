@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */; };
+		D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */; };
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
 		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
@@ -131,6 +132,7 @@
 
 /* Begin PBXFileReference section */
 		D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageShowing.swift; sourceTree = "<group>"; };
+		D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewShowing.swift; sourceTree = "<group>"; };
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 			children = (
 				D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */,
 				D042EEDF21E5684F0046D00F /* Formatters.swift */,
+				D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */,
 				D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */,
 				D039CEE121FD72D5007A3F80 /* Result.swift */,
 				D0B5214B21F16EC6007FB264 /* UITableViewCell+Extensions.swift */,
@@ -760,6 +763,7 @@
 				D0B5214521F14394007FB264 /* DateTableViewCell.swift in Sources */,
 				D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */,
 				D0B5213E21EED903007FB264 /* BookEditSearchListInteracting.swift in Sources */,
+				D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */,
 				D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,

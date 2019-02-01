@@ -24,7 +24,7 @@
 import CalibreKit
 import UIKit
 
-final class BookEditViewController: UIViewController, BookEditViewing, ErrorMessageShowing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
+final class BookEditViewController: UIViewController, BookEditViewing, ErrorMessageShowing, LoadingViewShowing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     @IBOutlet weak var bookCoverButton: UIButton! {
         didSet {
             bookCoverButton.imageView?.contentMode = .scaleAspectFit
@@ -40,6 +40,14 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     private weak var titleTextView: UITextView?
     private weak var titleSortTextView: UITextView?
     private weak var commentsTextView: UITextView?
+    
+    // swiftlint:disable implicitly_unwrapped_optional
+    private var authorsIndexPath: IndexPath!
+    private var languagesIndexPath: IndexPath!
+    private var identifiersIndexPath: IndexPath!
+    private var tagsIndexPath: IndexPath!
+    private var seriesIndexPath: IndexPath!
+    // swiftlint:enable implicitly_unwrapped_optional
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
@@ -158,25 +166,25 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         
         switch (field, editingStyle) {
         case (.authors, .insert):
-            presenter.didTapAddAuthors {
-                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
-            }
+            authorsIndexPath = indexPath
+            presenter.didTapAddAuthors()
+            
         case (.languages, .insert):
-            presenter.didTapAddLanguages {
-                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
-            }
+            languagesIndexPath = indexPath
+            presenter.didTapAddLanguages()
+            
         case (.identifiers, .insert):
-            presenter.didTapAddIdentifiers {
-                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
-            }
+            identifiersIndexPath = indexPath
+            presenter.didTapAddIdentifiers()
+            
         case (.tags, .insert):
-            presenter.didTapAddTags {
-                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
-            }
+            tagsIndexPath = indexPath
+            presenter.didTapAddTags()
+            
         case (.series, .insert):
-            presenter.didTapAddSeries {
-                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
-            }
+            seriesIndexPath = indexPath
+            presenter.didTapAddSeries()
+            
         case (.authors, .delete),
              (.languages, .delete),
              (.identifiers, .delete),
@@ -187,6 +195,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
                 newArray.remove(at: indexPath.row)
                 return newArray
             }
+            
         default:
             break // impossible
         }
@@ -279,14 +288,43 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         return attributedTitle
     }
     
-    func didSelect(newImage: UIImage?) {
-        if let newImage = newImage {
-            bookCoverButton.setImage(newImage, for: .normal)
+    func update(image: UIImage?) {
+        activityIndicator?.stopAnimating()
+        activityIndicator?.removeFromSuperview()
+        
+        if let newImage = image {
+            let errorImage = #imageLiteral(resourceName: "BookCoverPlaceholder")
+            if newImage == errorImage {
+                bookCoverButton.setBackgroundImage(newImage, for: .normal)
+            } else {
+                bookCoverButton.setImage(newImage, for: .normal)
+                bookCoverButton.setBackgroundImage(nil, for: .normal)
+            }
         } else {
             bookCoverButton.setImage(nil, for: .normal)
             bookCoverButton.setBackgroundImage(#imageLiteral(resourceName: "BookCoverPlaceholder"), for: .normal)
         }
-        presenter.image = newImage
+        presenter.image = image
+    }
+    
+    func updateAuthors() {
+        tableView.reloadSections(IndexSet(arrayLiteral: authorsIndexPath.section), with: .automatic)
+    }
+    
+    func updateIdentifiers() {
+        tableView.reloadSections(IndexSet(arrayLiteral: identifiersIndexPath.section), with: .automatic)
+    }
+    
+    func updateSeries() {
+        tableView.reloadSections(IndexSet(arrayLiteral: seriesIndexPath.section), with: .automatic)
+    }
+    
+    func updateLanguages() {
+        tableView.reloadSections(IndexSet(arrayLiteral: languagesIndexPath.section), with: .automatic)
+    }
+    
+    func updateTags() {
+        tableView.reloadSections(IndexSet(arrayLiteral: tagsIndexPath.section), with: .automatic)
     }
     
     @IBAction private func didTapPic(_ sender: UIButton) {
@@ -294,10 +332,19 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func didTapSave() {
+        presenter.save() 
+    }
+    
+    func didSave() {
+        // intentionally left blank
+    }
+    
+    func showLoader() {
         showSpinner()
-        presenter.save { [weak self] in
-            self?.hideSpinner()
-        }
+    }
+    
+    func removeLoader() {
+        hideSpinner()
     }
     
     private var spinnerView: UIView?
@@ -544,20 +591,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     
     private func showBookCover() {
         activityIndicator.startAnimating()
-        presenter.fetchImage { [weak self] image in
-            self?.activityIndicator.stopAnimating()
-            self?.activityIndicator.removeFromSuperview()
-            
-            let errorImage = #imageLiteral(resourceName: "BookCoverPlaceholder")
-            // The error image and the actual image seem to scale differently.
-            // Using the error image as the background image and the actual
-            // image as the foreground seems to address that.
-            if image == errorImage {
-                self?.bookCoverButton.setBackgroundImage(image, for: .normal)
-            } else {
-                self?.bookCoverButton.setImage(image, for: .normal)
-            }
-        }
+        presenter.fetchImage()
     }
 }
 
