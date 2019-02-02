@@ -68,6 +68,9 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
         router.routeForAdd { [weak self] newItem in
             if let newItem = newItem {
                 let newSearchListItem = BookEditSearchListItem(item: newItem, isSelected: true)
+                
+                // TODO: Bug on search screen -- add something that already exists, now 2 show up in UI. Problem is right here ... make the interactor.items property a { get } only, and then add an `add` function onto the interactor. Then put this logic in there and you can do a duplicate check
+                
                 // swiftlint:disable force_cast
                 self?.interactor.items.append(newSearchListItem as! BookEditSearchListItem<Interacting.ListItemType>)
                 self?.items = self?.interactor.items as! [BookEditSearchListItem<ListItem>]
