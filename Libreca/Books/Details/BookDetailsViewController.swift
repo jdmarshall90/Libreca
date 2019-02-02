@@ -42,6 +42,8 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func reload(for book: Book) {
         prepare(for: book)
+        coverImageView.image = nil
+        showBookCover()
         tableView.reloadData()
     }
     
