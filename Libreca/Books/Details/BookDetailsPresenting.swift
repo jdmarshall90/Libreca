@@ -42,7 +42,9 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     func edit(_ book: Book) {
         switch interactor.editAvailability {
         case .editable:
-            router.routeToEditing(for: book)
+            router.routeToEditing(for: book) { updatedBook in
+                self.view?.reload(for: updatedBook)
+            }
         case .stillFetching:
             router.routeToStillFetchingMessage()
         case .unpurchased:

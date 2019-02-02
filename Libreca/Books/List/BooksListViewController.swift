@@ -239,6 +239,15 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         isRetryingFailures = false
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
+        
+        if let searchText = searchBar.text,
+            !searchText.isEmpty {
+            // if VC is told to reload while some search text is present, re-run
+            // the search to update the UI with any changes
+            viewModel.search(using: searchText) { [weak self] matches in
+                self?.content = .books(matches)
+            }
+        }
     }
     
     func willRefreshBooks() {

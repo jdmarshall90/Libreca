@@ -40,6 +40,11 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    func reload(for book: Book) {
+        prepare(for: book)
+        tableView.reloadData()
+    }
+    
     func prepare(for book: Book) {
         bookViewModel = viewModel.createBookModel(for: book)
     }

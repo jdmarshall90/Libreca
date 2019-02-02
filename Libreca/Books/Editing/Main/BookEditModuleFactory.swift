@@ -45,8 +45,8 @@ struct BookEditModuleFactory {
     
     private init() {}
     
-    static func viewController(for book: Book) -> BookEditViewing & UIViewController {
-        let router = BookEditRouter(book: book)
+    static func viewController(for book: Book, completion: @escaping (Book) -> Void) -> BookEditViewing & UIViewController {
+        let router = BookEditRouter(book: book, completion: completion)
         let coverEndpoint = book.cover
         
         // TODO: Can get Calibre server version via response heeaders -- check if running version that contains new field for this service, and use it if able

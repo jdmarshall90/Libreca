@@ -213,8 +213,11 @@ final class BookEditPresenter: BookEditPresenting {
             
             // At some point, there will need to be an error handling utility to centralize error message creation.
             switch result {
-            case .success:
-                self?.router.routeForSuccessfulSave()
+            case .success(let changedBooks):
+                guard let updatedBook = changedBooks.first(where: { $0.id == self?.book.id }) else {
+                    return completion()
+                }
+                self?.router.routeForSuccessfulSave(of: updatedBook, andOthers: changedBooks)
             case .failure(let error):
                 // swiftlint:disable:next force_unwrapping
                 let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name

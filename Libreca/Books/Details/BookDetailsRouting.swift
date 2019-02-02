@@ -25,7 +25,7 @@ import CalibreKit
 import UIKit
 
 protocol BookDetailsRouting {
-    func routeToEditing(for book: Book)
+    func routeToEditing(for book: Book, completion: @escaping (Book) -> Void)
     func routeToEditPurchaseValueProposition()
     func routeToStillFetchingMessage()
 }
@@ -37,8 +37,8 @@ struct BookDetailsRouter: BookDetailsRouting {
         self.viewController = viewController
     }
     
-    func routeToEditing(for book: Book) {
-        let editVC = BookEditModuleFactory.viewController(for: book)
+    func routeToEditing(for book: Book, completion: @escaping (Book) -> Void) {
+        let editVC = BookEditModuleFactory.viewController(for: book, completion: completion)
         let editNav = UINavigationController(rootViewController: editVC)
         
         editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewing.didTapCancel))

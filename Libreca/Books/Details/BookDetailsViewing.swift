@@ -21,8 +21,9 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import Foundation
 
 protocol BookDetailsViewing {
-    //
+    func reload(for book: Book)
 }
