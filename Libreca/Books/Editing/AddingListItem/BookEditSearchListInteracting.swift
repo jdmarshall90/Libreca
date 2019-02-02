@@ -40,12 +40,11 @@ final class BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
     }
     
     static func ==(lhs: BookEditSearchListItem<T>, rhs: BookEditSearchListItem<T>) -> Bool {
-        return lhs.item == rhs.item && lhs.isSelected == rhs.isSelected
+        return lhs.item == rhs.item
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(item)
-        hasher.combine(isSelected)
     }
 }
 
@@ -56,6 +55,7 @@ protocol BookEditSearchListInteracting {
     var items: [BookEditSearchListItem<ListItemType>] { get set }
     var selectedItems: [BookEditSearchListItem<ListItemType>] { get }
     
+    mutating func add(_ item: BookEditSearchListItem<ListItemType>)
     func select(_ item: BookEditSearchListItem<ListItemType>)
     func search(for string: String?, completion: @escaping ([BookEditSearchListItem<ListItemType>]) -> Void)
 }
@@ -76,6 +76,18 @@ extension BookEditSearchListInteracting {
             DispatchQueue.main.async {
                 completion(matches)
             }
+        }
+    }
+    
+    mutating func add(_ item: BookEditSearchListItem<ListItemType>) {
+        if !items.contains(item) {
+            items.append(item)
+        }
+        
+        if let index = items.index(of: item) {
+            items[index].isSelected = true
+        } else {
+            items.append(item)
         }
     }
     
