@@ -80,10 +80,6 @@ extension BookEditSearchListInteracting {
     }
     
     mutating func add(_ item: BookEditSearchListItem<ListItemType>) {
-        if !items.contains(item) {
-            items.append(item)
-        }
-        
         if let index = items.index(of: item) {
             items[index].isSelected = true
         } else {
