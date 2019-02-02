@@ -40,7 +40,7 @@ final class BookEditSearchListItem<T: BookEditSearchListDisplayable>: Hashable {
     }
     
     static func ==(lhs: BookEditSearchListItem<T>, rhs: BookEditSearchListItem<T>) -> Bool {
-        return lhs.item == rhs.item
+        return lhs.item == rhs.item || lhs.item.displayValue.trimmingCharacters(in: .whitespaces) == rhs.item.displayValue.trimmingCharacters(in: .whitespaces)
     }
     
     func hash(into hasher: inout Hasher) {
