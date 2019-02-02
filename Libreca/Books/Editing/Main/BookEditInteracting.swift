@@ -44,9 +44,11 @@ protocol BookEditInteracting {
 }
 
 struct BookEditInteractor: BookEditInteracting {
+    private let book: Book
     private let service: BookEditServicing
     
-    init(service: BookEditServicing) {
+    init(book: Book, service: BookEditServicing) {
+        self.book = book
         self.service = service
     }
     
@@ -57,19 +59,24 @@ struct BookEditInteractor: BookEditInteracting {
     }
     
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
-        let change: Set<SetFieldsEndpoint.Change> = [
-            .authors(editChanges.authors),
-            .comments(editChanges.comments),
-            .identifiers(editChanges.identifiers),
-            .cover(editChanges.image?.correctedOrientation.pngData()),
-            .languages(editChanges.languages),
-            .publishedDate(editChanges.publicationDate),
-            .rating(editChanges.rating),
-            .series(editChanges.series),
-            .tags(editChanges.tags),
-            .title(Book.Title(name: editChanges.title, sort: editChanges.titleSort))
-        ]
-        service.save(change, completion: completion)
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated).async {
+            let change: Set<SetFieldsEndpoint.Change> = [
+                .authors(editChanges.authors),
+                .comments(editChanges.comments),
+                .identifiers(editChanges.identifiers),
+                .cover(editChanges.image?.correctedOrientation.pngData()), // this one is a bottleneck, hence the background thread
+                .languages(editChanges.languages),
+                .publishedDate(editChanges.publicationDate),
+                .rating(editChanges.rating),
+                .series(editChanges.series),
+                .tags(editChanges.tags),
+                .title(Book.Title(name: editChanges.title, sort: editChanges.titleSort))
+            ]
+            self.service.save(change) { response in
+                Cache.clear(for: self.book)
+                completion(response)
+            }
+        }
     }
 }
 
