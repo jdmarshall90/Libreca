@@ -40,6 +40,7 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     }
     
     func edit(_ book: Book) {
+        // TODO: Tell view to show a loader while this edit availability is being determined
         switch interactor.editAvailability {
         case .editable:
             router.routeToEditing(for: book) { updatedBook in

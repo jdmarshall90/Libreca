@@ -61,7 +61,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     private var isShowingDatePicker = false
     private let dateCellID = "dateCellID"
     
-    // TODO: Analytics
+    // TODO: Analytics - be sure to include "present_offer     When a user is presented with an offer.     item_id, item_name, item_category" - See https://support.google.com/firebase/answer/6317498?hl=en&ref_topic=6317484
     
     private var presenter: BookEditPresenting
     private var bookViewModel: BookViewModel {
