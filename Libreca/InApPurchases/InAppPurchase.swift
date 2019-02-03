@@ -49,6 +49,7 @@ import StoreKit
  
  Stand-alone:
  
+    - displayed price uses localized currency
     - purchasing from edit screen reflects on the IAP list screen the next time you go into it
     - purchasing from IAP list screen reflects on the edit screen the next time you go into it
  
@@ -78,6 +79,18 @@ final class InAppPurchase {
         
         let name: Name
         fileprivate let skProduct: SKProduct
+        
+        var title: String {
+            return skProduct.localizedTitle
+        }
+        
+        var description: String {
+            return skProduct.localizedDescription
+        }
+        
+        var price: String {
+            return "\(skProduct.priceLocale.currencySymbol ?? "$")\(skProduct.price)"
+        }
         
         fileprivate init?(name: Name?, skProduct: SKProduct) {
             guard let name = name else {

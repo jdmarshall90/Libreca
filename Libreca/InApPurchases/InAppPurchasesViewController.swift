@@ -31,10 +31,17 @@ import UIKit
 /// out of hand, then it should be refactored to use VIPER.
 final class InAppPurchasesViewController: UITableViewController {
     private let inAppPurchase = InAppPurchase()
+    private var products: Result<[InAppPurchase.Product]>? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     init() {
         super.init(style: .grouped)
     }
+    
+    // TODO: Tweak IAP title / description on App Store Connect
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -46,5 +53,81 @@ final class InAppPurchasesViewController: UITableViewController {
         // swiftlint:disable:next force_unwrapping
         let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
         title = "\(appName) Upgrades"
+        
+        inAppPurchase.requestAvailableProducts { [weak self] result in
+            self?.products = result
+        }
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        switch products {
+        case .success(let products)?:
+            return products.count + 1
+        case .failure?, .none:
+            return 1
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch products {
+        case .success(let products)? where section == products.count:
+            return 1
+        case .success?:
+            return 3
+        case .failure?, .none:
+            return 1
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch products {
+        case .success(let products)? where indexPath.section == products.count:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RestoreCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "RestoreCellID")
+            
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
+            
+            cell.textLabel?.text = "Restore purchases"
+            return cell
+        case .success(let products)?:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "IAPCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "IAPCellID")
+            let product = products[indexPath.section]
+            
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
+            
+            switch indexPath.row {
+            case 0:
+                cell.textLabel?.text = product.title
+            case 1:
+                cell.textLabel?.text = product.price
+            case 2:
+                cell.textLabel?.text = product.description
+            default:
+                break
+            }
+            
+            return cell
+        case .failure(let error)?:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FailureCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "FailureCellID")
+            
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
+            
+            cell.textLabel?.text = error.localizedDescription
+            return cell
+        case .none:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "LoadingCellID")
+            
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
+            
+            cell.textLabel?.text = "Retrieving available in-app purchases ..."
+            return cell
+        }
     }
 }
