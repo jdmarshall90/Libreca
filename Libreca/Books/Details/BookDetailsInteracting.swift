@@ -69,7 +69,7 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         inAppPurchase.requestAvailableProducts { result in
             switch result {
             case .success(let products):
-                guard let editMetadata = products.first(where: { $0 == .editMetadata }) else {
+                guard let editMetadata = products.first(where: { $0.name == .editMetadata }) else {
                     // TODO: log analytics event -- this should never happen
                     // TODO: Make this a useful error
                     return completion(.failure(NSError()))
