@@ -24,16 +24,36 @@
 import Foundation
 import StoreKit
 
-// TODO: buy a product
-// TODO: can make payments?
-// TODO: restoration
+/*
+ TODO: Scenarios to test:
+ 
+ - attempting to purchase without being logged into iCloud
+ - attempting to restore without being logged into iCloud
+ 
+ - attempting to purchase with no network connection
+ - attempting to restore with no network connection
+ 
+ - attempting to restore when you have never purchased it
+ 
+ - attempting to restore after app delete / reinstall
+ - attempting to restore on another device
+ 
+ - attempting to purchase when purchasing is disabled in device settings
+ - attempting to restore when purchasing is disabled in device settings
+ 
+ - attempting to use purchased item on next app launch, with valid network connection (should not hit network to check)
+ - attempting to use purchased item on next app launch, with no network connection (should not hit network to check)
+ 
+ */
 
 final class InAppPurchase {
-    enum Product: String, CaseIterable {
-        case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
-        
-        var identifier: String {
-            return rawValue
+    struct Product {
+        enum Name: String, CaseIterable {
+            case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
+            
+            fileprivate var identifier: String {
+                return rawValue
+            }
         }
         
         var isPurchased: Bool {
@@ -41,12 +61,25 @@ final class InAppPurchase {
             return isPurchased
         }
         
-        private var persistenceKey: String {
-            return identifier
+        fileprivate var persistenceKey: String {
+            return name.identifier
+        }
+        
+        let name: Name
+        fileprivate let skProduct: SKProduct
+        
+        fileprivate init?(name: Name?, skProduct: SKProduct) {
+            guard let name = name else {
+                return nil
+            }
+            
+            self.name = name
+            self.skProduct = skProduct
         }
     }
     
     typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
+    typealias PurchaseCompletion = (Result<Product>) -> Void
     
     private let purchaser = Purchaser()
     
@@ -55,14 +88,32 @@ final class InAppPurchase {
         purchaser.requestAvailableProducts(completion: completion)
     }
     
-    private final class Purchaser: NSObject, SKProductsRequestDelegate {
-        private let products = Product.allCases
+    func purchase(_ product: Product, completion: @escaping PurchaseCompletion) {
+        purchaser.purchase(product, completion: completion)
+    }
+    
+    func restore(completion: @escaping PurchaseCompletion) {
+        purchaser.restore(completion: completion)
+    }
+    
+    func canMakePayments() -> Bool {
+        return purchaser.canMakePayments()
+    }
+    
+    private final class Purchaser: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
         private var purchasedProducts: [Product] = []
+        private var availableProducts: [Product] = []
         private var productsRequest: SKProductsRequest?
         private var productsRequestCompletionHandler: AvailableProductsCompletion?
+        private var purchaseCompletion: PurchaseCompletion?
         
         private var productIdentifiers: Set<String> {
-            return Set(products.map { $0.identifier })
+            return Set(Product.Name.allCases.map { $0.identifier })
+        }
+        
+        override init() {
+            super.init()
+            SKPaymentQueue.default().add(self)
         }
         
         func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
@@ -74,20 +125,28 @@ final class InAppPurchase {
             productsRequest?.start()
         }
         
-        /*
-        open class SKProduct : NSObject {
-            open var localizedDescription: String { get }
-            open var localizedTitle: String { get }
-            open var price: NSDecimalNumber { get }
-            open var priceLocale: Locale { get }
+        func purchase(_ product: Product, completion: @escaping PurchaseCompletion) {
+            purchaseCompletion = completion
+            let payment = SKPayment(product: product.skProduct)
+            SKPaymentQueue.default().add(payment)
         }
-        */
+        
+        func restore(completion: @escaping PurchaseCompletion) {
+            purchaseCompletion = completion
+            SKPaymentQueue.default().restoreCompletedTransactions()
+        }
+        
+        func canMakePayments() -> Bool {
+            return SKPaymentQueue.canMakePayments()
+        }
         
         // MARK: - SKProductsRequestDelegate
         
         func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
             assert(response.invalidProductIdentifiers.isEmpty)
-            let availableProducts = response.products.map { $0.productIdentifier }.compactMap(Product.init)
+            availableProducts = response
+                .products
+                .compactMap { Product(name: Product.Name(rawValue: $0.productIdentifier), skProduct: $0) }
             productsRequestCompletionHandler?(.success(availableProducts))
             cleanup()
         }
@@ -104,6 +163,54 @@ final class InAppPurchase {
         private func cleanup() {
             productsRequest = nil
             productsRequestCompletionHandler = nil
+        }
+        
+        // MARK: - SKPaymentTransactionObserver
+        
+        func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+            for transaction in transactions {
+                switch transaction.transactionState {
+                case .purchased:
+                    complete(transaction: transaction)
+                case .restored:
+                    restore(transaction: transaction)
+                case .failed:
+                    fail(transaction: transaction)
+                case .purchasing, .deferred:
+                    break
+                }
+            }
+        }
+        
+        private func complete(transaction: SKPaymentTransaction) {
+            let product = availableProducts.first { $0.name.identifier == transaction.payment.productIdentifier }!
+            finishPurchase(of: product)
+            SKPaymentQueue.default().finishTransaction(transaction)
+        }
+        
+        private func restore(transaction: SKPaymentTransaction) {
+            let product = availableProducts.first { $0.name.identifier == transaction.original?.payment.productIdentifier }!
+            finishPurchase(of: product)
+            SKPaymentQueue.default().finishTransaction(transaction)
+        }
+        
+        private func fail(transaction: SKPaymentTransaction) {
+            if let transactionError = transaction.error as NSError?,
+                transactionError.code != SKError.paymentCancelled.rawValue {
+                purchaseCompletion?(.failure(transactionError))
+            } else {
+                // TODO: Make this a useful error
+                purchaseCompletion?(.failure(NSError()))
+            }
+            
+            SKPaymentQueue.default().finishTransaction(transaction)
+        }
+        
+        private func finishPurchase(of product: Product) {
+            purchasedProducts.append(product)
+            UserDefaults.standard.set(true, forKey: product.persistenceKey)
+            purchaseCompletion?(.success(product))
+            purchaseCompletion = nil
         }
     }
 }
