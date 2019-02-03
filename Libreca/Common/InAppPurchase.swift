@@ -24,9 +24,9 @@
 import Foundation
 import StoreKit
 
-// buy a product
-// can make payments?
-// restoration
+// TODO: buy a product
+// TODO: can make payments?
+// TODO: restoration
 
 final class InAppPurchase {
     enum Product: String, CaseIterable {
