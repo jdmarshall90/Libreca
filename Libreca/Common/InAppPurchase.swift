@@ -29,7 +29,7 @@ import StoreKit
 // can make payments?
 // restoration
 
-final class InAppPurchase: NSObject, SKProductsRequestDelegate {
+final class InAppPurchase {
     enum Product: String, CaseIterable {
         case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
         
@@ -38,96 +38,68 @@ final class InAppPurchase: NSObject, SKProductsRequestDelegate {
         }
     }
     
-    private let products = Product.allCases
-    private var purchasedProducts: [Product] = []
-    private var productsRequest: SKProductsRequest?
-    private var productsRequestCompletionHandler: AvailableProductsCompletion?
-    
-    private var productIdentifiers: Set<String> {
-        return Set(products.map { $0.identifier })
-    }
-    
     typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
     
+    let product: Product
+    private let purchaser = Purchaser()
+    
+    init(product: Product) {
+        self.product = product
+    }
+    
     func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
-        productsRequest?.cancel()
-        productsRequestCompletionHandler = completion
+        purchaser.requestAvailableProducts(completion: completion)
+    }
+    
+    private final class Purchaser: NSObject, SKProductsRequestDelegate {
+        private let products = Product.allCases
+        private var purchasedProducts: [Product] = []
+        private var productsRequest: SKProductsRequest?
+        private var productsRequestCompletionHandler: AvailableProductsCompletion?
         
-        productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
-        productsRequest?.delegate = self
-        productsRequest?.start()
-    }
-    
-    // MARK: - SKProductsRequestDelegate
-    
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        assert(response.invalidProductIdentifiers.isEmpty)
-        let availableProducts = response.products.map { $0.productIdentifier }.compactMap(Product.init)
-        productsRequestCompletionHandler?(.success(availableProducts))
-        cleanup()
-    }
-    
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        productsRequestCompletionHandler?(.failure(error))
-        cleanup()
-    }
-    
-    func requestDidFinish(_ request: SKRequest) {
-        cleanup()
-    }
-    
-    private func cleanup() {
-        productsRequest = nil
-        productsRequestCompletionHandler = nil
+        private var productIdentifiers: Set<String> {
+            return Set(products.map { $0.identifier })
+        }
+        
+        func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
+            productsRequest?.cancel()
+            productsRequestCompletionHandler = completion
+            
+            productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+            productsRequest?.delegate = self
+            productsRequest?.start()
+        }
+        
+        /*
+        open class SKProduct : NSObject {
+            open var localizedDescription: String { get }
+            open var localizedTitle: String { get }
+            open var price: NSDecimalNumber { get }
+            open var priceLocale: Locale { get }
+        }
+        */
+        
+        // MARK: - SKProductsRequestDelegate
+        
+        func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+            assert(response.invalidProductIdentifiers.isEmpty)
+            let availableProducts = response.products.map { $0.productIdentifier }.compactMap(Product.init)
+            productsRequestCompletionHandler?(.success(availableProducts))
+            cleanup()
+        }
+        
+        func request(_ request: SKRequest, didFailWithError error: Error) {
+            productsRequestCompletionHandler?(.failure(error))
+            cleanup()
+        }
+        
+        func requestDidFinish(_ request: SKRequest) {
+            cleanup()
+        }
+        
+        private func cleanup() {
+            productsRequest = nil
+            productsRequestCompletionHandler = nil
+        }
     }
 }
-
-//@available(iOS 3.0, *)
-//open class SKProduct : NSObject {
-//
-//
-//    @available(iOS 3.0, *)
-//    open var localizedDescription: String { get }
-//
-//
-//    @available(iOS 3.0, *)
-//    open var localizedTitle: String { get }
-//
-//
-//    @available(iOS 3.0, *)
-//    open var price: NSDecimalNumber { get }
-//
-//
-//    @available(iOS 3.0, *)
-//    open var priceLocale: Locale { get }
-//
-//
-//    @available(iOS 3.0, *)
-//    open var productIdentifier: String { get }
-//
-//
-//    // YES if this product has content downloadable using SKDownload
-//
-//    @available(iOS 6.0, *)
-//    open var isDownloadable: Bool { get }
-//
-//
-//    @available(iOS 6.0, *)
-//    open var downloadContentLengths: [NSNumber] { get }
-//
-//
-//    @available(iOS 6.0, *)
-//    open var downloadContentVersion: String { get }
-//
-//
-//    @available(iOS 11.2, *)
-//    open var subscriptionPeriod: SKProductSubscriptionPeriod? { get }
-//
-//
-//    @available(iOS 11.2, *)
-//    open var introductoryPrice: SKProductDiscount? { get }
-//
-//
-//    @available(iOS 12.0, *)
-//    open var subscriptionGroupIdentifier: String? { get }
-//}

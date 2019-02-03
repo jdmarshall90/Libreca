@@ -62,11 +62,11 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         return isFetchingBooks
     }
     
-    private let inAppPurchase = InAppPurchase()
+    private let inAppPurchase = InAppPurchase(product: .editMetadata)
     private var hasPurchasedEditing: Bool {
-//        inAppPurchase.requestAvailableProducts { result in
-//            print()
-//        }
+        inAppPurchase.requestAvailableProducts { result in
+            print(result)
+        }
         return true
     }
 }
