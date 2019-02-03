@@ -62,8 +62,11 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         return isFetchingBooks
     }
     
+    private let inAppPurchase = InAppPurchase()
     private var hasPurchasedEditing: Bool {
-        // TODO: Check for in app purchase. Encapsulate that logic into separate class
+//        inAppPurchase.requestAvailableProducts { result in
+//            print()
+//        }
         return true
     }
 }

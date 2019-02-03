@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */; };
 		D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */; };
+		D003EA0322068B0100B200A2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D003EA0222068B0100B200A2 /* StoreKit.framework */; };
+		D003EA052206913900B200A2 /* InAppPurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA042206913900B200A2 /* InAppPurchase.swift */; };
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
 		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
@@ -133,6 +135,8 @@
 /* Begin PBXFileReference section */
 		D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageShowing.swift; sourceTree = "<group>"; };
 		D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewShowing.swift; sourceTree = "<group>"; };
+		D003EA0222068B0100B200A2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		D003EA042206913900B200A2 /* InAppPurchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchase.swift; sourceTree = "<group>"; };
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -245,6 +249,7 @@
 				D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
 				D0D6F2A521782131006F21A4 /* FirebaseAnalytics.framework in Frameworks */,
 				D0D6F2A121782131006F21A4 /* GoogleUtilities.framework in Frameworks */,
+				D003EA0322068B0100B200A2 /* StoreKit.framework in Frameworks */,
 				D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */,
 				D0D6F2A9217823FD006F21A4 /* Crashlytics.framework in Frameworks */,
 			);
@@ -309,6 +314,7 @@
 			children = (
 				D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */,
 				D042EEDF21E5684F0046D00F /* Formatters.swift */,
+				D003EA042206913900B200A2 /* InAppPurchase.swift */,
 				D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */,
 				D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */,
 				D039CEE121FD72D5007A3F80 /* Result.swift */,
@@ -448,6 +454,7 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D003EA0222068B0100B200A2 /* StoreKit.framework */,
 				D07C4DF921E0643E00E1B470 /* Valet.framework */,
 				D0AAA62621D01EC300623608 /* LicensesViewController.framework */,
 				D049687A21D01D9300BD24C4 /* Alamofire.framework */,
@@ -574,6 +581,11 @@
 				TargetAttributes = {
 					D048719C216AF31D0085D22C = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 					D04871B2216AF31E0085D22C = {
 						CreatedOnToolsVersion = 10.0;
@@ -730,6 +742,7 @@
 				D039CEE221FD72D5007A3F80 /* Result.swift in Sources */,
 				D07EC1FC21EA87EA00AE193B /* BookDetailsPresenting.swift in Sources */,
 				D07EC20821EA883400AE193B /* BookEditInteracting.swift in Sources */,
+				D003EA052206913900B200A2 /* InAppPurchase.swift in Sources */,
 				D0B5214C21F16EC6007FB264 /* UITableViewCell+Extensions.swift in Sources */,
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
