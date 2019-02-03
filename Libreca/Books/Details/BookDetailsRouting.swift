@@ -26,12 +26,17 @@ import UIKit
 
 protocol BookDetailsRouting {
     func routeToEditing(for book: Book, completion: @escaping (Book) -> Void)
-    func routeToEditPurchaseValueProposition()
+    func routeToEditPurchaseValueProposition(completion: @escaping () -> Void)
     func routeToStillFetchingMessage()
 }
 
-struct BookDetailsRouter: BookDetailsRouting {
+final class BookDetailsRouter: BookDetailsRouting {
     private weak var viewController: UIViewController?
+    
+    // swiftlint:disable implicitly_unwrapped_optional
+    private var iapNav: UINavigationController!
+    private var editPurchaseValuePropCompletion: (() -> Void)!
+    // swiftlint:enable implicitly_unwrapped_optional
     
     init(viewController: UIViewController) {
         self.viewController = viewController
@@ -45,11 +50,25 @@ struct BookDetailsRouter: BookDetailsRouting {
         editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewing.didTapSave))
         editNav.modalPresentationStyle = .formSheet
         editNav.navigationBar.isTranslucent = false
+        editNav.navigationBar.prefersLargeTitles = true
         viewController?.present(editNav, animated: true)
     }
     
-    func routeToEditPurchaseValueProposition() {
-        // TODO: Show value prop
+    func routeToEditPurchaseValueProposition(completion: @escaping () -> Void) {
+        let alertController = UIAlertController(title: "Editing", message: "Editing book metadata is available via a one-time in app purchase.", preferredStyle: .alert)
+        alertController.addAction(
+            UIAlertAction(title: "No thanks", style: .cancel) { _ in
+                completion()
+            }
+        )
+        
+        alertController.addAction(
+            UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
+                self?.showIAPs(completion: completion)
+            }
+        )
+        
+        viewController?.present(alertController, animated: true)
     }
     
     func routeToStillFetchingMessage() {
@@ -57,5 +76,23 @@ struct BookDetailsRouter: BookDetailsRouting {
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         
         viewController?.present(alertController, animated: true)
+    }
+    
+    private func showIAPs(completion: @escaping () -> Void) {
+        editPurchaseValuePropCompletion = completion
+        
+        let iapVC = InAppPurchasesViewController()
+        iapNav = UINavigationController(rootViewController: iapVC)
+        
+        iapVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneOnIAP))
+        iapNav.modalPresentationStyle = .formSheet
+        iapNav.navigationBar.isTranslucent = false
+        iapNav.navigationBar.prefersLargeTitles = true
+        viewController?.present(iapNav, animated: true)
+    }
+    
+    @objc
+    private func didTapDoneOnIAP(_ sender: UIBarButtonItem) {
+        iapNav.dismiss(animated: true, completion: editPurchaseValuePropCompletion)
     }
 }
