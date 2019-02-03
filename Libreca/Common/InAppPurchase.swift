@@ -27,22 +27,33 @@ import StoreKit
 /*
  TODO: Scenarios to test:
  
- - attempting to purchase without being logged into iCloud
- - attempting to restore without being logged into iCloud
+ For each of these, test from edit screen and IAP list screen:
  
- - attempting to purchase with no network connection
- - attempting to restore with no network connection
+    - attempting to purchase without being logged into iCloud
+    - attempting to restore without being logged into iCloud
  
- - attempting to restore when you have never purchased it
+    - attempting to purchase with no network connection
+    - attempting to restore with no network connection
  
- - attempting to restore after app delete / reinstall
- - attempting to restore on another device
+    - attempting to restore when you have never purchased it
  
- - attempting to purchase when purchasing is disabled in device settings
- - attempting to restore when purchasing is disabled in device settings
+    - attempting to restore after app delete / reinstall
+    - attempting to restore on another device
  
- - attempting to use purchased item on next app launch, with valid network connection (should not hit network to check)
- - attempting to use purchased item on next app launch, with no network connection (should not hit network to check)
+    - attempting to purchase when purchasing is disabled in device settings
+    - attempting to restore when purchasing is disabled in device settings
+ 
+    - attempting to use purchased item on next app launch, with valid network connection (should not hit network to check)
+    - attempting to use purchased item on next app launch, with no network connection (should not hit network to check)
+ 
+ 
+ Stand-alone:
+ 
+    - purchasing from edit screen reflects on the IAP list screen the next time you go into it
+    - purchasing from IAP list screen reflects on the edit screen the next time you go into it
+ 
+    - restoring - via new device - from edit screen reflects on the IAP list screen the next time you go into it
+    - restoring - via same device, after app delete / reinstall - from IAP list screen reflects on the edit screen the next time you go into it
  
  */
 
