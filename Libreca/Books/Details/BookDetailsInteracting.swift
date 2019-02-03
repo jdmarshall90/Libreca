@@ -39,15 +39,12 @@ struct BookDetailsInteractor: BookDetailsInteracting {
             return .stillFetching
         }
         
-        // TODO: Hook this into IAP check below
-//        if !hasPurchasedEditing {
-//            return .unpurchased
-//        }
+        if !hasPurchasedEditing {
+            return .unpurchased
+        }
         
         return .editable
     }
-    
-    private let inAppPurchase = InAppPurchase()
     
     private var isFetchingbooks: Bool {
         // This is a dirty, shameful hack... but it's also the least invasive solution until
@@ -65,19 +62,8 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         return isFetchingBooks
     }
     
-    private func hasPurchasedEditing(completion: @escaping (Result<Bool>) -> Void) {
-        inAppPurchase.requestAvailableProducts { result in
-            switch result {
-            case .success(let products):
-                guard let editMetadata = products.first(where: { $0.name == .editMetadata }) else {
-                    // TODO: log analytics event -- this should never happen
-                    // TODO: Make this a useful error
-                    return completion(.failure(NSError()))
-                }
-                completion(.success(editMetadata.isPurchased))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    private var hasPurchasedEditing: Bool {
+        let editPurchase = InAppPurchase.Product.Name.editMetadata
+        return editPurchase.isPurchased
     }
 }

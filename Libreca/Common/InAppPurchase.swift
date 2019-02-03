@@ -65,15 +65,15 @@ final class InAppPurchase {
             fileprivate var identifier: String {
                 return rawValue
             }
-        }
-        
-        var isPurchased: Bool {
-            let isPurchased = UserDefaults.standard.bool(forKey: persistenceKey)
-            return isPurchased
-        }
-        
-        fileprivate var persistenceKey: String {
-            return name.identifier
+            
+            var isPurchased: Bool {
+                let isPurchased = UserDefaults.standard.bool(forKey: persistenceKey)
+                return isPurchased
+            }
+            
+            fileprivate var persistenceKey: String {
+                return identifier
+            }
         }
         
         let name: Name
@@ -94,7 +94,6 @@ final class InAppPurchase {
     
     private let purchaser = Purchaser()
     
-    // TODO: Need a better way to check for purchases - this shouldn't have to make a network call *every* time. Then update interactor to use that new API instead of this one
     func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
         purchaser.requestAvailableProducts(completion: completion)
     }
@@ -219,7 +218,7 @@ final class InAppPurchase {
         
         private func finishPurchase(of product: Product) {
             purchasedProducts.append(product)
-            UserDefaults.standard.set(true, forKey: product.persistenceKey)
+            UserDefaults.standard.set(true, forKey: product.name.persistenceKey)
             purchaseCompletion?(.success(product))
             purchaseCompletion = nil
         }
