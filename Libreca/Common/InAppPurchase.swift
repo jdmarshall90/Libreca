@@ -25,7 +25,6 @@ import Foundation
 import StoreKit
 
 // buy a product
-// is a product already purchased?
 // can make payments?
 // restoration
 
@@ -36,16 +35,20 @@ final class InAppPurchase {
         var identifier: String {
             return rawValue
         }
+        
+        var isPurchased: Bool {
+            let isPurchased = UserDefaults.standard.bool(forKey: persistenceKey)
+            return isPurchased
+        }
+        
+        private var persistenceKey: String {
+            return identifier
+        }
     }
     
     typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
     
-    let product: Product
     private let purchaser = Purchaser()
-    
-    init(product: Product) {
-        self.product = product
-    }
     
     func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
         purchaser.requestAvailableProducts(completion: completion)
