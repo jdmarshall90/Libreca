@@ -265,6 +265,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D003EA062207887300B200A2 /* InApPurchases */ = {
+			isa = PBXGroup;
+			children = (
+				D003EA042206913900B200A2 /* InAppPurchase.swift */,
+			);
+			path = InApPurchases;
+			sourceTree = "<group>";
+		};
 		D0195B7F2172EE94006EA713 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,7 +322,6 @@
 			children = (
 				D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */,
 				D042EEDF21E5684F0046D00F /* Formatters.swift */,
-				D003EA042206913900B200A2 /* InAppPurchase.swift */,
 				D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */,
 				D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */,
 				D039CEE121FD72D5007A3F80 /* Result.swift */,
@@ -359,6 +366,7 @@
 				D02F75DD217036E10040EDE5 /* Startup */,
 				D042EEDE21E568380046D00F /* Common */,
 				D02F75DC217036D90040EDE5 /* Books */,
+				D003EA062207887300B200A2 /* InApPurchases */,
 				D0195B7F2172EE94006EA713 /* Settings */,
 				D02F75DE217036F20040EDE5 /* Supporting Files */,
 				D0D6F26B21781A8C006F21A4 /* Firebase */,

@@ -50,6 +50,7 @@ struct BookDetailsRouter: BookDetailsRouting {
     
     func routeToEditPurchaseValueProposition() {
         // TODO: Show value prop
+        print("show value prop!")
     }
     
     func routeToStillFetchingMessage() {
