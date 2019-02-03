@@ -11,6 +11,7 @@
 		D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */; };
 		D003EA0322068B0100B200A2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D003EA0222068B0100B200A2 /* StoreKit.framework */; };
 		D003EA052206913900B200A2 /* InAppPurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA042206913900B200A2 /* InAppPurchase.swift */; };
+		D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA072207893100B200A2 /* InAppPurchasesViewController.swift */; };
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
 		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
@@ -137,6 +138,7 @@
 		D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewShowing.swift; sourceTree = "<group>"; };
 		D003EA0222068B0100B200A2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D003EA042206913900B200A2 /* InAppPurchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchase.swift; sourceTree = "<group>"; };
+		D003EA072207893100B200A2 /* InAppPurchasesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchasesViewController.swift; sourceTree = "<group>"; };
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				D003EA042206913900B200A2 /* InAppPurchase.swift */,
+				D003EA072207893100B200A2 /* InAppPurchasesViewController.swift */,
 			);
 			path = InApPurchases;
 			sourceTree = "<group>";
@@ -744,6 +747,7 @@
 				D0B5214121EEDBEC007FB264 /* BookEditSearchListViewController.swift in Sources */,
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
+				D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
 				D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */,
 				D0B5213C21EED8FE007FB264 /* BookEditSearchListPresenting.swift in Sources */,

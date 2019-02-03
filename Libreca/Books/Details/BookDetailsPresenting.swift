@@ -48,7 +48,19 @@ struct BookDetailsPresenter: BookDetailsPresenting {
         case .stillFetching:
             router.routeToStillFetchingMessage()
         case .unpurchased:
-            router.routeToEditPurchaseValueProposition()
+            router.routeToEditPurchaseValueProposition {
+                switch self.interactor.editAvailability {
+                case .editable:
+                    self.router.routeToEditing(for: book) { updatedBook in
+                        self.view?.reload(for: updatedBook)
+                    }
+                case .stillFetching:
+                    // this really should never happen...
+                    self.router.routeToStillFetchingMessage()
+                case .unpurchased:
+                    break // we've asked, user didn't follow through, so don't ask again
+                }
+            }
         }
     }
 }

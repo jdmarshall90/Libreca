@@ -140,7 +140,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 ),
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Images", subText: nil, accessoryType: .none, allowHighlight: false),
-                DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false)
+                DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false),
+                DisplayModel(mainText: "Upgrades", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapUpgrades()
+                }
             ],
             [
                 DisplayModel(mainText: "Email", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -219,6 +222,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     private func didTapContentServer() {
         performSegue(withIdentifier: Segue.contentServerSegue.rawValue, sender: nil)
+    }
+    
+    private func didTapUpgrades() {
+        navigationController?.pushViewController(InAppPurchasesViewController(), animated: true)
     }
     
     private func didTapExportData() {
