@@ -50,6 +50,7 @@ final class InAppPurchase {
     
     private let purchaser = Purchaser()
     
+    // TODO: Need a better way to check for purchases - this shouldn't have to make a network call *every* time. Then update interactor to use that new API instead of this one
     func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
         purchaser.requestAvailableProducts(completion: completion)
     }
