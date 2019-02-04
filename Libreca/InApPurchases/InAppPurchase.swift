@@ -124,7 +124,6 @@ final class InAppPurchase {
     }
     
     private final class Purchaser: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
-        private var purchasedProducts: [Product] = []
         private var availableProducts: [Product] = []
         private var productsRequest: SKProductsRequest?
         private var productsRequestCompletionHandler: AvailableProductsCompletion?
@@ -230,7 +229,6 @@ final class InAppPurchase {
         }
         
         private func finishPurchase(of product: Product) {
-            purchasedProducts.append(product)
             UserDefaults.standard.set(true, forKey: product.name.persistenceKey)
             purchaseCompletion?(.success(product))
             purchaseCompletion = nil
