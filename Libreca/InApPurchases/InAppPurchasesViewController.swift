@@ -79,6 +79,10 @@ final class InAppPurchasesViewController: UITableViewController {
         }
     }
     
+    // TODO: Make UI look nicer
+    // TODO: Allow purchase / restoration via UI (backend is already done)
+    // TODO: Once purchased / restored, make sure UI reflects this even on subsequent runs of the app
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch products {
         case .success(let products)? where indexPath.section == products.count:
