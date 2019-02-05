@@ -37,9 +37,6 @@ import StoreKit
     - attempting to restore after app delete / reinstall
     - attempting to restore on another device
  
-    - attempting to purchase when purchasing is disabled in device settings
-    - attempting to restore when purchasing is disabled in device settings
- 
     - attempting to use purchased item on next app launch, with valid network connection (should not hit network to check)
     - attempting to use purchased item on next app launch, with no network connection (should not hit network to check)
  
@@ -99,6 +96,14 @@ final class InAppPurchase {
         }
     }
     
+    enum InAppPurchaseError: String, LocalizedError {
+        case purchasesDisallowed = "Purchases are not allowed in the device settings."
+        
+        var errorDescription: String? {
+            return rawValue
+        }
+    }
+    
     typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
     typealias PurchaseCompletion = (Result<Product>) -> Void
     typealias RestoreCompletion = AvailableProductsCompletion
@@ -147,12 +152,19 @@ final class InAppPurchase {
         }
         
         func purchase(_ product: Product, completion: @escaping PurchaseCompletion) {
+            guard canMakePayments() else {
+                return completion(.failure(InAppPurchaseError.purchasesDisallowed))
+            }
             purchaseCompletion = completion
             let payment = SKPayment(product: product.skProduct)
             SKPaymentQueue.default().add(payment)
         }
         
         func restore(completion: @escaping RestoreCompletion) {
+            guard canMakePayments() else {
+                return completion(.failure(InAppPurchaseError.purchasesDisallowed))
+            }
+            
             restoreCompletion = completion
             SKPaymentQueue.default().restoreCompletedTransactions()
         }
@@ -234,7 +246,7 @@ final class InAppPurchase {
                 purchaseCompletion?(.failure(transactionError))
                 restoreCompletion?(.failure(transactionError))
             } else {
-                // TODO: Make these into useful errors
+                // TODO: Make these into useful errors - use the InAppPurchaseError enum
                 purchaseCompletion?(.failure(NSError()))
                 restoreCompletion?(.failure(NSError()))
             }
