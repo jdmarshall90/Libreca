@@ -31,7 +31,11 @@ import UIKit
 /// out of hand, then it should be refactored to use VIPER.
 final class InAppPurchasesViewController: UITableViewController {
     private let inAppPurchase = InAppPurchase()
-    private var products: Result<[InAppPurchase.Product]>? {
+    private var products: [InAppPurchase.Product] {
+        return sections.flatMap { $0.cells }.compactMap { $0.product }
+    }
+    
+    private var sections: [Section] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -39,6 +43,24 @@ final class InAppPurchasesViewController: UITableViewController {
     
     init() {
         super.init(style: .grouped)
+    }
+    
+    private struct Section {
+        struct Cell {
+            var shouldHighlight: Bool {
+                return accessoryType == .disclosureIndicator
+            }
+            
+            let text: String
+            let product: InAppPurchase.Product?
+            let cellID: String
+            let accessoryType: UITableViewCell.AccessoryType
+            let tapAction: ((IndexPath) -> Void)?
+        }
+        
+        let header: String?
+        let cells: [Cell]
+        let footer: String?
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,142 +74,136 @@ final class InAppPurchasesViewController: UITableViewController {
         let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
         title = "\(appName) Upgrades"
         
-        inAppPurchase.requestAvailableProducts { [weak self] result in
-            self?.products = result
-        }
+        loadUI()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        switch products {
-        case .success(let products)?:
-            return products.count + 1
-        case .failure?, .none:
-            return 1
-        }
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch products {
-        case .success(let products)? where section == products.count:
-            return 1
-        case .success?:
-            return 3
-        case .failure?, .none:
-            return 1
-        }
+        return sections[section].cells.count
     }
     
-    // TODO: Make UI look nicer
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].header
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return sections[section].footer
+    }
+    
     // TODO: Once purchased / restored, make sure UI reflects this even on subsequent runs of the app
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch products {
-        case .success(let products)? where indexPath.section == products.count:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RestoreCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "RestoreCellID")
-            
-            if case .dark = Settings.Theme.current {
-                cell.textLabel?.textColor = .white
-            }
-            
-            cell.textLabel?.text = "Restore purchases"
-            cell.accessoryType = .disclosureIndicator
-            return cell
-        case .success(let products)?:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "IAPCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "IAPCellID")
-            let product = products[indexPath.section]
-            
-            if case .dark = Settings.Theme.current {
-                cell.textLabel?.textColor = .white
-            }
-            
-            cell.accessoryType = .none
-            
-            switch indexPath.row {
-            case 0:
-                cell.textLabel?.text = product.title
-            case 1:
-                cell.textLabel?.text = product.price
-                cell.accessoryType = product.name.isPurchased ? .checkmark : .disclosureIndicator
-            case 2:
-                cell.textLabel?.text = product.description
-            default:
-                break
-            }
-            
-            return cell
-        case .failure(let error)?:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "FailureCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "FailureCellID")
-            
-            if case .dark = Settings.Theme.current {
-                cell.textLabel?.textColor = .white
-            }
-            
-            cell.textLabel?.text = error.localizedDescription
-            return cell
-        case .none:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "LoadingCellID")
-            
-            if case .dark = Settings.Theme.current {
-                cell.textLabel?.textColor = .white
-            }
-            
-            cell.textLabel?.text = "Retrieving available in-app purchases ..."
-            return cell
+        let backingCell = sections[indexPath.section].cells[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: backingCell.cellID) ?? UITableViewCell(style: .default, reuseIdentifier: backingCell.cellID)
+        
+        if case .dark = Settings.Theme.current {
+            cell.textLabel?.textColor = .white
         }
+        
+        cell.accessoryType = backingCell.accessoryType
+        cell.textLabel?.text = backingCell.text
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        switch products {
-        case .success(let products)? where indexPath.section == products.count:
-            return true
-        case .success?:
-            switch indexPath.row {
-            case 0,
-                 2:
-                return false
-            case 1:
-                return true
-            default:
-                return false
-            }
-        case .failure?, .none:
-            return false
-        }
+        let backingCell = sections[indexPath.section].cells[indexPath.row]
+        return backingCell.shouldHighlight
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if case .success(let products)? = products {
-            if indexPath.section == products.count {
-                inAppPurchase.restore { [weak self] result in
-                    switch result {
-                    case .success(let products):
-                        self?.tableView.reloadData()
-                        let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.isEmpty ? "" : "s").", preferredStyle: .alert)
-                        self?.present(successAlertController, animated: true, completion: nil)
-                    case .failure(let error):
-                        let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                        failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        self?.present(failureAlertController, animated: true, completion: nil)
+        let backingCell = sections[indexPath.section].cells[indexPath.row]
+        backingCell.tapAction?(indexPath)
+    }
+    
+    private func loadUI() {
+        sections = [
+            Section(
+                header: nil,
+                cells: [
+                    Section.Cell(text: "Retrieving available in-app purchases...", product: nil, cellID: "LoadingCellID", accessoryType: .none, tapAction: nil)
+                ],
+                footer: nil
+            )
+        ]
+        inAppPurchase.requestAvailableProducts { [weak self] result in
+            guard let strongSelf = self else { return }
+            strongSelf.sections = strongSelf.createSections(from: result)
+        }
+    }
+    
+    private func createSections(from result: Result<[InAppPurchase.Product]>) -> [Section] {
+        switch result {
+        case .success(let products):
+            let productsSections = products.map {
+                Section(
+                    header: $0.title,
+                    cells: [
+                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
+                            self?.purchaseItem(at: indexPath)
+                        }
+                    ],
+                    footer: $0.description
+                )
+            }
+            let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
+            let restorationSection = Section(
+                header: nil,
+                cells: [
+                    Section.Cell(text: "Restore purchases", product: nil, cellID: "RestoreCellID", accessoryType: .disclosureIndicator) { [weak self] _ in
+                        self?.restore()
                     }
-                }
-            } else if indexPath.row == 1 {
-                let purchasingAlertController = UIAlertController(title: "Purchasing", message: "Please wait...", preferredStyle: .alert)
-                present(purchasingAlertController, animated: true, completion: nil)
-                inAppPurchase.purchase(products[indexPath.section]) { [weak self] result in
-                    purchasingAlertController.dismiss(animated: true)
-                    switch result {
-                    case .success(let product):
-                        self?.tableView.reloadData()
-                        let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
-                        self?.present(successAlertController, animated: true, completion: nil)
-                    case .failure(let error):
-                        let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                        failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        self?.present(failureAlertController, animated: true, completion: nil)
-                    }
-                }
+                ],
+                footer: nil
+            )
+            
+            return [instructionsSection] + productsSections + [restorationSection]
+        case .failure(let error):
+            return [
+                Section(
+                    header: nil,
+                    cells: [
+                        Section.Cell(text: error.localizedDescription, product: nil, cellID: "FailureCellID", accessoryType: .none, tapAction: nil)
+                    ],
+                    footer: nil
+                )
+            ]
+        }
+    }
+    
+    private func purchaseItem(at indexPath: IndexPath) {
+        let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
+        present(purchasingAlertController, animated: true, completion: nil)
+        inAppPurchase.purchase(products[indexPath.section - 1]) { [weak self] result in
+            purchasingAlertController.dismiss(animated: true)
+            switch result {
+            case .success(let product):
+                self?.tableView.reloadData()
+                let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
+                self?.present(successAlertController, animated: true, completion: nil)
+            case .failure(let error):
+                let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self?.present(failureAlertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func restore() {
+        inAppPurchase.restore { [weak self] result in
+            switch result {
+            case .success(let products):
+                self?.tableView.reloadData()
+                let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.isEmpty ? "" : "s").", preferredStyle: .alert)
+                self?.present(successAlertController, animated: true, completion: nil)
+            case .failure(let error):
+                let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self?.present(failureAlertController, animated: true, completion: nil)
             }
         }
     }
