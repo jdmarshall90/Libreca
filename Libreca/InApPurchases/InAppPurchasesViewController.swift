@@ -139,6 +139,8 @@ final class InAppPurchasesViewController: UITableViewController {
     private func createSections(from result: Result<[InAppPurchase.Product]>) -> [Section] {
         switch result {
         case .success(let products):
+            tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+            
             let productsSections = products.map {
                 Section(
                     header: $0.title,
