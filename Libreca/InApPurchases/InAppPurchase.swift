@@ -104,6 +104,7 @@ final class InAppPurchase {
     
     typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
     typealias PurchaseCompletion = (Result<Product>) -> Void
+    typealias RestoreCompletion = AvailableProductsCompletion
     
     private let purchaser = Purchaser()
     
@@ -115,7 +116,7 @@ final class InAppPurchase {
         purchaser.purchase(product, completion: completion)
     }
     
-    func restore(completion: @escaping PurchaseCompletion) {
+    func restore(completion: @escaping RestoreCompletion) {
         purchaser.restore(completion: completion)
     }
     
@@ -124,11 +125,11 @@ final class InAppPurchase {
     }
     
     private final class Purchaser: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
-        private var purchasedProducts: [Product] = []
         private var availableProducts: [Product] = []
         private var productsRequest: SKProductsRequest?
         private var productsRequestCompletionHandler: AvailableProductsCompletion?
         private var purchaseCompletion: PurchaseCompletion?
+        private var restoreCompletion: RestoreCompletion?
         
         private var productIdentifiers: Set<String> {
             return Set(Product.Name.allCases.map { $0.identifier })
@@ -154,8 +155,8 @@ final class InAppPurchase {
             SKPaymentQueue.default().add(payment)
         }
         
-        func restore(completion: @escaping PurchaseCompletion) {
-            purchaseCompletion = completion
+        func restore(completion: @escaping RestoreCompletion) {
+            restoreCompletion = completion
             SKPaymentQueue.default().restoreCompletedTransactions()
         }
         
@@ -191,49 +192,57 @@ final class InAppPurchase {
         // MARK: - SKPaymentTransactionObserver
         
         func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+            var purchased: Product?
+            var restored: [Product] = []
             for transaction in transactions {
                 switch transaction.transactionState {
                 case .purchased:
-                    complete(transaction: transaction)
+                    purchased = complete(transaction: transaction)
                 case .restored:
-                    restore(transaction: transaction)
+                    restored.append(restore(transaction: transaction))
                 case .failed:
                     fail(transaction: transaction)
-                case .purchasing, .deferred:
+                case .purchasing:
+                    break
+                case .deferred:
                     break
                 }
             }
+            
+            if let purchased = purchased {
+                purchaseCompletion?(.success(purchased))
+            }
+            
+            if !restored.isEmpty {
+                restoreCompletion?(.success(restored))
+            }
         }
         
-        private func complete(transaction: SKPaymentTransaction) {
+        private func complete(transaction: SKPaymentTransaction) -> Product {
             let product = availableProducts.first { $0.name.identifier == transaction.payment.productIdentifier }!
-            finishPurchase(of: product)
+            UserDefaults.standard.set(true, forKey: product.name.persistenceKey)
             SKPaymentQueue.default().finishTransaction(transaction)
+            return product
         }
         
-        private func restore(transaction: SKPaymentTransaction) {
+        private func restore(transaction: SKPaymentTransaction) -> Product {
             let product = availableProducts.first { $0.name.identifier == transaction.original?.payment.productIdentifier }!
-            finishPurchase(of: product)
+            UserDefaults.standard.set(true, forKey: product.name.persistenceKey)
             SKPaymentQueue.default().finishTransaction(transaction)
+            return product
         }
         
         private func fail(transaction: SKPaymentTransaction) {
-            if let transactionError = transaction.error as NSError?,
-                transactionError.code != SKError.paymentCancelled.rawValue {
+            if let transactionError = transaction.error as NSError? {
                 purchaseCompletion?(.failure(transactionError))
+                restoreCompletion?(.failure(transactionError))
             } else {
-                // TODO: Make this a useful error
+                // TODO: Make these into useful errors
                 purchaseCompletion?(.failure(NSError()))
+                restoreCompletion?(.failure(NSError()))
             }
             
             SKPaymentQueue.default().finishTransaction(transaction)
-        }
-        
-        private func finishPurchase(of product: Product) {
-            purchasedProducts.append(product)
-            UserDefaults.standard.set(true, forKey: product.name.persistenceKey)
-            purchaseCompletion?(.success(product))
-            purchaseCompletion = nil
         }
     }
 }
