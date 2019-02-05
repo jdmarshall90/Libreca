@@ -32,7 +32,6 @@ import StoreKit
     - attempting to purchase without being logged into iCloud
     - attempting to restore without being logged into iCloud
  
-    - attempting to purchase with no network connection
     - attempting to restore with no network connection
  
     - attempting to restore when you have never purchased it

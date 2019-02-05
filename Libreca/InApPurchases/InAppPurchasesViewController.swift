@@ -181,16 +181,17 @@ final class InAppPurchasesViewController: UITableViewController {
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
         inAppPurchase.purchase(products[indexPath.section - 1]) { [weak self] result in
-            purchasingAlertController.dismiss(animated: true)
-            switch result {
-            case .success(let product):
-                self?.tableView.reloadData()
-                let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
-                self?.present(successAlertController, animated: true, completion: nil)
-            case .failure(let error):
-                let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self?.present(failureAlertController, animated: true, completion: nil)
+            purchasingAlertController.dismiss(animated: true) { [weak self] in
+                switch result {
+                case .success(let product):
+                    self?.tableView.reloadData()
+                    let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
+                    self?.present(successAlertController, animated: true, completion: nil)
+                case .failure(let error):
+                    let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self?.present(failureAlertController, animated: true, completion: nil)
+                }
             }
         }
     }
