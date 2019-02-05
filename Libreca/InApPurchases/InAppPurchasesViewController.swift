@@ -41,8 +41,6 @@ final class InAppPurchasesViewController: UITableViewController {
         super.init(style: .grouped)
     }
     
-    // TODO: Tweak IAP title / description on App Store Connect
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
