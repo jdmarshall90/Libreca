@@ -145,7 +145,7 @@ final class InAppPurchasesViewController: UITableViewController {
                 Section(
                     header: $0.title,
                     cells: [
-                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
+                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
                             self?.purchaseItem(at: indexPath)
                         }
                     ],
