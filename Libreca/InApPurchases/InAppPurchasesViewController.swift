@@ -186,6 +186,7 @@ final class InAppPurchasesViewController: UITableViewController {
                 case .success(let product):
                     self?.tableView.reloadData()
                     let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
+                    successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self?.present(successAlertController, animated: true, completion: nil)
                 case .failure(let error):
                     let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
@@ -200,8 +201,8 @@ final class InAppPurchasesViewController: UITableViewController {
         inAppPurchase.restore { [weak self] result in
             switch result {
             case .success(let products):
-                self?.tableView.reloadData()
-                let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.isEmpty ? "" : "s").", preferredStyle: .alert)
+                let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.count == 1 ? "" : "s").", preferredStyle: .alert)
+                successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(successAlertController, animated: true, completion: nil)
             case .failure(let error):
                 let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
