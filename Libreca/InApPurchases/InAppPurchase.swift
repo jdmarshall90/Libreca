@@ -233,13 +233,9 @@ final class InAppPurchase {
         }
         
         private func fail(transaction: SKPaymentTransaction) {
-            if let transactionError = transaction.error as NSError? {
+            if let transactionError = transaction.error {
                 purchaseCompletion?(.failure(transactionError))
                 restoreCompletion?(.failure(transactionError))
-            } else {
-                // TODO: Make these into useful errors - use the InAppPurchaseError enum
-                purchaseCompletion?(.failure(NSError()))
-                restoreCompletion?(.failure(NSError()))
             }
             
             SKPaymentQueue.default().finishTransaction(transaction)
