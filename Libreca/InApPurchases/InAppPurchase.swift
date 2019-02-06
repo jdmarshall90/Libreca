@@ -70,7 +70,11 @@ final class InAppPurchase {
         }
         
         var price: String {
-            return "\(skProduct.priceLocale.currencySymbol ?? "$")\(skProduct.price)"
+            let numberFormatter = NumberFormatter()
+            let locale = skProduct.priceLocale
+            numberFormatter.numberStyle = .currency
+            numberFormatter.locale = locale
+            return numberFormatter.string(from: skProduct.price) ?? "Error retrieving price"
         }
         
         fileprivate init?(name: Name?, skProduct: SKProduct) {
