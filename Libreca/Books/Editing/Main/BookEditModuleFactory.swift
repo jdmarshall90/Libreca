@@ -49,7 +49,6 @@ struct BookEditModuleFactory {
         let router = BookEditRouter(book: book, completion: completion)
         let coverEndpoint = book.cover
         
-        // TODO: Can get Calibre server version via response heeaders -- check if running version that contains new field for this service, and use it if able
         let loadedBooks = allBooks
         let service = BookEditService(coverService: coverEndpoint, book: book, loadedBooks: loadedBooks, setFieldsInit: SetFieldsEndpoint.init)
         let interactor = BookEditInteractor(book: book, service: service)
