@@ -24,21 +24,6 @@
 import Foundation
 import StoreKit
 
-/*
- TODO: Scenarios to test:
- 
- For each of these, test from edit screen and IAP list screen:
- 
-    - attempting to restore when you have never purchased it
- 
-    - attempting to restore on another device
- 
- Stand-alone:
- 
-    - displayed price uses localized currency
- 
- */
-
 final class InAppPurchase {
     struct Product {
         enum Name: String, CaseIterable {
