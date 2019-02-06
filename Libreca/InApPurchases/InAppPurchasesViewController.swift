@@ -181,10 +181,10 @@ final class InAppPurchasesViewController: UITableViewController {
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
         inAppPurchase.purchase(products[indexPath.section - 1]) { [weak self] result in
+            self?.loadUI()
             purchasingAlertController.dismiss(animated: true) { [weak self] in
                 switch result {
                 case .success(let product):
-                    self?.tableView.reloadData()
                     let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
                     successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self?.present(successAlertController, animated: true, completion: nil)
@@ -201,6 +201,7 @@ final class InAppPurchasesViewController: UITableViewController {
         inAppPurchase.restore { [weak self] result in
             switch result {
             case .success(let products):
+                self?.loadUI()
                 let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.count == 1 ? "" : "s").", preferredStyle: .alert)
                 successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(successAlertController, animated: true, completion: nil)
