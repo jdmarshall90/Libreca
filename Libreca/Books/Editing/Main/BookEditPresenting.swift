@@ -224,7 +224,9 @@ final class BookEditPresenter: BookEditPresenting {
                 let message = """
                 \(error.localizedDescription)
                 
-                For more information, check the server logs. If this problem persists, please send an email to \(appName) support.
+                For more information, check the server logs. Some errors can be resolved by simply rebooting your server.
+                
+                If this problem persists, please send an email to \(appName) support.
                 """
                 self?.view?.showError(withTitle: "An error occurred", message: message)
             }
