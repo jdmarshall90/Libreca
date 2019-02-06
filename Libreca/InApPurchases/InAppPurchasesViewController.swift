@@ -93,8 +93,6 @@ final class InAppPurchasesViewController: UITableViewController {
         return sections[section].footer
     }
     
-    // TODO: Once purchased / restored, make sure UI reflects this even on subsequent runs of the app
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let backingCell = sections[indexPath.section].cells[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: backingCell.cellID) ?? UITableViewCell(style: .default, reuseIdentifier: backingCell.cellID)
