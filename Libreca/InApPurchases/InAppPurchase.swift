@@ -24,40 +24,6 @@
 import Foundation
 import StoreKit
 
-/*
- TODO: Scenarios to test:
- 
- For each of these, test from edit screen and IAP list screen:
- 
-    - attempting to purchase without being logged into iCloud
-    - attempting to restore without being logged into iCloud
- 
-    - attempting to purchase with no network connection
-    - attempting to restore with no network connection
- 
-    - attempting to restore when you have never purchased it
- 
-    - attempting to restore after app delete / reinstall
-    - attempting to restore on another device
- 
-    - attempting to purchase when purchasing is disabled in device settings
-    - attempting to restore when purchasing is disabled in device settings
- 
-    - attempting to use purchased item on next app launch, with valid network connection (should not hit network to check)
-    - attempting to use purchased item on next app launch, with no network connection (should not hit network to check)
- 
- 
- Stand-alone:
- 
-    - displayed price uses localized currency
-    - purchasing from edit screen reflects on the IAP list screen the next time you go into it
-    - purchasing from IAP list screen reflects on the edit screen the next time you go into it
- 
-    - restoring - via new device - from edit screen reflects on the IAP list screen the next time you go into it
-    - restoring - via same device, after app delete / reinstall - from IAP list screen reflects on the edit screen the next time you go into it
- 
- */
-
 final class InAppPurchase {
     struct Product {
         enum Name: String, CaseIterable {
@@ -89,7 +55,11 @@ final class InAppPurchase {
         }
         
         var price: String {
-            return "\(skProduct.priceLocale.currencySymbol ?? "$")\(skProduct.price)"
+            let numberFormatter = NumberFormatter()
+            let locale = skProduct.priceLocale
+            numberFormatter.numberStyle = .currency
+            numberFormatter.locale = locale
+            return numberFormatter.string(from: skProduct.price) ?? "Error retrieving price"
         }
         
         fileprivate init?(name: Name?, skProduct: SKProduct) {
@@ -99,6 +69,14 @@ final class InAppPurchase {
             
             self.name = name
             self.skProduct = skProduct
+        }
+    }
+    
+    enum InAppPurchaseError: String, LocalizedError {
+        case purchasesDisallowed = "Purchases are disallowed by the device settings."
+        
+        var errorDescription: String? {
+            return rawValue
         }
     }
     
@@ -150,12 +128,19 @@ final class InAppPurchase {
         }
         
         func purchase(_ product: Product, completion: @escaping PurchaseCompletion) {
+            guard canMakePayments() else {
+                return completion(.failure(InAppPurchaseError.purchasesDisallowed))
+            }
             purchaseCompletion = completion
             let payment = SKPayment(product: product.skProduct)
             SKPaymentQueue.default().add(payment)
         }
         
         func restore(completion: @escaping RestoreCompletion) {
+            guard canMakePayments() else {
+                return completion(.failure(InAppPurchaseError.purchasesDisallowed))
+            }
+            
             restoreCompletion = completion
             SKPaymentQueue.default().restoreCompletedTransactions()
         }
@@ -233,13 +218,9 @@ final class InAppPurchase {
         }
         
         private func fail(transaction: SKPaymentTransaction) {
-            if let transactionError = transaction.error as NSError? {
+            if let transactionError = transaction.error {
                 purchaseCompletion?(.failure(transactionError))
                 restoreCompletion?(.failure(transactionError))
-            } else {
-                // TODO: Make these into useful errors
-                purchaseCompletion?(.failure(NSError()))
-                restoreCompletion?(.failure(NSError()))
             }
             
             SKPaymentQueue.default().finishTransaction(transaction)

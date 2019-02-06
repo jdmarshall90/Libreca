@@ -93,8 +93,6 @@ final class InAppPurchasesViewController: UITableViewController {
         return sections[section].footer
     }
     
-    // TODO: Once purchased / restored, make sure UI reflects this even on subsequent runs of the app
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let backingCell = sections[indexPath.section].cells[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: backingCell.cellID) ?? UITableViewCell(style: .default, reuseIdentifier: backingCell.cellID)
@@ -145,7 +143,7 @@ final class InAppPurchasesViewController: UITableViewController {
                 Section(
                     header: $0.title,
                     cells: [
-                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
+                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
                             self?.purchaseItem(at: indexPath)
                         }
                     ],
@@ -181,16 +179,18 @@ final class InAppPurchasesViewController: UITableViewController {
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
         inAppPurchase.purchase(products[indexPath.section - 1]) { [weak self] result in
-            purchasingAlertController.dismiss(animated: true)
-            switch result {
-            case .success(let product):
-                self?.tableView.reloadData()
-                let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
-                self?.present(successAlertController, animated: true, completion: nil)
-            case .failure(let error):
-                let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self?.present(failureAlertController, animated: true, completion: nil)
+            self?.loadUI()
+            purchasingAlertController.dismiss(animated: true) { [weak self] in
+                switch result {
+                case .success(let product):
+                    let successAlertController = UIAlertController(title: "Success!", message: "You have purchased \(product.title).", preferredStyle: .alert)
+                    successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self?.present(successAlertController, animated: true, completion: nil)
+                case .failure(let error):
+                    let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self?.present(failureAlertController, animated: true, completion: nil)
+                }
             }
         }
     }
@@ -199,8 +199,9 @@ final class InAppPurchasesViewController: UITableViewController {
         inAppPurchase.restore { [weak self] result in
             switch result {
             case .success(let products):
-                self?.tableView.reloadData()
-                let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.isEmpty ? "" : "s").", preferredStyle: .alert)
+                self?.loadUI()
+                let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.count == 1 ? "" : "s").", preferredStyle: .alert)
+                successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(successAlertController, animated: true, completion: nil)
             case .failure(let error):
                 let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
