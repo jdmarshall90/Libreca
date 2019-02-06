@@ -73,7 +73,7 @@ final class InAppPurchase {
     }
     
     enum InAppPurchaseError: String, LocalizedError {
-        case purchasesDisallowed = "Purchases are not allowed in the device settings."
+        case purchasesDisallowed = "Purchases are disallowed by the device settings."
         
         var errorDescription: String? {
             return rawValue
