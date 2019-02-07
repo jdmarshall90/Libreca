@@ -202,6 +202,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         
         if editingStyle == .delete {
             tableView.deleteRows(at: [indexPath], with: .top)
+            if field == .series {
+                tableView.reloadRows(at: [IndexPath(row: 0, section: indexPath.section)], with: .automatic)
+            }
         }
     }
     
@@ -458,7 +461,15 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             cell.textLabel?.textColor = .white
         }
         if (indexPath.row + 1) > theArray.count {
-            cell.textLabel?.text = "Add \(field.header)"
+            if field == .series {
+                if theArray.isEmpty {
+                    cell.textLabel?.text = "Add \(field.header)"
+                } else {
+                    cell.textLabel?.text = "Replace \(field.header)"
+                }
+            } else {
+                cell.textLabel?.text = "Add \(field.header)"
+            }
         } else {
             cell.textLabel?.text = theArray[indexPath.row].fieldValue
         }
