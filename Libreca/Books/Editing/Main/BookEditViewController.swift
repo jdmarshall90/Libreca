@@ -61,7 +61,87 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     private var isShowingDatePicker = false
     private let dateCellID = "dateCellID"
     
-    // TODO: Analytics - be sure to include "present_offer     When a user is presented with an offer.     item_id, item_name, item_category" - See https://support.google.com/firebase/answer/6317498?hl=en&ref_topic=6317484
+    /*
+     
+     include "present_offer     When a user is presented with an offer.     item_id, item_name, item_category" - See https://support.google.com/firebase/answer/6317498?hl=en&ref_topic=6317484
+     
+     no thanks action
+     learn more action
+     purchase tap action
+     purchase success action
+     purchase fail action
+     restore action
+     restore success action
+     upgrades tap via settings action
+     upgrades screen view
+     
+     user properties after successful IAP / restore:
+        - premium
+        - book_editor
+     
+     edit book screen view
+     edit book cancel action
+     edit book save action
+     
+     edit book save success action
+     edit book save fail action - with HTTP status code, if there is one
+     
+     edit book take picture with photos access action
+     edit book take picture with photos access denied action
+     edit book select from library action
+     edit book delete cover action
+     edit book deny access to camera action
+     edit book cancel action
+     
+     edit book delete author action
+     edit book add author screen view
+     edit book add author cancel action
+     edit book add author save action
+     edit book add author use section index titles action
+     edit book select author action
+     edit book deselect author action
+     edit book add author alert cancel action
+     edit book add author alert add action
+     
+     edit book set series action
+     edit book delete series action
+     edit book set series add new action
+     edit book set series add new series name cancel action
+     edit book set series add new series name add action
+     edit book set series add new series index cancel action
+     edit book set series add new series index add action
+     edit book set series preselect action
+     edit book set series cancel action
+     
+     edit book delete language action
+     edit book add language screen view
+     edit book add language cancel action
+     edit book add language save action
+     edit book add language use section index titles action
+     edit book select language action
+     edit book deselect language action
+     edit book add language alert cancel action
+     edit book add language alert add action
+     
+     edit book delete identifier action
+     edit book add identifier add new action
+     edit book add identifier add new name cancel action
+     edit book add identifier add new name add action
+     edit book add identifier add new ID cancel action
+     edit book add identifier add new ID add action
+     edit book add identifier cancel action
+     
+     edit book delete tag action
+     edit book add tag screen view
+     edit book add tag cancel action
+     edit book add tag save action
+     edit book add tag use section index titles action
+     edit book select tag action
+     edit book deselect tag action
+     edit book add tag alert cancel action
+     edit book add tag alert add action
+     
+     */
     
     private var presenter: BookEditPresenting
     private var bookViewModel: BookViewModel {
