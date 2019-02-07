@@ -22,6 +22,7 @@
 //
 
 import CalibreKit
+import FirebaseAnalytics
 import UIKit
 
 final class BookEditViewController: UIViewController, BookEditViewing, ErrorMessageShowing, LoadingViewShowing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
@@ -65,35 +66,40 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      
      include "present_offer     When a user is presented with an offer.     item_id, item_name, item_category" - See https://support.google.com/firebase/answer/6317498?hl=en&ref_topic=6317484
      
-     no thanks action
-     learn more action
-     purchase tap action
-     purchase success action
-     purchase fail action
-     purchase disallowed action
-     restore action
-     restore success action
-     restore disallowed action
-     upgrades tap via settings action
+     no thanks action-
+     learn more action-
+     purchase tap action-
+     purchase success action-
+     purchase fail action-
+     purchase disallowed action-
+     restore action-
+     restore success action-
+     restore fail action-
+     restore disallowed action-
+     upgrades tap via settings action-
      upgrades screen view-
      
      user properties after successful IAP / restore:-
         - premium-
         - book_editor-
      
-     edit book screen view
-     edit book cancel action
-     edit book save action
+     edit book screen view-
+     edit book cancel action-
+     edit book save action-
      
-     edit book save success action
-     edit book save fail action - with HTTP status code, if there is one
+     edit book save success action-
+     edit book save fail action - with HTTP status code, if there is one-
      
-     edit book take picture with photos access action
-     edit book take picture with photos access denied action
-     edit book select from library action
-     edit book delete cover action
-     edit book deny access to camera action
-     edit book cancel action
+     edit book take picture with photos access action-
+     edit book take picture with photos access undetermined action-
+     edit book take picture with photos access denied ok action-
+     edit book take picture with photos access denied settings action-
+     edit book take picture with photos access denied settings bad URL action-
+     edit book take pic cancel action-
+     edit book take pic success action-
+     edit book select from library action-
+     edit book delete cover action-
+     edit book take pic cancel action-
      
      edit book delete author action
      edit book add author screen view
@@ -174,6 +180,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIApplication.keyboardWillShowNotification, object: nil)
         
         showBookCover()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("edit_book", screenClass: nil)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -417,6 +428,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func didTapSave() {
+        Analytics.logEvent("save_edit_book_tapped", parameters: nil)
         presenter.save() 
     }
     
@@ -481,6 +493,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func didTapCancel() {
+        Analytics.logEvent("cancel_edit_book_tapped", parameters: nil)
         presenter.cancel()
     }
     

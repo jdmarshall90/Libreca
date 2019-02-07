@@ -181,10 +181,45 @@ final class InAppPurchasesViewController: UITableViewController {
         }
     }
     
+    private func setUserProperty(for productName: InAppPurchase.Product.Name) {
+        switch productName {
+        case .editMetadata:
+            Analytics.setUserProperty("true", forName: "iap_edit_metadata")
+        }
+        
+        Analytics.setUserProperty("true", forName: "iap_premium_user")
+    }
+    
     private func purchaseItem(at indexPath: IndexPath) {
+        let product = products[indexPath.section - 1]
+        switch product.name {
+        case .editMetadata:
+            Analytics.logEvent("iap_purchase_edit_metadata_tapped", parameters: nil)
+        }
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
-        inAppPurchase.purchase(products[indexPath.section - 1]) { [weak self] result in
+        inAppPurchase.purchase(product) { [weak self] result in
+            switch result {
+            case .success(let product):
+                self?.setUserProperty(for: product.name)
+                switch product.name {
+                case .editMetadata:
+                    Analytics.logEvent("iap_purchase_edit_metadata_success", parameters: nil)
+                }
+            case .failure(let error):
+                if let error = error as? InAppPurchase.InAppPurchaseError {
+                    switch error {
+                    case .purchasesDisallowed:
+                        Analytics.logEvent("iap_purchase_disallowed", parameters: nil)
+                    }
+                }
+                
+                switch product.name {
+                case .editMetadata:
+                    Analytics.logEvent("iap_purchase_edit_metadata_fail", parameters: nil)
+                }
+            }
+            
             self?.loadUI()
             purchasingAlertController.dismiss(animated: true) { [weak self] in
                 switch result {
@@ -202,14 +237,31 @@ final class InAppPurchasesViewController: UITableViewController {
     }
     
     private func restore() {
+        Analytics.logEvent("iap_restore_tapped", parameters: nil)
         inAppPurchase.restore { [weak self] result in
             switch result {
             case .success(let products):
+                products.forEach { product in
+                    self?.setUserProperty(for: product.name)
+                    switch product.name {
+                    case .editMetadata:
+                        Analytics.logEvent("iap_restore_edit_metadata_success", parameters: nil)
+                    }
+                }
+                
                 self?.loadUI()
                 let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.count == 1 ? "" : "s").", preferredStyle: .alert)
                 successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(successAlertController, animated: true, completion: nil)
             case .failure(let error):
+                if let error = error as? InAppPurchase.InAppPurchaseError {
+                    switch error {
+                    case .purchasesDisallowed:
+                        Analytics.logEvent("iap_restore_disallowed", parameters: nil)
+                    }
+                }
+                Analytics.logEvent("iap_restore_fail", parameters: nil)
+                
                 let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(failureAlertController, animated: true, completion: nil)

@@ -24,13 +24,12 @@
 import Firebase
 import UIKit
 
-final class AppAnalytics: InAppPurchasePlugin {
+final class AppAnalytics {
     private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(serverConfigDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
-        InAppPurchase.add(plugin: self)
     }
     
     static let shared = AppAnalytics()
@@ -46,15 +45,6 @@ final class AppAnalytics: InAppPurchasePlugin {
             self.fireAccessibilityAnalytics()
             self.setUserProperties()
         }
-    }
-    
-    func didEnable(_ productName: InAppPurchase.Product.Name) {
-        switch productName {
-        case .editMetadata:
-            Analytics.setUserProperty("true", forName: "iap_edit_metadata")
-        }
-        
-        Analytics.setUserProperty("true", forName: "iap_premium_user")
     }
     
     private func fireLocaleAnalytics() {
