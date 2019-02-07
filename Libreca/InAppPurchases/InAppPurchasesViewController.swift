@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import FirebaseAnalytics
 import UIKit
 
 /// A view controller that allows the user to see a list of available
@@ -75,6 +76,11 @@ final class InAppPurchasesViewController: UITableViewController {
         title = "\(appName) Upgrades"
         
         loadUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("iap_upgrades", screenClass: nil)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
