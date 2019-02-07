@@ -24,6 +24,10 @@
 import Foundation
 import StoreKit
 
+protocol InAppPurchasePlugin {
+    func didEnable(_ : InAppPurchase.Product.Name)
+}
+
 final class InAppPurchase {
     struct Product {
         enum Name: String, CaseIterable {
@@ -78,6 +82,15 @@ final class InAppPurchase {
         var errorDescription: String? {
             return rawValue
         }
+    }
+    
+    private static var plugins: [InAppPurchasePlugin] = []
+    
+    // Not sure how I feel about this approach. It feels ... in appropriate in
+    // this context. We'll try it out it prod for a little while, may revisit
+    // at later time.
+    static func add(plugin: InAppPurchasePlugin) {
+        plugins.append(plugin)
     }
     
     typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
@@ -195,10 +208,18 @@ final class InAppPurchase {
             }
             
             if let purchased = purchased {
+                InAppPurchase.plugins.forEach {
+                    $0.didEnable(purchased.name)
+                }
                 purchaseCompletion?(.success(purchased))
             }
             
             if !restored.isEmpty {
+                InAppPurchase.plugins.forEach { plugin in
+                    restored.forEach { restoredProduct in
+                        plugin.didEnable(restoredProduct.name)
+                    }
+                }
                 restoreCompletion?(.success(restored))
             }
         }

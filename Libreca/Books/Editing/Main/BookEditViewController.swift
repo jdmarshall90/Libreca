@@ -75,9 +75,9 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      upgrades tap via settings action
      upgrades screen view
      
-     user properties after successful IAP / restore:
-        - premium
-        - book_editor
+     user properties after successful IAP / restore:-
+        - premium-
+        - book_editor-
      
      edit book screen view
      edit book cancel action
