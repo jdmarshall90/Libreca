@@ -70,8 +70,10 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      purchase tap action
      purchase success action
      purchase fail action
+     purchase disallowed action
      restore action
      restore success action
+     restore disallowed action
      upgrades tap via settings action
      upgrades screen view
      
