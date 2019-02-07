@@ -101,18 +101,18 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      edit book delete cover action-
      edit book take pic cancel action-
      
-     edit book delete author action
-     edit book add author screen view
-     edit book add author cancel action
-     edit book add author save action
-     edit book add author use section index titles action
-     edit book select author action
-     edit book deselect author action
-     edit book add author alert cancel action
-     edit book add author alert add action
+     edit book delete author action-
+     edit book add author screen view-
+     edit book add author cancel action-
+     edit book add author save action-
+     edit book add author use section index titles action-
+     edit book select author action-
+     edit book deselect author action-
+     edit book add author alert cancel action-
+     edit book add author alert add action-
      
      edit book set series action
-     edit book delete series action
+     edit book delete series action-
      edit book set series add new action
      edit book set series add new series name cancel action
      edit book set series add new series name add action
@@ -121,17 +121,17 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      edit book set series preselect action
      edit book set series cancel action
      
-     edit book delete language action
-     edit book add language screen view
-     edit book add language cancel action
-     edit book add language save action
-     edit book add language use section index titles action
-     edit book select language action
-     edit book deselect language action
-     edit book add language alert cancel action
-     edit book add language alert add action
+     edit book delete language action-
+     edit book add language screen view-
+     edit book add language cancel action-
+     edit book add language save action-
+     edit book add language use section index titles action-
+     edit book select language action-
+     edit book deselect language action-
+     edit book add language alert cancel action-
+     edit book add language alert add action-
      
-     edit book delete identifier action
+     edit book delete identifier action-
      edit book add identifier add new action
      edit book add identifier add new name cancel action
      edit book add identifier add new name add action
@@ -139,15 +139,15 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      edit book add identifier add new ID add action
      edit book add identifier cancel action
      
-     edit book delete tag action
-     edit book add tag screen view
-     edit book add tag cancel action
-     edit book add tag save action
-     edit book add tag use section index titles action
-     edit book select tag action
-     edit book deselect tag action
-     edit book add tag alert cancel action
-     edit book add tag alert add action
+     edit book delete tag action-
+     edit book add tag screen view-
+     edit book add tag cancel action-
+     edit book add tag save action-
+     edit book add tag use section index titles action-
+     edit book select tag action-
+     edit book deselect tag action-
+     edit book add tag alert cancel action-
+     edit book add tag alert add action-
      
      */
     
@@ -283,6 +283,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
              (.identifiers, .delete),
              (.series, .delete),
              (.tags, .delete):
+            Analytics.logEvent("edit_book_delete_\(field)", parameters: nil)
             array(for: field) { originalArray in
                 var newArray = originalArray
                 newArray.remove(at: indexPath.row)

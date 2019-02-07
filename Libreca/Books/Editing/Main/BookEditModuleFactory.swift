@@ -65,7 +65,7 @@ struct BookEditModuleFactory {
     
     static func viewControllerForAddingAuthor(to book: Book, currentList: [Book.Author], completion: @escaping ([Book.Author]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allAuthors = allBooks.flatMap { $0.authors }
-        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(currentList: currentList, allItems: allAuthors), usesSections: true, completion: completion)
+        let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(currentList: currentList, allItems: allAuthors), usesSections: true, analyticsIdentifier: "author", completion: completion)
         viewController.title = "Search Authors"
         return viewController
     }
@@ -324,22 +324,22 @@ struct BookEditModuleFactory {
     static func viewControllerForAddingLanguage(to book: Book, currentList: [Book.Language], completion: @escaping ([Book.Language]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allLanguages = allBooks.flatMap { $0.languages }
         // don't use sections for languages because I would never expect there to be enough languages in the list to warrant it
-        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(currentList: currentList, allItems: allLanguages), usesSections: false, completion: completion)
+        let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(currentList: currentList, allItems: allLanguages), usesSections: false, analyticsIdentifier: "language", completion: completion)
         viewController.title = "Search Languages"
         return viewController
     }
     
     static func viewControllerForAddingTag(to book: Book, currentList: [String], completion: @escaping ([String]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allTags = allBooks.flatMap { $0.tags }
-        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(currentList: currentList, allItems: allTags), usesSections: true, completion: completion)
+        let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(currentList: currentList, allItems: allTags), usesSections: true, analyticsIdentifier: "tag", completion: completion)
         viewController.title = "Search Tags"
         return viewController
     }
     
-    private static func viewControllerForAdding<Interacting: BookEditSearchListInteracting, ListItem: BookEditSearchListDisplayable>(using interactor: Interacting, usesSections: Bool, completion: @escaping ([ListItem]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    private static func viewControllerForAdding<Interacting: BookEditSearchListInteracting, ListItem: BookEditSearchListDisplayable>(using interactor: Interacting, usesSections: Bool, analyticsIdentifier: String, completion: @escaping ([ListItem]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let router = BookEditSearchListRouter(onSaveItems: completion)
         let presenter = BookEditSearchListPresenter<Interacting.ListItemType, Interacting, BookEditSearchListRouter>(router: router, interactor: interactor)
-        let searchListVC = BookEditSearchListViewController(presenter: presenter, usesSections: usesSections)
+        let searchListVC = BookEditSearchListViewController(presenter: presenter, usesSections: usesSections, analyticsIdentifier: analyticsIdentifier)
         router.viewController = searchListVC
         presenter.view = searchListVC
         return searchListVC
