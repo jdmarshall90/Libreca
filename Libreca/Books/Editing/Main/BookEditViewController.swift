@@ -72,8 +72,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      
      // TODO: These tags need added and tested
      
-     edit book add author search
-     
      edit book set series action
      edit book set series add new action
      edit book set series add new series name cancel action
@@ -83,16 +81,12 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
      edit book set series preselect action
      edit book set series cancel action
      
-     edit book add language search
-     
      edit book add identifier add new action
      edit book add identifier add new name cancel action
      edit book add identifier add new name add action
      edit book add identifier add new ID cancel action
      edit book add identifier add new ID add action
      edit book add identifier cancel action
-     
-     edit book add tag search
      
      */
     

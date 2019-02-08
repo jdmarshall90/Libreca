@@ -30,7 +30,7 @@ extension BookEditSearchListItem: SectionIndexDisplayable {
     }
 }
 
-final class BookEditSearchListViewController<Presenting: BookEditSearchListPresenting>: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
+final class BookEditSearchListViewController<Presenting: BookEditSearchListPresenting>: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating, UISearchControllerDelegate {
     private let presenter: Presenting
     private let sectionIndexGenerator: TableViewSectionIndexTitleGenerator<BookEditSearchListItem<Presenting.ListItemType>>
     private let analyticsIdentifier: String
@@ -42,6 +42,7 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
             // only way I could find that would change the cancel button color
             searchController.searchBar.subviews.forEach { $0.tintColor = .white }
         }
+        searchController.delegate = self
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.dimsBackgroundDuringPresentation = false
@@ -148,6 +149,10 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_search_started", parameters: nil)
     }
     
     func updateSearchResults(for searchController: UISearchController) {
