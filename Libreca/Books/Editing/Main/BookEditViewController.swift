@@ -70,14 +70,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         - premium-
         - book_editor-
      
-     edit book add identifier add new action-
-     edit book add identifier add new name cancel action-
-     edit book add identifier add new name add action-
-     edit book add identifier add new ID cancel action-
-     edit book add identifier add new ID add action-
-     edit book add identifier preselect action-
-     edit book add identifier cancel action-
-     
      */
     
     private var presenter: BookEditPresenting
