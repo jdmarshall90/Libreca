@@ -21,7 +21,9 @@
 //  This file is part of project: Libreca
 //
 
+import Alamofire
 import CalibreKit
+import FirebaseAnalytics
 import UIKit
 
 protocol BookEditPresenting {
@@ -214,11 +216,23 @@ final class BookEditPresenter: BookEditPresenting {
             // At some point, there will need to be an error handling utility to centralize error message creation.
             switch result {
             case .success(let changedBooks):
+                Analytics.logEvent("edit_book_save_success", parameters: nil)
                 guard let updatedBook = changedBooks.first(where: { $0.id == self?.book.id }) else {
                     return completion()
                 }
                 self?.router.routeForSuccessfulSave(of: updatedBook, andOthers: changedBooks)
             case .failure(let error):
+                var errorCode: String?
+                if let error = error as? AFError,
+                    case .responseValidationFailed(let reason) = error,
+                    case .unacceptableStatusCode(let code) = reason {
+                    // Do not want to use a Firebase event parameter for this
+                    // because those have a low cap. As workaround, just let
+                    // each http code be its own unique event.
+                    errorCode = "_\(code)"
+                }
+                Analytics.logEvent("edit_book_save_fail\(errorCode ?? "")", parameters: nil)
+                
                 // swiftlint:disable:next force_unwrapping
                 let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
                 let message = """

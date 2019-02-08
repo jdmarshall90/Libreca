@@ -23,6 +23,7 @@
 
 import AVKit
 import CalibreKit
+import FirebaseAnalytics
 import UIKit
 
 protocol BookEditRouting {
@@ -124,6 +125,8 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         return searchNav
     }
     
+    // Intent to address this at some point. Tracked via https://gitlab.com/calibre-utils/Libreca/issues/234
+    // swiftlint:disable:next function_body_length
     private func viewControllerForImageEditActions(from sender: UIButton) -> UIViewController {
         let alertController = UIAlertController(title: "Edit image", message: nil, preferredStyle: .actionSheet)
         #if !targetEnvironment(simulator)
@@ -131,6 +134,11 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
             UIAlertAction(title: "Take picture", style: .default) { [weak self] _ in
                 let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
                 if authorizationStatus == .authorized || authorizationStatus == .notDetermined {
+                    if authorizationStatus == .authorized {
+                        Analytics.logEvent("edit_book_take_pic_authorized", parameters: nil)
+                    } else if authorizationStatus == .notDetermined {
+                        Analytics.logEvent("edit_book_take_pic_undetermined", parameters: nil)
+                    }
                     let imagePicker = UIImagePickerController()
                     imagePicker.delegate = self
                     imagePicker.sourceType = .camera
@@ -140,14 +148,18 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
                     let alertController = UIAlertController(title: "Camera access denied", message: "To take a picture of your book, \(appName) needs access to your camera.", preferredStyle: .alert)
                     
                     alertController.addAction(
-                        UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        UIAlertAction(title: "OK", style: .cancel) { _ in
+                            Analytics.logEvent("edit_book_take_pic_denied_cancel", parameters: nil)
+                        }
                     )
                     alertController.addAction(
                         UIAlertAction(title: "Settings", style: .default) { _ in
                             guard let settingsURL = URL(string: UIApplication.openSettingsURLString),
                                 UIApplication.shared.canOpenURL(settingsURL) else {
+                                    Analytics.logEvent("edit_book_take_pic_denied_settings_bad_url", parameters: nil)
                                     return
                             }
+                            Analytics.logEvent("edit_book_take_pic_denied_settings", parameters: nil)
                             UIApplication.shared.open(settingsURL)
                         }
                     )
@@ -158,6 +170,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         #endif
         alertController.addAction(
             UIAlertAction(title: "Select from library", style: .default) { [weak self] _ in
+                Analytics.logEvent("edit_book_select_from_library", parameters: nil)
                 if case .dark = Settings.Theme.current {
                     UITableViewCell.appearance().backgroundColor = UITableViewCell().backgroundColor
                 }
@@ -170,11 +183,16 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         
         alertController.addAction(
             UIAlertAction(title: "Delete cover", style: .destructive) { [weak self] _ in
+                Analytics.logEvent("edit_book_image_delete", parameters: nil)
                 self?.viewController?.update(image: nil)
             }
         )
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(
+            UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                Analytics.logEvent("edit_book_image_edit_cancel", parameters: nil)
+            }
+        )
         
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceRect = sender.bounds
@@ -186,6 +204,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        Analytics.logEvent("edit_book_pic_success", parameters: nil)
         Settings.Theme.current.stylizeApp()
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
         viewController?.update(image: selectedImage)
@@ -193,6 +212,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        Analytics.logEvent("edit_book_pic_cancel", parameters: nil)
         Settings.Theme.current.stylizeApp()
         picker.dismiss(animated: true)
     }

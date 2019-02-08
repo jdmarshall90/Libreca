@@ -30,7 +30,7 @@ protocol BookEditSearchListPresenting {
     
     func search(for string: String?, completion: @escaping () -> Void)
     func select(_ item: BookEditSearchListItem<ListItemType>)
-    func didTapAdd(completion: @escaping () -> Void)
+    func didTapAdd(completion: @escaping (_ success: Bool) -> Void)
     func didTapSave()
     func didTapCancel()
 }
@@ -64,7 +64,7 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
         interactor.select(item as! BookEditSearchListItem<Interacting.ListItemType>)
     }
     
-    func didTapAdd(completion: @escaping () -> Void) {
+    func didTapAdd(completion: @escaping (_ success: Bool) -> Void) {
         router.routeForAdd { [weak self] newItem in
             if let newItem = newItem {
                 let newSearchListItem = BookEditSearchListItem(item: newItem, isSelected: true)
@@ -74,7 +74,7 @@ final class BookEditSearchListPresenter<ListItem: BookEditSearchListDisplayable,
                 self?.items = self?.interactor.items as! [BookEditSearchListItem<ListItem>]
                 // swiftlint:enable force_cast
             }
-            completion()
+            completion(newItem != nil)
         }
     }
     

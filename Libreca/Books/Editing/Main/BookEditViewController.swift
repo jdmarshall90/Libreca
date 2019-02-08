@@ -22,6 +22,7 @@
 //
 
 import CalibreKit
+import FirebaseAnalytics
 import UIKit
 
 final class BookEditViewController: UIViewController, BookEditViewing, ErrorMessageShowing, LoadingViewShowing, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
@@ -61,8 +62,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     private var isShowingDatePicker = false
     private let dateCellID = "dateCellID"
     
-    // TODO: Analytics - be sure to include "present_offer     When a user is presented with an offer.     item_id, item_name, item_category" - See https://support.google.com/firebase/answer/6317498?hl=en&ref_topic=6317484
-    
     private var presenter: BookEditPresenting
     private var bookViewModel: BookViewModel {
         return presenter.bookViewModel
@@ -92,6 +91,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIApplication.keyboardWillShowNotification, object: nil)
         
         showBookCover()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("edit_book", screenClass: nil)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -174,6 +178,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             presenter.didTapAddLanguages()
             
         case (.identifiers, .insert):
+            Analytics.logEvent("edit_book_\(field)_add_new_tapped", parameters: nil)
             identifiersIndexPath = indexPath
             presenter.didTapAddIdentifiers()
             
@@ -182,6 +187,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             presenter.didTapAddTags()
             
         case (.series, .insert):
+            Analytics.logEvent("edit_book_\(field)_add_new_tapped", parameters: nil)
             seriesIndexPath = indexPath
             presenter.didTapAddSeries()
             
@@ -190,6 +196,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
              (.identifiers, .delete),
              (.series, .delete),
              (.tags, .delete):
+            Analytics.logEvent("edit_book_delete_\(field)", parameters: nil)
             array(for: field) { originalArray in
                 var newArray = originalArray
                 newArray.remove(at: indexPath.row)
@@ -335,6 +342,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func didTapSave() {
+        Analytics.logEvent("save_edit_book_tapped", parameters: nil)
         presenter.save() 
     }
     
@@ -399,6 +407,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func didTapCancel() {
+        Analytics.logEvent("cancel_edit_book_tapped", parameters: nil)
         presenter.cancel()
     }
     

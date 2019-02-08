@@ -30,9 +30,10 @@ extension BookEditSearchListItem: SectionIndexDisplayable {
     }
 }
 
-final class BookEditSearchListViewController<Presenting: BookEditSearchListPresenting>: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating {
+final class BookEditSearchListViewController<Presenting: BookEditSearchListPresenting>: UITableViewController, BookEditSearchListViewing, UISearchResultsUpdating, UISearchControllerDelegate {
     private let presenter: Presenting
     private let sectionIndexGenerator: TableViewSectionIndexTitleGenerator<BookEditSearchListItem<Presenting.ListItemType>>
+    private let analyticsIdentifier: String
     
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -41,6 +42,7 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
             // only way I could find that would change the cancel button color
             searchController.searchBar.subviews.forEach { $0.tintColor = .white }
         }
+        searchController.delegate = self
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.dimsBackgroundDuringPresentation = false
@@ -49,9 +51,10 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         return searchController
     }()
     
-    init(presenter: Presenting, usesSections: Bool) {
+    init(presenter: Presenting, usesSections: Bool, analyticsIdentifier: String) {
         self.presenter = presenter
         self.sectionIndexGenerator = TableViewSectionIndexTitleGenerator(sectionIndexDisplayables: presenter.items, isSectioningEnabled: usesSections)
+        self.analyticsIdentifier = analyticsIdentifier
         super.init(style: .grouped)
     }
     
@@ -74,19 +77,31 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         definesPresentationContext = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("edit_search_edit_\(analyticsIdentifier)", screenClass: nil)
+    }
+    
     func didTapAdd() {
-        presenter.didTapAdd { [weak self] in
+        presenter.didTapAdd { [weak self] success in
             guard let strongSelf = self else { return }
             strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.items)
             strongSelf.tableView?.reloadData()
+            if success {
+                Analytics.logEvent("edit_search_edit_\(strongSelf.analyticsIdentifier)_add_save", parameters: nil)
+            } else {
+                Analytics.logEvent("edit_search_edit_\(strongSelf.analyticsIdentifier)_add_cancel", parameters: nil)
+            }
         }
     }
     
     func didTapSave() {
+        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_save", parameters: nil)
         presenter.didTapSave()
     }
     
     func didTapCancel() {
+        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_cancel", parameters: nil)
         presenter.didTapCancel()
     }
     
@@ -111,7 +126,13 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        presenter.select(sectionIndexGenerator.sections[indexPath.section].values[indexPath.row])
+        let value = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
+        presenter.select(value)
+        if value.isSelected {
+            Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_select", parameters: nil)
+        } else {
+            Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_deselect", parameters: nil)
+        }
         sectionIndexGenerator.reset(with: presenter.items)
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
         setAccessoryType(on: selectedCell, at: indexPath)
@@ -122,12 +143,16 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        Analytics.logEvent("edit_search_section_index_title_tapped", parameters: nil)
+        Analytics.logEvent("edit_\(analyticsIdentifier)_section_index_title_tapped", parameters: nil)
         return index
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_search_started", parameters: nil)
     }
     
     func updateSearchResults(for searchController: UISearchController) {
