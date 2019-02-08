@@ -64,6 +64,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     
     /*
      
+     in app purchase event should be collected automatically, but verify this
+     
      include "present_offer     When a user is presented with an offer.     item_id, item_name, item_category" - See https://support.google.com/firebase/answer/6317498?hl=en&ref_topic=6317484
      
      no thanks action-
