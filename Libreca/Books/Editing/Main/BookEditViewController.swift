@@ -62,16 +62,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     private var isShowingDatePicker = false
     private let dateCellID = "dateCellID"
     
-    /*
-     
-     in app purchase event should be collected automatically, but verify this
-     
-     user properties after successful IAP / restore:- // TODO: NOT WORKING, IS THE "TRUE" STRING MAKING IT NOT WORK? COME BACK TO THIS ONE
-        - premium-
-        - book_editor-
-     
-     */
-    
     private var presenter: BookEditPresenting
     private var bookViewModel: BookViewModel {
         return presenter.bookViewModel

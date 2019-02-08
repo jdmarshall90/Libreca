@@ -184,10 +184,10 @@ final class InAppPurchasesViewController: UITableViewController {
     private func setUserProperty(for productName: InAppPurchase.Product.Name) {
         switch productName {
         case .editMetadata:
-            Analytics.setUserProperty("true", forName: "iap_edit_metadata")
+            Analytics.setUserProperty("premium", forName: "iap_edit_metadata")
         }
         
-        Analytics.setUserProperty("true", forName: "iap_premium_user")
+        Analytics.setUserProperty("premium", forName: "iap_premium_user")
     }
     
     private func purchaseItem(at indexPath: IndexPath) {
