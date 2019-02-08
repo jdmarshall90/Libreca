@@ -70,14 +70,6 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         - premium-
         - book_editor-
      
-     edit book set series add new action-
-     edit book set series add new series name cancel action-
-     edit book set series add new series name add action-
-     edit book set series add new series index cancel action-
-     edit book set series add new series index add action-
-     edit book set series preselect action-
-     edit book set series cancel action-
-     
      edit book add identifier add new action-
      edit book add identifier add new name cancel action-
      edit book add identifier add new name add action-
