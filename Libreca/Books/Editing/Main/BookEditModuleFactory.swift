@@ -66,7 +66,7 @@ struct BookEditModuleFactory {
     static func viewControllerForAddingAuthor(to book: Book, currentList: [Book.Author], completion: @escaping ([Book.Author]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allAuthors = allBooks.flatMap { $0.authors }
         let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(currentList: currentList, allItems: allAuthors), usesSections: true, analyticsIdentifier: "author", completion: completion)
-        viewController.title = "Search Authors"
+        viewController.title = "Edit Authors"
         return viewController
     }
     
@@ -325,14 +325,14 @@ struct BookEditModuleFactory {
         let allLanguages = allBooks.flatMap { $0.languages }
         // don't use sections for languages because I would never expect there to be enough languages in the list to warrant it
         let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(currentList: currentList, allItems: allLanguages), usesSections: false, analyticsIdentifier: "language", completion: completion)
-        viewController.title = "Search Languages"
+        viewController.title = "Edit Languages"
         return viewController
     }
     
     static func viewControllerForAddingTag(to book: Book, currentList: [String], completion: @escaping ([String]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allTags = allBooks.flatMap { $0.tags }
         let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(currentList: currentList, allItems: allTags), usesSections: true, analyticsIdentifier: "tag", completion: completion)
-        viewController.title = "Search Tags"
+        viewController.title = "Edit Tags"
         return viewController
     }
     
