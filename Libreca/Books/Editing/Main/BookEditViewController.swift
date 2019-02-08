@@ -70,23 +70,21 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         - premium-
         - book_editor-
      
-     // TODO: These tags need added and tested
+     edit book set series add new action-
+     edit book set series add new series name cancel action-
+     edit book set series add new series name add action-
+     edit book set series add new series index cancel action-
+     edit book set series add new series index add action-
+     edit book set series preselect action-
+     edit book set series cancel action-
      
-     edit book set series action
-     edit book set series add new action
-     edit book set series add new series name cancel action
-     edit book set series add new series name add action
-     edit book set series add new series index cancel action
-     edit book set series add new series index add action
-     edit book set series preselect action
-     edit book set series cancel action
-     
-     edit book add identifier add new action
-     edit book add identifier add new name cancel action
-     edit book add identifier add new name add action
-     edit book add identifier add new ID cancel action
-     edit book add identifier add new ID add action
-     edit book add identifier cancel action
+     edit book add identifier add new action-
+     edit book add identifier add new name cancel action-
+     edit book add identifier add new name add action-
+     edit book add identifier add new ID cancel action-
+     edit book add identifier add new ID add action-
+     edit book add identifier preselect action-
+     edit book add identifier cancel action-
      
      */
     
@@ -206,6 +204,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             presenter.didTapAddLanguages()
             
         case (.identifiers, .insert):
+            Analytics.logEvent("edit_book_\(field)_add_new_tapped", parameters: nil)
             identifiersIndexPath = indexPath
             presenter.didTapAddIdentifiers()
             
@@ -214,6 +213,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             presenter.didTapAddTags()
             
         case (.series, .insert):
+            Analytics.logEvent("edit_book_\(field)_add_new_tapped", parameters: nil)
             seriesIndexPath = indexPath
             presenter.didTapAddSeries()
             
