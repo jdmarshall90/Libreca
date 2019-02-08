@@ -222,14 +222,16 @@ final class BookEditPresenter: BookEditPresenting {
                 }
                 self?.router.routeForSuccessfulSave(of: updatedBook, andOthers: changedBooks)
             case .failure(let error):
-                // swiftlint:disable:next discouraged_optional_collection
-                var parameters: [String: Any]?
+                var errorCode: String?
                 if let error = error as? AFError,
                     case .responseValidationFailed(let reason) = error,
                     case .unacceptableStatusCode(let code) = reason {
-                    parameters = ["http_error_code": "\(code)"]
+                    // Do not want to use a Firebase event parameter for this
+                    // because those have a low cap. As workaround, just let
+                    // each http code be its own unique event.
+                    errorCode = "_\(code)"
                 }
-                Analytics.logEvent("edit_book_save_fail", parameters: parameters)
+                Analytics.logEvent("edit_book_save_fail\(errorCode ?? "")", parameters: nil)
                 
                 // swiftlint:disable:next force_unwrapping
                 let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name

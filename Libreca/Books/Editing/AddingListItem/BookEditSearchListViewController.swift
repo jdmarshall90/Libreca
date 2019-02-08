@@ -142,7 +142,7 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        Analytics.logEvent("edit_search_section_index_title_tapped", parameters: nil)
+        Analytics.logEvent("edit_\(analyticsIdentifier)_section_index_title_tapped", parameters: nil)
         return index
     }
     

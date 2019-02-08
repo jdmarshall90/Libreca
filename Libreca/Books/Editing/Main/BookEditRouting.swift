@@ -204,7 +204,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        Analytics.logEvent("edit_book_picker_success", parameters: nil)
+        Analytics.logEvent("edit_book_pic_success", parameters: nil)
         Settings.Theme.current.stylizeApp()
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
         viewController?.update(image: selectedImage)
@@ -212,7 +212,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        Analytics.logEvent("edit_book_picker_cancel", parameters: nil)
+        Analytics.logEvent("edit_book_pic_cancel", parameters: nil)
         Settings.Theme.current.stylizeApp()
         picker.dismiss(animated: true)
     }
