@@ -38,17 +38,35 @@ final class AppLaunchRouter: AppLaunchRouting, UISplitViewControllerDelegate {
     // MARK: - AppLaunchRouting
     
     func route() {
-        setupInitialViewControllers()
+        configureInitialViewControllers()
         configureSplitViewController()
     }
     
-    private func setupInitialViewControllers() {
-        let initialVC = UIStoryboard(name: "Books", bundle: nil).instantiateInitialViewController()
-        window.rootViewController = initialVC
+    private func configureInitialViewControllers() {
+        let tabBarController = UITabBarController()
+        
+        // swiftlint:disable:next force_unwrapping
+        let booksVC = UIStoryboard(name: "Books", bundle: nil).instantiateInitialViewController()!
+        // TODO: Tab images
+        booksVC.tabBarItem = UITabBarItem(title: "Library", image: nil, selectedImage: nil)
+        
+        // TODO: Create the correct VC using VIPER pattern
+        let downloadsVC = UIViewController()
+        // TODO: Tab images
+        downloadsVC.tabBarItem = UITabBarItem(title: "Downloads", image: nil, selectedImage: nil)
+        
+        // swiftlint:disable:next force_unwrapping
+        let settingsVC = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()!
+        settingsVC.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 2)
+        
+        tabBarController.viewControllers = [booksVC, downloadsVC, settingsVC]
+        
+        window.rootViewController = tabBarController
     }
     
     private func configureSplitViewController() {
-        guard let splitViewController = window.rootViewController as? UISplitViewController,
+        guard let tabBarViewController = window.rootViewController as? UITabBarController,
+            let splitViewController = tabBarViewController.viewControllers?.first as? UISplitViewController,
             let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count - 1] as? UINavigationController else {
                 return
         }

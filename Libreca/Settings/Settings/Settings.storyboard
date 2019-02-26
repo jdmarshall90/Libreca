@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings-->
+        <!--More-->
         <scene sceneID="31f-p6-kgv">
             <objects>
                 <tableViewController id="pga-vG-gsS" customClass="SettingsTableViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
@@ -165,13 +165,7 @@
                             <outlet property="delegate" destination="pga-vG-gsS" id="iIl-HP-GeX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Settings" id="Wno-YS-AUT">
-                        <barButtonItem key="rightBarButtonItem" title="Close" style="done" id="sg6-SQ-gzq">
-                            <connections>
-                                <action selector="closeTapped:" destination="pga-vG-gsS" id="nhA-6e-a7p"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="More" id="Wno-YS-AUT"/>
                     <connections>
                         <segue destination="EAu-Au-OdW" kind="show" identifier="contentServerSegue" id="jmZ-Iu-1H7"/>
                         <segue destination="OcN-pJ-1Ht" kind="show" identifier="licensesSegue" id="Jom-SF-HEm"/>
