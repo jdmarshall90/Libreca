@@ -14,6 +14,7 @@
 		D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA072207893100B200A2 /* InAppPurchasesViewController.swift */; };
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
+		D01574C52224DACA008CC645 /* AppLaunchRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01574C42224DACA008CC645 /* AppLaunchRouting.swift */; };
 		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
 		D016508121F51DE700C2326D /* TitleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D016507F21F51DE700C2326D /* TitleTableViewCell.xib */; };
 		D016508621F51E3F00C2326D /* TitleSortTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */; };
@@ -141,6 +142,7 @@
 		D003EA072207893100B200A2 /* InAppPurchasesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchasesViewController.swift; sourceTree = "<group>"; };
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
+		D01574C42224DACA008CC645 /* AppLaunchRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchRouting.swift; sourceTree = "<group>"; };
 		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		D016507F21F51DE700C2326D /* TitleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleTableViewCell.xib; sourceTree = "<group>"; };
 		D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSortTableViewCell.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 			children = (
 				D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */,
 				D04871A0216AF31D0085D22C /* AppDelegate.swift */,
+				D01574C42224DACA008CC645 /* AppLaunchRouting.swift */,
 			);
 			path = Startup;
 			sourceTree = "<group>";
@@ -755,6 +758,7 @@
 				D07EC1FC21EA87EA00AE193B /* BookDetailsPresenting.swift in Sources */,
 				D07EC20821EA883400AE193B /* BookEditInteracting.swift in Sources */,
 				D003EA052206913900B200A2 /* InAppPurchase.swift in Sources */,
+				D01574C52224DACA008CC645 /* AppLaunchRouting.swift in Sources */,
 				D0B5214C21F16EC6007FB264 /* UITableViewCell+Extensions.swift in Sources */,
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
