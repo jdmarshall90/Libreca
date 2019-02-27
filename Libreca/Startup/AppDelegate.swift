@@ -26,7 +26,7 @@ import Firebase
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     // swiftlint:disable:next discouraged_optional_collection
@@ -41,12 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             AppAnalytics.shared.appStarted()
         #endif
         
-        if let splitViewController = window?.rootViewController as? UISplitViewController,
-            let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count - 1] as? UINavigationController {
-            navigationController.topViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
-            splitViewController.delegate = self
-            splitViewController.preferredDisplayMode = .allVisible
-        }
+        let theWindow = UIWindow(frame: UIScreen.main.bounds)
+        let router: AppLaunchRouting = AppLaunchRouter(window: theWindow)
+        router.route()
+        
+        theWindow.makeKeyAndVisible()
+        window = theWindow
+        
         applyTheme()
         Settings.AppLaunched.appDidLaunch()
         return true
@@ -81,11 +82,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-    
-    // MARK: - Split view
-    
-    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        return true
     }
 }

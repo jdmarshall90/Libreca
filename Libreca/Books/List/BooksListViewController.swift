@@ -170,6 +170,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         guard let segue = Segue(rawValue: identifier) else { return true }
         switch segue {
         case .settings:
+            // TODO: Come back to this
             let isRefreshing = self.isRefreshing
             
             if isRefreshing {
