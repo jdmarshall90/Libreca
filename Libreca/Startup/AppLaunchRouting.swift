@@ -50,8 +50,10 @@ final class AppLaunchRouter: AppLaunchRouting, UISplitViewControllerDelegate {
         // TODO: Tab images
         booksVC.tabBarItem = UITabBarItem(title: "Library", image: nil, selectedImage: nil)
         
-        // TODO: Create the correct VC using VIPER pattern
-        let downloadsVC = UIViewController()
+        let downloadsVC = DownloadsTableViewController(viewModel: DownloadsViewModel())
+        let downloadsNav = UINavigationController(rootViewController: downloadsVC)
+        downloadsNav.navigationBar.isTranslucent = false
+        downloadsNav.navigationBar.prefersLargeTitles = true
         // TODO: Tab images
         downloadsVC.tabBarItem = UITabBarItem(title: "Downloads", image: nil, selectedImage: nil)
         
@@ -59,7 +61,7 @@ final class AppLaunchRouter: AppLaunchRouting, UISplitViewControllerDelegate {
         let settingsVC = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()!
         settingsVC.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 2)
         
-        tabBarController.viewControllers = [booksVC, downloadsVC, settingsVC]
+        tabBarController.viewControllers = [booksVC, downloadsNav, settingsVC]
         
         window.rootViewController = tabBarController
     }

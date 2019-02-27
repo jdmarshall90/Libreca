@@ -26,14 +26,17 @@ import UIKit
 
 protocol BookDetailsPresenting {
     func edit(_ book: Book)
+    func download(_ book: Book)
 }
 
 struct BookDetailsPresenter: BookDetailsPresenting {
-    private weak var view: (BookDetailsViewing & UIViewController)?
+    typealias View = (BookDetailsViewing & ErrorMessageShowing & LoadingViewShowing & UIViewController)
+    
+    private weak var view: View?
     private let router: BookDetailsRouting
     private let interactor: BookDetailsInteracting
     
-    init(view: BookDetailsViewing & UIViewController) {
+    init(view: View) {
         self.view = view
         self.router = BookDetailsRouter(viewController: view)
         self.interactor = BookDetailsInteractor()
@@ -62,5 +65,12 @@ struct BookDetailsPresenter: BookDetailsPresenting {
                 }
             }
         }
+    }
+    
+    func download(_ book: Book) {
+        // show loader view
+        // call service
+        // save to disk using DownloadsDataManager
+        // hide loader view
     }
 }

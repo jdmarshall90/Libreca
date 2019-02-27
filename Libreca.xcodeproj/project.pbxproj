@@ -15,6 +15,11 @@
 		D00772D42180131E0066ED9D /* Licenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00772D32180131E0066ED9D /* Licenses.plist */; };
 		D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */; };
 		D01574C52224DACA008CC645 /* AppLaunchRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01574C42224DACA008CC645 /* AppLaunchRouting.swift */; };
+		D01574C922262B52008CC645 /* DownloadsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01574C722262B52008CC645 /* DownloadsTableViewController.swift */; };
+		D01574CA22262B52008CC645 /* DownloadsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D01574C822262B52008CC645 /* DownloadsTableViewController.xib */; };
+		D01574D222262BD6008CC645 /* DownloadsDataManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01574D122262BD6008CC645 /* DownloadsDataManaging.swift */; };
+		D01574D422262C4C008CC645 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01574D322262C4C008CC645 /* Download.swift */; };
+		D01574DA22263402008CC645 /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01574D922263402008CC645 /* DownloadsViewModel.swift */; };
 		D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016507E21F51DE700C2326D /* TitleTableViewCell.swift */; };
 		D016508121F51DE700C2326D /* TitleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D016507F21F51DE700C2326D /* TitleTableViewCell.xib */; };
 		D016508621F51E3F00C2326D /* TitleSortTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */; };
@@ -143,6 +148,11 @@
 		D00772D32180131E0066ED9D /* Licenses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
 		D008D86D2176C63E00E5C0DA /* SortSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSettingTableViewCell.swift; sourceTree = "<group>"; };
 		D01574C42224DACA008CC645 /* AppLaunchRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchRouting.swift; sourceTree = "<group>"; };
+		D01574C722262B52008CC645 /* DownloadsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTableViewController.swift; sourceTree = "<group>"; };
+		D01574C822262B52008CC645 /* DownloadsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DownloadsTableViewController.xib; sourceTree = "<group>"; };
+		D01574D122262BD6008CC645 /* DownloadsDataManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsDataManaging.swift; sourceTree = "<group>"; };
+		D01574D322262C4C008CC645 /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
+		D01574D922263402008CC645 /* DownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewModel.swift; sourceTree = "<group>"; };
 		D016507E21F51DE700C2326D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		D016507F21F51DE700C2326D /* TitleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleTableViewCell.xib; sourceTree = "<group>"; };
 		D016508421F51E3F00C2326D /* TitleSortTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSortTableViewCell.swift; sourceTree = "<group>"; };
@@ -278,6 +288,18 @@
 			path = InAppPurchases;
 			sourceTree = "<group>";
 		};
+		D01574C622262B2B008CC645 /* Downloads */ = {
+			isa = PBXGroup;
+			children = (
+				D01574C722262B52008CC645 /* DownloadsTableViewController.swift */,
+				D01574C822262B52008CC645 /* DownloadsTableViewController.xib */,
+				D01574D922263402008CC645 /* DownloadsViewModel.swift */,
+				D01574D122262BD6008CC645 /* DownloadsDataManaging.swift */,
+				D01574D322262C4C008CC645 /* Download.swift */,
+			);
+			path = Downloads;
+			sourceTree = "<group>";
+		};
 		D0195B7F2172EE94006EA713 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,6 +394,7 @@
 				D02F75DD217036E10040EDE5 /* Startup */,
 				D042EEDE21E568380046D00F /* Common */,
 				D02F75DC217036D90040EDE5 /* Books */,
+				D01574C622262B2B008CC645 /* Downloads */,
 				D003EA062207887300B200A2 /* InAppPurchases */,
 				D0195B7F2172EE94006EA713 /* Settings */,
 				D02F75DE217036F20040EDE5 /* Supporting Files */,
@@ -641,6 +664,7 @@
 				D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */,
 				D07EC21221EBE67700AE193B /* RatingTableViewCell.xib in Resources */,
 				D04871A8216AF31D0085D22C /* Books.storyboard in Resources */,
+				D01574CA22262B52008CC645 /* DownloadsTableViewController.xib in Resources */,
 				D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */,
 				D0B5215021F17727007FB264 /* CommentsTableViewCell.xib in Resources */,
 				D0195B8721730953006EA713 /* Settings.storyboard in Resources */,
@@ -749,6 +773,7 @@
 				D07EC20E21EAECA100AE193B /* BookEditModuleFactory.swift in Sources */,
 				D0B5214121EEDBEC007FB264 /* BookEditSearchListViewController.swift in Sources */,
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
+				D01574C922262B52008CC645 /* DownloadsTableViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
@@ -761,6 +786,7 @@
 				D01574C52224DACA008CC645 /* AppLaunchRouting.swift in Sources */,
 				D0B5214C21F16EC6007FB264 /* UITableViewCell+Extensions.swift in Sources */,
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
+				D01574D222262BD6008CC645 /* DownloadsDataManaging.swift in Sources */,
 				D0518E88217AAE840087A000 /* BookDetailsViewModel.swift in Sources */,
 				D07EC1F821EA815800AE193B /* BookEditViewController.swift in Sources */,
 				D07EC21921ED51BF00AE193B /* PickerTableViewCell.swift in Sources */,
@@ -784,6 +810,7 @@
 				D042EEE021E5684F0046D00F /* Formatters.swift in Sources */,
 				D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */,
 				D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */,
+				D01574DA22263402008CC645 /* DownloadsViewModel.swift in Sources */,
 				D07EC20021EA880100AE193B /* BookDetailsViewing.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
@@ -795,6 +822,7 @@
 				D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */,
 				D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
+				D01574D422262C4C008CC645 /* Download.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,
 				D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */,
 				D07EC1FE21EA87F500AE193B /* BookDetailsInteracting.swift in Sources */,

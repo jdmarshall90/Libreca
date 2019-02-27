@@ -25,7 +25,13 @@ import CalibreKit
 import FirebaseAnalytics
 import UIKit
 
-class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing {
+class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
+    var spinnerView: UIView?
+    
+    // TODO: Make the book title a separate label, above the book image (take it out of the nav bar). This will free up space for the edit and delete buttons
+    // TODO: Need download button item with image
+    // TODO: Need remove download button with image
+    
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
