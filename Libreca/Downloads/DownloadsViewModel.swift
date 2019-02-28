@@ -25,4 +25,5 @@ import Foundation
 
 struct DownloadsViewModel {
     // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
+    // TODO: Listen for Download.downloadsUpdatedNotification and tell VC to reload when posted
 }
