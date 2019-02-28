@@ -1,8 +1,8 @@
 //
-//  Download.swift
+//  BookDetailsDataManager.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 2/26/19.
+//  Created by Justin Marshall on 2/27/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,13 +21,14 @@
 //  This file is part of project: Libreca
 //
 
-import CalibreKit
 import Foundation
 
-struct Download {
-    static let downloadsUpdatedNotification = Notification.Name(rawValue: "downloads_did_update_notification")
-    
-    // TODO: This will need refactored to work with the ebook download endpoint response data
-    let book: Book
-    let data: Data
+protocol BookDetailsDataManaging {
+    func save(_ download: Download)
+}
+
+struct BookDetailsDataManager: BookDetailsDataManaging {
+    func save(_ download: Download) {
+        DownloadsDataManager().save(download)
+    }
 }

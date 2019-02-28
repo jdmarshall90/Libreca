@@ -39,7 +39,7 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     init(view: View) {
         self.view = view
         self.router = BookDetailsRouter(viewController: view)
-        self.interactor = BookDetailsInteractor()
+        self.interactor = BookDetailsInteractor(service: BookDetailsService(), dataManager: BookDetailsDataManager())
     }
     
     func edit(_ book: Book) {
@@ -68,9 +68,11 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     }
     
     func download(_ book: Book) {
-        // show loader view
-        // call service
-        // save to disk using DownloadsDataManager
-        // hide loader view
+        view?.showLoader()
+        
+        interactor.download(book) { result in
+            // TODO: Error handling
+            self.view?.removeLoader()
+        }
     }
 }

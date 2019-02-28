@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import UIKit
 
 enum EditAvailability {
@@ -31,9 +32,14 @@ enum EditAvailability {
 
 protocol BookDetailsInteracting {
     var editAvailability: EditAvailability { get }
+    
+    func download(_ book: Book, completion: @escaping (Result<Data>) -> Void)
 }
 
 struct BookDetailsInteractor: BookDetailsInteracting {
+    let service: BookDetailsServicing
+    let dataManager: BookDetailsDataManaging
+    
     var editAvailability: EditAvailability {
         if isFetchingbooks {
             return .stillFetching
@@ -65,5 +71,16 @@ struct BookDetailsInteractor: BookDetailsInteracting {
     private var hasPurchasedEditing: Bool {
         let editPurchase = InAppPurchase.Product.Name.editMetadata
         return editPurchase.isPurchased
+    }
+    
+    func download(_ book: Book, completion: @escaping (Result<Data>) -> Void) {
+        service.download { result in
+            if case .success(let data) = result {
+                let download = Download(book: book, data: data)
+                self.dataManager.save(download)
+                NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
+            }
+            completion(result)
+        }
     }
 }

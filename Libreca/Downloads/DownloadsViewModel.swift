@@ -24,5 +24,5 @@
 import Foundation
 
 struct DownloadsViewModel {
-    //
+    // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
 }

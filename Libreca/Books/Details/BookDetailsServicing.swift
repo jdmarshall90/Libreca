@@ -1,8 +1,8 @@
 //
-//  Download.swift
+//  BookDetailsServicing.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 2/26/19.
+//  Created by Justin Marshall on 2/27/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,13 +21,17 @@
 //  This file is part of project: Libreca
 //
 
-import CalibreKit
 import Foundation
 
-struct Download {
-    static let downloadsUpdatedNotification = Notification.Name(rawValue: "downloads_did_update_notification")
-    
-    // TODO: This will need refactored to work with the ebook download endpoint response data
-    let book: Book
-    let data: Data
+protocol BookDetailsServicing {
+    func download(completion: @escaping (Result<Data>) -> Void)
+}
+
+struct BookDetailsService: BookDetailsServicing {
+    func download(completion: @escaping (Result<Data>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            // TODO: Implement me - use the "main_format" url
+            completion(.success(Data()))
+        }
+    }
 }
