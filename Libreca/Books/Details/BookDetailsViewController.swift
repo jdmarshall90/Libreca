@@ -29,9 +29,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     var spinnerView: UIView?
     
     // TODO: Need download button image - light mode
-    // TODO: Need remove download image - light mode
     // TODO: Need download button image - dark mode
-    // TODO: Need remove download image - dark mode
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
