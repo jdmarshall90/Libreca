@@ -96,7 +96,7 @@
                                     <action selector="didTapEdit:" destination="JEX-9P-axG" id="A3z-1V-BZ2"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="done" systemItem="bookmarks" id="mPb-Vp-AaE">
+                            <barButtonItem image="DownloadButton" style="done" id="mPb-Vp-AaE">
                                 <connections>
                                     <action selector="didTapDownload:" destination="JEX-9P-axG" id="4bG-JU-Atp"/>
                                 </connections>
@@ -106,6 +106,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="q8t-3n-116" id="skr-ed-IAh"/>
                         <outlet property="coverImageView" destination="cu7-fi-U6M" id="zbt-6h-tPl"/>
+                        <outlet property="downloadButton" destination="mPb-Vp-AaE" id="wwI-ru-QOA"/>
                         <outlet property="editButton" destination="KWz-YW-ncP" id="LK2-Dg-7FU"/>
                         <outlet property="tableView" destination="kFn-Mr-COp" id="L0d-8L-bMY"/>
                     </connections>
@@ -136,7 +137,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="756"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" placeholder="Search" showsCancelButton="YES" id="ruH-5X-M8f">
+                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search" showsCancelButton="YES" id="ruH-5X-M8f">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -320,6 +321,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="DownloadButton" width="75" height="75"/>
         <image name="Sort" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
