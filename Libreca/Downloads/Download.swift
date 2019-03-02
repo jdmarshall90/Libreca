@@ -21,8 +21,13 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import Foundation
 
 struct Download {
+    static let downloadsUpdatedNotification = Notification.Name(rawValue: "downloads_did_update_notification")
+    
+    // TODO: This will need refactored to work with the ebook download endpoint response data
+    let book: Book
     let data: Data
 }

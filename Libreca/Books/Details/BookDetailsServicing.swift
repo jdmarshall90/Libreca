@@ -1,8 +1,8 @@
 //
-//  DownloadsViewModel.swift
+//  BookDetailsServicing.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 2/26/19.
+//  Created by Justin Marshall on 2/27/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,15 @@
 
 import Foundation
 
-struct DownloadsViewModel {
-    // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
-    // TODO: Listen for Download.downloadsUpdatedNotification and tell VC to reload when posted
+protocol BookDetailsServicing {
+    func download(completion: @escaping (Result<Data>) -> Void)
+}
+
+struct BookDetailsService: BookDetailsServicing {
+    func download(completion: @escaping (Result<Data>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            // TODO: Implement me - use the "main_format" url
+            completion(.success(Data()))
+        }
+    }
 }

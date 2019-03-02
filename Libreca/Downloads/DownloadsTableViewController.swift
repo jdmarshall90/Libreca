@@ -27,7 +27,6 @@ class DownloadsTableViewController: UITableViewController {
     private let viewModel: DownloadsViewModel
     
     // TODO: Empty state
-    // TODO: Badge the tab bar with book count, then remove after navigating to this screen
     
     init(viewModel: DownloadsViewModel) {
         self.viewModel = viewModel
@@ -37,5 +36,11 @@ class DownloadsTableViewController: UITableViewController {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // TODO: Just a POC, take this out
+        print("\(DownloadsDataManager().allDownloads().count) books downloaded!")
     }
 }

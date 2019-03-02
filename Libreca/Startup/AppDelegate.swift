@@ -28,6 +28,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    private var router: AppLaunchRouting?
     
     // swiftlint:disable:next discouraged_optional_collection
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -42,8 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         
         let theWindow = UIWindow(frame: UIScreen.main.bounds)
-        let router: AppLaunchRouting = AppLaunchRouter(window: theWindow)
+        let router = AppLaunchRouter(window: theWindow)
         router.route()
+        self.router = router
         
         theWindow.makeKeyAndVisible()
         window = theWindow

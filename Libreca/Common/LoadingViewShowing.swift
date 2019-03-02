@@ -56,8 +56,8 @@ extension LoadingViewShowing where Self: UIViewController {
         loader.addConstraint(NSLayoutConstraint(item: spinner, attribute: .centerX, relatedBy: .equal, toItem: loader, attribute: .centerX, multiplier: 1, constant: 0))
         loader.addConstraint(NSLayoutConstraint(item: spinner, attribute: .centerY, relatedBy: .equal, toItem: loader, attribute: .centerY, multiplier: 1, constant: 0))
         
-        navigationItem.leftBarButtonItem?.isEnabled = false
-        navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = false }
+        navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = false }
         
         UIView.animate(withDuration: 0.5) {
             loader.alpha = 0.5
@@ -72,8 +72,8 @@ extension LoadingViewShowing where Self: UIViewController {
             }, completion: { _ in
                 self.spinnerView?.removeFromSuperview()
                 self.spinnerView = nil
-                self.navigationItem.leftBarButtonItem?.isEnabled = true
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                self.navigationItem.leftBarButtonItems?.forEach { $0.isEnabled = true }
+                self.navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = true }
             }
         )
     }

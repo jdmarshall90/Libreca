@@ -1,8 +1,8 @@
 //
-//  DownloadsViewModel.swift
+//  BookDetailsDataManager.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 2/26/19.
+//  Created by Justin Marshall on 2/27/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,12 @@
 
 import Foundation
 
-struct DownloadsViewModel {
-    // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
-    // TODO: Listen for Download.downloadsUpdatedNotification and tell VC to reload when posted
+protocol BookDetailsDataManaging {
+    func save(_ download: Download)
+}
+
+struct BookDetailsDataManager: BookDetailsDataManaging {
+    func save(_ download: Download) {
+        DownloadsDataManager().save(download)
+    }
 }

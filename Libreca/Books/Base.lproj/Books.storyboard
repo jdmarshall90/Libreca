@@ -90,11 +90,18 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" largeTitleDisplayMode="never" id="mOI-FS-AaM">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="KWz-YW-ncP">
-                            <connections>
-                                <action selector="didTapEdit:" destination="JEX-9P-axG" id="A3z-1V-BZ2"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="compose" id="KWz-YW-ncP">
+                                <connections>
+                                    <action selector="didTapEdit:" destination="JEX-9P-axG" id="A3z-1V-BZ2"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem style="done" systemItem="bookmarks" id="mPb-Vp-AaE">
+                                <connections>
+                                    <action selector="didTapDownload:" destination="JEX-9P-axG" id="4bG-JU-Atp"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="q8t-3n-116" id="skr-ed-IAh"/>

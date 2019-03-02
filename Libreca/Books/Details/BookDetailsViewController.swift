@@ -28,9 +28,8 @@ import UIKit
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
     var spinnerView: UIView?
     
-    // TODO: Make the book title a separate label, above the book image (take it out of the nav bar). This will free up space for the edit and delete buttons
-    // TODO: Need download button item with image
-    // TODO: Need remove download button with image
+    // TODO: Need download button image - light mode
+    // TODO: Need download button image - dark mode
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
@@ -75,6 +74,11 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
         presenter.edit(bookViewModel.book)
+    }
+    
+    @IBAction private func didTapDownload(_ sender: UIBarButtonItem) {
+        guard let bookViewModel = bookViewModel else { return }
+        presenter.download(bookViewModel.book)
     }
     
     func removeBookDetails() {
