@@ -45,6 +45,8 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         return viewModel.allDownloads.count
     }
     
+    // TODO: Swipe actions - delete, export
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TODO: Make this look more like the books list screen
         let cell = tableView.dequeueReusableCell(withIdentifier: "downloadedBookCell") ?? UITableViewCell(style: .default, reuseIdentifier: "downloadedBookCell")
