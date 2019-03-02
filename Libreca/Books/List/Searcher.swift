@@ -46,7 +46,6 @@ struct Searcher {
 
 private extension Book {
     var searchableMetadata: [String] {
-        // TODO: Allow searching by specific ebook file format
         var searchableMetadata = [
             [title.name],
             ["\(rating.rawValue)"],
@@ -56,7 +55,8 @@ private extension Book {
             languages.map { $0.displayValue },
             identifiers.map { $0.displayValue },
             identifiers.map { $0.uniqueID },
-            tags
+            tags,
+            formats.map { $0.displayValue }
         ].flatMap { $0 }
         
         if let publishedDate = publishedDate {
