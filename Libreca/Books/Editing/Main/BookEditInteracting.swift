@@ -59,7 +59,7 @@ struct BookEditInteractor: BookEditInteracting {
     }
     
     func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
-        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.tag", qos: .userInitiated).async {
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.edit.save", qos: .userInitiated).async {
             let change: Set<SetFieldsEndpoint.Change> = [
                 .authors(editChanges.authors),
                 .comments(editChanges.comments),
