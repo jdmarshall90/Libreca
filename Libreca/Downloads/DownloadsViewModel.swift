@@ -27,9 +27,7 @@ protocol DownloadsView: class {
     func reload()
 }
 
-final class DownloadsViewModel {
-    // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
-    
+final class DownloadsViewModel {    
     private weak var view: DownloadsView?
     
     private(set) var allDownloads: [Download] = []
@@ -38,6 +36,11 @@ final class DownloadsViewModel {
         self.view = view
         self.allDownloads = DownloadsDataManager().allDownloads()
         NotificationCenter.default.addObserver(self, selector: #selector(didDownloadNewEbook), name: Download.downloadsUpdatedNotification, object: nil)
+    }
+    
+    func delete(_ book: Download) {
+        DownloadsDataManager().delete(book)
+        allDownloads = DownloadsDataManager().allDownloads()
     }
     
     @objc

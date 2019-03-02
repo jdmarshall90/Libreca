@@ -55,26 +55,53 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // TODO: Add a delete option as well
-        let ebook = viewModel.allDownloads[indexPath.row]
         
-        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        let ebookDir = cacheDirectory.appendingPathComponent("\(ebook.book.id)").appendingPathExtension(ebook.bookDownload.format.displayValue.lowercased())
-        do {
-            try ebook.bookDownload.file.write(to: ebookDir)
-            let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
-            // TODO: Handle scenario where user has no installed apps that can handle this file
-            //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
-            //
-            //        activityViewController.completionWithItemsHandler = { activityType, success, items, error in
-            // TODO: delete the file from caches dir after user finishes
-            //            print()
-            //        }
-            present(activityViewController, animated: true)
-        } catch {
-            // TODO: Handle this error
-            print(error)
+        let ebook = viewModel.allDownloads[indexPath.row]
+        let alertController = UIAlertController(title: "Make a selection", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(
+            UIAlertAction(title: "Delete local copy", style: .destructive) { [weak self] _ in
+                self?.viewModel.delete(ebook)
+                tableView.deleteRows(at: [indexPath], with: .bottom)
+            }
+        )
+        
+        alertController.addAction(
+            UIAlertAction(title: "Export to e-reading app", style: .default) { [weak self] _ in
+                // TODO: Move much of this to the view model
+                // swiftlint:disable:next force_unwrapping
+                let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+                let ebookDir = cacheDirectory.appendingPathComponent("\(ebook.book.id)").appendingPathExtension(ebook.bookDownload.format.displayValue.lowercased())
+                do {
+                    try ebook.bookDownload.file.write(to: ebookDir)
+                    let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
+                    // TODO: Handle scenario where user has no installed apps that can handle this file
+                    //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
+                    //
+                    //        activityViewController.completionWithItemsHandler = { activityType, success, items, error in
+                    // TODO: delete the file from caches dir after user finishes
+                    //            print()
+                    //        }
+                    
+                    if let popoverController = activityViewController.popoverPresentationController,
+                        let tableViewCell = tableView.cellForRow(at: indexPath) {
+                        popoverController.sourceRect = tableViewCell.frame
+                        popoverController.sourceView = tableViewCell
+                    }
+                    self?.present(activityViewController, animated: true)
+                } catch {
+                    // TODO: Handle this error
+                    print(error)
+                }
+            }
+        )
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        if let popoverController = alertController.popoverPresentationController,
+            let tableViewCell = tableView.cellForRow(at: indexPath) {
+            popoverController.sourceRect = tableViewCell.frame
+            popoverController.sourceView = tableViewCell
         }
+        present(alertController, animated: true)
     }
     
     func reload() {
