@@ -50,15 +50,13 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         
         // swiftlint:disable:next force_unwrapping
         let booksVC = UIStoryboard(name: "Books", bundle: nil).instantiateInitialViewController()!
-        // TODO: Tab images - dark and light mode - make sure they look good both selected and unselected
-        booksVC.tabBarItem = UITabBarItem(title: "Library", image: nil, selectedImage: nil)
+        booksVC.tabBarItem = UITabBarItem(title: "Library", image: #imageLiteral(resourceName: "LibraryTab"), selectedImage: nil)
         
         let downloadsVC = DownloadsTableViewController()
         let downloadsNav = UINavigationController(rootViewController: downloadsVC)
         downloadsNav.navigationBar.isTranslucent = false
         downloadsNav.navigationBar.prefersLargeTitles = true
-        // TODO: Tab images - dark and light mode - make sure they look good both selected and unselected
-        downloadsVC.tabBarItem = UITabBarItem(title: "Downloads", image: nil, selectedImage: nil)
+        downloadsVC.tabBarItem = UITabBarItem(title: "Downloads", image: #imageLiteral(resourceName: "DownloadsTab"), selectedImage: nil)
         
         // swiftlint:disable:next force_unwrapping
         let settingsVC = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()!

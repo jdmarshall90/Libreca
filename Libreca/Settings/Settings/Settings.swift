@@ -188,6 +188,8 @@ struct Settings {
                 UIImageView.appearance().backgroundColor = .clear
                 UITableViewCell.appearance().backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
                 UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)
+                UITabBar.appearance().barTintColor = #colorLiteral(red: 0.1725490196, green: 0.1764705882, blue: 0.1843137255, alpha: 1)
+                UITabBar.appearance().tintColor = .white
                 UITableView.appearance().backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
                 UILabel.appearance().textColor = .white
                 UILabel.appearance().backgroundColor = .clear
