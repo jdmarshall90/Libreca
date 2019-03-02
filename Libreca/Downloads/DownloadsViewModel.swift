@@ -43,6 +43,14 @@ final class DownloadsViewModel {
         allDownloads = DownloadsDataManager().allDownloads()
     }
     
+    func exportableURL(for book: Download) throws -> URL {
+        // swiftlint:disable:next force_unwrapping
+        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let ebookDir = cacheDirectory.appendingPathComponent("\(book.book.id)").appendingPathExtension(book.bookDownload.format.displayValue.lowercased())
+        try book.bookDownload.file.write(to: ebookDir)
+        return ebookDir
+    }
+    
     @objc
     private func didDownloadNewEbook(_ notification: Notification) {
         allDownloads = DownloadsDataManager().allDownloads()

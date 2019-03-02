@@ -69,12 +69,10 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         
         alertController.addAction(
             UIAlertAction(title: "Export to e-reading app", style: .default) { [weak self] _ in
-                // TODO: Move much of this to the view model
-                // swiftlint:disable:next force_unwrapping
-                let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-                let ebookDir = cacheDirectory.appendingPathComponent("\(ebook.book.id)").appendingPathExtension(ebook.bookDownload.format.displayValue.lowercased())
+                guard let strongSelf = self else { return }
+                
                 do {
-                    try ebook.bookDownload.file.write(to: ebookDir)
+                    let ebookDir = try strongSelf.viewModel.exportableURL(for: ebook)
                     let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
                     // TODO: Handle scenario where user has no installed apps that can handle this file
                     //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
@@ -89,10 +87,11 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
                         popoverController.sourceRect = tableViewCell.frame
                         popoverController.sourceView = tableViewCell
                     }
-                    self?.present(activityViewController, animated: true)
+                    strongSelf.present(activityViewController, animated: true)
                 } catch {
-                    // TODO: Handle this error
-                    print(error)
+                    let errorExportingAlert = UIAlertController(title: "Unable to export", message: "\(error.localizedDescription)\n\nIf this problem persists, try deleting and redownloading the ebook.", preferredStyle: .alert)
+                    errorExportingAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    strongSelf.present(errorExportingAlert, animated: true)
                 }
             }
         )
