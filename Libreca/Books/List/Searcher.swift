@@ -46,6 +46,7 @@ struct Searcher {
 
 private extension Book {
     var searchableMetadata: [String] {
+        // TODO: Allow searching by specific ebook file format
         var searchableMetadata = [
             [title.name],
             ["\(rating.rawValue)"],
