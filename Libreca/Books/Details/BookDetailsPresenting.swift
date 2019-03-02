@@ -68,6 +68,9 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     }
     
     func download(_ book: Book) {
+        guard interactor.canDownload(book) else {
+            return router.routeToDownloadUnavailableMessage()
+        }
         view?.showLoader()
         
         interactor.download(book) { result in

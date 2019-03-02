@@ -24,10 +24,49 @@
 import CalibreKit
 import Foundation
 
-struct Download {
+struct Download: Codable {
     static let downloadsUpdatedNotification = Notification.Name(rawValue: "downloads_did_update_notification")
     
-    // TODO: This will need refactored to work with the ebook download endpoint response data
+    struct Book: Codable {
+        let authors: [CalibreKit.Book.Author]
+        // swiftlint:disable:next identifier_name
+        let id: Int
+        let imageData: Data?
+        let series: CalibreKit.Book.Series?
+        let title: CalibreKit.Book.Title
+        
+        init(authors: [CalibreKit.Book.Author],
+             // swiftlint:disable:next identifier_name
+             id: Int,
+             imageData: Data?,
+             series: CalibreKit.Book.Series?,
+             title: CalibreKit.Book.Title) {
+            self.authors = authors
+            self.id = id
+            self.imageData = imageData
+            self.series = series
+            self.title = title
+        }
+    }
+    
+    static var allEbooksDownloadPath: URL {
+        // swiftlint:disable:next force_unwrapping
+        let documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsPathURL
+    }
+    
+    var ebookDownloadPath: URL {
+        // Technically this would overwrite a download if the user downloaded an ebook, deleted it from
+        // Calibre but kept it on this device, and then added another and downloaded it, and that newly
+        // added book was given the same id number as the deleted one, but that's so edge case I'm not
+        // going to worry about it.
+        
+        // TODO: Use a better file name than the book id
+        let ebookFileNameURL = Download.allEbooksDownloadPath.appendingPathComponent("\(book.id)").appendingPathExtension(bookDownload.format.displayValue.lowercased())
+        print(ebookFileNameURL)
+        return ebookFileNameURL
+    }
+    
     let book: Book
-    let data: Data
+    let bookDownload: BookDownload
 }

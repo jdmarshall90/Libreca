@@ -23,13 +23,12 @@
 
 import UIKit
 
-class DownloadsTableViewController: UITableViewController {
-    private let viewModel: DownloadsViewModel
+class DownloadsTableViewController: UITableViewController, DownloadsView {
+    private lazy var viewModel = DownloadsViewModel(view: self)
     
     // TODO: Empty state
     
-    init(viewModel: DownloadsViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(nibName: nil, bundle: nil)
         title = "Downloads"
     }
@@ -38,9 +37,47 @@ class DownloadsTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // TODO: Just a POC, take this out
-        print("\(DownloadsDataManager().allDownloads().count) books downloaded!")
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.allDownloads.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // TODO: Make this look more like the books list screen
+        let cell = tableView.dequeueReusableCell(withIdentifier: "downloadedBookCell") ?? UITableViewCell(style: .default, reuseIdentifier: "downloadedBookCell")
+        let ebook = viewModel.allDownloads[indexPath.row]
+        cell.textLabel?.text = "\(ebook.book.title.name) - \(ebook.bookDownload.format.displayValue)"
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // TODO: Add a delete option as well
+        let ebook = viewModel.allDownloads[indexPath.row]
+        
+        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let ebookDir = cacheDirectory.appendingPathComponent("\(ebook.book.id)").appendingPathExtension(ebook.bookDownload.format.displayValue.lowercased())
+        do {
+            try ebook.bookDownload.file.write(to: ebookDir)
+            let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
+            // TODO: Handle scenario where user has no installed apps that can handle this file
+            //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
+            //
+            //        activityViewController.completionWithItemsHandler = { activityType, success, items, error in
+            // TODO: delete the file from caches dir after user finishes
+            //            print()
+            //        }
+            present(activityViewController, animated: true)
+        } catch {
+            // TODO: Handle this error
+            print(error)
+        }
+    }
+    
+    func reload() {
+        tableView.reloadData()
     }
 }

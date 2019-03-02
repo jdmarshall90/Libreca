@@ -21,17 +21,26 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import Foundation
 
 protocol BookDetailsServicing {
-    func download(completion: @escaping (Result<Data>) -> Void)
+    func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void)
 }
 
 struct BookDetailsService: BookDetailsServicing {
-    func download(completion: @escaping (Result<Data>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            // TODO: Implement me - use the "main_format" url
-            completion(.success(Data()))
+    func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void) {
+        // The interactor is expected to enforce this mainFormat being non-nil before
+        // calling this function. Hence the force unwrap.
+        
+        // swiftlint:disable:next force_unwrapping
+        book.mainFormat!.hitService { mainFormatDownloadResponse in
+            switch mainFormatDownloadResponse.result {
+            case .success(let payload):
+                completion(.success(payload))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }

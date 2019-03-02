@@ -29,6 +29,7 @@ protocol BookDetailsRouting {
     func routeToEditing(for book: Book, completion: @escaping (Book) -> Void)
     func routeToEditPurchaseValueProposition(completion: @escaping () -> Void)
     func routeToStillFetchingMessage()
+    func routeToDownloadUnavailableMessage()
 }
 
 final class BookDetailsRouter: BookDetailsRouting {
@@ -76,6 +77,13 @@ final class BookDetailsRouter: BookDetailsRouting {
     
     func routeToStillFetchingMessage() {
         let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        viewController?.present(alertController, animated: true)
+    }
+    
+    func routeToDownloadUnavailableMessage() {
+        let alertController = UIAlertController(title: "Download unavailable", message: "This book has no downloadable ebook.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         
         viewController?.present(alertController, animated: true)
