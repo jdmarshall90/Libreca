@@ -63,7 +63,6 @@ struct Download: Codable {
         
         // TODO: Use a better file name than the book id
         let ebookFileNameURL = Download.allEbooksDownloadPath.appendingPathComponent("\(book.id)").appendingPathExtension(bookDownload.format.displayValue.lowercased())
-        print(ebookFileNameURL)
         return ebookFileNameURL
     }
     
