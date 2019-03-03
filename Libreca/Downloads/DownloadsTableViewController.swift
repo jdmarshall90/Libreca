@@ -55,29 +55,81 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // TODO: Add a delete option as well
-        let ebook = viewModel.allDownloads[indexPath.row]
         
-        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        let ebookDir = cacheDirectory.appendingPathComponent("\(ebook.book.id)").appendingPathExtension(ebook.bookDownload.format.displayValue.lowercased())
-        do {
-            try ebook.bookDownload.file.write(to: ebookDir)
-            let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
-            // TODO: Handle scenario where user has no installed apps that can handle this file
-            //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
-            //
-            //        activityViewController.completionWithItemsHandler = { activityType, success, items, error in
-            // TODO: delete the file from caches dir after user finishes
-            //            print()
-            //        }
-            present(activityViewController, animated: true)
-        } catch {
-            // TODO: Handle this error
-            print(error)
+        let ebook = viewModel.allDownloads[indexPath.row]
+        let alertController = UIAlertController(title: "Make a selection", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(
+            UIAlertAction(title: "Delete local copy", style: .destructive) { [weak self] _ in
+                self?.viewModel.delete(ebook)
+                tableView.deleteRows(at: [indexPath], with: .bottom)
+            }
+        )
+        
+        alertController.addAction(
+            UIAlertAction(title: "Export to e-reading app", style: .default) { [weak self] _ in
+                self?.export(ebook, at: indexPath)
+            }
+        )
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        if let popoverController = alertController.popoverPresentationController,
+            let tableViewCell = tableView.cellForRow(at: indexPath) {
+            popoverController.sourceRect = tableViewCell.frame
+            popoverController.sourceView = tableViewCell
         }
+        present(alertController, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let ebook = viewModel.allDownloads[indexPath.row]
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+            self?.viewModel.delete(ebook)
+            completion(true)
+        }
+        // TODO: Need delete button image - light mode
+        // TODO: Need delete button image - dark mode
+        deleteAction.image = #imageLiteral(resourceName: "Sort")
+        
+        let exportAction = UIContextualAction(style: .normal, title: "Export") { [weak self] _, _, completion in
+            guard let strongSelf = self else { return }
+            strongSelf.export(ebook, at: indexPath, completion: completion)
+        }
+        // TODO: Need export button image - light mode
+        // TODO: Need export button image - dark mode
+        exportAction.image = #imageLiteral(resourceName: "Settings")
+        
+        let contextualActions: [UIContextualAction] = [deleteAction, exportAction]
+        let configuration = UISwipeActionsConfiguration(actions: contextualActions)
+        return configuration
     }
     
     func reload() {
         tableView.reloadData()
+    }
+    
+    private func export(_ download: Download, at indexPath: IndexPath, completion: ((Bool) -> Void)? = nil) {
+        do {
+            let ebookDir = try viewModel.exportableURL(for: download)
+            let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
+            // TODO: Handle scenario where user has no installed apps that can handle this file
+            //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
+            //
+            activityViewController.completionWithItemsHandler = { activityType, success, items, error in
+                // TODO: delete the file from caches dir after user finishes
+                completion?(success)
+            }
+            
+            if let popoverController = activityViewController.popoverPresentationController,
+                let tableViewCell = tableView.cellForRow(at: indexPath) {
+                popoverController.sourceRect = tableViewCell.frame
+                popoverController.sourceView = tableViewCell
+            }
+            present(activityViewController, animated: true)
+        } catch {
+            let errorExportingAlert = UIAlertController(title: "Unable to export", message: "\(error.localizedDescription)\n\nIf this problem persists, try deleting and redownloading the ebook.", preferredStyle: .alert)
+            errorExportingAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(errorExportingAlert, animated: true)
+            completion?(false)
+        }
     }
 }

@@ -27,9 +27,7 @@ protocol DownloadsView: class {
     func reload()
 }
 
-final class DownloadsViewModel {
-    // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
-    
+final class DownloadsViewModel {    
     private weak var view: DownloadsView?
     
     private(set) var allDownloads: [Download] = []
@@ -38,6 +36,19 @@ final class DownloadsViewModel {
         self.view = view
         self.allDownloads = DownloadsDataManager().allDownloads()
         NotificationCenter.default.addObserver(self, selector: #selector(didDownloadNewEbook), name: Download.downloadsUpdatedNotification, object: nil)
+    }
+    
+    func delete(_ book: Download) {
+        DownloadsDataManager().delete(book)
+        allDownloads = DownloadsDataManager().allDownloads()
+    }
+    
+    func exportableURL(for book: Download) throws -> URL {
+        // swiftlint:disable:next force_unwrapping
+        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let ebookDir = cacheDirectory.appendingPathComponent("\(book.book.id)").appendingPathExtension(book.bookDownload.format.displayValue.lowercased())
+        try book.bookDownload.file.write(to: ebookDir)
+        return ebookDir
     }
     
     @objc

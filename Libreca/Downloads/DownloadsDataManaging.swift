@@ -25,11 +25,16 @@ import CalibreKit
 import Foundation
 
 protocol DownloadsDataManaging {
+    func delete(_ download: Download)
     func save(_ download: Download)
     func allDownloads() -> [Download]
 }
 
 struct DownloadsDataManager: DownloadsDataManaging {
+    func delete(_ download: Download) {
+        try? FileManager.default.removeItem(at: download.ebookDownloadPath)
+    }
+    
     func save(_ download: Download) {
         do {
             let data = try JSONEncoder().encode(download)
