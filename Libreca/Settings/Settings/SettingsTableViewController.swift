@@ -27,7 +27,6 @@ import MessageUI
 import SafariServices
 import UIKit
 
-// TODO: There might be more code in this class that can be removed with the removal of the "Close" button
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
     private enum Segue: String {
         case contentServerSegue
