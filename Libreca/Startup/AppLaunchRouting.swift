@@ -53,7 +53,7 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         // TODO: Tab images - dark and light mode - make sure they look good both selected and unselected
         booksVC.tabBarItem = UITabBarItem(title: "Library", image: nil, selectedImage: nil)
         
-        let downloadsVC = DownloadsTableViewController(viewModel: DownloadsViewModel())
+        let downloadsVC = DownloadsTableViewController()
         let downloadsNav = UINavigationController(rootViewController: downloadsVC)
         downloadsNav.navigationBar.isTranslucent = false
         downloadsNav.navigationBar.prefersLargeTitles = true

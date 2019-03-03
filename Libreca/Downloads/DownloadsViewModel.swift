@@ -23,7 +23,26 @@
 
 import Foundation
 
-struct DownloadsViewModel {
+protocol DownloadsView: class {
+    func reload()
+}
+
+final class DownloadsViewModel {
     // TODO: Add functions to retrieve all downloaded books and start stubbing out the table view
-    // TODO: Listen for Download.downloadsUpdatedNotification and tell VC to reload when posted
+    
+    private weak var view: DownloadsView?
+    
+    private(set) var allDownloads: [Download] = []
+    
+    init(view: DownloadsView) {
+        self.view = view
+        self.allDownloads = DownloadsDataManager().allDownloads()
+        NotificationCenter.default.addObserver(self, selector: #selector(didDownloadNewEbook), name: Download.downloadsUpdatedNotification, object: nil)
+    }
+    
+    @objc
+    private func didDownloadNewEbook(_ notification: Notification) {
+        allDownloads = DownloadsDataManager().allDownloads()
+        view?.reload()
+    }
 }

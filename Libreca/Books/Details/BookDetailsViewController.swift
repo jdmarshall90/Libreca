@@ -27,7 +27,7 @@ import UIKit
 
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
     var spinnerView: UIView?
-    
+    // TODO: Use a progress indicator instead of a regular spinner - some books can take a while to download
     // TODO: Need download button image - light mode
     // TODO: Need download button image - dark mode
     
