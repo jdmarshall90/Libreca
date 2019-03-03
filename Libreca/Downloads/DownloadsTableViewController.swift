@@ -86,17 +86,13 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
             self?.viewModel.delete(ebook)
             completion(true)
         }
-        // TODO: Need delete button image - light mode
-        // TODO: Need delete button image - dark mode
-        deleteAction.image = #imageLiteral(resourceName: "Sort")
+        deleteAction.image = #imageLiteral(resourceName: "SwipeDelete")
         
         let exportAction = UIContextualAction(style: .normal, title: "Export") { [weak self] _, _, completion in
             guard let strongSelf = self else { return }
             strongSelf.export(ebook, at: indexPath, completion: completion)
         }
-        // TODO: Need export button image - light mode
-        // TODO: Need export button image - dark mode
-        exportAction.image = #imageLiteral(resourceName: "Settings")
+        exportAction.image = #imageLiteral(resourceName: "SwipeExport")
         
         let contextualActions: [UIContextualAction] = [deleteAction, exportAction]
         let configuration = UISwipeActionsConfiguration(actions: contextualActions)
@@ -111,9 +107,6 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         do {
             let ebookDir = try viewModel.exportableURL(for: download)
             let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
-            // TODO: Handle scenario where user has no installed apps that can handle this file
-            //        //    public typealias CompletionWithItemsHandler = (UIActivity.ActivityType?, Bool, [Any]?, Error?) -> Void
-            //
             activityViewController.completionWithItemsHandler = { activityType, success, items, error in
                 // TODO: delete the file from caches dir after user finishes
                 completion?(success)

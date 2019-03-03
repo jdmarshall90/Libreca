@@ -28,9 +28,8 @@ import UIKit
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
     var spinnerView: UIView?
     // TODO: Use a progress indicator instead of a regular spinner - some books can take a while to download
-    // TODO: Need download button image - light mode
-    // TODO: Need download button image - dark mode
     
+    @IBOutlet weak var downloadButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -60,6 +59,7 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         showBookCover()
         editButton.isEnabled = bookViewModel != nil
+        downloadButton.isEnabled = bookViewModel != nil
         
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
