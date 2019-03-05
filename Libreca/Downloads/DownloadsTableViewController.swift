@@ -73,8 +73,15 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         let alertController = UIAlertController(title: "Make a selection", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: "Delete local copy", style: .destructive) { [weak self] _ in
-                self?.viewModel.delete(ebook)
-                tableView.deleteRows(at: [indexPath], with: .bottom)
+                guard let strongSelf = self else { return }
+                let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
+                strongSelf.viewModel.delete(ebook)
+                let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
+                if sectionCountBeforeDeletion == sectionCountAfterDeletion {
+                    tableView.deleteRows(at: [indexPath], with: .bottom)
+                } else {
+                    tableView.deleteSections(IndexSet(arrayLiteral: indexPath.section), with: .bottom)
+                }
             }
         )
         
@@ -94,10 +101,26 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // TODO: There's a crash in here if you try to delete 2 or more books in a row
-        let ebook = viewModel.allDownloads[indexPath.section].values[indexPath.row]
+        let allDownloads = viewModel.allDownloads
+        guard (indexPath.section - 1) <= allDownloads.count else {
+            return nil
+        }
+        let ebooksInThisSection = allDownloads[indexPath.section].values
+        guard (indexPath.row - 1) <= ebooksInThisSection.count else {
+            return nil
+        }
+        
+        let ebook = ebooksInThisSection[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
-            self?.viewModel.delete(ebook)
+            guard let strongSelf = self else { return }
+            let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
+            strongSelf.viewModel.delete(ebook)
+            let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
+            if sectionCountBeforeDeletion == sectionCountAfterDeletion {
+                tableView.deleteRows(at: [indexPath], with: .bottom)
+            } else {
+                tableView.deleteSections(IndexSet(arrayLiteral: indexPath.section), with: .bottom)
+            }
             completion(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "SwipeDelete")
