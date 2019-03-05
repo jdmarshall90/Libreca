@@ -22,6 +22,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol DownloadsView: class {
     func reload()
@@ -30,17 +31,38 @@ protocol DownloadsView: class {
 final class DownloadsViewModel {    
     private weak var view: DownloadsView?
     
-    private(set) var allDownloads: [Download] = []
+    typealias SectionModel = TableViewSectionIndexTitleGenerator<Download>.Section
+    
+    private(set) var allDownloads: [SectionModel] = []
     
     init(view: DownloadsView) {
         self.view = view
-        self.allDownloads = DownloadsDataManager().allDownloads()
+        self.allDownloads = DownloadsViewModel.buildSectionModels()
         NotificationCenter.default.addObserver(self, selector: #selector(didDownloadNewEbook), name: Download.downloadsUpdatedNotification, object: nil)
+    }
+    
+    private static func buildSectionModels() -> [SectionModel] {
+        let allDownloads = DownloadsDataManager().allDownloads()
+        let sectionGenerator = TableViewSectionIndexTitleGenerator(sectionIndexDisplayables: allDownloads, isSectioningEnabled: true, headerType: .fullString)
+        let sections = sectionGenerator.sections
+        return sections
+    }
+    
+    func authors(for download: Download) -> String {
+        return download.book.authors.map { $0.name }.joined(separator: "; ")
+    }
+    
+    func image(for download: Download) -> UIImage {
+        guard let imageData = download.book.imageData,
+            let image = UIImage(data: imageData) else {
+                return #imageLiteral(resourceName: "BookCoverPlaceholder")
+        }
+        return image
     }
     
     func delete(_ book: Download) {
         DownloadsDataManager().delete(book)
-        allDownloads = DownloadsDataManager().allDownloads()
+        allDownloads = DownloadsViewModel.buildSectionModels()
     }
     
     func exportableURL(for book: Download) throws -> URL {
@@ -53,7 +75,13 @@ final class DownloadsViewModel {
     
     @objc
     private func didDownloadNewEbook(_ notification: Notification) {
-        allDownloads = DownloadsDataManager().allDownloads()
+        allDownloads = DownloadsViewModel.buildSectionModels()
         view?.reload()
+    }
+}
+
+extension Download: SectionIndexDisplayable {
+    var stringValue: String {
+        return bookDownload.format.displayValue
     }
 }

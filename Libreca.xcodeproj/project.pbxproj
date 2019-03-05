@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0010821222E1731006C1F6B /* DownloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D001081F222E1730006C1F6B /* DownloadTableViewCell.swift */; };
+		D0010822222E1731006C1F6B /* DownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0010820222E1731006C1F6B /* DownloadTableViewCell.xib */; };
 		D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */; };
 		D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */; };
 		D003EA0322068B0100B200A2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D003EA0222068B0100B200A2 /* StoreKit.framework */; };
@@ -142,6 +144,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D001081F222E1730006C1F6B /* DownloadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTableViewCell.swift; sourceTree = "<group>"; };
+		D0010820222E1731006C1F6B /* DownloadTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DownloadTableViewCell.xib; sourceTree = "<group>"; };
 		D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageShowing.swift; sourceTree = "<group>"; };
 		D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewShowing.swift; sourceTree = "<group>"; };
 		D003EA0222068B0100B200A2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -297,6 +301,8 @@
 			children = (
 				D01574C722262B52008CC645 /* DownloadsTableViewController.swift */,
 				D01574C822262B52008CC645 /* DownloadsTableViewController.xib */,
+				D001081F222E1730006C1F6B /* DownloadTableViewCell.swift */,
+				D0010820222E1731006C1F6B /* DownloadTableViewCell.xib */,
 				D01574D922263402008CC645 /* DownloadsViewModel.swift */,
 				D01574D122262BD6008CC645 /* DownloadsDataManaging.swift */,
 				D01574D322262C4C008CC645 /* Download.swift */,
@@ -677,6 +683,7 @@
 				D016508721F51E3F00C2326D /* TitleSortTableViewCell.xib in Resources */,
 				D07EC21A21ED51BF00AE193B /* PickerTableViewCell.xib in Resources */,
 				D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */,
+				D0010822222E1731006C1F6B /* DownloadTableViewCell.xib in Resources */,
 				D00772D42180131E0066ED9D /* Licenses.plist in Resources */,
 				D0518E86217982C80087A000 /* GoogleService-Info.plist in Resources */,
 				D07EC20C21EA925C00AE193B /* BookEditViewController.xib in Resources */,
@@ -833,6 +840,7 @@
 				D01574D422262C4C008CC645 /* Download.swift in Sources */,
 				D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */,
 				D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */,
+				D0010821222E1731006C1F6B /* DownloadTableViewCell.swift in Sources */,
 				D07EC1FE21EA87F500AE193B /* BookDetailsInteracting.swift in Sources */,
 				D0195B8B21730DA2006EA713 /* Framework.swift in Sources */,
 				D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */,

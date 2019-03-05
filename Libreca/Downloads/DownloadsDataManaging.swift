@@ -47,13 +47,30 @@ struct DownloadsDataManager: DownloadsDataManaging {
     
     func allDownloads() -> [Download] {
         do {
-            let ebookDownloadFiles = try FileManager.default.contentsOfDirectory(at: Download.allEbooksDownloadPath, includingPropertiesForKeys: [], options: [])
-            let encodedDownloads = try ebookDownloadFiles.map { try Data(contentsOf: $0) }
-            let decodedDownloads: [Download] = try encodedDownloads.map { try JSONDecoder().decode(Download.self, from: $0) }
-            return decodedDownloads
+            let ebookDownloadFiles = try allDownloadURLs()
+            do {
+                let encodedDownloads = try ebookDownloadFiles.map { try Data(contentsOf: $0) }
+                let decodedDownloads: [Download] = try encodedDownloads.map { try JSONDecoder().decode(Download.self, from: $0) }
+                return decodedDownloads
+            } catch is DecodingError {
+                // The only way this can happen as of now is if a user upgraded from
+                // v2.0.0.beta.1 to a later build. If there's ever a data change that
+                // could cause this in a production build, then the data would need
+                // migrated instead of deleted.
+                let ebookDownloadFiles = try allDownloadURLs()
+                try ebookDownloadFiles.forEach(FileManager.default.removeItem)
+                return []
+            } catch {
+                // should never happen
+                return []
+            }
         } catch {
-            print(error)
+            // should never happen
             return []
         }
+    }
+    
+    private func allDownloadURLs() throws -> [URL] {
+        return try FileManager.default.contentsOfDirectory(at: Download.allEbooksDownloadPath, includingPropertiesForKeys: [], options: [])
     }
 }

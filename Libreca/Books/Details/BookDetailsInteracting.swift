@@ -99,7 +99,8 @@ struct BookDetailsInteractor: BookDetailsInteracting {
                             id: book.id,
                             imageData: imageData,
                             series: book.series,
-                            title: book.title
+                            title: book.title,
+                            rating: book.rating
                         )
                         let download = Download(book: appBook, bookDownload: download)
                         self.dataManager.save(download)

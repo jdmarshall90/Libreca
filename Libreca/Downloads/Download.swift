@@ -34,18 +34,21 @@ struct Download: Codable {
         let imageData: Data?
         let series: CalibreKit.Book.Series?
         let title: CalibreKit.Book.Title
+        let rating: CalibreKit.Book.Rating
         
         init(authors: [CalibreKit.Book.Author],
              // swiftlint:disable:next identifier_name
              id: Int,
              imageData: Data?,
              series: CalibreKit.Book.Series?,
-             title: CalibreKit.Book.Title) {
+             title: CalibreKit.Book.Title,
+             rating: CalibreKit.Book.Rating) {
             self.authors = authors
             self.id = id
             self.imageData = imageData
             self.series = series
             self.title = title
+            self.rating = rating
         }
     }
     
@@ -61,7 +64,6 @@ struct Download: Codable {
         // added book was given the same id number as the deleted one, but that's so edge case I'm not
         // going to worry about it.
         
-        // TODO: Use a better file name than the book id
         let ebookFileNameURL = Download.allEbooksDownloadPath.appendingPathComponent("\(book.id)").appendingPathExtension(bookDownload.format.displayValue.lowercased())
         return ebookFileNameURL
     }
