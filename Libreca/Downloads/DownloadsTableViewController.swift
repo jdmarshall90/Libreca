@@ -26,7 +26,19 @@ import UIKit
 class DownloadsTableViewController: UITableViewController, DownloadsView {
     private lazy var viewModel = DownloadsViewModel(view: self)
     
-    // TODO: Empty state
+    private enum Content {
+        case downloads([DownloadsViewModel.SectionModel])
+        case message(String)
+    }
+    
+    private var content: Content {
+        let downloads = viewModel.allDownloads
+        if downloads.isEmpty {
+            return .message("To download ebook files, select a book from your library and tap the download / cloud button.")
+        } else {
+            return .downloads(downloads)
+        }
+    }
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -41,29 +53,70 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.allDownloads.count
+        switch content {
+        case .downloads(let downloads):
+            return downloads.count
+        case .message:
+            return 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.allDownloads[section].values.count
+        switch content {
+        case .downloads(let downloads):
+            return downloads[section].values.count
+        case .message:
+            return 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.allDownloads[section].header
+        switch content {
+        case .downloads(let downloads):
+            return downloads[section].header
+        case .message:
+            return nil
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCell(withIdentifier: "downloadedBookCell") as! DownloadTableViewCell
-        let ebook = viewModel.allDownloads[indexPath.section].values[indexPath.row]
-        
-        cell.titleLabel.text = ebook.book.title.name
-        cell.ratingLabel.text = ebook.book.rating.displayValue
-        cell.serieslabel.text = ebook.book.series?.displayValue
-        
-        cell.authorsLabel.text = viewModel.authors(for: ebook)
-        cell.thumbnailImageView.image = viewModel.image(for: ebook)
-        return cell
+        switch content {
+        case .downloads(let downloads):
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: "downloadedBookCell") as! DownloadTableViewCell
+            let ebook = downloads[indexPath.section].values[indexPath.row]
+            
+            cell.titleLabel.text = ebook.book.title.name
+            cell.ratingLabel.text = ebook.book.rating.displayValue
+            cell.serieslabel.text = ebook.book.series?.displayValue
+            
+            cell.authorsLabel.text = viewModel.authors(for: ebook)
+            cell.thumbnailImageView.image = viewModel.image(for: ebook)
+            return cell
+        case .message(let message):
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "emptyState")
+            cell.textLabel?.text = message
+            cell.textLabel?.numberOfLines = 0
+            
+            if case .dark = Settings.Theme.current {
+                cell.textLabel?.textColor = .white
+            }
+            
+            return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        switch content {
+        case .downloads:
+            return true
+        case .message:
+            return false
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return self.tableView(tableView, shouldHighlightRowAt: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -77,7 +130,15 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
                 let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
                 strongSelf.viewModel.delete(ebook)
                 let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
-                if sectionCountBeforeDeletion == sectionCountAfterDeletion {
+                let isNowEmpty: Bool
+                if case .message = strongSelf.content {
+                    isNowEmpty = true
+                } else {
+                    isNowEmpty = false
+                }
+                if isNowEmpty {
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                } else if sectionCountBeforeDeletion == sectionCountAfterDeletion {
                     tableView.deleteRows(at: [indexPath], with: .bottom)
                 } else {
                     tableView.deleteSections(IndexSet(arrayLiteral: indexPath.section), with: .bottom)
@@ -116,7 +177,18 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
             let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
             strongSelf.viewModel.delete(ebook)
             let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
-            if sectionCountBeforeDeletion == sectionCountAfterDeletion {
+            let isNowEmpty: Bool
+            if case .message = strongSelf.content {
+                isNowEmpty = true
+            } else {
+                isNowEmpty = false
+            }
+            if isNowEmpty {
+                // An entire section reload is necessary here but not when deleting via the alert controller.
+                // Simply reloading this row was just causing it to be deleted. I suspect that this
+                // `.destructive` `UIContextualAction` automatically deletes the row for you.
+                tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+            } else if sectionCountBeforeDeletion == sectionCountAfterDeletion {
                 tableView.deleteRows(at: [indexPath], with: .bottom)
             } else {
                 tableView.deleteSections(IndexSet(arrayLiteral: indexPath.section), with: .bottom)
