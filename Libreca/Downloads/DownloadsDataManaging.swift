@@ -40,8 +40,7 @@ struct DownloadsDataManager: DownloadsDataManaging {
             let data = try JSONEncoder().encode(download)
             try data.write(to: download.ebookDownloadPath)
         } catch {
-            // TODO: Handle this error
-            print(error)
+            // should never happen
         }
     }
     
