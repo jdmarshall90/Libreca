@@ -27,7 +27,7 @@ import UIKit
 
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
     var spinnerView: UIView?
-    // TODO: Use a progress indicator instead of a regular spinner - some books can take a while to download
+    // TODO: Use a progress indicator instead of a regular spinner - some books can take a while to download - include success / failure message in this at the end
     
     @IBOutlet weak var downloadButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
