@@ -74,7 +74,12 @@ struct BookDetailsPresenter: BookDetailsPresenting {
         view?.showLoader()
         
         interactor.download(book) { result in
-            // TODO: Error handling
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                self.view?.showError(withTitle: "An error occurred", message: error.localizedDescription)
+            }
             self.view?.removeLoader()
         }
     }
