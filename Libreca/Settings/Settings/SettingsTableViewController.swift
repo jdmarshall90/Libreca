@@ -99,6 +99,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private var displayModels: [[DisplayModel]] = []
+    var isRefreshing: (() -> Bool)?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -217,6 +218,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapContentServer() {
+        guard isRefreshing?() == false else { return displayUninteractibleAlert() }
         performSegue(withIdentifier: Segue.contentServerSegue.rawValue, sender: nil)
     }
     
@@ -393,7 +395,14 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             cell.selectionSegmentedControl.selectedSegmentIndex = 1
         }
         
-        cell.selectionHandler = {
+        let previousSelectedIndex = cell.selectionSegmentedControl.selectedSegmentIndex
+        cell.selectionHandler = { [weak self] in
+            guard self?.isRefreshing?() == false else {
+                self?.displayUninteractibleAlert {
+                    cell.selectionSegmentedControl.selectedSegmentIndex = previousSelectedIndex
+                }
+                return
+            }
             if cell.selectionSegmentedControl.selectedSegmentIndex == 0 {
                 Settings.Sort.current = .title
             } else {
@@ -474,5 +483,16 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         }
         
         return cell
+    }
+    
+    private func displayUninteractibleAlert(completion: (() -> Void)? = nil) {
+        let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
+        alertController.addAction(
+            UIAlertAction(title: "OK", style: .default) { _ in
+                completion?()
+            }
+        )
+        
+        present(alertController, animated: true)
     }
 }

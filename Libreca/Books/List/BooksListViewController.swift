@@ -71,7 +71,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     private enum Segue: String {
-        case settings
         case showDetail
     }
     
@@ -169,15 +168,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         guard let segue = Segue(rawValue: identifier) else { return true }
         switch segue {
-        case .settings:
-            // TODO: Come back to this
-            let isRefreshing = self.isRefreshing
-            
-            if isRefreshing {
-                displayUninteractibleAlert()
-            }
-            
-            return !isRefreshing
         case .showDetail:
             return true
         }
@@ -193,8 +183,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         }
         
         switch segue {
-        case .settings:
-            break
         case .showDetail:
             switch sectionIndexGenerator.sections[indexPath.section].values[indexPath.row] {
             case .book(let book):
