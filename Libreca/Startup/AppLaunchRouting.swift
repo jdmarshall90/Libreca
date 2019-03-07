@@ -48,9 +48,12 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         let tabBarController = UITabBarController()
         tabBarController.delegate = self
         
-        // swiftlint:disable:next force_unwrapping
-        let booksVC = UIStoryboard(name: "Books", bundle: nil).instantiateInitialViewController()!
-        booksVC.tabBarItem = UITabBarItem(title: "Library", image: #imageLiteral(resourceName: "LibraryTab"), selectedImage: nil)
+        // swiftlint:disable force_cast
+        
+        let booksSplitVC = UIStoryboard(name: "Books", bundle: nil).instantiateInitialViewController() as! UISplitViewController
+        booksSplitVC.tabBarItem = UITabBarItem(title: "Library", image: #imageLiteral(resourceName: "LibraryTab"), selectedImage: nil)
+        let booksLeftNav = booksSplitVC.viewControllers.first as! UINavigationController
+        let booksListVC = booksLeftNav.viewControllers.first as! BooksListViewController
         
         let downloadsVC = DownloadsTableViewController()
         let downloadsNav = UINavigationController(rootViewController: downloadsVC)
@@ -58,11 +61,13 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         downloadsNav.navigationBar.prefersLargeTitles = true
         downloadsVC.tabBarItem = UITabBarItem(title: "Downloads", image: #imageLiteral(resourceName: "DownloadsTab"), selectedImage: nil)
         
-        // swiftlint:disable:next force_unwrapping
-        let settingsVC = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()!
-        settingsVC.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 2)
+        let settingsNav = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController() as! UINavigationController
+        settingsNav.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 2)
+        let settingsVC = settingsNav.viewControllers.first as! SettingsTableViewController
+        settingsVC.isRefreshing = { booksListVC.isRefreshing }
         
-        tabBarController.viewControllers = [booksVC, downloadsNav, settingsVC]
+        // swiftlint:enable force_cast
+        tabBarController.viewControllers = [booksSplitVC, downloadsNav, settingsNav]
         
         window.rootViewController = tabBarController
     }
