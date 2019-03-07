@@ -30,6 +30,9 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        tableView.register(DownloadTableViewCell.nib, forCellReuseIdentifier: "downloadedBookCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         title = "Downloads"
     }
     
@@ -38,30 +41,47 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.allDownloads.count
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.allDownloads[section].values.count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.allDownloads[section].header
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: Make this look more like the books list screen
-        let cell = tableView.dequeueReusableCell(withIdentifier: "downloadedBookCell") ?? UITableViewCell(style: .default, reuseIdentifier: "downloadedBookCell")
-        let ebook = viewModel.allDownloads[indexPath.row]
-        cell.textLabel?.text = "\(ebook.book.title.name) - \(ebook.bookDownload.format.displayValue)"
+        // swiftlint:disable:next force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: "downloadedBookCell") as! DownloadTableViewCell
+        let ebook = viewModel.allDownloads[indexPath.section].values[indexPath.row]
+        
+        cell.titleLabel.text = ebook.book.title.name
+        cell.ratingLabel.text = ebook.book.rating.displayValue
+        cell.serieslabel.text = ebook.book.series?.displayValue
+        
+        cell.authorsLabel.text = viewModel.authors(for: ebook)
+        cell.thumbnailImageView.image = viewModel.image(for: ebook)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let ebook = viewModel.allDownloads[indexPath.row]
+        let ebook = viewModel.allDownloads[indexPath.section].values[indexPath.row]
         let alertController = UIAlertController(title: "Make a selection", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: "Delete local copy", style: .destructive) { [weak self] _ in
-                self?.viewModel.delete(ebook)
-                tableView.deleteRows(at: [indexPath], with: .bottom)
+                guard let strongSelf = self else { return }
+                let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
+                strongSelf.viewModel.delete(ebook)
+                let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
+                if sectionCountBeforeDeletion == sectionCountAfterDeletion {
+                    tableView.deleteRows(at: [indexPath], with: .bottom)
+                } else {
+                    tableView.deleteSections(IndexSet(arrayLiteral: indexPath.section), with: .bottom)
+                }
             }
         )
         
@@ -81,9 +101,26 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let ebook = viewModel.allDownloads[indexPath.row]
+        let allDownloads = viewModel.allDownloads
+        guard (indexPath.section - 1) <= allDownloads.count else {
+            return nil
+        }
+        let ebooksInThisSection = allDownloads[indexPath.section].values
+        guard (indexPath.row - 1) <= ebooksInThisSection.count else {
+            return nil
+        }
+        
+        let ebook = ebooksInThisSection[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
-            self?.viewModel.delete(ebook)
+            guard let strongSelf = self else { return }
+            let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
+            strongSelf.viewModel.delete(ebook)
+            let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
+            if sectionCountBeforeDeletion == sectionCountAfterDeletion {
+                tableView.deleteRows(at: [indexPath], with: .bottom)
+            } else {
+                tableView.deleteSections(IndexSet(arrayLiteral: indexPath.section), with: .bottom)
+            }
             completion(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "SwipeDelete")

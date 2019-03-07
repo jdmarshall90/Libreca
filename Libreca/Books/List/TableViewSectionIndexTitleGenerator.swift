@@ -25,7 +25,14 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     }
     
     private var sortedTitles: [String] {
-        let sectionTitles = sectionIndexDisplayables.map { $0.stringValue.firstLetter() }
+        let sectionTitles: [String] = sectionIndexDisplayables.map { sectionIndexDisplayable in
+            switch headerType {
+            case .firstLetter:
+                return sectionIndexDisplayable.stringValue.firstLetter()
+            case .fullString:
+                return sectionIndexDisplayable.stringValue
+            }
+        }
         let duplicateFreeSectionTitles = Set(sectionTitles)
         return Array(duplicateFreeSectionTitles).sorted(by: <)
     }
@@ -37,9 +44,17 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
     private(set) var sections: [Section] = []
     var isSectioningEnabled: Bool
     
-    init(sectionIndexDisplayables: [T], isSectioningEnabled: Bool = false) {
+    enum HeaderType {
+        case firstLetter
+        case fullString
+    }
+    
+    private let headerType: HeaderType
+    
+    init(sectionIndexDisplayables: [T], isSectioningEnabled: Bool = false, headerType: HeaderType = .firstLetter) {
         self.isSectioningEnabled = isSectioningEnabled
         self.sectionIndexDisplayables = sectionIndexDisplayables
+        self.headerType = headerType
         setupSections()
     }
     
@@ -51,7 +66,15 @@ final class TableViewSectionIndexTitleGenerator<T: SectionIndexDisplayable> {
         if isSectioningEnabled {
             sections = sortedTitles.map { sortedTitle in
                 let values = sectionIndexDisplayables.filter { displayable in
-                    sortedTitle == displayable.stringValue.firstLetter()
+                    let comparison: String
+                    switch headerType {
+                    case .firstLetter:
+                        comparison = displayable.stringValue.firstLetter()
+                    case .fullString:
+                        comparison = displayable.stringValue
+                    }
+                    let isMatch = sortedTitle == comparison
+                    return isMatch
                 }
                 return Section(header: sortedTitle, values: values)
             }
