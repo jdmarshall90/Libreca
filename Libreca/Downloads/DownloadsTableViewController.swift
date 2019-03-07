@@ -217,7 +217,6 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
             let ebookDir = try viewModel.exportableURL(for: download)
             let activityViewController = UIActivityViewController(activityItems: [ebookDir], applicationActivities: nil)
             activityViewController.completionWithItemsHandler = { activityType, success, items, error in
-                // TODO: delete the file from caches dir after user finishes
                 completion?(success)
             }
             
