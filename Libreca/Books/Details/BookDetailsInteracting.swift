@@ -59,8 +59,9 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         // architecture. I'm not going to bother with a GitLab issue for this hack itself,
         // because fixing the architecture will reveal this via a compile-time error.
         
-        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController as? UISplitViewController,
-            let mainNavController = rootViewController.viewControllers.first as? UINavigationController,
+        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController as? UITabBarController,
+            let splitViewController = rootViewController.viewControllers?.first as? UISplitViewController,
+            let mainNavController = splitViewController.viewControllers.first as? UINavigationController,
             let booksListViewController = mainNavController.viewControllers.first as? BooksListViewController else {
                 return false
         }
