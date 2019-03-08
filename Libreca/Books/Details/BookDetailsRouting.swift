@@ -50,7 +50,7 @@ final class BookDetailsRouter: BookDetailsRouting {
         
         editVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: editVC, action: #selector(BookEditViewing.didTapCancel))
         editVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: editVC, action: #selector(BookEditViewing.didTapSave))
-        editNav.modalPresentationStyle = .formSheet
+        editNav.modalPresentationStyle = .pageSheet
         editNav.navigationBar.isTranslucent = false
         editNav.navigationBar.prefersLargeTitles = true
         viewController?.present(editNav, animated: true)
