@@ -101,11 +101,11 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return bookViewModel.sections.count
+        return bookViewModel.editScreenSections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let field = bookViewModel.sections[section].field
+        let field = bookViewModel.editScreenSections[section].field
         
         switch field {
         case .rating where isShowingRatingPicker,
@@ -123,6 +123,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
              .series,
              .tags:
             return array(for: field).count + 1
+        case .formats:
+            fatalError("Formats are not editable")
         }
     }
     
@@ -137,7 +139,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let field = bookViewModel.sections[indexPath.section].field
+        let field = bookViewModel.editScreenSections[indexPath.section].field
         
         switch field {
         case .title:
@@ -156,19 +158,21 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             return createCommentsCell(for: field, at: indexPath)
         case .publishedOn:
             return createPublishedOnCell(for: field, at: indexPath)
+        case .formats:
+            fatalError("Formats are not editable")
         }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return bookViewModel.sections[section].header
+        return bookViewModel.editScreenSections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return bookViewModel.sections[section].footer
+        return bookViewModel.editScreenSections[section].footer
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let field = bookViewModel.sections[indexPath.section].field
+        let field = bookViewModel.editScreenSections[indexPath.section].field
         
         switch (field, editingStyle) {
         case (.authors, .insert):
@@ -218,7 +222,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        let section = bookViewModel.sections[indexPath.section]
+        let section = bookViewModel.editScreenSections[indexPath.section]
         
         let rowCount = tableView.numberOfRows(inSection: indexPath.section)
         let isAddRow = indexPath.row == rowCount - 1
@@ -227,16 +231,16 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return bookViewModel.sections[indexPath.section].field.isArrayBased
+        return bookViewModel.editScreenSections[indexPath.section].field.isArrayBased
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return bookViewModel.sections[indexPath.section].field.isHighlightable
+        return bookViewModel.editScreenSections[indexPath.section].field.isHighlightable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         view.endEditing(true)
-        let selectedField = bookViewModel.sections[indexPath.section].field
+        let selectedField = bookViewModel.editScreenSections[indexPath.section].field
         
         switch selectedField {
         case .rating:
@@ -267,6 +271,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             } else {
                 tableView.deleteRows(at: [indexPathOfPicker], with: .top)
             }
+        case .formats:
+            fatalError("Formats are not editable")
         }
     }
     
@@ -495,7 +501,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
     }
     
     private func createRatingCell(for field: BookViewModel.Section.Field, at indexPath: IndexPath) -> UITableViewCell {
-        let section = bookViewModel.sections[indexPath.section]
+        let section = bookViewModel.editScreenSections[indexPath.section]
         if isShowingRatingPicker,
             (indexPath.row + 1) > section.cells.count,
             let index = presenter.availableRatings.index(of: presenter.rating) {
@@ -531,6 +537,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             return presenter.identifiers
         case .tags:
             return presenter.tags
+        case .formats:
+            fatalError("Formats are not editable")
         }
     }
     
@@ -552,6 +560,8 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
             presenter.series = modifier(array(for: field)).first as? Book.Series
         case .tags:
             presenter.tags = modifier(presenter.tags).map { $0.fieldValue }
+        case .formats:
+            fatalError("Formats are not editable")
         }
     }
     
@@ -614,6 +624,8 @@ private extension BookViewModel.Section.Field {
              .comments,
              .publishedOn:
             return false
+        case .formats:
+            fatalError("Formats are not editable")
         }
     }
     

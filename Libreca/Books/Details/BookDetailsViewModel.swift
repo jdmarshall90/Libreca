@@ -48,6 +48,7 @@ final class BookDetailsViewModel {
                 case authors
                 case series
                 case comments
+                case formats
                 case publishedOn
                 case languages
                 case identifiers
@@ -60,6 +61,7 @@ final class BookDetailsViewModel {
                          .authors,
                          .series,
                          .comments,
+                         .formats,
                          .languages,
                          .identifiers,
                          .tags:
@@ -81,9 +83,28 @@ final class BookDetailsViewModel {
                          .authors,
                          .series,
                          .comments,
+                         .formats,
                          .languages,
                          .identifiers,
                          .tags:
+                        return false
+                    }
+                }
+                
+                fileprivate var isDetailsOnly: Bool {
+                    switch self {
+                    case .formats:
+                        return true
+                    case .publishedOn,
+                         .rating,
+                         .authors,
+                         .series,
+                         .comments,
+                         .languages,
+                         .identifiers,
+                         .tags,
+                         .title,
+                         .titleSort:
                         return false
                     }
                 }
@@ -111,6 +132,10 @@ final class BookDetailsViewModel {
             return sections.filter { !$0.field.isEditOnly }
         }
         
+        var editScreenSections: [Section] {
+            return sections.filter { !$0.field.isDetailsOnly }
+        }
+        
         init(book: Book) {
             self.book = book
             self.title = book.title.name
@@ -122,6 +147,20 @@ final class BookDetailsViewModel {
             let authorsSection = Section(field: .authors, cellRepresentations: book.authors, footer: nil)
             let seriesSection = Section(field: .series, cellRepresentations: [book.series].compactMap { $0 }, footer: nil, shouldSingularize: false)
             let commentsSection = Section(field: .comments, cellRepresentations: [book.comments].compactMap { $0 }, footer: nil)
+            
+            let footer: String?
+            var formats = book.formats
+            if let mainFormat = book.mainFormat?.format,
+                formats.count > 1,
+                let mainFormatIndex = formats.index(where: { $0.displayValue == mainFormat.displayValue }) {
+                formats.remove(at: mainFormatIndex)
+                formats.insert(mainFormat, at: 0)
+                footer = "The main format is at the top, and is downloadable."
+            } else {
+                footer = nil
+            }
+            
+            let formatsSections = Section(field: .formats, cellRepresentations: formats, footer: footer)
             
             let formattedPublishedDate: String?
             if let publishedDate = book.publishedDate {
@@ -151,7 +190,7 @@ final class BookDetailsViewModel {
             let tagsFooter = "\n\(addedToCaliberFooter)\n\n\(lastUpdatedFooter)"
             let tagsSection = Section(field: .tags, cellRepresentations: book.tags, footer: tagsFooter)
             
-            self.sections = [titleSection, titleSortSection, ratingSection, authorsSection, seriesSection, commentsSection, publishedSection, languagesSection, identifiersSection, tagsSection]
+            self.sections = [titleSection, titleSortSection, ratingSection, authorsSection, seriesSection, commentsSection, formatsSections, publishedSection, languagesSection, identifiersSection, tagsSection]
             
             self.cover = { completion in
                 book.cover.hitService { response in
@@ -193,6 +232,12 @@ extension Book.Author: CellRepresentable {
 extension String: CellRepresentable {
     fileprivate var cellRepresentation: Cell {
         return Cell(text: self)
+    }
+}
+
+extension Book.Format: CellRepresentable {
+    fileprivate var cellRepresentation: Cell {
+        return Cell(text: displayValue)
     }
 }
 
