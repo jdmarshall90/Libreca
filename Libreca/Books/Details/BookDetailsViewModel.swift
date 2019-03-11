@@ -136,6 +136,7 @@ final class BookDetailsViewModel {
             return sections.filter { !$0.field.isDetailsOnly }
         }
         
+        // swiftlint:disable:next function_body_length
         init(book: Book) {
             self.book = book
             self.title = book.title.name
