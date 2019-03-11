@@ -43,20 +43,22 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             static let emailAddress = "incoming+calibre-utils/Libreca@incoming.gitlab.com"
             
             // swiftlint:disable force_unwrapping
-            static let supportSite = URL(string: "https://marshallsoftware.wordpress.com/libreca/")!
-            static let privacyPolicySite = URL(string: "https://marshallsoftware.wordpress.com/libreca-privacy-policy/")!
+            static let supportSite = URL(string: "https://docs.libreca.io")!
+            static let privacyPolicySite = URL(string: "https://docs.libreca.io/privacy-policy/")!
             // swiftlint:enable force_unwrapping
         }
         
         struct About {
             private init() {}
             
-            static let credits = "Credits"
-            static let licenses = "Licenses"
             static let viewSource = "View Source Code"
+            static let licenses = "Licenses"
+            static let marketing = "App Website"
+            static let credits = "Credits"
             
             // swiftlint:disable force_unwrapping
-            static let sourceCodeSite = URL(string: "https://gitlab.com/calibre-utils/Libreca")!
+            static let sourceCodeSite = URL(string: "https://ios.source.libreca.io")!
+            static let marketingWebsite = URL(string: "https://libreca.io")!
             // swiftlint:enable force_unwrapping
         }
         
@@ -121,6 +123,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         present(safariVC, animated: true)
     }
     
+    // swiftlint:disable:next function_body_length
     private func reload() {
         displayModels = [
             [
@@ -172,15 +175,19 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 }
             ],
             [
-                DisplayModel(mainText: Constants.About.credits, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    self?.performSegue(withIdentifier: Segue.creditsSegue.rawValue, sender: nil)
-                },
                 DisplayModel(mainText: Constants.About.viewSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     Analytics.logEvent("view_source_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.About.sourceCodeSite)
                 },
                 DisplayModel(mainText: Constants.About.licenses, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.performSegue(withIdentifier: Segue.licensesSegue.rawValue, sender: nil)
+                },
+                DisplayModel(mainText: Constants.About.marketing, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    Analytics.logEvent("marketing_site_tapped", parameters: nil)
+                    self?.presentSafariViewController(with: Constants.About.marketingWebsite)
+                },
+                DisplayModel(mainText: Constants.About.credits, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.performSegue(withIdentifier: Segue.creditsSegue.rawValue, sender: nil)
                 }
             ]
         ]
