@@ -33,8 +33,6 @@ final class InAppPurchase {
             }
             
             case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
-            
-            // TODO: Come up with better names and bundle ids for these - DO THIS FIRST
             case donateOne = "com.marshall.justin.mobile.ios.Libreca.iap.donate.1"
             case donateTwo = "com.marshall.justin.mobile.ios.Libreca.iap.donate.2"
             case donateThree = "com.marshall.justin.mobile.ios.Libreca.iap.donate.3"
