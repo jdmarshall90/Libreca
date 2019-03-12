@@ -27,10 +27,37 @@ import StoreKit
 final class InAppPurchase {
     struct Product {
         enum Name: String, CaseIterable {
+            enum Kind {
+                case feature
+                case donation
+            }
+            
             case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
+            case donateOne = "com.marshall.justin.mobile.ios.Libreca.iap.donate.1"
+            case donateTwo = "com.marshall.justin.mobile.ios.Libreca.iap.donate.2"
+            case donateThree = "com.marshall.justin.mobile.ios.Libreca.iap.donate.3"
+            case donateFour = "com.marshall.justin.mobile.ios.Libreca.iap.donate.4"
+            case donateFive = "com.marshall.justin.mobile.ios.Libreca.iap.donate.5"
+            case donateSix = "com.marshall.justin.mobile.ios.Libreca.iap.donate.6"
+            case donateSeven = "com.marshall.justin.mobile.ios.Libreca.iap.donate.7"
             
             fileprivate var identifier: String {
                 return rawValue
+            }
+            
+            var kind: Kind {
+                switch self {
+                case .editMetadata:
+                    return .feature
+                case .donateOne,
+                     .donateTwo,
+                     .donateThree,
+                     .donateFour,
+                     .donateFive,
+                     .donateSix,
+                     .donateSeven:
+                    return .donation
+                }
             }
             
             var isPurchased: Bool {
@@ -84,7 +111,11 @@ final class InAppPurchase {
     typealias PurchaseCompletion = (Result<Product>) -> Void
     typealias RestoreCompletion = AvailableProductsCompletion
     
-    private let purchaser = Purchaser()
+    private let purchaser: Purchaser
+    
+    init(kind: InAppPurchase.Product.Name.Kind) {
+        purchaser = Purchaser(kind: kind)
+    }
     
     func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
         purchaser.requestAvailableProducts(completion: completion)
@@ -109,11 +140,14 @@ final class InAppPurchase {
         private var purchaseCompletion: PurchaseCompletion?
         private var restoreCompletion: RestoreCompletion?
         
+        private let kind: InAppPurchase.Product.Name.Kind
+        
         private var productIdentifiers: Set<String> {
             return Set(Product.Name.allCases.map { $0.identifier })
         }
         
-        override init() {
+        init(kind: InAppPurchase.Product.Name.Kind) {
+            self.kind = kind
             super.init()
             SKPaymentQueue.default().add(self)
         }
@@ -156,6 +190,7 @@ final class InAppPurchase {
             availableProducts = response
                 .products
                 .compactMap { Product(name: Product.Name(rawValue: $0.productIdentifier), skProduct: $0) }
+                .filter { $0.name.kind == self.kind }
             productsRequestCompletionHandler?(.success(availableProducts))
             cleanup()
         }

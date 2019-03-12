@@ -31,7 +31,7 @@ import UIKit
 /// think its present simplicity warrants the overhead. If this starts to get
 /// out of hand, then it should be refactored to use VIPER.
 final class InAppPurchasesViewController: UITableViewController {
-    private let inAppPurchase = InAppPurchase()
+    private let inAppPurchase: InAppPurchase
     private var products: [InAppPurchase.Product] {
         return sections.flatMap { $0.cells }.compactMap { $0.product }
     }
@@ -42,7 +42,8 @@ final class InAppPurchasesViewController: UITableViewController {
         }
     }
     
-    init() {
+    init(kind: InAppPurchase.Product.Name.Kind) {
+        self.inAppPurchase = InAppPurchase(kind: kind)
         super.init(style: .grouped)
     }
     

@@ -231,7 +231,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     
     private func didTapUpgrades() {
         Analytics.logEvent("upgrades_tapped_via_settings", parameters: nil)
-        navigationController?.pushViewController(InAppPurchasesViewController(), animated: true)
+        navigationController?.pushViewController(InAppPurchasesViewController(kind: .feature), animated: true)
     }
     
     private func didTapExportData() {
