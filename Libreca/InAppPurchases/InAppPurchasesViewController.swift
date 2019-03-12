@@ -144,42 +144,60 @@ final class InAppPurchasesViewController: UITableViewController {
     private func createSections(from result: Result<[InAppPurchase.Product]>) -> [Section] {
         switch result {
         case .success(let products):
-            tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
-            
-            let productsSections = products.map {
-                Section(
-                    header: $0.title,
-                    cells: [
-                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
-                            self?.purchaseItem(at: indexPath)
-                        }
-                    ],
-                    footer: $0.description
-                )
+            switch inAppPurchase.kind {
+            case .donation:
+                return createDonationSections(from: products)
+            case .feature:
+                return createFeatureSections(from: products)
             }
-            let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
-            let restorationSection = Section(
+        case .failure(let error):
+            return createFailureSection(from: error)
+        }
+    }
+    
+    private func createFeatureSections(from products: [InAppPurchase.Product]) -> [Section] {
+        tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+        
+        let productsSections = products.map {
+            Section(
+                header: $0.title,
+                cells: [
+                    Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
+                        self?.purchaseItem(at: indexPath)
+                    }
+                ],
+                footer: $0.description
+            )
+        }
+        let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
+        let restorationSection = Section(
+            header: nil,
+            cells: [
+                Section.Cell(text: "Restore purchases", product: nil, cellID: "RestoreCellID", accessoryType: .disclosureIndicator) { [weak self] _ in
+                    self?.restore()
+                }
+            ],
+            footer: nil
+        )
+        
+        return [instructionsSection] + productsSections + [restorationSection]
+    }
+    
+    private func createDonationSections(from products: [InAppPurchase.Product]) -> [Section] {
+        // TODO: implement me
+        return []
+    }
+    
+    private func createFailureSection(from error: Error) -> [Section] {
+        return [
+            Section(
                 header: nil,
                 cells: [
-                    Section.Cell(text: "Restore purchases", product: nil, cellID: "RestoreCellID", accessoryType: .disclosureIndicator) { [weak self] _ in
-                        self?.restore()
-                    }
+                    Section.Cell(text: error.localizedDescription, product: nil, cellID: "FailureCellID", accessoryType: .none, tapAction: nil)
                 ],
                 footer: nil
             )
-            
-            return [instructionsSection] + productsSections + [restorationSection]
-        case .failure(let error):
-            return [
-                Section(
-                    header: nil,
-                    cells: [
-                        Section.Cell(text: error.localizedDescription, product: nil, cellID: "FailureCellID", accessoryType: .none, tapAction: nil)
-                    ],
-                    footer: nil
-                )
-            ]
-        }
+        ]
     }
     
     private func setUserProperty(for productName: InAppPurchase.Product.Name) {

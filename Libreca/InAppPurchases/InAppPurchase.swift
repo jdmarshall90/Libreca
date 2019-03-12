@@ -113,6 +113,10 @@ final class InAppPurchase {
     
     private let purchaser: Purchaser
     
+    var kind: InAppPurchase.Product.Name.Kind {
+        return purchaser.kind
+    }
+    
     init(kind: InAppPurchase.Product.Name.Kind) {
         purchaser = Purchaser(kind: kind)
     }
@@ -140,7 +144,7 @@ final class InAppPurchase {
         private var purchaseCompletion: PurchaseCompletion?
         private var restoreCompletion: RestoreCompletion?
         
-        private let kind: InAppPurchase.Product.Name.Kind
+        fileprivate let kind: InAppPurchase.Product.Name.Kind
         
         private var productIdentifiers: Set<String> {
             return Set(Product.Name.allCases.map { $0.identifier })
