@@ -74,14 +74,25 @@ final class InAppPurchasesViewController: UITableViewController {
         
         // swiftlint:disable:next force_unwrapping
         let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
-        title = "\(appName) Upgrades"
+        
+        switch inAppPurchase.kind {
+        case .feature:
+            title = "\(appName) Upgrades"
+        case .support:
+            title = "Support \(appName)"
+        }
         
         loadUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Analytics.setScreenName("iap_upgrades", screenClass: nil)
+        switch inAppPurchase.kind {
+        case .feature:
+            Analytics.setScreenName("iap_upgrades", screenClass: nil)
+        case .support:
+            Analytics.setScreenName("iap_support", screenClass: nil)
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -126,11 +137,18 @@ final class InAppPurchasesViewController: UITableViewController {
     }
     
     private func loadUI() {
+        let loadingText: String
+        switch inAppPurchase.kind {
+        case .feature:
+            loadingText = "Retrieving available in-app purchases..."
+        case .support:
+            loadingText = "Retrieving available support options..."
+        }
         sections = [
             Section(
                 header: nil,
                 cells: [
-                    Section.Cell(text: "Retrieving available in-app purchases...", product: nil, cellID: "LoadingCellID", accessoryType: .none, tapAction: nil)
+                    Section.Cell(text: loadingText, product: nil, cellID: "LoadingCellID", accessoryType: .none, tapAction: nil)
                 ],
                 footer: nil
             )
@@ -145,8 +163,8 @@ final class InAppPurchasesViewController: UITableViewController {
         switch result {
         case .success(let products):
             switch inAppPurchase.kind {
-            case .donation:
-                return createDonationSections(from: products)
+            case .support:
+                return createSupportSections(from: products)
             case .feature:
                 return createFeatureSections(from: products)
             }
@@ -183,9 +201,22 @@ final class InAppPurchasesViewController: UITableViewController {
         return [instructionsSection] + productsSections + [restorationSection]
     }
     
-    private func createDonationSections(from products: [InAppPurchase.Product]) -> [Section] {
-        // TODO: implement me
-        return []
+    private func createSupportSections(from products: [InAppPurchase.Product]) -> [Section] {
+        tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+        
+        // swiftlint:disable:next force_unwrapping
+        let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
+        
+        let footerText = "Thank you! Any amount helps development of \(appName) continue."
+        let instructionsSection = Section(header: nil, cells: [], footer: footerText)
+        
+        let supportCells = products.sorted { $0.price < $1.price }.map {
+            Section.Cell(text: "One-Time Gift of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
+                self?.purchaseItem(at: indexPath)
+            }
+        }
+        let supportSection = Section(header: nil, cells: supportCells, footer: nil)
+        return [instructionsSection, supportSection]
     }
     
     private func createFailureSection(from error: Error) -> [Section] {
@@ -200,20 +231,36 @@ final class InAppPurchasesViewController: UITableViewController {
         ]
     }
     
+    // TODO: Test that support gifts work
+    // TODO: Test all these new analytics items
+    
     private func setUserProperty(for productName: InAppPurchase.Product.Name) {
         switch productName {
         case .editMetadata:
             Analytics.setUserProperty("premium", forName: "iap_edit_metadata")
+        case .supportSmall:
+            Analytics.setUserProperty("support_small", forName: "iap_support")
+        case .supportExtraSmall:
+            Analytics.setUserProperty("support_extra_small", forName: "iap_support")
+        case .supportTiny:
+            Analytics.setUserProperty("support_tiny", forName: "iap_support")
         }
         
         Analytics.setUserProperty("premium", forName: "iap_premium_user")
     }
     
+    // swiftlint:disable:next function_body_length
     private func purchaseItem(at indexPath: IndexPath) {
         let product = products[indexPath.section - 1]
         switch product.name {
         case .editMetadata:
             Analytics.logEvent("iap_purchase_edit_metadata_tapped", parameters: nil)
+        case .supportSmall:
+            Analytics.logEvent("iap_small_support_tapped", parameters: nil)
+        case .supportExtraSmall:
+            Analytics.logEvent("iap_extra_small_support_tapped", parameters: nil)
+        case .supportTiny:
+            Analytics.logEvent("iap_tiny_support_tapped", parameters: nil)
         }
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
@@ -224,6 +271,12 @@ final class InAppPurchasesViewController: UITableViewController {
                 switch product.name {
                 case .editMetadata:
                     Analytics.logEvent("iap_purchase_edit_metadata_success", parameters: nil)
+                case .supportSmall:
+                    Analytics.logEvent("iap_small_support_success", parameters: nil)
+                case .supportExtraSmall:
+                    Analytics.logEvent("iap_extra_small_support_success", parameters: nil)
+                case .supportTiny:
+                    Analytics.logEvent("iap_tiny_support_success", parameters: nil)
                 }
             case .failure(let error):
                 if let error = error as? InAppPurchase.InAppPurchaseError {
@@ -236,6 +289,12 @@ final class InAppPurchasesViewController: UITableViewController {
                 switch product.name {
                 case .editMetadata:
                     Analytics.logEvent("iap_purchase_edit_metadata_fail", parameters: nil)
+                case .supportSmall:
+                    Analytics.logEvent("iap_small_support_fail", parameters: nil)
+                case .supportExtraSmall:
+                    Analytics.logEvent("iap_extra_small_support_fail", parameters: nil)
+                case .supportTiny:
+                    Analytics.logEvent("iap_tiny_support_fail", parameters: nil)
                 }
             }
             
@@ -265,6 +324,10 @@ final class InAppPurchasesViewController: UITableViewController {
                     switch product.name {
                     case .editMetadata:
                         Analytics.logEvent("iap_restore_edit_metadata_success", parameters: nil)
+                    case .supportSmall,
+                         .supportExtraSmall,
+                         .supportTiny:
+                        fatalError("Support IAPs aren't restorable")
                     }
                 }
                 

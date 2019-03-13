@@ -147,6 +147,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Upgrades", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.didTapUpgrades()
+                },
+                DisplayModel(mainText: "Support \(Constants.Bundles.app.name)", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                    self?.didTapProvideSupport()
                 }
             ],
             [
@@ -232,6 +235,11 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     private func didTapUpgrades() {
         Analytics.logEvent("upgrades_tapped_via_settings", parameters: nil)
         navigationController?.pushViewController(InAppPurchasesViewController(kind: .feature), animated: true)
+    }
+    
+    private func didTapProvideSupport() {
+        Analytics.logEvent("support_tapped_via_settings", parameters: nil)
+        navigationController?.pushViewController(InAppPurchasesViewController(kind: .support), animated: true)
     }
     
     private func didTapExportData() {

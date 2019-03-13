@@ -29,17 +29,14 @@ final class InAppPurchase {
         enum Name: String, CaseIterable {
             enum Kind {
                 case feature
-                case donation
+                case support
             }
             
             case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
-            case donateOne = "com.marshall.justin.mobile.ios.Libreca.iap.donate.1"
-            case donateTwo = "com.marshall.justin.mobile.ios.Libreca.iap.donate.2"
-            case donateThree = "com.marshall.justin.mobile.ios.Libreca.iap.donate.3"
-            case donateFour = "com.marshall.justin.mobile.ios.Libreca.iap.donate.4"
-            case donateFive = "com.marshall.justin.mobile.ios.Libreca.iap.donate.5"
-            case donateSix = "com.marshall.justin.mobile.ios.Libreca.iap.donate.6"
-            case donateSeven = "com.marshall.justin.mobile.ios.Libreca.iap.donate.7"
+            
+            case supportSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.small"
+            case supportExtraSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.extrasmall"
+            case supportTiny = "com.marshall.justin.mobile.ios.Libreca.iap.support.tiny"
             
             fileprivate var identifier: String {
                 return rawValue
@@ -49,14 +46,10 @@ final class InAppPurchase {
                 switch self {
                 case .editMetadata:
                     return .feature
-                case .donateOne,
-                     .donateTwo,
-                     .donateThree,
-                     .donateFour,
-                     .donateFive,
-                     .donateSix,
-                     .donateSeven:
-                    return .donation
+                case .supportSmall,
+                     .supportExtraSmall,
+                     .supportTiny:
+                    return .support
                 }
             }
             
