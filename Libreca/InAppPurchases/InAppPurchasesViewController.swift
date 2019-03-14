@@ -251,7 +251,13 @@ final class InAppPurchasesViewController: UITableViewController {
     
     // swiftlint:disable:next function_body_length
     private func purchaseItem(at indexPath: IndexPath) {
-        let product = products[indexPath.section - 1]
+        let product: InAppPurchase.Product
+        switch inAppPurchase.kind {
+        case .feature:
+            product = products[indexPath.section - 1]
+        case .support:
+            product = products[indexPath.row]
+        }
         switch product.name {
         case .editMetadata:
             Analytics.logEvent("iap_purchase_edit_metadata_tapped", parameters: nil)
