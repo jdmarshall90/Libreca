@@ -232,6 +232,7 @@ final class InAppPurchasesViewController: UITableViewController {
     }
     
     // TODO: Test that support gifts work
+    // TODO: Regression test the other IAP with a new test id
     // TODO: Test all these new analytics items
     
     private func setUserProperty(for productName: InAppPurchase.Product.Name) {
