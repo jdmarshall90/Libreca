@@ -231,8 +231,6 @@ final class InAppPurchasesViewController: UITableViewController {
         ]
     }
     
-    // TODO: Test all these new analytics items
-    
     private func setUserProperty(for productName: InAppPurchase.Product.Name) {
         switch productName {
         case .editMetadata:
