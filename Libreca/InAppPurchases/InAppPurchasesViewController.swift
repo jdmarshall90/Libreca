@@ -31,7 +31,7 @@ import UIKit
 /// think its present simplicity warrants the overhead. If this starts to get
 /// out of hand, then it should be refactored to use VIPER.
 final class InAppPurchasesViewController: UITableViewController {
-    private let inAppPurchase = InAppPurchase()
+    private let inAppPurchase: InAppPurchase
     private var products: [InAppPurchase.Product] {
         return sections.flatMap { $0.cells }.compactMap { $0.product }
     }
@@ -42,7 +42,8 @@ final class InAppPurchasesViewController: UITableViewController {
         }
     }
     
-    init() {
+    init(kind: InAppPurchase.Product.Name.Kind) {
+        self.inAppPurchase = InAppPurchase(kind: kind)
         super.init(style: .grouped)
     }
     
@@ -73,14 +74,25 @@ final class InAppPurchasesViewController: UITableViewController {
         
         // swiftlint:disable:next force_unwrapping
         let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
-        title = "\(appName) Upgrades"
+        
+        switch inAppPurchase.kind {
+        case .feature:
+            title = "\(appName) Upgrades"
+        case .support:
+            title = "Support \(appName)"
+        }
         
         loadUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Analytics.setScreenName("iap_upgrades", screenClass: nil)
+        switch inAppPurchase.kind {
+        case .feature:
+            Analytics.setScreenName("iap_upgrades", screenClass: nil)
+        case .support:
+            Analytics.setScreenName("iap_support", screenClass: nil)
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -125,11 +137,18 @@ final class InAppPurchasesViewController: UITableViewController {
     }
     
     private func loadUI() {
+        let loadingText: String
+        switch inAppPurchase.kind {
+        case .feature:
+            loadingText = "Retrieving available in-app purchases..."
+        case .support:
+            loadingText = "Retrieving available support options..."
+        }
         sections = [
             Section(
                 header: nil,
                 cells: [
-                    Section.Cell(text: "Retrieving available in-app purchases...", product: nil, cellID: "LoadingCellID", accessoryType: .none, tapAction: nil)
+                    Section.Cell(text: loadingText, product: nil, cellID: "LoadingCellID", accessoryType: .none, tapAction: nil)
                 ],
                 footer: nil
             )
@@ -143,58 +162,110 @@ final class InAppPurchasesViewController: UITableViewController {
     private func createSections(from result: Result<[InAppPurchase.Product]>) -> [Section] {
         switch result {
         case .success(let products):
-            tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
-            
-            let productsSections = products.map {
-                Section(
-                    header: $0.title,
-                    cells: [
-                        Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
-                            self?.purchaseItem(at: indexPath)
-                        }
-                    ],
-                    footer: $0.description
-                )
+            switch inAppPurchase.kind {
+            case .support:
+                return createSupportSections(from: products)
+            case .feature:
+                return createFeatureSections(from: products)
             }
-            let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
-            let restorationSection = Section(
+        case .failure(let error):
+            return createFailureSection(from: error)
+        }
+    }
+    
+    private func createFeatureSections(from products: [InAppPurchase.Product]) -> [Section] {
+        tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+        
+        let productsSections = products.map {
+            Section(
+                header: $0.title,
+                cells: [
+                    Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
+                        self?.purchaseItem(at: indexPath)
+                    }
+                ],
+                footer: $0.description
+            )
+        }
+        let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
+        let restorationSection = Section(
+            header: nil,
+            cells: [
+                Section.Cell(text: "Restore purchases", product: nil, cellID: "RestoreCellID", accessoryType: .disclosureIndicator) { [weak self] _ in
+                    self?.restore()
+                }
+            ],
+            footer: nil
+        )
+        
+        return [instructionsSection] + productsSections + [restorationSection]
+    }
+    
+    private func createSupportSections(from products: [InAppPurchase.Product]) -> [Section] {
+        tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+        
+        // swiftlint:disable:next force_unwrapping
+        let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
+        
+        let footerText = "Thank you! Any amount helps development of \(appName) continue."
+        let instructionsSection = Section(header: nil, cells: [], footer: footerText)
+        
+        let supportCells = products.sorted { $0.price < $1.price }.map {
+            Section.Cell(text: "One-Time Gift of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
+                self?.purchaseItem(at: indexPath)
+            }
+        }
+        let supportSection = Section(header: nil, cells: supportCells, footer: nil)
+        return [instructionsSection, supportSection]
+    }
+    
+    private func createFailureSection(from error: Error) -> [Section] {
+        return [
+            Section(
                 header: nil,
                 cells: [
-                    Section.Cell(text: "Restore purchases", product: nil, cellID: "RestoreCellID", accessoryType: .disclosureIndicator) { [weak self] _ in
-                        self?.restore()
-                    }
+                    Section.Cell(text: error.localizedDescription, product: nil, cellID: "FailureCellID", accessoryType: .none, tapAction: nil)
                 ],
                 footer: nil
             )
-            
-            return [instructionsSection] + productsSections + [restorationSection]
-        case .failure(let error):
-            return [
-                Section(
-                    header: nil,
-                    cells: [
-                        Section.Cell(text: error.localizedDescription, product: nil, cellID: "FailureCellID", accessoryType: .none, tapAction: nil)
-                    ],
-                    footer: nil
-                )
-            ]
-        }
+        ]
     }
+    
+    // TODO: Test all these new analytics items
     
     private func setUserProperty(for productName: InAppPurchase.Product.Name) {
         switch productName {
         case .editMetadata:
             Analytics.setUserProperty("premium", forName: "iap_edit_metadata")
+        case .supportSmall:
+            Analytics.setUserProperty("support_small", forName: "iap_support")
+        case .supportExtraSmall:
+            Analytics.setUserProperty("support_extra_small", forName: "iap_support")
+        case .supportTiny:
+            Analytics.setUserProperty("support_tiny", forName: "iap_support")
         }
         
         Analytics.setUserProperty("premium", forName: "iap_premium_user")
     }
     
+    // swiftlint:disable:next function_body_length
     private func purchaseItem(at indexPath: IndexPath) {
-        let product = products[indexPath.section - 1]
+        let product: InAppPurchase.Product
+        switch inAppPurchase.kind {
+        case .feature:
+            product = products[indexPath.section - 1]
+        case .support:
+            product = products[indexPath.row]
+        }
         switch product.name {
         case .editMetadata:
             Analytics.logEvent("iap_purchase_edit_metadata_tapped", parameters: nil)
+        case .supportSmall:
+            Analytics.logEvent("iap_small_support_tapped", parameters: nil)
+        case .supportExtraSmall:
+            Analytics.logEvent("iap_extra_small_support_tapped", parameters: nil)
+        case .supportTiny:
+            Analytics.logEvent("iap_tiny_support_tapped", parameters: nil)
         }
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
@@ -205,6 +276,12 @@ final class InAppPurchasesViewController: UITableViewController {
                 switch product.name {
                 case .editMetadata:
                     Analytics.logEvent("iap_purchase_edit_metadata_success", parameters: nil)
+                case .supportSmall:
+                    Analytics.logEvent("iap_small_support_success", parameters: nil)
+                case .supportExtraSmall:
+                    Analytics.logEvent("iap_extra_small_support_success", parameters: nil)
+                case .supportTiny:
+                    Analytics.logEvent("iap_tiny_support_success", parameters: nil)
                 }
             case .failure(let error):
                 if let error = error as? InAppPurchase.InAppPurchaseError {
@@ -217,6 +294,12 @@ final class InAppPurchasesViewController: UITableViewController {
                 switch product.name {
                 case .editMetadata:
                     Analytics.logEvent("iap_purchase_edit_metadata_fail", parameters: nil)
+                case .supportSmall:
+                    Analytics.logEvent("iap_small_support_fail", parameters: nil)
+                case .supportExtraSmall:
+                    Analytics.logEvent("iap_extra_small_support_fail", parameters: nil)
+                case .supportTiny:
+                    Analytics.logEvent("iap_tiny_support_fail", parameters: nil)
                 }
             }
             
@@ -246,6 +329,10 @@ final class InAppPurchasesViewController: UITableViewController {
                     switch product.name {
                     case .editMetadata:
                         Analytics.logEvent("iap_restore_edit_metadata_success", parameters: nil)
+                    case .supportSmall,
+                         .supportExtraSmall,
+                         .supportTiny:
+                        fatalError("Support IAPs aren't restorable")
                     }
                 }
                 

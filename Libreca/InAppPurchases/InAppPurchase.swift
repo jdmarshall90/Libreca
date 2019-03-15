@@ -27,10 +27,30 @@ import StoreKit
 final class InAppPurchase {
     struct Product {
         enum Name: String, CaseIterable {
+            enum Kind {
+                case feature
+                case support
+            }
+            
             case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
+            
+            case supportSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.small"
+            case supportExtraSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.extrasmall"
+            case supportTiny = "com.marshall.justin.mobile.ios.Libreca.iap.support.tiny"
             
             fileprivate var identifier: String {
                 return rawValue
+            }
+            
+            var kind: Kind {
+                switch self {
+                case .editMetadata:
+                    return .feature
+                case .supportSmall,
+                     .supportExtraSmall,
+                     .supportTiny:
+                    return .support
+                }
             }
             
             var isPurchased: Bool {
@@ -84,7 +104,15 @@ final class InAppPurchase {
     typealias PurchaseCompletion = (Result<Product>) -> Void
     typealias RestoreCompletion = AvailableProductsCompletion
     
-    private let purchaser = Purchaser()
+    private let purchaser: Purchaser
+    
+    var kind: InAppPurchase.Product.Name.Kind {
+        return purchaser.kind
+    }
+    
+    init(kind: InAppPurchase.Product.Name.Kind) {
+        purchaser = Purchaser(kind: kind)
+    }
     
     func requestAvailableProducts(completion: @escaping AvailableProductsCompletion) {
         purchaser.requestAvailableProducts(completion: completion)
@@ -109,11 +137,14 @@ final class InAppPurchase {
         private var purchaseCompletion: PurchaseCompletion?
         private var restoreCompletion: RestoreCompletion?
         
+        fileprivate let kind: InAppPurchase.Product.Name.Kind
+        
         private var productIdentifiers: Set<String> {
             return Set(Product.Name.allCases.map { $0.identifier })
         }
         
-        override init() {
+        init(kind: InAppPurchase.Product.Name.Kind) {
+            self.kind = kind
             super.init()
             SKPaymentQueue.default().add(self)
         }
@@ -156,6 +187,7 @@ final class InAppPurchase {
             availableProducts = response
                 .products
                 .compactMap { Product(name: Product.Name(rawValue: $0.productIdentifier), skProduct: $0) }
+                .filter { $0.name.kind == self.kind }
             productsRequestCompletionHandler?(.success(availableProducts))
             cleanup()
         }

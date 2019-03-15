@@ -68,7 +68,7 @@ final class BookDetailsRouter: BookDetailsRouting {
         alertController.addAction(
             UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
                 Analytics.logEvent("edit_book_unpurchased_learn_more", parameters: nil)
-                self?.showIAPs(completion: completion)
+                self?.showFeatureIAPs(completion: completion)
             }
         )
         
@@ -89,10 +89,10 @@ final class BookDetailsRouter: BookDetailsRouting {
         viewController?.present(alertController, animated: true)
     }
     
-    private func showIAPs(completion: @escaping () -> Void) {
+    private func showFeatureIAPs(completion: @escaping () -> Void) {
         editPurchaseValuePropCompletion = completion
         
-        let iapVC = InAppPurchasesViewController()
+        let iapVC = InAppPurchasesViewController(kind: .feature)
         iapNav = UINavigationController(rootViewController: iapVC)
         
         iapVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneOnIAP))
