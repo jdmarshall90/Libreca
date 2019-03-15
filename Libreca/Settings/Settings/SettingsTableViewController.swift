@@ -248,6 +248,12 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             UIButton.appearance().tintColor = UIButton().tintColor
         }
         let activityViewController = UIActivityViewController(activityItems: [itemsDescription], applicationActivities: nil)
+        
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            popoverController.sourceView = view
+            popoverController.permittedArrowDirections = .up
+        }
         present(activityViewController, animated: true)
     }
     
@@ -266,6 +272,12 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            popoverController.sourceView = view
+            popoverController.permittedArrowDirections = .up
+        }
         present(alertController, animated: true)
     }
     
@@ -461,6 +473,11 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                         Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
                     }
                 )
+                
+                if let popoverController = alertController.popoverPresentationController {
+                    popoverController.sourceRect = cell.frame
+                    popoverController.sourceView = cell
+                }
                 self?.present(alertController, animated: true)
             }
         }
