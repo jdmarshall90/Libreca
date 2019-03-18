@@ -211,7 +211,20 @@ final class InAppPurchase {
         func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
             var purchased: Product?
             var restored: [Product] = []
-            for transaction in transactions {
+            
+            // I would not expect this to be necessary, but sometimes unexpected IAPs come back in
+            // the `transactions` array, causing the force unwraps later in the process to fail and
+            // crash. I am fixing it here instead of refactoring the force unwraps below because this
+            // approach requires less testing, and testing IAPs is a PITA.
+            let relevantTransactions = transactions.filter { transaction in
+                if Product.Name(rawValue: transaction.payment.productIdentifier)?.kind == kind {
+                    return true
+                } else {
+                    SKPaymentQueue.default().finishTransaction(transaction)
+                    return false
+                }
+            }
+            for transaction in relevantTransactions {
                 switch transaction.transactionState {
                 case .purchased:
                     purchased = complete(transaction: transaction)
