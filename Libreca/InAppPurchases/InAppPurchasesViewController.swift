@@ -103,6 +103,18 @@ final class InAppPurchasesViewController: UITableViewController {
         return sections[section].cells.count
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].header
     }

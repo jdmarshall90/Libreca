@@ -64,6 +64,18 @@ final class CreditsViewController: UITableViewController {
         Analytics.setScreenName("credits", screenClass: nil)
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let tappableCell = TappableCell(rawValue: indexPath.section) else { return }
         

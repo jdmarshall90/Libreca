@@ -147,6 +147,18 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         return index
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
     }
