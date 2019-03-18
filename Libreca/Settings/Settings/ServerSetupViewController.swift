@@ -101,7 +101,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     private func saveTheURL() {
         do {
             try viewModel.save(url: urlTextField.text, username: usernameTextField.text, password: passwordTextField.text)
-            dismiss(animated: true)
+            navigationController?.popViewController(animated: true)
         } catch {
             // swiftlint:disable:next force_cast
             let alertController = UIAlertController(title: "Missing information", message: (error as! ServerSetupViewModel.ConfigurationError).localizedDescription, preferredStyle: .alert)
