@@ -70,6 +70,18 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case urlTextField:

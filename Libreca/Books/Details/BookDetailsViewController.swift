@@ -102,6 +102,18 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if case .dark = Settings.Theme.current {
+            (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
+        }
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return bookViewModel?.detailsScreenSections[section].header
     }
