@@ -111,12 +111,6 @@
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
 		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
-		D0DF7E48223C95AA00616E1A /* FirebaseABTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DF7E42223C95A900616E1A /* FirebaseABTesting.framework */; };
-		D0DF7E49223C95AA00616E1A /* GTMSessionFetcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DF7E43223C95A900616E1A /* GTMSessionFetcher.framework */; };
-		D0DF7E4A223C95AA00616E1A /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DF7E44223C95A900616E1A /* Protobuf.framework */; };
-		D0DF7E4B223C95AA00616E1A /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DF7E45223C95A900616E1A /* FirebaseRemoteConfig.framework */; };
-		D0DF7E4C223C95AA00616E1A /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DF7E46223C95AA00616E1A /* FirebasePerformance.framework */; };
-		D0DF7E4D223C95AA00616E1A /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DF7E47223C95AA00616E1A /* GoogleToolboxForMac.framework */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8EC217C0C8300622080 /* GDPR.swift */; };
 /* End PBXBuildFile section */
@@ -255,12 +249,6 @@
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
-		D0DF7E42223C95A900616E1A /* FirebaseABTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseABTesting.framework; path = Carthage/Build/iOS/FirebaseABTesting.framework; sourceTree = "<group>"; };
-		D0DF7E43223C95A900616E1A /* GTMSessionFetcher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GTMSessionFetcher.framework; path = Carthage/Build/iOS/GTMSessionFetcher.framework; sourceTree = "<group>"; };
-		D0DF7E44223C95A900616E1A /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
-		D0DF7E45223C95A900616E1A /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
-		D0DF7E46223C95AA00616E1A /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
-		D0DF7E47223C95AA00616E1A /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleToolboxForMac.framework; path = Carthage/Build/iOS/GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		D0EFA8EC217C0C8300622080 /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -269,26 +257,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0DF7E4C223C95AA00616E1A /* FirebasePerformance.framework in Frameworks */,
 				D0D6F2AD2178246D006F21A4 /* libc++.tbd in Frameworks */,
-				D0DF7E4D223C95AA00616E1A /* GoogleToolboxForMac.framework in Frameworks */,
 				D0D6F2AB21782468006F21A4 /* libsqlite3.tbd in Frameworks */,
 				D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */,
 				D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
-				D0DF7E48223C95AA00616E1A /* FirebaseABTesting.framework in Frameworks */,
 				D0D6F2A321782131006F21A4 /* GoogleAppMeasurement.framework in Frameworks */,
-				D0DF7E4A223C95AA00616E1A /* Protobuf.framework in Frameworks */,
 				D07C4DFB21E0644F00E1B470 /* Valet.framework in Frameworks */,
 				D0D6F29F21782131006F21A4 /* FirebaseCore.framework in Frameworks */,
 				D0D6F29C21782131006F21A4 /* FIRAnalyticsConnector.framework in Frameworks */,
 				D0D6F2A221782131006F21A4 /* nanopb.framework in Frameworks */,
-				D0DF7E4B223C95AA00616E1A /* FirebaseRemoteConfig.framework in Frameworks */,
 				D0D6F2A021782131006F21A4 /* FirebaseInstanceID.framework in Frameworks */,
 				D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
 				D0D6F2A521782131006F21A4 /* FirebaseAnalytics.framework in Frameworks */,
 				D0D6F2A121782131006F21A4 /* GoogleUtilities.framework in Frameworks */,
-				D0DF7E49223C95AA00616E1A /* GTMSessionFetcher.framework in Frameworks */,
 				D003EA0322068B0100B200A2 /* StoreKit.framework in Frameworks */,
 				D0D6F29D21782131006F21A4 /* Fabric.framework in Frameworks */,
 				D0D6F2A9217823FD006F21A4 /* Crashlytics.framework in Frameworks */,
@@ -528,12 +510,6 @@
 				D049687B21D01D9300BD24C4 /* AlamofireNetworkActivityIndicator.framework */,
 				D0D6F2AC2178246D006F21A4 /* libc++.tbd */,
 				D0D6F2AA21782467006F21A4 /* libsqlite3.tbd */,
-				D0DF7E42223C95A900616E1A /* FirebaseABTesting.framework */,
-				D0DF7E46223C95AA00616E1A /* FirebasePerformance.framework */,
-				D0DF7E45223C95A900616E1A /* FirebaseRemoteConfig.framework */,
-				D0DF7E47223C95AA00616E1A /* GoogleToolboxForMac.framework */,
-				D0DF7E43223C95A900616E1A /* GTMSessionFetcher.framework */,
-				D0DF7E44223C95A900616E1A /* Protobuf.framework */,
 				D0D6F2A8217823FD006F21A4 /* Crashlytics.framework */,
 				D0D6F29321782130006F21A4 /* Fabric.framework */,
 				D0D6F29221782130006F21A4 /* FIRAnalyticsConnector.framework */,
