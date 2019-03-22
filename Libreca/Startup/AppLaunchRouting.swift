@@ -91,12 +91,45 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
     
     // MARK: - UITabBarControllerDelegate
     
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        scrollToTop(of: viewController, in: tabBarController)
+        popToRoot(of: viewController, in: tabBarController)
+        return true
+    }
+    
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        updateBadgeValue(of: viewController)
+    }
+    
+    private func updateBadgeValue(of viewController: UIViewController) {
         if let navController = viewController as? UINavigationController,
             let rootControllerOfNav = navController.viewControllers.first,
             rootControllerOfNav is DownloadsTableViewController {
             navController.tabBarItem.badgeValue = nil
         }
+    }
+    
+    private func scrollToTop(of viewController: UIViewController, in tabBarController: UITabBarController) {
+        guard tabBarController.selectedViewController == viewController,
+            let newNavController = viewController as? UINavigationController ?? (viewController as? UISplitViewController)?.viewControllers.first as? UINavigationController,
+            newNavController.viewControllers.count == 1,
+            let tableView = newNavController.viewControllers.first?.view as? UITableView else {
+                return
+        }
+        
+        DispatchQueue.main.async {
+            tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        }
+    }
+    
+    private func popToRoot(of viewController: UIViewController, in tabBarController: UITabBarController) {
+        guard tabBarController.selectedViewController == viewController,
+            let newNavController = viewController as? UINavigationController ?? (viewController as? UISplitViewController)?.viewControllers.first as? UINavigationController,
+            newNavController.viewControllers.count > 1 else {
+                return
+        }
+        
+        newNavController.popToRootViewController(animated: true)
     }
     
     // MARK: - Notification observers
