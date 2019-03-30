@@ -338,6 +338,7 @@
 				D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */,
 				D04871A0216AF31D0085D22C /* AppDelegate.swift */,
 				D01574C42224DACA008CC645 /* AppLaunchRouting.swift */,
+				D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */,
 			);
 			path = Startup;
 			sourceTree = "<group>";
@@ -347,7 +348,6 @@
 			children = (
 				D044A30421D51C2000FBC7C8 /* DarkModeIcons */,
 				D04871A9216AF31E0085D22C /* Assets.xcassets */,
-				D04871AB216AF31E0085D22C /* LaunchScreen.storyboard */,
 				D04871AE216AF31E0085D22C /* Info.plist */,
 				D0518E7F21797CE40087A000 /* LICENSE */,
 				D00772D32180131E0066ED9D /* Licenses.plist */,
