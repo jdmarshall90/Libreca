@@ -222,7 +222,7 @@ final class InAppPurchasesViewController: UITableViewController {
         let footerText = "Thank you! Any amount helps development of \(appName) continue."
         let instructionsSection = Section(header: nil, cells: [], footer: footerText)
         
-        let supportCells = products.sorted { $0.price < $1.price }.map {
+        let supportCells = products.map {
             Section.Cell(text: "One-Time Gift of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
                 self?.purchaseItem(at: indexPath)
             }
@@ -247,6 +247,8 @@ final class InAppPurchasesViewController: UITableViewController {
         switch productName {
         case .editMetadata:
             Analytics.setUserProperty("premium", forName: "iap_edit_metadata")
+        case .downloadEBook:
+            Analytics.setUserProperty("premium", forName: "iap_download_ebook")
         case .supportSmall:
             Analytics.setUserProperty("support_small", forName: "iap_support")
         case .supportExtraSmall:
@@ -270,6 +272,8 @@ final class InAppPurchasesViewController: UITableViewController {
         switch product.name {
         case .editMetadata:
             Analytics.logEvent("iap_purchase_edit_metadata_tapped", parameters: nil)
+        case .downloadEBook:
+            Analytics.logEvent("iap_purchase_download_ebook_tapped", parameters: nil)
         case .supportSmall:
             Analytics.logEvent("iap_small_support_tapped", parameters: nil)
         case .supportExtraSmall:
@@ -286,6 +290,8 @@ final class InAppPurchasesViewController: UITableViewController {
                 switch product.name {
                 case .editMetadata:
                     Analytics.logEvent("iap_purchase_edit_metadata_success", parameters: nil)
+                case .downloadEBook:
+                    Analytics.logEvent("iap_purchase_download_ebook_success", parameters: nil)
                 case .supportSmall:
                     Analytics.logEvent("iap_small_support_success", parameters: nil)
                 case .supportExtraSmall:
@@ -304,6 +310,8 @@ final class InAppPurchasesViewController: UITableViewController {
                 switch product.name {
                 case .editMetadata:
                     Analytics.logEvent("iap_purchase_edit_metadata_fail", parameters: nil)
+                case .downloadEBook:
+                    Analytics.logEvent("iap_purchase_download_ebook_fail", parameters: nil)
                 case .supportSmall:
                     Analytics.logEvent("iap_small_support_fail", parameters: nil)
                 case .supportExtraSmall:
@@ -339,6 +347,8 @@ final class InAppPurchasesViewController: UITableViewController {
                     switch product.name {
                     case .editMetadata:
                         Analytics.logEvent("iap_restore_edit_metadata_success", parameters: nil)
+                    case .downloadEBook:
+                        Analytics.logEvent("iap_restore_download_ebook_success", parameters: nil)
                     case .supportSmall,
                          .supportExtraSmall,
                          .supportTiny:
