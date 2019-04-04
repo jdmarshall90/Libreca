@@ -30,7 +30,7 @@ final class CreditsViewController: UITableViewController {
         case icons8 = 1
         case calibre = 2
         
-        var url: URL {
+        fileprivate var url: URL {
             // swiftlint:disable force_unwrapping
             switch self {
             case .icons8:
@@ -41,7 +41,7 @@ final class CreditsViewController: UITableViewController {
             // swiftlint:enable force_unwrapping
         }
         
-        var analyticsEventName: String {
+        fileprivate var analyticsEventName: String {
             switch self {
             case .icons8:
                 return "icons8_tapped"

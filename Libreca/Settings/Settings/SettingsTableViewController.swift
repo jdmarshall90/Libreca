@@ -37,35 +37,35 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     private struct Constants {
         private init() {}
         
-        struct Connect {
+        fileprivate struct Connect {
             private init() {}
             
-            static let emailAddress = "incoming+calibre-utils/Libreca@incoming.gitlab.com"
+            fileprivate static let emailAddress = "incoming+calibre-utils/Libreca@incoming.gitlab.com"
             
             // swiftlint:disable force_unwrapping
-            static let supportSite = URL(string: "https://docs.libreca.io")!
-            static let privacyPolicySite = URL(string: "https://docs.libreca.io/privacy-policy/")!
+            fileprivate static let supportSite = URL(string: "https://docs.libreca.io")!
+            fileprivate static let privacyPolicySite = URL(string: "https://docs.libreca.io/privacy-policy/")!
             // swiftlint:enable force_unwrapping
         }
         
-        struct About {
+        fileprivate struct About {
             private init() {}
             
-            static let viewSource = "View Source Code"
-            static let licenses = "Licenses"
-            static let marketing = "App Website"
-            static let credits = "Credits"
+            fileprivate static let viewSource = "View Source Code"
+            fileprivate static let licenses = "Licenses"
+            fileprivate static let marketing = "App Website"
+            fileprivate static let credits = "Credits"
             
             // swiftlint:disable force_unwrapping
-            static let sourceCodeSite = URL(string: "https://ios.source.libreca.io")!
-            static let marketingWebsite = URL(string: "https://libreca.io")!
+            fileprivate static let sourceCodeSite = URL(string: "https://ios.source.libreca.io")!
+            fileprivate static let marketingWebsite = URL(string: "https://libreca.io")!
             // swiftlint:enable force_unwrapping
         }
         
-        struct HeaderTitles {
+        fileprivate struct HeaderTitles {
             private init() {}
             
-            static let all = [
+            fileprivate static let all = [
                 "Settings",
                 "Contact",
                 "Privacy",
@@ -73,25 +73,25 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             ]
         }
         
-        struct Bundles {
+        fileprivate struct Bundles {
             private init() {}
             
             // swiftlint:disable force_unwrapping
-            static let app = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!
-            static let calibreKit = Framework(forBundleID: "com.marshall.justin.lib.CalibreKit")!
-            static let alamofire = Framework(forBundleID: "org.alamofire.Alamofire")!
+            fileprivate static let app = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!
+            fileprivate static let calibreKit = Framework(forBundleID: "com.marshall.justin.lib.CalibreKit")!
+            fileprivate static let alamofire = Framework(forBundleID: "org.alamofire.Alamofire")!
             // swiftlint:enable force_unwrapping
         }
     }
     
     private struct DisplayModel {
-        let mainText: String
-        let subText: String?
-        let accessoryType: UITableViewCell.AccessoryType
-        let allowHighlight: Bool
-        let selectionHandler: (() -> Void)?
+        fileprivate let mainText: String
+        fileprivate let subText: String?
+        fileprivate let accessoryType: UITableViewCell.AccessoryType
+        fileprivate let allowHighlight: Bool
+        fileprivate let selectionHandler: (() -> Void)?
         
-        init(mainText: String, subText: String?, accessoryType: UITableViewCell.AccessoryType, allowHighlight: Bool = true, selectionHandler: (() -> Void)? = nil) {
+        fileprivate init(mainText: String, subText: String?, accessoryType: UITableViewCell.AccessoryType, allowHighlight: Bool = true, selectionHandler: (() -> Void)? = nil) {
             self.mainText = mainText
             self.subText = subText
             self.accessoryType = accessoryType
