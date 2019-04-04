@@ -630,6 +630,7 @@
 				TargetAttributes = {
 					D048719C216AF31D0085D22C = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -638,6 +639,7 @@
 					};
 					D04871B2216AF31E0085D22C = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
 						TestTargetID = D048719C216AF31D0085D22C;
 					};
 				};
@@ -1024,7 +1026,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Libreca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Libreca - dev";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1050,7 +1052,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.Libreca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Libreca - prod";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1070,7 +1072,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.LibrecaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Libreca.app/Libreca";
 			};
@@ -1091,7 +1093,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marshall.justin.mobile.ios.LibrecaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Libreca.app/Libreca";
 			};

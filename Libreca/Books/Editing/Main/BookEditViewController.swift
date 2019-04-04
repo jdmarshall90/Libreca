@@ -516,7 +516,7 @@ final class BookEditViewController: UIViewController, BookEditViewing, ErrorMess
         let section = bookViewModel.editScreenSections[indexPath.section]
         if isShowingRatingPicker,
             (indexPath.row + 1) > section.cells.count,
-            let index = presenter.availableRatings.index(of: presenter.rating) {
+            let index = presenter.availableRatings.firstIndex(of: presenter.rating) {
             // swiftlint:disable:next force_cast
             let cell = tableView.dequeueReusableCell(withIdentifier: pickerCellID, for: indexPath) as! PickerTableViewCell
             cell.picker.delegate = self
