@@ -68,6 +68,27 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     }
     
     func download(_ book: Book) {
+        switch interactor.downloadAvailability {
+        case .downloadable:
+            actuallyDownload(book)
+        case .stillFetching:
+            router.routeToStillFetchingMessage()
+        case .unpurchased:
+            router.routeToDownloadPurchaseValueProposition {
+                switch self.interactor.downloadAvailability {
+                case .downloadable:
+                    self.actuallyDownload(book)
+                case .stillFetching:
+                    // this really should never happen...
+                    self.router.routeToStillFetchingMessage()
+                case .unpurchased:
+                    break // we've asked, user didn't follow through, so don't ask again
+                }
+            }
+        }
+    }
+    
+    private func actuallyDownload(_ book: Book) {
         guard interactor.canDownload(book) else {
             return router.routeToDownloadUnavailableMessage()
         }
