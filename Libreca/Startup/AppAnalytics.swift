@@ -168,6 +168,8 @@ private extension UIDeviceOrientation {
             return "portrait"
         case .portraitUpsideDown:
             return "portraitUpsideDown"
+        @unknown default:
+            return "unknown"
         }
     }
 }

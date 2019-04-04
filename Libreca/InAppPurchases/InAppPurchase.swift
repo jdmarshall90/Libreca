@@ -266,6 +266,8 @@ final class InAppPurchase {
                     break
                 case .deferred:
                     break
+                @unknown default:
+                    fatalError("Unhandled new type of transaction state: \(transaction.transactionState)")
                 }
             }
             
