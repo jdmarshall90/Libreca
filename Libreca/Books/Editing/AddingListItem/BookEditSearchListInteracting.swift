@@ -80,7 +80,7 @@ extension BookEditSearchListInteracting {
     }
     
     mutating func add(_ item: BookEditSearchListItem<ListItemType>) {
-        if let index = items.index(of: item) {
+        if let index = items.firstIndex(of: item) {
             items[index].isSelected = true
         } else {
             items.append(item)

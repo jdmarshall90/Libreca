@@ -153,7 +153,7 @@ final class BookDetailsViewModel {
             var formats = book.formats
             if let mainFormat = book.mainFormat?.format,
                 formats.count > 1,
-                let mainFormatIndex = formats.index(where: { $0.displayValue == mainFormat.displayValue }) {
+                let mainFormatIndex = formats.firstIndex(where: { $0.displayValue == mainFormat.displayValue }) {
                 formats.remove(at: mainFormatIndex)
                 formats.insert(mainFormat, at: 0)
                 footer = "The main format is at the top, and is downloadable."

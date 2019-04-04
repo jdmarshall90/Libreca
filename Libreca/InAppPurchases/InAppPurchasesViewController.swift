@@ -48,21 +48,21 @@ final class InAppPurchasesViewController: UITableViewController {
     }
     
     private struct Section {
-        struct Cell {
-            var shouldHighlight: Bool {
+        fileprivate struct Cell {
+            fileprivate var shouldHighlight: Bool {
                 return accessoryType == .disclosureIndicator
             }
             
-            let text: String
-            let product: InAppPurchase.Product?
-            let cellID: String
-            let accessoryType: UITableViewCell.AccessoryType
-            let tapAction: ((IndexPath) -> Void)?
+            fileprivate let text: String
+            fileprivate let product: InAppPurchase.Product?
+            fileprivate let cellID: String
+            fileprivate let accessoryType: UITableViewCell.AccessoryType
+            fileprivate let tapAction: ((IndexPath) -> Void)?
         }
         
-        let header: String?
-        let cells: [Cell]
-        let footer: String?
+        fileprivate let header: String?
+        fileprivate let cells: [Cell]
+        fileprivate let footer: String?
     }
     
     required init?(coder aDecoder: NSCoder) {

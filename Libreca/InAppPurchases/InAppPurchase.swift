@@ -24,6 +24,8 @@
 import Foundation
 import StoreKit
 
+// swiftlint:disable lower_acl_than_parent
+
 final class InAppPurchase {
     struct Product: Comparable {
         enum Name: String, CaseIterable, Comparable {
