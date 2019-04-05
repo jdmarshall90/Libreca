@@ -77,7 +77,7 @@ final class BookDetailsRouter: BookDetailsRouting {
     }
     
     func routeToDownloadPurchaseValueProposition(completion: @escaping () -> Void) {
-        let alertController = UIAlertController(title: "Downloads", message: "Downloading ebook files is available via a one-time in app purchase.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Downloads", message: "Downloading e-book files is available via a one-time in app purchase.", preferredStyle: .alert)
         alertController.addAction(
             UIAlertAction(title: "No thanks", style: .cancel) { _ in
                 Analytics.logEvent("download_ebook_unpurchased_no_thanks", parameters: nil)
