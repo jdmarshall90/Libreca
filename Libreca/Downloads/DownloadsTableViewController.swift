@@ -34,7 +34,7 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     private var content: Content {
         let downloads = viewModel.allDownloads
         if downloads.isEmpty {
-            return .message("To download ebook files, select a book from your library and tap the download / cloud button.")
+            return .message("To download e-book files, select a book from your library and tap the download / cloud button.")
         } else {
             return .downloads(downloads)
         }

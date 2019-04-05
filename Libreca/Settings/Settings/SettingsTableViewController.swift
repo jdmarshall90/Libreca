@@ -223,6 +223,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 break
             case .saved:
                 break
+            @unknown default:
+                fatalError("Unhandled new type of mail compose result: \(result)")
             }
         }
     }

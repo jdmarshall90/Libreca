@@ -27,14 +27,17 @@ import StoreKit
 // swiftlint:disable lower_acl_than_parent
 
 final class InAppPurchase {
-    struct Product {
-        enum Name: String, CaseIterable {
+    struct Product: Comparable {
+        enum Name: String, CaseIterable, Comparable {
             enum Kind {
                 case feature
                 case support
             }
             
             case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
+            
+            // TODO: Tweak the description of this one on App Store Connect
+            case downloadEBook = "com.marshall.justin.mobile.ios.Libreca.iap.downloadebook"
             
             case supportSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.small"
             case supportExtraSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.extrasmall"
@@ -44,9 +47,25 @@ final class InAppPurchase {
                 return rawValue
             }
             
+            private var sortOrder: Int {
+                switch self {
+                case .downloadEBook:
+                    return 1
+                case .editMetadata:
+                    return 2
+                case .supportTiny:
+                    return 3
+                case .supportExtraSmall:
+                    return 4
+                case .supportSmall:
+                    return 5
+                }
+            }
+            
             var kind: Kind {
                 switch self {
-                case .editMetadata:
+                case .editMetadata,
+                     .downloadEBook:
                     return .feature
                 case .supportSmall,
                      .supportExtraSmall,
@@ -62,6 +81,10 @@ final class InAppPurchase {
             
             fileprivate var persistenceKey: String {
                 return identifier
+            }
+            
+            static func <(lhs: InAppPurchase.Product.Name, rhs: InAppPurchase.Product.Name) -> Bool {
+                return lhs.sortOrder < rhs.sortOrder
             }
         }
         
@@ -82,6 +105,10 @@ final class InAppPurchase {
             numberFormatter.numberStyle = .currency
             numberFormatter.locale = locale
             return numberFormatter.string(from: skProduct.price) ?? "Error retrieving price"
+        }
+        
+        static func <(lhs: InAppPurchase.Product, rhs: InAppPurchase.Product) -> Bool {
+            return lhs.name < rhs.name
         }
         
         fileprivate init?(name: Name?, skProduct: SKProduct) {
@@ -190,6 +217,7 @@ final class InAppPurchase {
                 .products
                 .compactMap { Product(name: Product.Name(rawValue: $0.productIdentifier), skProduct: $0) }
                 .filter { $0.name.kind == self.kind }
+                .sorted()
             productsRequestCompletionHandler?(.success(availableProducts))
             cleanup()
         }
@@ -222,7 +250,19 @@ final class InAppPurchase {
                 if Product.Name(rawValue: transaction.payment.productIdentifier)?.kind == kind {
                     return true
                 } else {
-                    SKPaymentQueue.default().finishTransaction(transaction)
+                    switch transaction.transactionState {
+                    case .purchased,
+                         .restored,
+                         .failed:
+                        SKPaymentQueue.default().finishTransaction(transaction)
+                    case .purchasing,
+                         .deferred:
+                        // Attempting to finish the transaction in this state will cause Apple's
+                        // API to throw an exception and crash the app.
+                        break
+                    @unknown default:
+                        fatalError("Unhandled new type of transaction state: \(transaction.transactionState)")
+                    }
                     return false
                 }
             }
@@ -238,6 +278,8 @@ final class InAppPurchase {
                     break
                 case .deferred:
                     break
+                @unknown default:
+                    fatalError("Unhandled new type of transaction state: \(transaction.transactionState)")
                 }
             }
             

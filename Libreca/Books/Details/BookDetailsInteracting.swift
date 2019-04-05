@@ -30,8 +30,15 @@ enum EditAvailability {
     case unpurchased
 }
 
+enum DownloadAvailability {
+    case downloadable
+    case stillFetching
+    case unpurchased
+}
+
 protocol BookDetailsInteracting {
     var editAvailability: EditAvailability { get }
+    var downloadAvailability: DownloadAvailability { get }
     
     func canDownload(_ book: Book) -> Bool
     func download(_ book: Book, completion: @escaping (Result<Download>) -> Void)
@@ -51,6 +58,18 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         }
         
         return .editable
+    }
+    
+    var downloadAvailability: DownloadAvailability {
+        if isFetchingbooks {
+            return .stillFetching
+        }
+        
+        if !hasPurchasedDownloads {
+            return .unpurchased
+        }
+        
+        return .downloadable
     }
     
     private var isFetchingbooks: Bool {
@@ -73,6 +92,11 @@ struct BookDetailsInteractor: BookDetailsInteracting {
     private var hasPurchasedEditing: Bool {
         let editPurchase = InAppPurchase.Product.Name.editMetadata
         return editPurchase.isPurchased
+    }
+    
+    private var hasPurchasedDownloads: Bool {
+        let downloadPurchase = InAppPurchase.Product.Name.downloadEBook
+        return downloadPurchase.isPurchased
     }
     
     func canDownload(_ book: Book) -> Bool {

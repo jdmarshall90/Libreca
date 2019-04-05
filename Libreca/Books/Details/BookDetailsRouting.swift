@@ -28,6 +28,7 @@ import UIKit
 protocol BookDetailsRouting {
     func routeToEditing(for book: Book, completion: @escaping (Book) -> Void)
     func routeToEditPurchaseValueProposition(completion: @escaping () -> Void)
+    func routeToDownloadPurchaseValueProposition(completion: @escaping () -> Void)
     func routeToStillFetchingMessage()
     func routeToDownloadUnavailableMessage()
 }
@@ -37,7 +38,7 @@ final class BookDetailsRouter: BookDetailsRouting {
     
     // swiftlint:disable implicitly_unwrapped_optional
     private var iapNav: UINavigationController!
-    private var editPurchaseValuePropCompletion: (() -> Void)!
+    private var iapValuePropCompletion: (() -> Void)!
     // swiftlint:enable implicitly_unwrapped_optional
     
     init(viewController: UIViewController) {
@@ -75,6 +76,25 @@ final class BookDetailsRouter: BookDetailsRouting {
         viewController?.present(alertController, animated: true)
     }
     
+    func routeToDownloadPurchaseValueProposition(completion: @escaping () -> Void) {
+        let alertController = UIAlertController(title: "Downloads", message: "Downloading e-book files is available via a one-time in app purchase.", preferredStyle: .alert)
+        alertController.addAction(
+            UIAlertAction(title: "No thanks", style: .cancel) { _ in
+                Analytics.logEvent("download_ebook_unpurchased_no_thanks", parameters: nil)
+                completion()
+            }
+        )
+        
+        alertController.addAction(
+            UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
+                Analytics.logEvent("download_ebook_unpurchased_learn_more", parameters: nil)
+                self?.showFeatureIAPs(completion: completion)
+            }
+        )
+        
+        viewController?.present(alertController, animated: true)
+    }
+    
     func routeToStillFetchingMessage() {
         let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -90,7 +110,7 @@ final class BookDetailsRouter: BookDetailsRouting {
     }
     
     private func showFeatureIAPs(completion: @escaping () -> Void) {
-        editPurchaseValuePropCompletion = completion
+        iapValuePropCompletion = completion
         
         let iapVC = InAppPurchasesViewController(kind: .feature)
         iapNav = UINavigationController(rootViewController: iapVC)
@@ -104,6 +124,6 @@ final class BookDetailsRouter: BookDetailsRouting {
     
     @objc
     private func didTapDoneOnIAP(_ sender: UIBarButtonItem) {
-        iapNav.dismiss(animated: true, completion: editPurchaseValuePropCompletion)
+        iapNav.dismiss(animated: true, completion: iapValuePropCompletion)
     }
 }
