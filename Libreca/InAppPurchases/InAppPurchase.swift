@@ -250,7 +250,19 @@ final class InAppPurchase {
                 if Product.Name(rawValue: transaction.payment.productIdentifier)?.kind == kind {
                     return true
                 } else {
-                    SKPaymentQueue.default().finishTransaction(transaction)
+                    switch transaction.transactionState {
+                    case .purchased,
+                         .restored,
+                         .failed:
+                        SKPaymentQueue.default().finishTransaction(transaction)
+                    case .purchasing,
+                         .deferred:
+                        // Attempting to finish the transaction in this state will cause Apple's
+                        // API to throw an exception and crash the app.
+                        break
+                    @unknown default:
+                        fatalError("Unhandled new type of transaction state: \(transaction.transactionState)")
+                    }
                     return false
                 }
             }
