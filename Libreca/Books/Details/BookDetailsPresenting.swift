@@ -29,8 +29,6 @@ protocol BookDetailsPresenting {
     func download(_ book: Book)
 }
 
-// TODO: Update build number of CalibreKit before merging
-
 struct BookDetailsPresenter: BookDetailsPresenting {
     typealias View = (BookDetailsViewing & ErrorMessageShowing & LoadingViewShowing & UIViewController)
     
