@@ -249,12 +249,10 @@ final class InAppPurchasesViewController: UITableViewController {
             Analytics.setUserProperty("premium", forName: "iap_edit_metadata")
         case .downloadEBook:
             Analytics.setUserProperty("premium", forName: "iap_download_ebook")
-        case .supportSmall:
-            Analytics.setUserProperty("support_small", forName: "iap_support")
-        case .supportExtraSmall:
-            Analytics.setUserProperty("support_extra_small", forName: "iap_support")
-        case .supportTiny:
-            Analytics.setUserProperty("support_tiny", forName: "iap_support")
+        case .supportSmall,
+             .supportExtraSmall,
+             .supportTiny:
+            Analytics.setUserProperty("supporter", forName: "iap_support")
         }
         
         Analytics.setUserProperty("premium", forName: "iap_premium_user")
