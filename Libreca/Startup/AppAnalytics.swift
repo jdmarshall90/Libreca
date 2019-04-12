@@ -24,6 +24,21 @@
 import Firebase
 import UIKit
 
+/*
+ 
+ // TODO: These all just need tested
+ 
+ - Screen view for downloads screen - with download count-
+ - Download attempted, but no URL available-
+ - Download success, with time length and file type-
+ - Download failure, with HTTP status code-
+ - Delete download via swipe-
+ - Export download via swipe-
+ - Delete download via tap-
+ - Export download via tap-
+ 
+ */
+
 final class AppAnalytics {
     private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(serverConfigDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
