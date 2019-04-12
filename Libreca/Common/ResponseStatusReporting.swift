@@ -36,62 +36,82 @@ extension ResponseStatusReporting {
     func reportStatus(of response: DataResponse<ResponseType>) {
         switch response.result {
         case .success:
-            let elapsed = response.timeline.totalDuration
-            let toNearest = 0.01
-            let roundedElapsed = round(elapsed / toNearest) * toNearest
-            Analytics.logEvent("\(reportedEventPrefix)_success", parameters: ["time_interval": roundedElapsed])
+            reportSuccess(of: response)
         case .failure(let error):
-            let parameters: [String: Any]
-            switch error as? AFError {
-            case .invalidURL?:
-                parameters = ["reason": "invalidURL"]
-            case .parameterEncodingFailed(let reason)?:
-                switch reason {
-                case .missingURL:
-                    parameters = ["reason": "missingURL"]
-                case .jsonEncodingFailed:
-                    parameters = ["reason": "jsonEncodingFailed"]
-                case .propertyListEncodingFailed:
-                    parameters = ["reason": "propertyListEncodingFailed"]
-                }
-            case .multipartEncodingFailed?:
-                // this could have many reasons, per the associated type,
-                // but multipart encoding isn't used for this service
-                parameters = ["reason": "multipartEncodingFailed"]
-            case .responseValidationFailed(let reason)?:
-                switch reason {
-                case .dataFileNil:
-                    parameters = ["reason": "dataFileNil"]
-                case .dataFileReadFailed:
-                    parameters = ["reason": "dataFileReadFailed"]
-                case .missingContentType:
-                    parameters = ["reason": "missingContentType"]
-                case .unacceptableContentType(_, let responseContentType):
-                    parameters = ["reason": "unacceptableContentType:\(responseContentType)"]
-                case .unacceptableStatusCode(let code):
-                    parameters = ["reason": "unacceptableStatusCode:\(code)"]
-                }
-            case .responseSerializationFailed(let reason)?:
-                switch reason {
-                case .inputDataNil:
-                    parameters = ["reason": "inputDataNil"]
-                case .inputDataNilOrZeroLength:
-                    parameters = ["reason": "inputDataNilOrZeroLength"]
-                case .inputFileNil:
-                    parameters = ["reason": "inputFileNil"]
-                case .inputFileReadFailed:
-                    parameters = ["reason": "inputFileReadFailed"]
-                case .stringSerializationFailed(let encoding):
-                    parameters = ["reason": "stringSerializationFailed:\(encoding.description)"]
-                case .jsonSerializationFailed:
-                    parameters = ["reason": "jsonSerializationFailed"]
-                case .propertyListSerializationFailed:
-                    parameters = ["reason": "propertyListSerializationFailed"]
-                }
-            case .none:
-                parameters = ["reason": "\(type(of: error))"]
-            }
-            Analytics.logEvent("\(reportedEventPrefix)_fail", parameters: parameters)
+            reportFailure(of: error)
+        }
+    }
+    
+    private func reportSuccess(of response: DataResponse<ResponseType>) {
+        let elapsed = response.timeline.totalDuration
+        let toNearest = 0.01
+        let roundedElapsed = round(elapsed / toNearest) * toNearest
+        Analytics.logEvent("\(reportedEventPrefix)_success", parameters: ["time_interval": roundedElapsed])
+    }
+    
+    private func reportFailure(of error: Error) {
+        let parameters: [String: Any]
+        switch error as? AFError {
+        case .invalidURL?:
+            parameters = ["reason": "invalidURL"]
+        case .parameterEncodingFailed(let reason)?:
+            parameters = generateParameters(for: reason)
+        case .multipartEncodingFailed?:
+            // this could have many reasons, per the associated type,
+            // but multipart encoding isn't used for this service
+            parameters = ["reason": "multipartEncodingFailed"]
+        case .responseValidationFailed(let reason)?:
+            parameters = generateParameters(for: reason)
+        case .responseSerializationFailed(let reason)?:
+            parameters = generateParameters(for: reason)
+        case .none:
+            parameters = ["reason": "\(type(of: error))"]
+        }
+        Analytics.logEvent("\(reportedEventPrefix)_fail", parameters: parameters)
+    }
+    
+    private func generateParameters(for reason: AFError.ParameterEncodingFailureReason) -> [String: Any] {
+        switch reason {
+        case .missingURL:
+            return ["reason": "missingURL"]
+        case .jsonEncodingFailed:
+            return ["reason": "jsonEncodingFailed"]
+        case .propertyListEncodingFailed:
+            return ["reason": "propertyListEncodingFailed"]
+        }
+    }
+    
+    private func generateParameters(for reason: AFError.ResponseValidationFailureReason) -> [String: Any] {
+        switch reason {
+        case .dataFileNil:
+            return ["reason": "dataFileNil"]
+        case .dataFileReadFailed:
+            return ["reason": "dataFileReadFailed"]
+        case .missingContentType:
+            return ["reason": "missingContentType"]
+        case .unacceptableContentType(_, let responseContentType):
+            return ["reason": "unacceptableContentType:\(responseContentType)"]
+        case .unacceptableStatusCode(let code):
+            return ["reason": "unacceptableStatusCode:\(code)"]
+        }
+    }
+    
+    private func generateParameters(for reason: AFError.ResponseSerializationFailureReason) -> [String: Any] {
+        switch reason {
+        case .inputDataNil:
+            return ["reason": "inputDataNil"]
+        case .inputDataNilOrZeroLength:
+            return ["reason": "inputDataNilOrZeroLength"]
+        case .inputFileNil:
+            return ["reason": "inputFileNil"]
+        case .inputFileReadFailed:
+            return ["reason": "inputFileReadFailed"]
+        case .stringSerializationFailed(let encoding):
+            return ["reason": "stringSerializationFailed:\(encoding.description)"]
+        case .jsonSerializationFailed:
+            return ["reason": "jsonSerializationFailed"]
+        case .propertyListSerializationFailed:
+            return ["reason": "propertyListSerializationFailed"]
         }
     }
 }
