@@ -65,7 +65,8 @@ extension ResponseStatusReporting {
         case .responseSerializationFailed(let reason)?:
             parameters = generateParameters(for: reason)
         case .none:
-            parameters = ["reason": "\(type(of: error))"]
+            let error = error as NSError
+            parameters = ["reason": "\(error.code)"]
         }
         Analytics.logEvent("\(reportedEventPrefix)_fail", parameters: parameters)
     }

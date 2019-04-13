@@ -57,8 +57,12 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         super.viewDidAppear(animated)
         Analytics.setScreenName("downloads", screenClass: nil)
         switch content {
-        case .downloads(let downloads):
-            Analytics.logEvent("ebook_download_count", parameters: ["num_ebooks": downloads.count])
+        case .downloads:
+            let sectionCount = numberOfSections(in: tableView)
+            let bookCount = (0..<sectionCount).reduce(0) { result, next in
+                result + tableView(tableView, numberOfRowsInSection: next)
+            }
+            Analytics.logEvent("ebook_download_count", parameters: ["num_ebooks": bookCount])
         case .message:
             Analytics.logEvent("ebook_download_count", parameters: ["num_ebooks": 0])
         }
