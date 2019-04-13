@@ -35,8 +35,6 @@ final class InAppPurchase {
             }
             
             case editMetadata = "com.marshall.justin.mobile.ios.Libreca.iap.editmetadata"
-            
-            // TODO: Tweak the description of this one on App Store Connect
             case downloadEBook = "com.marshall.justin.mobile.ios.Libreca.iap.downloadebook"
             
             case supportSmall = "com.marshall.justin.mobile.ios.Libreca.iap.support.small"
