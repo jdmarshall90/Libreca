@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import FirebaseAnalytics
 import UIKit
 
 class DownloadsTableViewController: UITableViewController, DownloadsView {
@@ -50,6 +51,21 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("downloads", screenClass: nil)
+        switch content {
+        case .downloads:
+            let sectionCount = numberOfSections(in: tableView)
+            let bookCount = (0..<sectionCount).reduce(0) { result, next in
+                result + tableView(tableView, numberOfRowsInSection: next)
+            }
+            Analytics.logEvent("ebook_download_count", parameters: ["num_ebooks": bookCount])
+        case .message:
+            Analytics.logEvent("ebook_download_count", parameters: ["num_ebooks": 0])
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -128,6 +144,7 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
             UIAlertAction(title: "Delete local copy", style: .destructive) { [weak self] _ in
                 guard let strongSelf = self else { return }
                 let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
+                Analytics.logEvent("download_ebook_delete_via_tap", parameters: nil)
                 strongSelf.viewModel.delete(ebook)
                 let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
                 let isNowEmpty: Bool
@@ -148,6 +165,7 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         
         alertController.addAction(
             UIAlertAction(title: "Export to e-reading app", style: .default) { [weak self] _ in
+                Analytics.logEvent("download_ebook_export_via_tap", parameters: nil)
                 self?.export(ebook, at: indexPath)
             }
         )
@@ -175,6 +193,7 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
             guard let strongSelf = self else { return }
             let sectionCountBeforeDeletion = strongSelf.numberOfSections(in: tableView)
+            Analytics.logEvent("download_ebook_delete_via_swipe", parameters: nil)
             strongSelf.viewModel.delete(ebook)
             let sectionCountAfterDeletion = strongSelf.numberOfSections(in: tableView)
             let isNowEmpty: Bool
@@ -199,6 +218,7 @@ class DownloadsTableViewController: UITableViewController, DownloadsView {
         
         let exportAction = UIContextualAction(style: .normal, title: "Export") { [weak self] _, _, completion in
             guard let strongSelf = self else { return }
+            Analytics.logEvent("download_ebook_export_via_swipe", parameters: nil)
             strongSelf.export(ebook, at: indexPath, completion: completion)
         }
         exportAction.image = #imageLiteral(resourceName: "SwipeExport")

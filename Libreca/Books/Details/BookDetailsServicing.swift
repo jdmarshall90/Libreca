@@ -28,13 +28,20 @@ protocol BookDetailsServicing {
     func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void)
 }
 
-struct BookDetailsService: BookDetailsServicing {
+struct BookDetailsService: BookDetailsServicing, ResponseStatusReporting {
+    typealias ResponseType = BookDownload
+    
+    var reportedEventPrefix: String {
+        return "download_ebook"
+    }
+    
     func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void) {
         // The interactor is expected to enforce this mainFormat being non-nil before
         // calling this function. Hence the force unwrap.
         
         // swiftlint:disable:next force_unwrapping
         book.mainFormat!.hitService { mainFormatDownloadResponse in
+            self.reportStatus(of: mainFormatDownloadResponse)
             switch mainFormatDownloadResponse.result {
             case .success(let payload):
                 completion(.success(payload))
