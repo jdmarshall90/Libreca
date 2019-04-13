@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-// TODO: Add an issue to refactor this out and use the new native Swift type
 enum Result<Value> {
     case success(Value)
     case failure(Error)
