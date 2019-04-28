@@ -53,6 +53,7 @@ private extension Book {
             [series?.name].compactMap { $0 },
             [comments].compactMap { $0 },
             languages.map { $0.displayValue },
+            languages.map { $0.englishDisplayValue },
             identifiers.map { $0.displayValue },
             identifiers.map { $0.uniqueID },
             tags,
