@@ -244,7 +244,11 @@ extension Book.Format: CellRepresentable {
 
 extension Book.Language: CellRepresentable {
     fileprivate var cellRepresentation: Cell {
-        return Cell(text: displayValue)
+        if englishDisplayValue == displayValue {
+            return Cell(text: displayValue)
+        } else {
+            return Cell(text: englishDisplayValue + " (" + displayValue + ")")            
+        }
     }
 }
 
