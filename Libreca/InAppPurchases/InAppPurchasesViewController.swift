@@ -72,14 +72,13 @@ final class InAppPurchasesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // swiftlint:disable:next force_unwrapping
-        let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
-        
         switch inAppPurchase.kind {
         case .feature:
+            // swiftlint:disable:next force_unwrapping
+            let appName = Framework(forBundleID: "com.marshall.justin.mobile.ios.Libreca")!.name
             title = "\(appName) Upgrades"
         case .support:
-            title = "Support \(appName)"
+            title = "Tip Jar"
         }
         
         loadUI()
@@ -154,7 +153,7 @@ final class InAppPurchasesViewController: UITableViewController {
         case .feature:
             loadingText = "Retrieving available in-app purchases..."
         case .support:
-            loadingText = "Retrieving available support options..."
+            loadingText = "Retrieving available tip options..."
         }
         sections = [
             Section(
@@ -223,7 +222,7 @@ final class InAppPurchasesViewController: UITableViewController {
         let instructionsSection = Section(header: nil, cells: [], footer: footerText)
         
         let supportCells = products.map {
-            Section.Cell(text: "One-Time Gift of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
+            Section.Cell(text: "Leave a tip for \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: .disclosureIndicator) { [weak self] indexPath in
                 self?.purchaseItem(at: indexPath)
             }
         }

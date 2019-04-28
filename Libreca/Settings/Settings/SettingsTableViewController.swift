@@ -148,7 +148,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 DisplayModel(mainText: "Upgrades", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.didTapUpgrades()
                 },
-                DisplayModel(mainText: "Support \(Constants.Bundles.app.name)", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
+                DisplayModel(mainText: "Leave a tip", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.didTapProvideSupport()
                 }
             ],
