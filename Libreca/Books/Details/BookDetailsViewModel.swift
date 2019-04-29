@@ -77,7 +77,7 @@ final class BookDetailsViewModel {
                     switch self {
                     case .title,
                          .titleSort:
-                         return true
+                        return true
                     case .publishedOn,
                          .rating,
                          .authors,
