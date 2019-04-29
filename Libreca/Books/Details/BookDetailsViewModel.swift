@@ -281,11 +281,12 @@ private extension String {
     var attributedHTML: NSAttributedString {
         // slightly modified from: https://www.hackingwithswift.com/example-code/system/how-to-convert-html-to-an-nsattributedstring
         let isHTML = contains("<")
-        guard isHTML else {
-            return attributedSelf
+        guard isHTML,
+            let theData = data(using: .utf16, allowLossyConversion: false) else {
+                return attributedSelf
         }
-        let data = Data(utf8)
-        let attributedString = try? NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+        
+        let attributedString = try? NSMutableAttributedString(data: theData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
         if case .dark = Settings.Theme.current {
             attributedString?.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedString?.length ?? 0))
         }
