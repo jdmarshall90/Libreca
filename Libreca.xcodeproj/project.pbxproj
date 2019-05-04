@@ -112,6 +112,7 @@
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
 		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
+		D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8EC217C0C8300622080 /* GDPR.swift */; };
 /* End PBXBuildFile section */
@@ -251,6 +252,7 @@
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
+		D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		D0EFA8EC217C0C8300622080 /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -438,6 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				D04871A4216AF31D0085D22C /* BookDetailsViewController.swift */,
+				D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */,
 				D0518E87217AAE840087A000 /* BookDetailsViewModel.swift */,
 				D07EC1FF21EA880100AE193B /* BookDetailsViewing.swift */,
 				D07EC1F921EA87E100AE193B /* BookDetailsRouting.swift */,
@@ -815,6 +818,7 @@
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */,
 				D07EC1FA21EA87E100AE193B /* BookDetailsRouting.swift in Sources */,
+				D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
 				D07EC20621EA882F00AE193B /* BookEditPresenting.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
