@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 protocol BookDetailsRouting {
@@ -61,14 +60,12 @@ final class BookDetailsRouter: BookDetailsRouting {
         let alertController = UIAlertController(title: "Editing", message: "Editing book metadata is available via a one-time in app purchase.", preferredStyle: .alert)
         alertController.addAction(
             UIAlertAction(title: "No thanks", style: .cancel) { _ in
-                Analytics.logEvent("edit_book_unpurchased_no_thanks", parameters: nil)
                 completion()
             }
         )
         
         alertController.addAction(
             UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
-                Analytics.logEvent("edit_book_unpurchased_learn_more", parameters: nil)
                 self?.showFeatureIAPs(completion: completion)
             }
         )
@@ -80,14 +77,12 @@ final class BookDetailsRouter: BookDetailsRouting {
         let alertController = UIAlertController(title: "Downloads", message: "Downloading e-book files is available via a one-time in app purchase.", preferredStyle: .alert)
         alertController.addAction(
             UIAlertAction(title: "No thanks", style: .cancel) { _ in
-                Analytics.logEvent("download_ebook_unpurchased_no_thanks", parameters: nil)
                 completion()
             }
         )
         
         alertController.addAction(
             UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
-                Analytics.logEvent("download_ebook_unpurchased_learn_more", parameters: nil)
                 self?.showFeatureIAPs(completion: completion)
             }
         )

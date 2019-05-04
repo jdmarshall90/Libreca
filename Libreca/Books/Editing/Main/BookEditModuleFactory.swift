@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 
 struct BookEditModuleFactory {
     typealias Identifier = (displayValue: String, uniqueID: String)
@@ -94,7 +93,6 @@ struct BookEditModuleFactory {
             
             uniqueIDAlertController.addAction(
                 UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                    Analytics.logEvent("edit_book_identifier_number_cancel", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     newIdentifierName = nil
@@ -103,7 +101,6 @@ struct BookEditModuleFactory {
                 }
             )
             let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                Analytics.logEvent("edit_book_identifier_number_add", parameters: nil)
                 guard let token = token else { return }
                 NotificationCenter.default.removeObserver(token)
                 
@@ -145,7 +142,6 @@ struct BookEditModuleFactory {
                 
                 newIdentifierAlertController.addAction(
                     UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                        Analytics.logEvent("edit_book_identifier_name_cancel", parameters: nil)
                         guard let token = token else { return }
                         NotificationCenter.default.removeObserver(token)
                         newIdentifierName = nil
@@ -154,7 +150,6 @@ struct BookEditModuleFactory {
                     }
                 )
                 let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                    Analytics.logEvent("edit_book_identifier_name_add", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     presentingViewController.present(uniqueIDAlertController, animated: true)
@@ -185,7 +180,6 @@ struct BookEditModuleFactory {
         allIdentifiers.forEach { identifier in
             identifierSelectionAlertController.addAction(
                 UIAlertAction(title: identifier, style: .default) { _ in
-                    Analytics.logEvent("edit_book_identifier_preselect_add", parameters: nil)
                     newIdentifierName = identifier
                     presentingViewController.present(uniqueIDAlertController, animated: true)
                 }
@@ -194,7 +188,6 @@ struct BookEditModuleFactory {
         
         identifierSelectionAlertController.addAction(
             UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                Analytics.logEvent("edit_book_identifier_add_new_cancel", parameters: nil)
                 newIdentifierName = nil
                 newUniqueID = nil
                 completion(nil)
@@ -224,7 +217,6 @@ struct BookEditModuleFactory {
             
             seriesIndexAlertController.addAction(
                 UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                    Analytics.logEvent("edit_book_series_index_cancel", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     newSeriesName = nil
@@ -233,7 +225,6 @@ struct BookEditModuleFactory {
                 }
             )
             let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                Analytics.logEvent("edit_book_series_index_add", parameters: nil)
                 guard let token = token else { return }
                 NotificationCenter.default.removeObserver(token)
                 
@@ -276,7 +267,6 @@ struct BookEditModuleFactory {
                 
                 newSeriesAlertController.addAction(
                     UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                        Analytics.logEvent("edit_book_series_name_cancel", parameters: nil)
                         guard let token = token else { return }
                         NotificationCenter.default.removeObserver(token)
                         newSeriesName = nil
@@ -285,7 +275,6 @@ struct BookEditModuleFactory {
                     }
                 )
                 let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                    Analytics.logEvent("edit_book_series_name_add", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     presentingViewController.present(seriesIndexAlertController, animated: true)
@@ -316,7 +305,6 @@ struct BookEditModuleFactory {
         allSeries.forEach { identifier in
             seriesSelectionAlertController.addAction(
                 UIAlertAction(title: identifier, style: .default) { _ in
-                    Analytics.logEvent("edit_book_series_preselect_add", parameters: nil)
                     newSeriesName = identifier
                     presentingViewController.present(seriesIndexAlertController, animated: true)
                 }
@@ -325,7 +313,6 @@ struct BookEditModuleFactory {
         
         seriesSelectionAlertController.addAction(
             UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                Analytics.logEvent("edit_book_series_add_new_cancel", parameters: nil)
                 newSeriesName = nil
                 newIndex = nil
                 completion(nil)

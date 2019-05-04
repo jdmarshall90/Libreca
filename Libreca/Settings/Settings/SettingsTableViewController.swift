@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import Foundation
 import MessageUI
 import SafariServices
@@ -123,7 +122,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         present(safariVC, animated: true)
     }
     
-    // swiftlint:disable:next function_body_length
     private func reload() {
         displayModels = [
             [
@@ -157,7 +155,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     self?.didTapSendEmail()
                 },
                 DisplayModel(mainText: "Support site", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    Analytics.logEvent("support_site_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.Connect.supportSite)
                 },
                 DisplayModel(mainText: "Write a review", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -166,27 +163,23 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             ],
             [
                 DisplayModel(mainText: "Export all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    Analytics.logEvent("export_all_data_tapped", parameters: nil)
                     self?.didTapExportData()
                 },
                 DisplayModel(mainText: "Delete all app data stored on this device", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.didTapDeleteData()
                 },
                 DisplayModel(mainText: "Privacy Policy", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    Analytics.logEvent("privacy_policy_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.Connect.privacyPolicySite)
                 }
             ],
             [
                 DisplayModel(mainText: Constants.About.viewSource, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    Analytics.logEvent("view_source_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.About.sourceCodeSite)
                 },
                 DisplayModel(mainText: Constants.About.licenses, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
                     self?.performSegue(withIdentifier: Segue.licensesSegue.rawValue, sender: nil)
                 },
                 DisplayModel(mainText: Constants.About.marketing, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
-                    Analytics.logEvent("marketing_site_tapped", parameters: nil)
                     self?.presentSafariViewController(with: Constants.About.marketingWebsite)
                 },
                 DisplayModel(mainText: Constants.About.credits, subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
@@ -195,11 +188,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             ]
         ]
         tableView.reloadData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("settings", screenClass: nil)
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
@@ -235,12 +223,10 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapUpgrades() {
-        Analytics.logEvent("upgrades_tapped_via_settings", parameters: nil)
         navigationController?.pushViewController(InAppPurchasesViewController(kind: .feature), animated: true)
     }
     
     private func didTapProvideSupport() {
-        Analytics.logEvent("support_tapped_via_settings", parameters: nil)
         navigationController?.pushViewController(InAppPurchasesViewController(kind: .support), animated: true)
     }
     
@@ -263,7 +249,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         let storedItemsDescription = "Data currently stored:\n\n" + GDPR.export().map { "∙ " + $0.information }.joined(separator: "\n")
         let alertController = UIAlertController(title: "Confirm", message: "Delete all app data stored on this device? This cannot be undone.\n\n\(storedItemsDescription)", preferredStyle: .actionSheet)
         let confirmAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            Analytics.logEvent("delete_all_data_confirmed", parameters: nil)
             GDPR.delete()
             self?.reload()
             let alertController = UIAlertController(title: "Success", message: "All app data stored on this device has been deleted.", preferredStyle: .alert)
@@ -284,8 +269,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapSendEmail() {
-        Analytics.logEvent("send_email_tapped", parameters: nil)
-        
         guard MFMailComposeViewController.canSendMail() else {
             let alertController = UIAlertController(title: "Unable to send email", message: "Your device is not configured for sending emails.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -305,7 +288,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func didTapWriteReview() {
-        Analytics.logEvent("write_review_tapped", parameters: nil)
         guard let url = URL(string: "itms-apps://itunes.apple.com/app/id1439663115?action=write-review"),
             UIApplication.shared.canOpenURL(url) else {
                 return
@@ -326,7 +308,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        Analytics.logEvent("server_info_button_tapped", parameters: nil)
         let alertController = UIAlertController(
             title: "What's this?",
             message: """
@@ -449,7 +430,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             } else {
                 Settings.Sort.current = .authorLastName
             }
-            Analytics.logEvent("sort_via_settings", parameters: ["type": Settings.Sort.current.rawValue])
         }
         
         return cell
@@ -477,14 +457,12 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     UIAlertAction(title: "Cancel", style: .cancel) { _ in
                         Settings.Image.current = .thumbnail
                         cell.selectionSegmentedControl.selectedSegmentIndex = 0
-                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
                     }
                 )
                 
                 alertController.addAction(
                     UIAlertAction(title: "Yes, download full size images", style: .default) { _ in
                         Settings.Image.current = .fullSize
-                        Analytics.logEvent("set_image_size", parameters: ["type": Settings.Image.current.rawValue])
                     }
                 )
                 
@@ -523,7 +501,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             let alertController = UIAlertController(title: "\(newTheme.rawValue.capitalized) mode enabled", message: "This setting will take full effect on the next app restart.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self?.present(alertController, animated: true)
-            Analytics.logEvent("set_theme", parameters: ["type": newTheme.rawValue])
             
             Settings.Theme.current = newTheme
         }

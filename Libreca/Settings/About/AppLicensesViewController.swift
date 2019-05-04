@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import LicensesViewController
 import UIKit
 
@@ -34,10 +33,5 @@ final class AppLicensesViewController: LicensesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Licenses"
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("licenses", screenClass: nil)
     }
 }
