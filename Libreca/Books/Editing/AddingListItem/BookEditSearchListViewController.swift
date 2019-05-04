@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import UIKit
 
 extension BookEditSearchListItem: SectionIndexDisplayable {
@@ -42,7 +41,6 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
             // only way I could find that would change the cancel button color
             searchController.searchBar.subviews.forEach { $0.tintColor = .white }
         }
-        searchController.delegate = self
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.dimsBackgroundDuringPresentation = false
@@ -77,31 +75,19 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         definesPresentationContext = true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("edit_search_edit_\(analyticsIdentifier)", screenClass: nil)
-    }
-    
     func didTapAdd() {
-        presenter.didTapAdd { [weak self] success in
+        presenter.didTapAdd { [weak self] _ in
             guard let strongSelf = self else { return }
             strongSelf.sectionIndexGenerator.reset(with: strongSelf.presenter.items)
             strongSelf.tableView?.reloadData()
-            if success {
-                Analytics.logEvent("edit_search_edit_\(strongSelf.analyticsIdentifier)_add_save", parameters: nil)
-            } else {
-                Analytics.logEvent("edit_search_edit_\(strongSelf.analyticsIdentifier)_add_cancel", parameters: nil)
-            }
         }
     }
     
     func didTapSave() {
-        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_save", parameters: nil)
         presenter.didTapSave()
     }
     
     func didTapCancel() {
-        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_cancel", parameters: nil)
         presenter.didTapCancel()
     }
     
@@ -128,11 +114,6 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
         tableView.deselectRow(at: indexPath, animated: true)
         let value = sectionIndexGenerator.sections[indexPath.section].values[indexPath.row]
         presenter.select(value)
-        if value.isSelected {
-            Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_select", parameters: nil)
-        } else {
-            Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_deselect", parameters: nil)
-        }
         sectionIndexGenerator.reset(with: presenter.items)
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
         setAccessoryType(on: selectedCell, at: indexPath)
@@ -143,7 +124,6 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        Analytics.logEvent("edit_\(analyticsIdentifier)_section_index_title_tapped", parameters: nil)
         return index
     }
     
@@ -161,10 +141,6 @@ final class BookEditSearchListViewController<Presenting: BookEditSearchListPrese
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionIndexGenerator.sections.isEmpty ? nil : sectionIndexGenerator.sections[section].header
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-        Analytics.logEvent("edit_search_edit_\(analyticsIdentifier)_search_started", parameters: nil)
     }
     
     func updateSearchResults(for searchController: UISearchController) {

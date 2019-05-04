@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
@@ -63,11 +62,6 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         if case .dark = Settings.Theme.current {
             view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("book_details", screenClass: nil)
     }
     
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {

@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import Foundation
 import StoreKit
 
@@ -171,11 +170,7 @@ struct Settings {
             set(newValue) {
                 UserDefaults.standard.set(newValue.rawValue, forKey: key)
                 if UIApplication.shared.supportsAlternateIcons {
-                    UIApplication.shared.setAlternateIconName(newValue.iconName) { error in
-                        if error != nil {
-                            Analytics.logEvent("icon_change_error", parameters: ["type": Settings.Theme.current.rawValue])
-                        }
-                    }
+                    UIApplication.shared.setAlternateIconName(newValue.iconName)
                 }
                 NotificationCenter.default.post(didChangeNotification)
             }
