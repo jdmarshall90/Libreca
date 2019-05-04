@@ -170,7 +170,7 @@ final class InAppPurchasesViewController: UITableViewController {
         }
     }
     
-    private func createSections(from result: Result<[InAppPurchase.Product]>) -> [Section] {
+    private func createSections(from result: Result<[InAppPurchase.Product], InAppPurchase.InAppPurchaseError>) -> [Section] {
         switch result {
         case .success(let products):
             switch inAppPurchase.kind {
@@ -297,11 +297,11 @@ final class InAppPurchasesViewController: UITableViewController {
                     Analytics.logEvent("iap_tiny_support_success", parameters: nil)
                 }
             case .failure(let error):
-                if let error = error as? InAppPurchase.InAppPurchaseError {
-                    switch error {
-                    case .purchasesDisallowed:
-                        Analytics.logEvent("iap_purchase_disallowed", parameters: nil)
-                    }
+                switch error {
+                case .purchasesDisallowed:
+                    Analytics.logEvent("iap_purchase_disallowed", parameters: nil)
+                case .storeKitError:
+                    break // analytics library is going to be removed, so this doesn't matter...
                 }
                 
                 switch product.name {
@@ -358,11 +358,11 @@ final class InAppPurchasesViewController: UITableViewController {
                 successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(successAlertController, animated: true, completion: nil)
             case .failure(let error):
-                if let error = error as? InAppPurchase.InAppPurchaseError {
-                    switch error {
-                    case .purchasesDisallowed:
-                        Analytics.logEvent("iap_restore_disallowed", parameters: nil)
-                    }
+                switch error {
+                case .purchasesDisallowed:
+                    Analytics.logEvent("iap_restore_disallowed", parameters: nil)
+                case .storeKitError:
+                    break // analytics library is going to be removed, so this doesn't matter...
                 }
                 Analytics.logEvent("iap_restore_fail", parameters: nil)
                 

@@ -26,7 +26,7 @@ import UIKit
 
 protocol BookEditServicing {
     func fetchImage(completion: @escaping (UIImage?) -> Void)
-    func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void)
+    func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book], Error>) -> Void)
 }
 
 struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: BookEditServicing where CoverService.ParsedResponse == Image, SetFieldsService.ParsedResponse == [Book] {
@@ -50,7 +50,7 @@ struct BookEditService<CoverService: Endpoint, SetFieldsService: Endpoint>: Book
         }
     }
     
-    func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book]>) -> Void) {
+    func save(_ changes: Set<SetFieldsEndpoint.Change>, completion: @escaping (Result<[Book], Error>) -> Void) {
         setFieldsInit(book, changes, loadedBooks).hitService { response in
             switch response.result {
             case .success(let payload):
