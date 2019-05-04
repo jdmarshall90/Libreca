@@ -25,7 +25,7 @@ import CalibreKit
 import Foundation
 
 protocol BookDetailsServicing {
-    func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void)
+    func download(_ book: Book, completion: @escaping (Result<BookDownload, Error>) -> Void)
 }
 
 struct BookDetailsService: BookDetailsServicing, ResponseStatusReporting {
@@ -35,7 +35,7 @@ struct BookDetailsService: BookDetailsServicing, ResponseStatusReporting {
         return "download_ebook"
     }
     
-    func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void) {
+    func download(_ book: Book, completion: @escaping (Result<BookDownload, Error>) -> Void) {
         // The interactor is expected to enforce this mainFormat being non-nil before
         // calling this function. Hence the force unwrap.
         

@@ -40,7 +40,7 @@ struct BookEditChanges {
 
 protocol BookEditInteracting {
     func fetchImage(completion: @escaping (UIImage) -> Void)
-    func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void)
+    func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book], Error>) -> Void)
 }
 
 struct BookEditInteractor: BookEditInteracting {
@@ -58,7 +58,7 @@ struct BookEditInteractor: BookEditInteracting {
         }
     }
     
-    func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book]>) -> Void) {
+    func save(using editChanges: BookEditChanges, completion: @escaping (Result<[Book], Error>) -> Void) {
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.edit.save", qos: .userInitiated).async {
             let change: Set<SetFieldsEndpoint.Change> = [
                 .authors(editChanges.authors),
