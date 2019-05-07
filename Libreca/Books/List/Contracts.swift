@@ -171,10 +171,15 @@ struct DropboxBookListServicing: BookListServicing {
     
     func fetchBooks(completion: @escaping (Result<DropboxResponseData, Error>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let sqliteDatabaseDate = Data() // TODO: (Temporarily) hardcode this to point to DB on your local system
-            let images: [DropboxResponseData.Image] = []
-            let responseData = DropboxResponseData(sqliteDatabaseData: sqliteDatabaseDate, images: images)
-            completion(.success(responseData))
+            do {
+                let sqliteDatabaseURL = Bundle.main.url(forResource: "metadata", withExtension: "db")!
+                let sqliteDatabaseDate = try Data(contentsOf: sqliteDatabaseURL, options: .mappedIfSafe)
+                let images: [DropboxResponseData.Image] = []
+                let responseData = DropboxResponseData(sqliteDatabaseData: sqliteDatabaseDate, images: images)
+                completion(.success(responseData))
+            } catch {
+                print(error)
+            }
         }
     }
 }
