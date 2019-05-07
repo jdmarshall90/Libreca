@@ -160,13 +160,16 @@ struct DropboxBookListServicing: BookListServicing {
     typealias BookServiceResponseData = DropboxResponseData
     
     struct DropboxResponseData {
-        struct Image {
-            let bookID: Int
-            let image: UIImage?
+        struct AuthorDirectory {
+            struct TitleDirectory {
+                let cover: UIImage?
+                let opfMetadataFileData: Data
+            }
+            
+            let titleDirectories: [TitleDirectory]
         }
         
-        let sqliteDatabaseData: Data
-        let images: [Image]
+        let authorDirectories: [AuthorDirectory]
     }
     
     func fetchBooks(completion: @escaping (Result<DropboxResponseData, Error>) -> Void) {
