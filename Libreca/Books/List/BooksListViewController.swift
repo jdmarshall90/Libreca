@@ -43,7 +43,7 @@ extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     }
 }
 
-class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate {
+class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate, BookListViewing {
     private var detailViewController: BookDetailsViewController?
     private(set) lazy var viewModel = BooksListViewModel(view: self)
     private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<BooksListViewModel.BookFetchResult>(sectionIndexDisplayables: [])
@@ -68,6 +68,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var sortButton: UIBarButtonItem!
+    
+    var presenter: BookListPresenting?
     
     private enum Segue: String {
         case showDetail
@@ -185,6 +187,20 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
                 break
             }
         }
+    }
+    
+    // MARK: - BookListViewing
+    
+    func show(bookCount: Int) {
+        
+    }
+    
+    func show(book: BookFetchResult, at index: Int) {
+        
+    }
+    
+    func reload(all: [BookFetchResult]) {
+        
     }
     
     // MARK: - BooksListView
@@ -385,7 +401,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true
             isFetchingBookDetails = true
-            viewModel.fetchBooks()
+//            viewModel.fetchBooks()
+            presenter?.fetchBooks()
         }
     }
     
