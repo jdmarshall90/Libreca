@@ -99,6 +99,7 @@
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
 		D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */; };
+		D0DC4E8E2280EB57005EBA60 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC4E8D2280EB57005EBA60 /* Contracts.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8EC217C0C8300622080 /* GDPR.swift */; };
 /* End PBXBuildFile section */
@@ -225,6 +226,7 @@
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
 		D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsCommentsTableViewCell.swift; sourceTree = "<group>"; };
+		D0DC4E8D2280EB57005EBA60 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
 		D0EFA8EC217C0C8300622080 /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -413,6 +415,7 @@
 		D07EC1F421EA7CC500AE193B /* List */ = {
 			isa = PBXGroup;
 			children = (
+				D0DC4E8D2280EB57005EBA60 /* Contracts.swift */,
 				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
 				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
 				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
@@ -765,6 +768,7 @@
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
 				D0B5214921F145AD007FB264 /* PublishedOnTableViewCell.swift in Sources */,
+				D0DC4E8E2280EB57005EBA60 /* Contracts.swift in Sources */,
 				D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */,
 				D0B5214521F14394007FB264 /* DateTableViewCell.swift in Sources */,
 				D0B3BEF22197D91E00DAB7BD /* ImageSettingTableViewCell.swift in Sources */,
