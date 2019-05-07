@@ -40,7 +40,7 @@ enum BookFetchResult {
     }
 }
 
-protocol BookListViewing {
+protocol BookListViewing: class {
     func show(bookCount: Int)
     func show(book: BookFetchResult, at index: Int)
     func reload(all: [BookFetchResult])
@@ -50,12 +50,46 @@ protocol BookListRouting {
     // placeholder for now until the legacy system is rewritten
 }
 
+struct BookListRouter: BookListRouting {
+    // placeholder for now until the legacy system is rewritten
+}
+
 protocol BookListPresenting {
     func fetchBooks()
 }
 
+struct BookListPresenter: BookListPresenting {
+    typealias View = BookListViewing
+    
+    private weak var view: View?
+    private let router: BookListRouting
+    private let interactor: BookListInteracting
+    
+    init(view: View, router: BookListRouting, interactor: BookListInteracting) {
+        self.view = view
+        self.router = router
+        self.interactor = interactor
+    }
+    
+    func fetchBooks() {
+        interactor.fetchBooks { result in
+            
+        }
+    }
+}
+
 protocol BookListInteracting {
     func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void)
+}
+
+struct BookListInteractor: BookListInteracting {
+    let dataManager: BookListDataManaging
+    
+    func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void) {
+        dataManager.fetchBooks { result in
+            
+        }
+    }
 }
 
 protocol BookListDataManaging {
