@@ -50,7 +50,7 @@ struct BookListDataManager: BookListDataManaging {
             DropboxBookListService().fetchBooks { response in
                 switch response {
                 case .success(let responseData):
-                    let parser = DirectoryParser(authorDirectories: responseData.authorDirectories)
+                    let parser = DirectoryParser(authorDirectories: responseData)
                     let bookModels = parser.parse()
                     completion(.success(bookModels))
                 case .failure:

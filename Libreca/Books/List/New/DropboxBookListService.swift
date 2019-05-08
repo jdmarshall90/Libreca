@@ -24,13 +24,9 @@
 import Foundation
 
 struct DropboxBookListService: BookListServicing {
-    typealias BookServiceResponseData = DropboxResponseData
+    typealias BookServiceResponseData = [AuthorDirectory]
     
-    struct DropboxResponseData {
-        let authorDirectories: [AuthorDirectory]
-    }
-    
-    func fetchBooks(completion: @escaping (Result<DropboxResponseData, Error>) -> Void) {
+    func fetchBooks(completion: @escaping (Result<[AuthorDirectory], Error>) -> Void) {
         // TODO: Implement me
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             let authorDirectories = [
@@ -40,8 +36,7 @@ struct DropboxBookListService: BookListServicing {
                     ]
                 )
             ]
-            let responseData = DropboxResponseData(authorDirectories: authorDirectories)
-            completion(.success(responseData))
+            completion(.success(authorDirectories))
         }
     }
 }
