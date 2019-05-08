@@ -34,6 +34,15 @@
 		D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B8821730D86006EA713 /* UIDevice+HardwareName.swift */; };
 		D0195B8B21730DA2006EA713 /* Framework.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0195B8A21730DA2006EA713 /* Framework.swift */; };
 		D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027F5BB21C6DB1B00634587 /* ThemeSettingTableViewCell.swift */; };
+		D02D9BA922826CBE008D14D3 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BA822826CBE008D14D3 /* BookModel.swift */; };
+		D02D9BAB22826CC5008D14D3 /* BookFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BAA22826CC5008D14D3 /* BookFetchResult.swift */; };
+		D02D9BAD22826D08008D14D3 /* BookListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BAC22826D08008D14D3 /* BookListPresenter.swift */; };
+		D02D9BAF22826D1C008D14D3 /* BookListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BAE22826D1C008D14D3 /* BookListInteractor.swift */; };
+		D02D9BB122826D2E008D14D3 /* BookListDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB022826D2E008D14D3 /* BookListDataManager.swift */; };
+		D02D9BB322826D4A008D14D3 /* CalibreContentServerBookListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB222826D4A008D14D3 /* CalibreContentServerBookListService.swift */; };
+		D02D9BB522826D74008D14D3 /* DropboxBookListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */; };
+		D02D9BB722826D96008D14D3 /* DirectoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB622826D96008D14D3 /* DirectoryParser.swift */; };
+		D02D9BB922826DD6008D14D3 /* AuthorDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
 		D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDC21E4408C0046D00F /* Searcher.swift */; };
@@ -160,6 +169,15 @@
 		D0195B8821730D86006EA713 /* UIDevice+HardwareName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+HardwareName.swift"; sourceTree = "<group>"; };
 		D0195B8A21730DA2006EA713 /* Framework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Framework.swift; sourceTree = "<group>"; };
 		D027F5BB21C6DB1B00634587 /* ThemeSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingTableViewCell.swift; sourceTree = "<group>"; };
+		D02D9BA822826CBE008D14D3 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
+		D02D9BAA22826CC5008D14D3 /* BookFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFetchResult.swift; sourceTree = "<group>"; };
+		D02D9BAC22826D08008D14D3 /* BookListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListPresenter.swift; sourceTree = "<group>"; };
+		D02D9BAE22826D1C008D14D3 /* BookListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListInteractor.swift; sourceTree = "<group>"; };
+		D02D9BB022826D2E008D14D3 /* BookListDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListDataManager.swift; sourceTree = "<group>"; };
+		D02D9BB222826D4A008D14D3 /* CalibreContentServerBookListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibreContentServerBookListService.swift; sourceTree = "<group>"; };
+		D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxBookListService.swift; sourceTree = "<group>"; };
+		D02D9BB622826D96008D14D3 /* DirectoryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryParser.swift; sourceTree = "<group>"; };
+		D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorDirectory.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		D042EEDC21E4408C0046D00F /* Searcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searcher.swift; sourceTree = "<group>"; };
@@ -285,6 +303,36 @@
 				D0EFA8F0217C2A5400622080 /* Settings */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		D02D9BA622826845008D14D3 /* Legacy_rewrite_me */ = {
+			isa = PBXGroup;
+			children = (
+				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
+				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
+				D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */,
+				D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */,
+			);
+			path = Legacy_rewrite_me;
+			sourceTree = "<group>";
+		};
+		D02D9BA722826866008D14D3 /* New */ = {
+			isa = PBXGroup;
+			children = (
+				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
+				D042EEDC21E4408C0046D00F /* Searcher.swift */,
+				D0DC4E8D2280EB57005EBA60 /* Contracts.swift */,
+				D02D9BA822826CBE008D14D3 /* BookModel.swift */,
+				D02D9BAA22826CC5008D14D3 /* BookFetchResult.swift */,
+				D02D9BAC22826D08008D14D3 /* BookListPresenter.swift */,
+				D02D9BAE22826D1C008D14D3 /* BookListInteractor.swift */,
+				D02D9BB022826D2E008D14D3 /* BookListDataManager.swift */,
+				D02D9BB622826D96008D14D3 /* DirectoryParser.swift */,
+				D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */,
+				D02D9BB222826D4A008D14D3 /* CalibreContentServerBookListService.swift */,
+				D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */,
+			);
+			path = New;
 			sourceTree = "<group>";
 		};
 		D02F75DC217036D90040EDE5 /* Books */ = {
@@ -415,13 +463,8 @@
 		D07EC1F421EA7CC500AE193B /* List */ = {
 			isa = PBXGroup;
 			children = (
-				D0DC4E8D2280EB57005EBA60 /* Contracts.swift */,
-				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
-				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
-				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
-				D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */,
-				D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */,
-				D042EEDC21E4408C0046D00F /* Searcher.swift */,
+				D02D9BA622826845008D14D3 /* Legacy_rewrite_me */,
+				D02D9BA722826866008D14D3 /* New */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -722,9 +765,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D07EC20E21EAECA100AE193B /* BookEditModuleFactory.swift in Sources */,
+				D02D9BAD22826D08008D14D3 /* BookListPresenter.swift in Sources */,
 				D0B5214121EEDBEC007FB264 /* BookEditSearchListViewController.swift in Sources */,
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
 				D01574DE22275ADA008CC645 /* BookDetailsDataManaging.swift in Sources */,
+				D02D9BB522826D74008D14D3 /* DropboxBookListService.swift in Sources */,
 				D01574C922262B52008CC645 /* DownloadsTableViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */,
@@ -735,6 +780,7 @@
 				D07EC20821EA883400AE193B /* BookEditInteracting.swift in Sources */,
 				D003EA052206913900B200A2 /* InAppPurchase.swift in Sources */,
 				D01574C52224DACA008CC645 /* AppLaunchRouting.swift in Sources */,
+				D02D9BB922826DD6008D14D3 /* AuthorDirectory.swift in Sources */,
 				D0B5214C21F16EC6007FB264 /* UITableViewCell+Extensions.swift in Sources */,
 				D09FDACF22602979006BBD2B /* ResponseStatusReporting.swift in Sources */,
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
@@ -749,6 +795,7 @@
 				D07EC1FA21EA87E100AE193B /* BookDetailsRouting.swift in Sources */,
 				D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
+				D02D9BB722826D96008D14D3 /* DirectoryParser.swift in Sources */,
 				D07EC20621EA882F00AE193B /* BookEditPresenting.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
@@ -759,11 +806,14 @@
 				D07EC20A21EA883A00AE193B /* BookEditServicing.swift in Sources */,
 				D07EC21021EBE50B00AE193B /* RatingTableViewCell.swift in Sources */,
 				D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */,
+				D02D9BA922826CBE008D14D3 /* BookModel.swift in Sources */,
 				D0B5213A21EED8FA007FB264 /* BookEditSearchListRouting.swift in Sources */,
 				D042EEE021E5684F0046D00F /* Formatters.swift in Sources */,
 				D07C4DFE21E0682E00E1B470 /* Keychain.swift in Sources */,
 				D082F8B021CDDCD4003AED25 /* BookErrorTableViewCell.swift in Sources */,
+				D02D9BAF22826D1C008D14D3 /* BookListInteractor.swift in Sources */,
 				D01574DA22263402008CC645 /* DownloadsViewModel.swift in Sources */,
+				D02D9BAB22826CC5008D14D3 /* BookFetchResult.swift in Sources */,
 				D07EC20021EA880100AE193B /* BookDetailsViewing.swift in Sources */,
 				D0195B812172EEA8006EA713 /* Settings.swift in Sources */,
 				D04871A1216AF31D0085D22C /* AppDelegate.swift in Sources */,
@@ -777,9 +827,11 @@
 				D003EA012203B7BD00B200A2 /* LoadingViewShowing.swift in Sources */,
 				D016508021F51DE700C2326D /* TitleTableViewCell.swift in Sources */,
 				D0195B8921730D86006EA713 /* UIDevice+HardwareName.swift in Sources */,
+				D02D9BB122826D2E008D14D3 /* BookListDataManager.swift in Sources */,
 				D01574D422262C4C008CC645 /* Download.swift in Sources */,
 				D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */,
 				D0010821222E1731006C1F6B /* DownloadTableViewCell.swift in Sources */,
+				D02D9BB322826D4A008D14D3 /* CalibreContentServerBookListService.swift in Sources */,
 				D07EC1FE21EA87F500AE193B /* BookDetailsInteracting.swift in Sources */,
 				D0195B8B21730DA2006EA713 /* Framework.swift in Sources */,
 				D008D86E2176C63E00E5C0DA /* SortSettingTableViewCell.swift in Sources */,
