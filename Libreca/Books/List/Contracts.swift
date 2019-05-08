@@ -26,7 +26,7 @@ import CalibreKit
 // TODO: Break these out into separate files
 
 protocol BookModel {
-    //
+    // TODO: Implement me
 }
 
 enum BookFetchResult {
@@ -73,7 +73,7 @@ struct BookListPresenter: BookListPresenting {
     
     func fetchBooks() {
         interactor.fetchBooks { result in
-            
+            // TODO: Implement me
         }
     }
 }
@@ -87,7 +87,7 @@ struct BookListInteractor: BookListInteracting {
     
     func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void) {
         dataManager.fetchBooks { result in
-            
+            // TODO: Implement me
         }
     }
 }
@@ -127,6 +127,7 @@ struct BookListDataManager: BookListDataManaging {
                     let bookModels = parser.parse()
                     completion(.success(bookModels))
                 case .failure:
+                    // TODO: Implement me
                     break
                 }
             }
@@ -173,6 +174,7 @@ struct DropboxBookListServicing: BookListServicing {
     }
     
     func fetchBooks(completion: @escaping (Result<DropboxResponseData, Error>) -> Void) {
+        // TODO: Implement me
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             let authorDirectories = [
                 AuthorDirectory(
