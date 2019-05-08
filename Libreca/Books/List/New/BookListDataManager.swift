@@ -38,25 +38,33 @@ struct BookListDataManager: BookListDataManaging {
     func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void) {
         switch dataSource {
         case .contentServer:
-            CalibreContentServerBookListService().fetchBooks { response in
-                switch response {
-                case .success:
-                    break
-                case .failure:
-                    break
-                }
-            }
+            fetchFromContentServer(completion: completion)
         case .dropbox:
-            DropboxBookListService().fetchBooks { response in
-                switch response {
-                case .success(let responseData):
-                    let parser = DirectoryParser(authorDirectories: responseData)
-                    let bookModels = parser.parse()
-                    completion(.success(bookModels))
-                case .failure:
-                    // TODO: Implement me
-                    break
-                }
+            fetchFromDropbox(completion: completion)
+        }
+    }
+    
+    private func fetchFromContentServer(completion: @escaping (Result<[BookModel], Error>) -> Void) {
+        CalibreContentServerBookListService().fetchBooks { response in
+            switch response {
+            case .success:
+                break
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func fetchFromDropbox(completion: @escaping (Result<[BookModel], Error>) -> Void) {
+        DropboxBookListService().fetchBooks { response in
+            switch response {
+            case .success(let responseData):
+                let parser = DirectoryParser(authorDirectories: responseData)
+                let bookModels = parser.parse()
+                completion(.success(bookModels))
+            case .failure:
+                // TODO: Implement me
+                break
             }
         }
     }
