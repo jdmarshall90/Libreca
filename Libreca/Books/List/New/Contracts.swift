@@ -148,7 +148,7 @@ struct DirectoryParser {
     let authorDirectories: [AuthorDirectory]
     
     func parse() -> [BookModel] {
-        // TODO: Implement me
+        // TODO: Implement me using https://github.com/MaxDesiatov/XMLCoder
         return []
     }
 }
