@@ -287,6 +287,27 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		D02D9BA622826845008D14D3 /* Legacy_rewrite_me */ = {
+			isa = PBXGroup;
+			children = (
+				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
+				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
+				D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */,
+				D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */,
+			);
+			path = Legacy_rewrite_me;
+			sourceTree = "<group>";
+		};
+		D02D9BA722826866008D14D3 /* New */ = {
+			isa = PBXGroup;
+			children = (
+				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
+				D042EEDC21E4408C0046D00F /* Searcher.swift */,
+				D0DC4E8D2280EB57005EBA60 /* Contracts.swift */,
+			);
+			path = New;
+			sourceTree = "<group>";
+		};
 		D02F75DC217036D90040EDE5 /* Books */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,13 +436,8 @@
 		D07EC1F421EA7CC500AE193B /* List */ = {
 			isa = PBXGroup;
 			children = (
-				D0DC4E8D2280EB57005EBA60 /* Contracts.swift */,
-				D04871A2216AF31D0085D22C /* BooksListViewController.swift */,
-				D02F75E121703B480040EDE5 /* BooksListViewModel.swift */,
-				D0195B7D2172E758006EA713 /* TableViewSectionIndexTitleGenerator.swift */,
-				D082F8AF21CDDCD4003AED25 /* BookErrorTableViewCell.swift */,
-				D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */,
-				D042EEDC21E4408C0046D00F /* Searcher.swift */,
+				D02D9BA622826845008D14D3 /* Legacy_rewrite_me */,
+				D02D9BA722826866008D14D3 /* New */,
 			);
 			path = List;
 			sourceTree = "<group>";
