@@ -26,7 +26,7 @@ import CalibreKit
 // TODO: Break these out into separate files
 
 protocol BookModel {
-    //
+    // TODO: Implement me
 }
 
 enum BookFetchResult {
@@ -73,7 +73,7 @@ struct BookListPresenter: BookListPresenting {
     
     func fetchBooks() {
         interactor.fetchBooks { result in
-            
+            // TODO: Implement me
         }
     }
 }
@@ -87,7 +87,7 @@ struct BookListInteractor: BookListInteracting {
     
     func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void) {
         dataManager.fetchBooks { result in
-            
+            // TODO: Implement me
         }
     }
 }
@@ -123,10 +123,11 @@ struct BookListDataManager: BookListDataManaging {
             DropboxBookListServicing().fetchBooks { response in
                 switch response {
                 case .success(let responseData):
-                    let parser = SQLiteParser(sqliteDatabaseData: responseData.sqliteDatabaseData)
+                    let parser = DirectoryParser(authorDirectories: responseData.authorDirectories)
                     let bookModels = parser.parse()
                     completion(.success(bookModels))
                 case .failure:
+                    // TODO: Implement me
                     break
                 }
             }
@@ -134,8 +135,17 @@ struct BookListDataManager: BookListDataManaging {
     }
 }
 
-struct SQLiteParser {
-    let sqliteDatabaseData: Data
+struct AuthorDirectory {
+    struct TitleDirectory {
+        let cover: UIImage?
+        let opfMetadataFileData: Data
+    }
+    
+    let titleDirectories: [TitleDirectory]
+}
+
+struct DirectoryParser {
+    let authorDirectories: [AuthorDirectory]
     
     func parse() -> [BookModel] {
         // TODO: Implement me
@@ -160,26 +170,21 @@ struct DropboxBookListServicing: BookListServicing {
     typealias BookServiceResponseData = DropboxResponseData
     
     struct DropboxResponseData {
-        struct Image {
-            let bookID: Int
-            let image: UIImage?
-        }
-        
-        let sqliteDatabaseData: Data
-        let images: [Image]
+        let authorDirectories: [AuthorDirectory]
     }
     
     func fetchBooks(completion: @escaping (Result<DropboxResponseData, Error>) -> Void) {
+        // TODO: Implement me
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            do {
-                let sqliteDatabaseURL = Bundle.main.url(forResource: "metadata", withExtension: "db")!
-                let sqliteDatabaseDate = try Data(contentsOf: sqliteDatabaseURL, options: .mappedIfSafe)
-                let images: [DropboxResponseData.Image] = []
-                let responseData = DropboxResponseData(sqliteDatabaseData: sqliteDatabaseDate, images: images)
-                completion(.success(responseData))
-            } catch {
-                print(error)
-            }
+            let authorDirectories = [
+                AuthorDirectory(
+                    titleDirectories: [
+                        AuthorDirectory.TitleDirectory(cover: nil, opfMetadataFileData: Data())
+                    ]
+                )
+            ]
+            let responseData = DropboxResponseData(authorDirectories: authorDirectories)
+            completion(.success(responseData))
         }
     }
 }
