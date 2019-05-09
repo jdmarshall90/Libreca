@@ -41,7 +41,7 @@ protocol BookDetailsInteracting {
     var downloadAvailability: DownloadAvailability { get }
     
     func canDownload(_ book: Book) -> Bool
-    func download(_ book: Book, completion: @escaping (Result<Download>) -> Void)
+    func download(_ book: Book, completion: @escaping (Result<Download, Error>) -> Void)
 }
 
 struct BookDetailsInteractor: BookDetailsInteracting {
@@ -103,7 +103,7 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         return book.mainFormat != nil
     }
     
-    func download(_ book: Book, completion: @escaping (Result<Download>) -> Void) {
+    func download(_ book: Book, completion: @escaping (Result<Download, Error>) -> Void) {
         service.download(book) { result in
             switch result {
             case .success(let download):

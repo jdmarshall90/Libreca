@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import Firebase
 import UIKit
 
 @UIApplicationMain
@@ -36,15 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CalibreKitConfiguration.configuration = Settings.ContentServer.current
         
         NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
-        
-        // commenting out for now due to new app store review requirement for user opt-in
-        // not sure at this point if I'll just remove analytics altogether, or build the
-        // opt-in / opt-out flow
-//        #if !DEBUG
-//            AppAnalytics.shared.enable()
-//            AppAnalytics.shared.appStarted()
-//        #endif
-        
+                
         let theWindow = UIWindow(frame: UIScreen.main.bounds)
         let router = AppLaunchRouter(window: theWindow)
         router.route()

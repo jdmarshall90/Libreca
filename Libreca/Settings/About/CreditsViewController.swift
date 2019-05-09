@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import SafariServices
 import UIKit
 
@@ -59,11 +58,6 @@ final class CreditsViewController: UITableViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("credits", screenClass: nil)
-    }
-    
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if case .dark = Settings.Theme.current {
             (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = .white
@@ -79,7 +73,6 @@ final class CreditsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let tappableCell = TappableCell(rawValue: indexPath.section) else { return }
         
-        Analytics.logEvent(tappableCell.analyticsEventName, parameters: nil)
         UIButton.appearance().tintColor = UIButton().tintColor
         let safariVC = SFSafariViewController(url: tappableCell.url)
         present(safariVC, animated: true)

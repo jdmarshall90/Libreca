@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 protocol BookDetailsPresenting {
@@ -91,7 +90,6 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     
     private func actuallyDownload(_ book: Book) {
         guard interactor.canDownload(book) else {
-            Analytics.logEvent("download_ebook_no_url", parameters: nil)
             return router.routeToDownloadUnavailableMessage()
         }
         view?.showLoader()

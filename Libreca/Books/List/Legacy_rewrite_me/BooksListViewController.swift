@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 extension Book: SectionIndexDisplayable {
@@ -44,7 +43,7 @@ extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     }
 }
 
-class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate {
+class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate, BookListViewing {
     private var detailViewController: BookDetailsViewController?
     private(set) lazy var viewModel = BooksListViewModel(view: self)
     private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<BooksListViewModel.BookFetchResult>(sectionIndexDisplayables: [])
@@ -69,6 +68,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var sortButton: UIBarButtonItem!
+    
+    var presenter: BookListPresenting?
     
     private enum Segue: String {
         case showDetail
@@ -160,11 +161,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         clearsSelectionOnViewWillAppear = splitViewController?.isCollapsed == true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("books", screenClass: nil)
-    }
-    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         guard let segue = Segue(rawValue: identifier) else { return true }
         switch segue {
@@ -193,6 +189,20 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         }
     }
     
+    // MARK: - BookListViewing
+    
+    func show(bookCount: Int) {
+        
+    }
+    
+    func show(book: BookFetchResult, at index: Int) {
+        
+    }
+    
+    func reload(all: [BookFetchResult]) {
+        
+    }
+    
     // MARK: - BooksListView
     
     func show(message: String) {
@@ -204,7 +214,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         isFetchingBooks = false
         refreshControl?.endRefreshing()
         content = .books(Array(repeating: .inFlight, count: bookCount))
-        Analytics.logEvent("book_count", parameters: ["count": bookCount])
     }
     
     func didFetch(book: BooksListViewModel.BookFetchResult, at index: Int) {
@@ -251,24 +260,16 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         show(message: "Enter search terms, separated by spaces. Tap \"Search\" when done typing.")
-        Analytics.logEvent("search_started", parameters: nil)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        Analytics.logEvent("search_ended", parameters: nil)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        Analytics.logEvent("search_button_clicked", parameters: nil)
         searchBar.resignFirstResponder()
         viewModel.search(using: searchBar.text ?? "") { [weak self] matches in
-            Analytics.logEvent("search_results", parameters: ["count": matches.count])
             self?.content = .books(matches)
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        Analytics.logEvent("search_cancel_button_clicked", parameters: nil)
         searchBar.text = nil
         searchBar.resignFirstResponder()
         refresh()
@@ -311,7 +312,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
                 
                 cell.retryButton.isEnabled = !isFetchingBookDetails
                 cell.retry = { [weak self] in
-                    Analytics.logEvent("retry_book_error_tapped", parameters: nil)
                     self?.isFetchingBookDetails = true
                     self?.isRetryingFailures = true
                     
@@ -356,7 +356,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        Analytics.logEvent("section_index_title_tapped", parameters: nil)
         return index
     }
     
@@ -372,7 +371,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         
         Settings.Sort.allCases.forEach { sortOption in
             let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
-                Analytics.logEvent("sort_via_list_vc", parameters: ["type": sortOption.rawValue])
                 self?.viewModel.sort(by: sortOption)
             }
             alertController.addAction(action)
@@ -388,8 +386,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     @objc
     private func refreshControlPulled(_ sender: UIRefreshControl) {
-        Analytics.logEvent("pull_to_refresh_books", parameters: nil)
-        
         if !isRefreshing {
             content = BooksListViewController.loadingContent
         }
@@ -405,7 +401,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true
             isFetchingBookDetails = true
-            viewModel.fetchBooks()
+//            viewModel.fetchBooks()
+            presenter?.fetchBooks()
         }
     }
     

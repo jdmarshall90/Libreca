@@ -1,9 +1,9 @@
 //
-//  AppLicensesViewController.swift
+//  BookListPresenter.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 10/18/18.
-//
+//  Created by Justin Marshall on 5/7/19.
+//  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
@@ -17,21 +17,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Libreca.  If not, see <https://www.gnu.org/licenses/>.
 //
-//  Copyright © 2018 Justin Marshall
+//  Copyright © 2019 Justin Marshall
 //  This file is part of project: Libreca
 //
 
-import LicensesViewController
-import UIKit
+import Foundation
 
-final class AppLicensesViewController: LicensesViewController {
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        loadPlist(Bundle.main, resourceName: "Licenses")
+struct BookListPresenter: BookListPresenting {
+    typealias View = BookListViewing
+    
+    private weak var view: View?
+    private let router: BookListRouting
+    private let interactor: BookListInteracting
+    
+    init(view: View, router: BookListRouting, interactor: BookListInteracting) {
+        self.view = view
+        self.router = router
+        self.interactor = interactor
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Licenses"
+    func fetchBooks() {
+        interactor.fetchBooks { result in
+            // TODO: Implement me
+        }
     }
 }

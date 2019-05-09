@@ -1,9 +1,9 @@
 //
-//  AppLicensesViewController.swift
+//  DirectoryParser.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 10/18/18.
-//
+//  Created by Justin Marshall on 5/7/19.
+//  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
@@ -17,21 +17,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Libreca.  If not, see <https://www.gnu.org/licenses/>.
 //
-//  Copyright © 2018 Justin Marshall
+//  Copyright © 2019 Justin Marshall
 //  This file is part of project: Libreca
 //
 
-import LicensesViewController
-import UIKit
+import Foundation
 
-final class AppLicensesViewController: LicensesViewController {
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        loadPlist(Bundle.main, resourceName: "Licenses")
-    }
+struct DirectoryParser {
+    let authorDirectories: [AuthorDirectory]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Licenses"
+    func parse() -> [BookModel] {
+        // TODO: Implement me using https://github.com/MaxDesiatov/XMLCoder
+        return []
     }
 }
