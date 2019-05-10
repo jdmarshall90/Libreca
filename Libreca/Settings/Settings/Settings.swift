@@ -125,6 +125,7 @@ struct Settings {
             }
             set(newValue) {
                 if let newValue = newValue {
+                    Dropbox.isCurrent = false
                     Keychain.store(newValue)
                 } else {
                     Keychain.wipe()
@@ -132,6 +133,42 @@ struct Settings {
                 
                 CalibreKitConfiguration.configuration = newValue
                 NotificationCenter.default.post(didChangeNotification)
+            }
+        }
+    }
+    
+    struct Dropbox {
+        private init() {}
+        
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dropboxDidChange"))
+        
+        private static var key: String {
+            return Settings.baseSettingsKey + "dropbox"
+        }
+        
+        static var isCurrent: Bool {
+            get {
+                return UserDefaults.standard.bool(forKey: key)
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue, forKey: key)
+                NotificationCenter.default.post(didChangeNotification)
+            }
+        }
+    }
+    
+    enum DataSource {
+        case contentServer(ServerConfiguration)
+        case dropbox
+        case unconfigured
+        
+        static var current: DataSource {
+            if Dropbox.isCurrent {
+                return .dropbox
+            } else if let serverConfiguration = ContentServer.current {
+                return .contentServer(serverConfiguration)
+            } else {
+                return .unconfigured
             }
         }
     }
