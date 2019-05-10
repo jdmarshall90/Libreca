@@ -308,6 +308,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        // TODO: This copy needs to change
         let alertController = UIAlertController(
             title: "What's this?",
             message: """
@@ -367,6 +368,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         } else if indexPath.section == 0 && indexPath.row == 3 {
             return createThemeCell(for: thisDisplayModel)
         } else {
+            // TODO: This needs to change
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ServerConfigCellID") else {
                 return UITableViewCell()
             }
