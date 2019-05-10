@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Qza-Yv-6Yd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Qza-Yv-6Yd">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -167,21 +167,49 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="More" id="Wno-YS-AUT"/>
                     <connections>
-                        <segue destination="EAu-Au-OdW" kind="show" identifier="contentServerSegue" id="jmZ-Iu-1H7"/>
                         <segue destination="OcN-pJ-1Ht" kind="show" identifier="licensesSegue" id="Jom-SF-HEm"/>
                         <segue destination="Sso-7Z-g2T" kind="show" identifier="creditsSegue" id="3cH-LI-9AC"/>
+                        <segue destination="Pea-xR-WX0" kind="show" identifier="backendSelectionSegue" id="7Y8-pL-1ir"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N0I-sH-Ht4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1076" y="132.68365817091455"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="4QL-MA-yM7">
+            <objects>
+                <viewController id="Pea-xR-WX0" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MUt-Z7-Jk6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RKy-DL-Q0n">
+                                <rect key="frame" x="35" y="20" width="305" height="29"/>
+                                <segments>
+                                    <segment title="Dropbox"/>
+                                    <segment title="Calibre Content Server"/>
+                                </segments>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RKy-DL-Q0n" firstAttribute="top" secondItem="bYv-e4-qkZ" secondAttribute="top" constant="20" id="riu-6q-bht"/>
+                            <constraint firstItem="RKy-DL-Q0n" firstAttribute="centerX" secondItem="bYv-e4-qkZ" secondAttribute="centerX" id="xy0-WK-52V"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bYv-e4-qkZ"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ktQ-dy-zHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1967" y="-232"/>
+        </scene>
         <!--Server Setup-->
         <scene sceneID="ILB-2P-hMZ">
             <objects>
                 <tableViewController title="Server Setup" id="EAu-Au-OdW" customClass="ServerSetupViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="c9Q-V3-Ks6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -286,7 +314,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XmN-DI-3aP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2158" y="-592"/>
+            <point key="canvasLocation" x="2764" y="-573"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ahi-gY-k43">

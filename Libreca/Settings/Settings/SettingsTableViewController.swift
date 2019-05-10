@@ -28,7 +28,7 @@ import UIKit
 
 final class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, UITextViewDelegate {
     private enum Segue: String {
-        case contentServerSegue
+        case backendSelectionSegue
         case creditsSegue
         case licensesSegue
     }
@@ -137,7 +137,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                 }(),
                     accessoryType: .detailDisclosureButton,
                     selectionHandler: { [weak self] in
-                        self?.didTapContentServer()
+                        self?.didTapBackendSelection()
                     }
                 ),
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
@@ -217,9 +217,9 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         }
     }
     
-    private func didTapContentServer() {
+    private func didTapBackendSelection() {
         guard isRefreshing?() == false else { return displayUninteractibleAlert() }
-        performSegue(withIdentifier: Segue.contentServerSegue.rawValue, sender: nil)
+        performSegue(withIdentifier: Segue.backendSelectionSegue.rawValue, sender: nil)
     }
     
     private func didTapUpgrades() {
