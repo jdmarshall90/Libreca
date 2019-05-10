@@ -401,8 +401,15 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true
             isFetchingBookDetails = true
-//            viewModel.fetchBooks()
-            presenter?.fetchBooks()
+            
+            switch Settings.DataSource.current {
+            case .dropbox:
+                presenter?.fetchBooks()
+            case .contentServer:
+                viewModel.fetchBooks()
+            case .unconfigured:
+                break
+            }
         }
     }
     
