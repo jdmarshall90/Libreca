@@ -24,10 +24,7 @@
 import CalibreKit
 
 struct BookListDataManager: BookListDataManaging {
-    enum DataSource {
-        case contentServer(ServerConfiguration)
-        case dropbox
-    }
+    typealias DataSource = Settings.DataSource
     
     private let dataSource: DataSource
     
@@ -41,6 +38,9 @@ struct BookListDataManager: BookListDataManaging {
             fetchFromContentServer(completion: completion)
         case .dropbox:
             fetchFromDropbox(completion: completion)
+        case .unconfigured:
+            // TODO: Return an error
+            break
         }
     }
     
