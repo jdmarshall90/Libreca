@@ -176,10 +176,10 @@
             </objects>
             <point key="canvasLocation" x="1076" y="132.68365817091455"/>
         </scene>
-        <!--View Controller-->
+        <!--Backend Selection View Controller-->
         <scene sceneID="4QL-MA-yM7">
             <objects>
-                <viewController id="Pea-xR-WX0" sceneMemberID="viewController">
+                <viewController id="Pea-xR-WX0" customClass="BackendSelectionViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MUt-Z7-Jk6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -190,15 +190,43 @@
                                     <segment title="Dropbox"/>
                                     <segment title="Calibre Content Server"/>
                                 </segments>
+                                <connections>
+                                    <action selector="backendSelectorDidChange:" destination="Pea-xR-WX0" eventType="valueChanged" id="Afp-Sk-GEV"/>
+                                </connections>
                             </segmentedControl>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7LQ-dY-RrP">
+                                <rect key="frame" x="0.0" y="68" width="375" height="483"/>
+                                <connections>
+                                    <segue destination="HVU-fQ-wYN" kind="embed" id="YW3-Ya-f3q"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BOv-ph-R1Y">
+                                <rect key="frame" x="0.0" y="68" width="375" height="483"/>
+                                <connections>
+                                    <segue destination="EAu-Au-OdW" kind="embed" id="13g-UJ-quk"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="BOv-ph-R1Y" firstAttribute="width" secondItem="MUt-Z7-Jk6" secondAttribute="width" id="Wcc-sR-Xbj"/>
+                            <constraint firstItem="7LQ-dY-RrP" firstAttribute="centerX" secondItem="BOv-ph-R1Y" secondAttribute="centerX" id="ZND-t5-WTp"/>
+                            <constraint firstItem="7LQ-dY-RrP" firstAttribute="centerY" secondItem="BOv-ph-R1Y" secondAttribute="centerY" id="c5c-dF-tVR"/>
+                            <constraint firstItem="7LQ-dY-RrP" firstAttribute="height" secondItem="BOv-ph-R1Y" secondAttribute="height" id="ht7-Lc-UZd"/>
+                            <constraint firstItem="BOv-ph-R1Y" firstAttribute="centerX" secondItem="bYv-e4-qkZ" secondAttribute="centerX" id="l6d-ng-4Gz"/>
+                            <constraint firstItem="BOv-ph-R1Y" firstAttribute="top" secondItem="RKy-DL-Q0n" secondAttribute="bottom" constant="20" id="mnQ-JO-82g"/>
+                            <constraint firstItem="7LQ-dY-RrP" firstAttribute="width" secondItem="BOv-ph-R1Y" secondAttribute="width" id="rKU-SP-Z1v"/>
                             <constraint firstItem="RKy-DL-Q0n" firstAttribute="top" secondItem="bYv-e4-qkZ" secondAttribute="top" constant="20" id="riu-6q-bht"/>
+                            <constraint firstItem="bYv-e4-qkZ" firstAttribute="bottom" secondItem="BOv-ph-R1Y" secondAttribute="bottom" id="vhB-q4-FLS"/>
                             <constraint firstItem="RKy-DL-Q0n" firstAttribute="centerX" secondItem="bYv-e4-qkZ" secondAttribute="centerX" id="xy0-WK-52V"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bYv-e4-qkZ"/>
                     </view>
+                    <connections>
+                        <outlet property="backendSelector" destination="RKy-DL-Q0n" id="GId-Sk-kGA"/>
+                        <outlet property="contentServerContainerView" destination="BOv-ph-R1Y" id="xBb-VB-ZFJ"/>
+                        <outlet property="dropboxContainerView" destination="7LQ-dY-RrP" id="zBn-fz-Xii"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktQ-dy-zHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -209,7 +237,7 @@
             <objects>
                 <tableViewController title="Server Setup" id="EAu-Au-OdW" customClass="ServerSetupViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="c9Q-V3-Ks6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -431,6 +459,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ibT-qW-r9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2158" y="879"/>
+        </scene>
+        <!--Dropbox Setup View Controller-->
+        <scene sceneID="3Yy-vW-lhF">
+            <objects>
+                <viewController id="HVU-fQ-wYN" customClass="DropboxSetupViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gTF-oi-SVS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qo9-Sf-OpC">
+                                <rect key="frame" x="118" y="225" width="139" height="33"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <state key="normal" title="Connect Dropbox "/>
+                                <connections>
+                                    <action selector="didTapConnect:" destination="HVU-fQ-wYN" eventType="touchUpInside" id="BaN-1E-KRK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="qo9-Sf-OpC" firstAttribute="centerY" secondItem="gTF-oi-SVS" secondAttribute="centerY" id="8ZS-Bv-Fgu"/>
+                            <constraint firstItem="qo9-Sf-OpC" firstAttribute="centerX" secondItem="gTF-oi-SVS" secondAttribute="centerX" id="urO-JD-Ezt"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dropboxButton" destination="qo9-Sf-OpC" id="J3p-5x-pZJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sdf-g9-XA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2870" y="67"/>
         </scene>
     </scenes>
 </document>

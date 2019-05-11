@@ -47,6 +47,8 @@
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
 		D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDC21E4408C0046D00F /* Searcher.swift */; };
 		D042EEE021E5684F0046D00F /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDF21E5684F0046D00F /* Formatters.swift */; };
+		D044243422862F3B002690A0 /* BackendSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243322862F3B002690A0 /* BackendSelectionViewController.swift */; };
+		D044243622862FD4002690A0 /* DropboxSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243522862FD4002690A0 /* DropboxSetupViewController.swift */; };
 		D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */; };
 		D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */; };
 		D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */; };
@@ -182,6 +184,8 @@
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		D042EEDC21E4408C0046D00F /* Searcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searcher.swift; sourceTree = "<group>"; };
 		D042EEDF21E5684F0046D00F /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		D044243322862F3B002690A0 /* BackendSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendSelectionViewController.swift; sourceTree = "<group>"; };
+		D044243522862FD4002690A0 /* DropboxSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupViewController.swift; sourceTree = "<group>"; };
 		D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x.png"; sourceTree = "<group>"; };
 		D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x~ipad.png"; sourceTree = "<group>"; };
 		D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@3x~ipad.png"; sourceTree = "<group>"; };
@@ -551,6 +555,8 @@
 		D0EFA8F0217C2A5400622080 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D044243322862F3B002690A0 /* BackendSelectionViewController.swift */,
+				D044243522862FD4002690A0 /* DropboxSetupViewController.swift */,
 				D0B3BEF12197D91E00DAB7BD /* ImageSettingTableViewCell.swift */,
 				D07C4DFD21E0682E00E1B470 /* Keychain.swift */,
 				D09D7C0421742A5500E8232E /* ServerSetupViewController.swift */,
@@ -770,6 +776,7 @@
 				D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */,
 				D01574DE22275ADA008CC645 /* BookDetailsDataManaging.swift in Sources */,
 				D02D9BB522826D74008D14D3 /* DropboxBookListService.swift in Sources */,
+				D044243622862FD4002690A0 /* DropboxSetupViewController.swift in Sources */,
 				D01574C922262B52008CC645 /* DownloadsTableViewController.swift in Sources */,
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */,
@@ -789,6 +796,7 @@
 				D07EC1F821EA815800AE193B /* BookEditViewController.swift in Sources */,
 				D07EC21921ED51BF00AE193B /* PickerTableViewCell.swift in Sources */,
 				D0B5213821EED8F5007FB264 /* BookEditSearchListViewing.swift in Sources */,
+				D044243422862F3B002690A0 /* BackendSelectionViewController.swift in Sources */,
 				D07C4DF621DECF6500E1B470 /* ServerSetupViewModel.swift in Sources */,
 				D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */,
 				D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */,
