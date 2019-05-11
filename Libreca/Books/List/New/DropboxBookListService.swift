@@ -36,8 +36,13 @@ struct DropboxBookListService: BookListServicing {
             return
         }
         
+        client.files.download(path: "/Calibre Library/metadata.db").response(completionHandler: { responseFiles, error in
+            // This one liner is easier ... consider just parsing the sqlite directly ...
+            print()
+        })
+        
         // TODO: Grab from disk if available, only hit network if user pulls to refresh
-        client.files.downloadZip(path: "/Calibre Library").response(completionHandler: { responseFiles, error in
+        let download = client.files.downloadZip(path: "/Calibre Library/metadata.db").response(completionHandler: { responseFiles, error in
             guard error == nil else {
                 // TODO: Handle errors
                 return
@@ -50,16 +55,17 @@ struct DropboxBookListService: BookListServicing {
             let zipURL = documentsPathURL.appendingPathComponent(zipFileName).appendingPathExtension("zip")
             do {
                 try responseFiles?.1.write(to: zipURL)
-                let unzippedURL = zipURL.deletingPathExtension()
-                SSZipArchive.unzipFile(atPath: zipURL.path, toDestination: unzippedURL.path, progressHandler: { someString, fileInfo, anInt, anotherInt in
+                let unzippedURL = zipURL.deletingLastPathComponent()
+                SSZipArchive.unzipFile(atPath: zipURL.path, toDestination: unzippedURL.path)
+//                SSZipArchive.unzipFile(atPath: zipURL.path, toDestination: unzippedURL.path, progressHandler: { someString, fileInfo, anInt, anotherInt in
                     // TODO: Show progress indicator in UI
-                    print() // string: "Calibre Library/"; file_info: not needed, filesystem info; anInt: 0,1,2,3, increments @ every call; anotherInt: 2580
-                }, completionHandler: { someString, aBool, error in
+//                    print() // string: "Calibre Library/"; file_info: not needed, filesystem info; anInt: 0,1,2,3, increments @ every call; anotherInt: 2580
+//                }, completionHandler: { someString, aBool, error in
                     print()
-                    guard error == nil else {
-                        // TODO: Handle errors
-                        return
-                    }
+//                    guard error == nil else {
+//                        // TODO: Handle errors
+//                        return
+//                    }
                     do {
                         try FileManager.default.removeItem(at: zipURL)
                         
@@ -67,43 +73,61 @@ struct DropboxBookListService: BookListServicing {
                             // in the debugger, that was giving the exact count of OPF files that you were expecting (625)
                             // ▿ Optional<Array<String>>
                             // ▿ some : 3654 elements
-                        let authorsURL = try FileManager.default.contentsOfDirectory(at: unzippedURL, includingPropertiesForKeys: nil, options: []).last!
-                        let authorURLs = try FileManager.default.contentsOfDirectory(at: authorsURL, includingPropertiesForKeys: nil, options: [])
-                        let authorDirectories: [AuthorDirectory] = try authorURLs.compactMap { titleURL in
-                            guard titleURL.hasDirectoryPath else {
-                                return nil
-                            }
-                            // TODO: Handle more than just jpegs
-                            // expected file types are: image, opf, and ebook file
-                            let titleFilesURLs = try FileManager.default.contentsOfDirectory(at: titleURL, includingPropertiesForKeys: nil, options: [])
-                            let titleDirectories: [AuthorDirectory.TitleDirectory]
-//
-//                            switch titleFilesURLs.count {
-//                            case 0:
-//                                titleDirectories = [] // nothing to see here ... wouldn't expect this to actually happen?
-//                            case 1:
-//                                titleDirectories = []
-//                            case 2:
-//                                titleDirectories = []
-//                            case 3:
-//                                titleDirectories = []
-//                            default:
-//                                titleDirectories = [] // wouldn't expect this to actually happen either?
-//                            }
-                            if titleFilesURLs.isEmpty {
-                                print()
-                            }
-                            // this line is just temp, for testing...
-                            titleDirectories = titleFilesURLs.map { _ in AuthorDirectory.TitleDirectory(cover: nil, opfMetadataFileData: Data(), ebookFile: nil) }
-                            return AuthorDirectory(titleDirectories: titleDirectories)
-                        }
-                        print("\(authorDirectories.count) author directories. \(authorDirectories.flatMap { $0.titleDirectories }.count) titles.")
+                        
+//                        let allSubpaths = FileManager.default.subpaths(atPath: unzippedURL.path)?.compactMap { documentsPathURL.appendingPathComponent($0).path.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) } ?? []
+//                        let allOPFPaths = allSubpaths.compactMap(URL.init).filter { $0.pathExtension == "opf" }
+//                        print(allOPFPaths.count)
                         print()
+                        
+                        let allOPFSubpaths = FileManager.default.subpaths(atPath: unzippedURL.path)?
+                            .filter { $0[$0.index($0.endIndex, offsetBy: -4)..<$0.endIndex] == ".opf" }
+                            .compactMap { documentsPathURL.appendingPathComponent($0).path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) } ?? []
+                        let allOPFPaths = allOPFSubpaths.compactMap(URL.init)
+                        print(allOPFPaths.count)
+                        print()
+                        
+                        allOPFPaths.forEach { opfPath in
+                            print()
+//                            try FileManager.default.contentsOfDirectory(atPath: opfPath.deletingLastPathComponent())
+                        }
+                        
+//                        let authorsURL = try FileManager.default.contentsOfDirectory(at: unzippedURL, includingPropertiesForKeys: nil, options: []).last!
+//                        let authorURLs = try FileManager.default.contentsOfDirectory(at: authorsURL, includingPropertiesForKeys: nil, options: [])
+//                        let authorDirectories: [AuthorDirectory] = try authorURLs.compactMap { titleURL in
+//                            guard titleURL.hasDirectoryPath else {
+//                                return nil
+//                            }
+//                            // TODO: Handle more than just jpegs
+//                            // expected file types are: image, opf, and ebook file
+//                            let titleFilesURLs = try FileManager.default.contentsOfDirectory(at: titleURL, includingPropertiesForKeys: nil, options: [])
+//                            let titleDirectories: [AuthorDirectory.TitleDirectory]
+////
+////                            switch titleFilesURLs.count {
+////                            case 0:
+////                                titleDirectories = [] // nothing to see here ... wouldn't expect this to actually happen?
+////                            case 1:
+////                                titleDirectories = []
+////                            case 2:
+////                                titleDirectories = []
+////                            case 3:
+////                                titleDirectories = []
+////                            default:
+////                                titleDirectories = [] // wouldn't expect this to actually happen either?
+////                            }
+//                            if titleFilesURLs.isEmpty {
+//                                print()
+//                            }
+//                            // this line is just temp, for testing...
+//                            titleDirectories = titleFilesURLs.map { _ in AuthorDirectory.TitleDirectory(cover: nil, opfMetadataFileData: Data(), ebookFile: nil) }
+//                            return AuthorDirectory(titleDirectories: titleDirectories)
+//                        }
+//                        print("\(authorDirectories.count) author directories. \(authorDirectories.flatMap { $0.titleDirectories }.count) titles.")
+//                        print()
                     } catch {
                         // TODO: Handle this error
                         print()
                     }
-                })
+//                })
             } catch {
                 // TODO: Handle this error
                 print()
@@ -112,7 +136,6 @@ struct DropboxBookListService: BookListServicing {
             // TODO: Show progress indicator in UI
             print(progress)
         })
-        
         
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 //            let authorDirectories = [
