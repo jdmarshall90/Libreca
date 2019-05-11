@@ -45,10 +45,14 @@
 		D02D9BB922826DD6008D14D3 /* AuthorDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
+		D03E55B32286731600A2EB72 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03E55B22286731600A2EB72 /* ZipArchive.framework */; };
+		D03E55B52286732200A2EB72 /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D03E55B22286731600A2EB72 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDC21E4408C0046D00F /* Searcher.swift */; };
 		D042EEE021E5684F0046D00F /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDF21E5684F0046D00F /* Formatters.swift */; };
 		D044243422862F3B002690A0 /* BackendSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243322862F3B002690A0 /* BackendSelectionViewController.swift */; };
 		D044243622862FD4002690A0 /* DropboxSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243522862FD4002690A0 /* DropboxSetupViewController.swift */; };
+		D044243922866191002690A0 /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; };
+		D044243A22866191002690A0 /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */; };
 		D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */; };
 		D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */; };
@@ -133,10 +137,12 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
+				D044243A22866191002690A0 /* SwiftyDropbox.framework in Embed Frameworks */,
 				D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */,
 				D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */,
 				D07C4DFC21E0644F00E1B470 /* Valet.framework in Embed Frameworks */,
 				D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */,
+				D03E55B52286732200A2EB72 /* ZipArchive.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,10 +188,12 @@
 		D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorDirectory.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
+		D03E55B22286731600A2EB72 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		D042EEDC21E4408C0046D00F /* Searcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searcher.swift; sourceTree = "<group>"; };
 		D042EEDF21E5684F0046D00F /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		D044243322862F3B002690A0 /* BackendSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendSelectionViewController.swift; sourceTree = "<group>"; };
 		D044243522862FD4002690A0 /* DropboxSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupViewController.swift; sourceTree = "<group>"; };
+		D04424372286616D002690A0 /* SwiftyDropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyDropbox.framework; path = Carthage/Build/iOS/SwiftyDropbox.framework; sourceTree = "<group>"; };
 		D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x.png"; sourceTree = "<group>"; };
 		D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x~ipad.png"; sourceTree = "<group>"; };
 		D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@3x~ipad.png"; sourceTree = "<group>"; };
@@ -257,11 +265,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D044243922866191002690A0 /* SwiftyDropbox.framework in Frameworks */,
 				D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */,
 				D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
 				D07C4DFB21E0644F00E1B470 /* Valet.framework in Frameworks */,
 				D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
+				D03E55B32286731600A2EB72 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +527,8 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D03E55B22286731600A2EB72 /* ZipArchive.framework */,
+				D04424372286616D002690A0 /* SwiftyDropbox.framework */,
 				D07C4DF921E0643E00E1B470 /* Valet.framework */,
 				D0AAA62621D01EC300623608 /* LicensesViewController.framework */,
 				D049687A21D01D9300BD24C4 /* Alamofire.framework */,
@@ -735,6 +747,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/AlamofireNetworkActivityIndicator.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Valet.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyDropbox.framework",
 			);
 			name = "Copy frameworks";
 			outputFileListPaths = (

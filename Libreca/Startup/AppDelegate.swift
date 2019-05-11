@@ -22,7 +22,11 @@
 //
 
 import CalibreKit
+import SwiftyDropbox
 import UIKit
+
+// TODO: Update licenses list with Dropbox SDK
+// TODO: Update licenses list with ZipArchive framework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // swiftlint:disable:next discouraged_optional_collection
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        DropboxClientsManager.setupWithAppKey("3s4u5gvkukbbu1n")
         CalibreKitConfiguration.configuration = Settings.ContentServer.current
         
         NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
@@ -46,6 +52,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         applyTheme()
         Settings.AppLaunched.appDidLaunch()
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+            // TODO: Need some logic in here
+            switch authResult {
+            case .success:
+                print("Success! User is logged into Dropbox.")
+            case .cancel:
+                print("Authorization flow was manually canceled by user!")
+            case .error(_, let description):
+                print("Error: \(description)")
+            }
+        }
         return true
     }
     

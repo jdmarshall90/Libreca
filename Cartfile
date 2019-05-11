@@ -3,4 +3,6 @@ git "git@gitlab.com:jdmarshall90libs/SwiftLintConfig.git" ~> 3.0.0
 git "git@gitlab.com:iOS_Open_Source_Forks/LicenseGenerator-iOS.git" ~> 0.7.0
 github "Square/Valet" ~> 3.2.2
 github "Alamofire/Alamofire" ~> 4.7.0
+github "Dropbox/SwiftyDropbox" ~> 5.0.0
+github "ZipArchive/ZipArchive" ~> 2.2.1
 

@@ -27,6 +27,7 @@ struct AuthorDirectory {
     struct TitleDirectory {
         let cover: UIImage?
         let opfMetadataFileData: Data
+        let ebookFile: Data?
     }
     
     let titleDirectories: [TitleDirectory]

@@ -21,14 +21,20 @@
 //  This file is part of project: Libreca
 //
 
+import SwiftyDropbox
 import UIKit
 
 // TODO: Update privacy policy to include Dropbox
-
 final class DropboxSetupViewController: UIViewController {
     // TODO: Add Dropbox icon to the button
     @IBOutlet weak var dropboxButton: UIButton!
-    
-    @IBAction func didTapConnect(_ sender: UIButton) {
+    // TODO: Add warning that this is only recommended to do first time setup over Wi-Fi
+    @IBAction private func didTapConnect(_ sender: UIButton) {
+        // TODO: Allow user to type in Dropbox dir
+        DropboxClientsManager.authorizeFromController(
+            UIApplication.shared,
+            controller: self) { (url: URL) -> Void in
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }
