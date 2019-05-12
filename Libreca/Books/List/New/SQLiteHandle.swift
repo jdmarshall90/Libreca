@@ -24,6 +24,10 @@
 import Foundation
 
 struct SQLiteHandle {
+    enum SQLiteError: Error {
+        
+    }
+    
     private let databaseURL: URL
     
     init(databaseURL: URL) {
