@@ -26,7 +26,6 @@ import SwiftyDropbox
 import UIKit
 
 // TODO: Update licenses list with Dropbox SDK
-// TODO: Update licenses list with ZipArchive framework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
