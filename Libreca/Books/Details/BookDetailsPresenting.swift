@@ -29,6 +29,8 @@ protocol BookDetailsPresenting {
     func download(_ book: Book)
 }
 
+// TODO: Disable editing (with a new error message) when using Dropbox
+
 struct BookDetailsPresenter: BookDetailsPresenting {
     typealias View = (BookDetailsViewing & ErrorMessageShowing & LoadingViewShowing & UIViewController)
     

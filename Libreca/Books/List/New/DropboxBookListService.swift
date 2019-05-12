@@ -22,21 +22,35 @@
 //
 
 import Foundation
+import SwiftyDropbox
 
 struct DropboxBookListService: BookListServicing {
-    typealias BookServiceResponseData = [AuthorDirectory]
+    typealias BookServiceResponseData = Data
+    typealias BookServiceError = DropboxAPIError
     
-    func fetchBooks(completion: @escaping (Result<[AuthorDirectory], Error>) -> Void) {
-        // TODO: Implement me
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let authorDirectories = [
-                AuthorDirectory(
-                    titleDirectories: [
-                        AuthorDirectory.TitleDirectory(cover: nil, opfMetadataFileData: Data())
-                    ]
-                )
-            ]
-            completion(.success(authorDirectories))
+    enum DropboxAPIError: Error {
+        case unauthorized
+        case error(CallError<Files.DownloadError>)
+        case nonsenseResponse
+    }
+    
+    let path: String
+    
+    func fetchBooks(completion: @escaping (Result<BookServiceResponseData, BookServiceError>) -> Void) {
+        guard let client = DropboxClientsManager.authorizedClient else {
+            return completion(.failure(DropboxAPIError.unauthorized))
+        }
+        
+        client.files.download(path: "\(path)/metadata.db").response { responseFiles, error in
+            switch (responseFiles, error) {
+            case (.some(_, let sqliteFileData), .none):
+                completion(.success(sqliteFileData))
+            case (.none, .some(let error)):
+                completion(.failure(DropboxAPIError.error(error)))
+            case (.some, .some),
+                 (.none, .none):
+                completion(.failure(DropboxAPIError.nonsenseResponse))
+            }
         }
     }
 }

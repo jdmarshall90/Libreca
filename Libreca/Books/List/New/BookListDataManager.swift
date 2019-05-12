@@ -56,16 +56,47 @@ struct BookListDataManager: BookListDataManaging {
     }
     
     private func fetchFromDropbox(completion: @escaping (Result<[BookModel], Error>) -> Void) {
-        DropboxBookListService().fetchBooks { response in
+        // TODO: Grab from disk if available, only hit network if user pulls to refresh
+        // TODO: Use user-provided path
+        DropboxBookListService(path: "/Calibre Library").fetchBooks { response in
             switch response {
             case .success(let responseData):
-                let parser = DirectoryParser(authorDirectories: responseData)
-                let bookModels = parser.parse()
-                completion(.success(bookModels))
-            case .failure:
+                do {
+                    let databaseURL = try self.writeToDisk(responseData)
+                    try self.queryForBooks(atDatabaseURL: databaseURL, completion: completion)
+                } catch let error as SQLiteHandle.SQLiteError {
+                    // TODO: Handle errors
+                } catch {
+                    // TODO: Handle errors
+                }
+            case .failure(let error):
                 // TODO: Implement me
                 break
             }
         }
+    }
+    
+    private func writeToDisk(_ data: Data) throws -> URL {
+        // swiftlint:disable:next force_unwrap
+        let documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let databaseURL = documentsPathURL.appendingPathComponent("libreca_calibre_lib").appendingPathExtension("sqlite3")
+        try data.write(to: databaseURL)
+        return databaseURL
+    }
+    
+    private func queryForBooks(atDatabaseURL databaseURL: URL, completion: @escaping (Result<[BookModel], Error>) -> Void) throws {
+        let sqliteHandle = SQLiteHandle(databaseURL: databaseURL)
+        try sqliteHandle.open()
+        var bookModels: [BookModel] = []
+        try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
+            // TODO: Show book count on UI
+        }, progress: { nextBookModel in
+            bookModels.append(nextBookModel)
+            // TODO: Update UI with books as they come in
+        }, completion: {
+            // TODO: Perform final refresh of UI
+            sqliteHandle.close()
+            completion(.success(bookModels))
+        })
     }
 }

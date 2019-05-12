@@ -1,8 +1,8 @@
 //
-//  AuthorDirectory.swift
+//  SQLiteHandle.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 5/7/19.
+//  Created by Justin Marshall on 5/11/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,13 +21,28 @@
 //  This file is part of project: Libreca
 //
 
-import UIKit
+import Foundation
 
-struct AuthorDirectory {
-    struct TitleDirectory {
-        let cover: UIImage?
-        let opfMetadataFileData: Data
+struct SQLiteHandle {
+    enum SQLiteError: Error {
+        
     }
     
-    let titleDirectories: [TitleDirectory]
+    private let databaseURL: URL
+    
+    init(databaseURL: URL) {
+        self.databaseURL = databaseURL
+    }
+    
+    func open() throws {
+        
+    }
+    
+    func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
+        
+    }
+    
+    func close() {
+        
+    }
 }

@@ -41,14 +41,14 @@
 		D02D9BB122826D2E008D14D3 /* BookListDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB022826D2E008D14D3 /* BookListDataManager.swift */; };
 		D02D9BB322826D4A008D14D3 /* CalibreContentServerBookListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB222826D4A008D14D3 /* CalibreContentServerBookListService.swift */; };
 		D02D9BB522826D74008D14D3 /* DropboxBookListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */; };
-		D02D9BB722826D96008D14D3 /* DirectoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB622826D96008D14D3 /* DirectoryParser.swift */; };
-		D02D9BB922826DD6008D14D3 /* AuthorDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
 		D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDC21E4408C0046D00F /* Searcher.swift */; };
 		D042EEE021E5684F0046D00F /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDF21E5684F0046D00F /* Formatters.swift */; };
 		D044243422862F3B002690A0 /* BackendSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243322862F3B002690A0 /* BackendSelectionViewController.swift */; };
 		D044243622862FD4002690A0 /* DropboxSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243522862FD4002690A0 /* DropboxSetupViewController.swift */; };
+		D044243922866191002690A0 /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; };
+		D044243A22866191002690A0 /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */; };
 		D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */; };
 		D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */; };
@@ -111,6 +111,7 @@
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
 		D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */; };
 		D0DC4E8E2280EB57005EBA60 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC4E8D2280EB57005EBA60 /* Contracts.swift */; };
+		D0E716CF2287AB9B002DF4CA /* SQLiteHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8EC217C0C8300622080 /* GDPR.swift */; };
 /* End PBXBuildFile section */
@@ -133,6 +134,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
+				D044243A22866191002690A0 /* SwiftyDropbox.framework in Embed Frameworks */,
 				D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */,
 				D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */,
 				D07C4DFC21E0644F00E1B470 /* Valet.framework in Embed Frameworks */,
@@ -178,14 +180,13 @@
 		D02D9BB022826D2E008D14D3 /* BookListDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListDataManager.swift; sourceTree = "<group>"; };
 		D02D9BB222826D4A008D14D3 /* CalibreContentServerBookListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibreContentServerBookListService.swift; sourceTree = "<group>"; };
 		D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxBookListService.swift; sourceTree = "<group>"; };
-		D02D9BB622826D96008D14D3 /* DirectoryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryParser.swift; sourceTree = "<group>"; };
-		D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorDirectory.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		D042EEDC21E4408C0046D00F /* Searcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searcher.swift; sourceTree = "<group>"; };
 		D042EEDF21E5684F0046D00F /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		D044243322862F3B002690A0 /* BackendSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendSelectionViewController.swift; sourceTree = "<group>"; };
 		D044243522862FD4002690A0 /* DropboxSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupViewController.swift; sourceTree = "<group>"; };
+		D04424372286616D002690A0 /* SwiftyDropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyDropbox.framework; path = Carthage/Build/iOS/SwiftyDropbox.framework; sourceTree = "<group>"; };
 		D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x.png"; sourceTree = "<group>"; };
 		D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@2x~ipad.png"; sourceTree = "<group>"; };
 		D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_mode_icon@3x~ipad.png"; sourceTree = "<group>"; };
@@ -249,6 +250,7 @@
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
 		D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		D0DC4E8D2280EB57005EBA60 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
+		D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteHandle.swift; sourceTree = "<group>"; };
 		D0EFA8EC217C0C8300622080 /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -257,6 +259,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D044243922866191002690A0 /* SwiftyDropbox.framework in Frameworks */,
 				D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */,
 				D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
@@ -331,8 +334,7 @@
 				D02D9BAC22826D08008D14D3 /* BookListPresenter.swift */,
 				D02D9BAE22826D1C008D14D3 /* BookListInteractor.swift */,
 				D02D9BB022826D2E008D14D3 /* BookListDataManager.swift */,
-				D02D9BB622826D96008D14D3 /* DirectoryParser.swift */,
-				D02D9BB822826DD6008D14D3 /* AuthorDirectory.swift */,
+				D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */,
 				D02D9BB222826D4A008D14D3 /* CalibreContentServerBookListService.swift */,
 				D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */,
 			);
@@ -517,6 +519,7 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D04424372286616D002690A0 /* SwiftyDropbox.framework */,
 				D07C4DF921E0643E00E1B470 /* Valet.framework */,
 				D0AAA62621D01EC300623608 /* LicensesViewController.framework */,
 				D049687A21D01D9300BD24C4 /* Alamofire.framework */,
@@ -735,6 +738,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/AlamofireNetworkActivityIndicator.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Valet.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyDropbox.framework",
 			);
 			name = "Copy frameworks";
 			outputFileListPaths = (
@@ -787,7 +791,6 @@
 				D07EC20821EA883400AE193B /* BookEditInteracting.swift in Sources */,
 				D003EA052206913900B200A2 /* InAppPurchase.swift in Sources */,
 				D01574C52224DACA008CC645 /* AppLaunchRouting.swift in Sources */,
-				D02D9BB922826DD6008D14D3 /* AuthorDirectory.swift in Sources */,
 				D0B5214C21F16EC6007FB264 /* UITableViewCell+Extensions.swift in Sources */,
 				D09FDACF22602979006BBD2B /* ResponseStatusReporting.swift in Sources */,
 				D07EC20221EA881400AE193B /* BookEditViewing.swift in Sources */,
@@ -803,7 +806,6 @@
 				D07EC1FA21EA87E100AE193B /* BookDetailsRouting.swift in Sources */,
 				D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */,
 				D04871A3216AF31D0085D22C /* BooksListViewController.swift in Sources */,
-				D02D9BB722826D96008D14D3 /* DirectoryParser.swift in Sources */,
 				D07EC20621EA882F00AE193B /* BookEditPresenting.swift in Sources */,
 				D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */,
 				D0195B8521730794006EA713 /* SettingsTableViewController.swift in Sources */,
@@ -839,6 +841,7 @@
 				D01574D422262C4C008CC645 /* Download.swift in Sources */,
 				D0B5214F21F17727007FB264 /* CommentsTableViewCell.swift in Sources */,
 				D0010821222E1731006C1F6B /* DownloadTableViewCell.swift in Sources */,
+				D0E716CF2287AB9B002DF4CA /* SQLiteHandle.swift in Sources */,
 				D02D9BB322826D4A008D14D3 /* CalibreContentServerBookListService.swift in Sources */,
 				D07EC1FE21EA87F500AE193B /* BookDetailsInteracting.swift in Sources */,
 				D0195B8B21730DA2006EA713 /* Framework.swift in Sources */,

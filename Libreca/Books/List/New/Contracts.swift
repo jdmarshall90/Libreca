@@ -51,5 +51,6 @@ protocol BookListDataManaging {
 
 protocol BookListServicing {
     associatedtype BookServiceResponseData
-    func fetchBooks(completion: @escaping (Result<BookServiceResponseData, Error>) -> Void)
+    associatedtype BookServiceError: Error
+    func fetchBooks(completion: @escaping (Result<BookServiceResponseData, BookServiceError>) -> Void)
 }
