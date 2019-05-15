@@ -86,7 +86,6 @@ struct BookListDataManager: BookListDataManaging {
     
     private func queryForBooks(atDatabaseURL databaseURL: URL, completion: @escaping (Result<[BookModel], Error>) -> Void) throws {
         let sqliteHandle = SQLiteHandle(databaseURL: databaseURL)
-        try sqliteHandle.open()
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
             // TODO: Show book count on UI
@@ -95,7 +94,6 @@ struct BookListDataManager: BookListDataManaging {
             // TODO: Update UI with books as they come in
         }, completion: {
             // TODO: Perform final refresh of UI
-            sqliteHandle.close()
             completion(.success(bookModels))
         })
     }

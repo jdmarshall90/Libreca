@@ -22,10 +22,12 @@
 //
 
 import Foundation
+import SQLite3
 
 struct SQLiteHandle {
     enum SQLiteError: Error {
-        
+        case open(Int32)
+        case prepare(Int32)
     }
     
     private let databaseURL: URL
@@ -34,15 +36,33 @@ struct SQLiteHandle {
         self.databaseURL = databaseURL
     }
     
-    func open() throws {
-        
-    }
-    
     func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
+        var database: OpaquePointer?
+        let openStatus = sqlite3_open(databaseURL.path, &database)
+        guard let initializedDatabase = database,
+            openStatus == SQLITE_OK else {
+                throw SQLiteError.open(openStatus)
+        }
         
-    }
-    
-    func close() {
+        var queryStatement: OpaquePointer? = nil
+        let query = "SELECT * FROM books;"
+        let prepareStatus = sqlite3_prepare_v2(database, query, -1, &queryStatement, nil)
+        guard prepareStatus == SQLITE_OK else {
+            throw SQLiteError.prepare(prepareStatus)
+        }
         
+        var bookCount = 0
+        
+        // traversing through all the records
+        while(sqlite3_step(queryStatement) == SQLITE_ROW) {
+//            let id = sqlite3_column_int(stmt, 0)
+//            let name = String(cString: sqlite3_column_text(stmt, 1))
+//            let powerrank = sqlite3_column_int(stmt, 2)
+            
+            bookCount += 1
+        }
+        print(bookCount)
+        sqlite3_finalize(queryStatement)
+        sqlite3_close(initializedDatabase)
     }
 }
