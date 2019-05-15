@@ -22,14 +22,10 @@
 //
 
 import Foundation
-import SQLite3
+// TODO: Update licenses file with this lib
+import SQLite
 
 struct SQLiteHandle {
-    enum SQLiteError: Error {
-        case open(Int32)
-        case prepare(Int32)
-    }
-    
     private let databaseURL: URL
     
     init(databaseURL: URL) {
@@ -37,32 +33,18 @@ struct SQLiteHandle {
     }
     
     func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
-        var database: OpaquePointer?
-        let openStatus = sqlite3_open(databaseURL.path, &database)
-        guard let initializedDatabase = database,
-            openStatus == SQLITE_OK else {
-                throw SQLiteError.open(openStatus)
-        }
+        let database = try Connection(databaseURL.path, readonly: true)
+        let books = Table("books")
+        let bookCount = try database.scalar(books.count)
+        start(bookCount)
         
-        var queryStatement: OpaquePointer? = nil
-        let query = "SELECT * FROM books;"
-        let prepareStatus = sqlite3_prepare_v2(database, query, -1, &queryStatement, nil)
-        guard prepareStatus == SQLITE_OK else {
-            throw SQLiteError.prepare(prepareStatus)
-        }
+        // TODO: Finish implementing me, you'll need to flesh out the BookModel protocol API, and then create a new struct implementing that, and then parse this data into that struct
+//        try database.prepare(books).forEach { row in
+//        (lldb) po row[Expression<String>("title")]
+//        "\'Salem\'s Lot"
+//            print(row)
+//        }
         
-        var bookCount = 0
-        
-        // traversing through all the records
-        while(sqlite3_step(queryStatement) == SQLITE_ROW) {
-//            let id = sqlite3_column_int(stmt, 0)
-//            let name = String(cString: sqlite3_column_text(stmt, 1))
-//            let powerrank = sqlite3_column_int(stmt, 2)
-            
-            bookCount += 1
-        }
-        print(bookCount)
-        sqlite3_finalize(queryStatement)
-        sqlite3_close(initializedDatabase)
+        completion()
     }
 }

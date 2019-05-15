@@ -64,8 +64,6 @@ struct BookListDataManager: BookListDataManaging {
                 do {
                     let databaseURL = try self.writeToDisk(responseData)
                     try self.queryForBooks(atDatabaseURL: databaseURL, completion: completion)
-                } catch let error as SQLiteHandle.SQLiteError {
-                    // TODO: Handle errors
                 } catch {
                     // TODO: Handle errors
                 }
