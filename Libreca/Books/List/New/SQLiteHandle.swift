@@ -22,27 +22,29 @@
 //
 
 import Foundation
+// TODO: Update licenses file with this lib
+import SQLite
 
 struct SQLiteHandle {
-    enum SQLiteError: Error {
-        
-    }
-    
     private let databaseURL: URL
     
     init(databaseURL: URL) {
         self.databaseURL = databaseURL
     }
     
-    func open() throws {
-        
-    }
-    
     func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
+        let database = try Connection(databaseURL.path, readonly: true)
+        let books = Table("books")
+        let bookCount = try database.scalar(books.count)
+        start(bookCount)
         
-    }
-    
-    func close() {
+        // TODO: Finish implementing me, you'll need to flesh out the BookModel protocol API, and then create a new struct implementing that, and then parse this data into that struct
+//        try database.prepare(books).forEach { row in
+//        (lldb) po row[Expression<String>("title")]
+//        "\'Salem\'s Lot"
+//            print(row)
+//        }
         
+        completion()
     }
 }

@@ -43,12 +43,14 @@
 		D02D9BB522826D74008D14D3 /* DropboxBookListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */; };
 		D02F75E221703B480040EDE5 /* BooksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E121703B480040EDE5 /* BooksListViewModel.swift */; };
 		D02F75E421703D2A0040EDE5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */; };
+		D03C4C32228BADD7009BF284 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03C4C31228BADD7009BF284 /* SQLite.framework */; };
+		D03C4C33228BADDE009BF284 /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; };
+		D03C4C34228BADDE009BF284 /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D03C4C36228BADE9009BF284 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D03C4C31228BADD7009BF284 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D042EEDD21E4408C0046D00F /* Searcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDC21E4408C0046D00F /* Searcher.swift */; };
 		D042EEE021E5684F0046D00F /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042EEDF21E5684F0046D00F /* Formatters.swift */; };
 		D044243422862F3B002690A0 /* BackendSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243322862F3B002690A0 /* BackendSelectionViewController.swift */; };
 		D044243622862FD4002690A0 /* DropboxSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D044243522862FD4002690A0 /* DropboxSetupViewController.swift */; };
-		D044243922866191002690A0 /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; };
-		D044243A22866191002690A0 /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D04424372286616D002690A0 /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D044A33621D525D400FBC7C8 /* dark_mode_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32A21D525D400FBC7C8 /* dark_mode_icon@2x.png */; };
 		D044A33721D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32B21D525D400FBC7C8 /* dark_mode_icon@2x~ipad.png */; };
 		D044A33A21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D044A32E21D525D400FBC7C8 /* dark_mode_icon@3x~ipad.png */; };
@@ -133,11 +135,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D03C4C34228BADDE009BF284 /* SwiftyDropbox.framework in Embed Frameworks */,
 				D0B475F4216AF613008FDA50 /* CalibreKit.framework in Embed Frameworks */,
-				D044243A22866191002690A0 /* SwiftyDropbox.framework in Embed Frameworks */,
 				D049687F21D01DE800BD24C4 /* Alamofire.framework in Embed Frameworks */,
 				D0AAA62921D01ECC00623608 /* LicensesViewController.framework in Embed Frameworks */,
 				D07C4DFC21E0644F00E1B470 /* Valet.framework in Embed Frameworks */,
+				D03C4C36228BADE9009BF284 /* SQLite.framework in Embed Frameworks */,
 				D049688121D01DE800BD24C4 /* AlamofireNetworkActivityIndicator.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -182,6 +185,7 @@
 		D02D9BB422826D74008D14D3 /* DropboxBookListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxBookListService.swift; sourceTree = "<group>"; };
 		D02F75E121703B480040EDE5 /* BooksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewModel.swift; sourceTree = "<group>"; };
 		D02F75E321703D2A0040EDE5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
+		D03C4C31228BADD7009BF284 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		D042EEDC21E4408C0046D00F /* Searcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searcher.swift; sourceTree = "<group>"; };
 		D042EEDF21E5684F0046D00F /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		D044243322862F3B002690A0 /* BackendSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendSelectionViewController.swift; sourceTree = "<group>"; };
@@ -259,12 +263,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D044243922866191002690A0 /* SwiftyDropbox.framework in Frameworks */,
+				D03C4C32228BADD7009BF284 /* SQLite.framework in Frameworks */,
 				D0AAA62821D01ECC00623608 /* LicensesViewController.framework in Frameworks */,
 				D049687C21D01D9400BD24C4 /* Alamofire.framework in Frameworks */,
 				D0B475F3216AF613008FDA50 /* CalibreKit.framework in Frameworks */,
 				D07C4DFB21E0644F00E1B470 /* Valet.framework in Frameworks */,
 				D049687D21D01D9400BD24C4 /* AlamofireNetworkActivityIndicator.framework in Frameworks */,
+				D03C4C33228BADDE009BF284 /* SwiftyDropbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +524,7 @@
 		D0B475E7216AF5E6008FDA50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D03C4C31228BADD7009BF284 /* SQLite.framework */,
 				D04424372286616D002690A0 /* SwiftyDropbox.framework */,
 				D07C4DF921E0643E00E1B470 /* Valet.framework */,
 				D0AAA62621D01EC300623608 /* LicensesViewController.framework */,
@@ -739,6 +745,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/AlamofireNetworkActivityIndicator.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Valet.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyDropbox.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SQLite.framework",
 			);
 			name = "Copy frameworks";
 			outputFileListPaths = (
