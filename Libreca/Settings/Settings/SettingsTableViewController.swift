@@ -403,7 +403,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         Made with ❤️ on GitLab
         
         \(Constants.Bundles.app.name) connects with Calibre© content server via HTTP. It is neither affiliated with nor endorsed by Calibre©.
-        """
+        """ // TODO: The last line of this text needs updated
     }
     
     private func createSortCell(for displayModel: DisplayModel) -> UITableViewCell {
