@@ -34,6 +34,8 @@ struct SQLiteHandle {
     }
     
     func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
+        // TODO: Do all this work on a background thread, but call the various closures on the same thread from which this function was initially called
+        
         let database = try Connection(databaseURL.path, readonly: true)
         let books = Table("books")
         let bookCount = try database.scalar(books.count)
