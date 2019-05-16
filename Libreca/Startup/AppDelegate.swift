@@ -25,6 +25,7 @@ import CalibreKit
 import SwiftyDropbox
 import UIKit
 
+// TODO: Tag CalibreKit and point Libreca to tag, isntead of master
 // TODO: Update licenses list with Dropbox SDK
 
 @UIApplicationMain

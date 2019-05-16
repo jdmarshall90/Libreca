@@ -21,6 +21,7 @@
 //  This file is part of project: Libreca
 //
 
+import CalibreKit
 import Foundation
 // TODO: Update licenses file with this lib
 import SQLite
@@ -38,7 +39,9 @@ struct SQLiteHandle {
         let bookCount = try database.scalar(books.count)
         start(bookCount)
         
-        // TODO: Finish implementing me, you'll need to flesh out the BookModel protocol API, and then create a new struct implementing that, and then parse this data into that struct
+        // TODO: Finish implementing me - parse this data into the below Book struct
+        
+        // example usage of SQLite framework:
 //        try database.prepare(books).forEach { row in
 //        (lldb) po row[Expression<String>("title")]
 //        "\'Salem\'s Lot"
@@ -46,5 +49,40 @@ struct SQLiteHandle {
 //        }
         
         completion()
+    }
+}
+
+// swiftlint:disable identifier_name
+// swiftlint:disable lower_acl_than_parent
+// swiftlint:disable:next private_over_fileprivate
+fileprivate struct Book: BookModel {
+    let id: Int
+    let addedOn: Date?
+    let authors: [Author]
+    let comments: String?
+    let identifiers: [Identifier]
+    let languages: [Language]
+    let lastModified: Date?
+    let tags: [String]
+    let title: Title
+    let publishedDate: Date?
+    let rating: Rating
+    let series: Series?
+    let formats: [Format]
+    
+    let cover: Image
+    let thumbnail: Image
+    let bookDownload: BookDownload
+    
+    func fetchCover(completion: (Image) -> Void) {
+        completion(cover)
+    }
+    
+    func fetchThumbnail(completion: (Image) -> Void) {
+        completion(thumbnail)
+    }
+    
+    func fetchMainFormat(completion: (BookDownload) -> Void) {
+        completion(bookDownload)
     }
 }
