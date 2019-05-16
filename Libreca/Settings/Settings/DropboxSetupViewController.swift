@@ -28,7 +28,7 @@ import UIKit
 final class DropboxSetupViewController: UIViewController {
     // TODO: Add Dropbox icon to the button
     @IBOutlet weak var dropboxButton: UIButton!
-    // TODO: Add warning that this is only recommended to do first time setup over Wi-Fi
+    
     @IBAction private func didTapConnect(_ sender: UIButton) {
         // TODO: Allow user to type in Dropbox dir
         DropboxClientsManager.authorizeFromController(
