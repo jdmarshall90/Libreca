@@ -37,18 +37,66 @@ struct SQLiteHandle {
         // TODO: Do all this work on a background thread, but call the various closures on the same thread from which this function was initially called
         
         let database = try Connection(databaseURL.path, readonly: true)
-        let books = Table("books")
-        let bookCount = try database.scalar(books.count)
+        let booksTable = Table("books")
+        let bookCount = try database.scalar(booksTable.count)
         start(bookCount)
         
-        // TODO: Finish implementing me - parse this data into the below Book struct
+        let availableLanguages = Array(try database.prepare(Table("languages").select([Expression<Int>("id"), Expression<String>("lang_code")])))
+        let booksLanguagesLink = Array(try database.prepare(Table("books_languages_link").select([Expression<Int>("book"), Expression<String>("lang_code")])))
         
-        // example usage of SQLite framework:
-//        try database.prepare(books).forEach { row in
-//        (lldb) po row[Expression<String>("title")]
-//        "\'Salem\'s Lot"
-//            print(row)
-//        }
+        try database.prepare(booksTable).forEach { row in
+            // TODO: Finish implementing me - parse the rest of the data
+            
+            // This is a nasty, brute force algorithm because my sql skills are lacking.
+            // If you are reading this and know an sqlite query that would pull all these fields out,
+            // please open a merge request or issue!
+            
+            // swiftlint:disable:next identifier_name
+            let id = row[Expression<Int>("id")]
+            let addedOn = Date()
+            let authors: [Book.Author] = []
+            
+            let comments = Array(try database.prepare(Table("comments").select(Expression<String?>("text")).filter(Expression<Int>("book") == id))).first?[Expression<String?>("text")]
+            let identifiers: [Book.Identifier] = []
+            
+            let matchingBooksLanguagesLink = booksLanguagesLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingLanguageCodes = availableLanguages.filter { language in
+                matchingBooksLanguagesLink.contains { link in
+                    language[Expression<Int>("id")] == link[Expression<Int>("lang_code")]
+                }
+            }
+            let languages = matchingLanguageCodes.map { BookModel.Language(displayValue: $0[Expression<String>("lang_code")]) }
+            let lastModified = Date()
+            let tags = [""]
+            let title = Book.Title(name: "", sort: "")
+            let publishedDate = Date()
+            let rating = Book.Rating.oneStar
+            let series = Book.Series(name: "", index: 0)
+            let formats: [Book.Format] = []
+            let cover = Image(image: UIImage())
+            let thumbnail = Image(image: UIImage())
+            let bookDownload = BookDownload(format: Book.Format.epub, file: Data())
+            
+            let book = Book(
+                id: id,
+                addedOn: addedOn,
+                authors: authors,
+                comments: comments,
+                identifiers: identifiers,
+                languages: languages,
+                lastModified: lastModified,
+                tags: tags,
+                title: title,
+                publishedDate: publishedDate,
+                rating: rating,
+                series: series,
+                formats: formats,
+                cover: cover,
+                thumbnail: thumbnail,
+                bookDownload: bookDownload
+            )
+            progress(book)
+        }
         
         completion()
     }
