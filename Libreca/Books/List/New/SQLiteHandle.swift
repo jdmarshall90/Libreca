@@ -27,6 +27,12 @@ import Foundation
 import SQLite
 
 struct SQLiteHandle {
+    private static let dateFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone.current
+        return formatter
+    }()
+    
     private let databaseURL: URL
     
     init(databaseURL: URL) {
@@ -44,6 +50,11 @@ struct SQLiteHandle {
         let availableLanguages = Array(try database.prepare(Table("languages").select([Expression<Int>("id"), Expression<String>("lang_code")])))
         let booksLanguagesLink = Array(try database.prepare(Table("books_languages_link").select([Expression<Int>("book"), Expression<String>("lang_code")])))
         
+        let availableAuthors = Array(try database.prepare(Table("authors").select([Expression<Int>("id"), Expression<String>("name"), Expression<String>("sort")])))
+        let booksAuthorsLink = Array(try database.prepare(Table("books_authors_link").select([Expression<Int>("book"), Expression<String>("author")])))
+        
+        let availableIdentifiers = Array(try database.prepare(Table("identifiers").select([Expression<Int>("book"), Expression<String>("type"), Expression<String>("val")])))
+        
         try database.prepare(booksTable).forEach { row in
             // TODO: Finish implementing me - parse the rest of the data
             
@@ -53,11 +64,22 @@ struct SQLiteHandle {
             
             // swiftlint:disable:next identifier_name
             let id = row[Expression<Int>("id")]
-            let addedOn = Date()
-            let authors: [Book.Author] = []
+            
+            let addedOnRawDate = row[Expression<String?>("timestamp")]
+            let addedOn = date(from: addedOnRawDate)
+            
+            let matchingBooksAuthorsLink = booksAuthorsLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingAuthors = availableAuthors.filter { author in
+                matchingBooksAuthorsLink.contains { link in
+                    author[Expression<Int>("id")] == link[Expression<Int>("author")]
+                }
+            }
+            let authors = matchingAuthors.map { BookModel.Author(name: $0[Expression<String>("name")], sort: $0[Expression<String>("sort")]) }
             
             let comments = Array(try database.prepare(Table("comments").select(Expression<String?>("text")).filter(Expression<Int>("book") == id))).first?[Expression<String?>("text")]
-            let identifiers: [Book.Identifier] = []
+            
+            let matchingIdentifiers = availableIdentifiers.filter { $0[Expression<Int>("book")] == id }
+            let identifiers = matchingIdentifiers.map { BookModel.Identifier(source: $0[Expression<String>("type")], uniqueID: $0[Expression<String>("val")]) }
             
             let matchingBooksLanguagesLink = booksLanguagesLink.filter { $0[Expression<Int>("book")] == id }
             let matchingLanguageCodes = availableLanguages.filter { language in
@@ -66,12 +88,21 @@ struct SQLiteHandle {
                 }
             }
             let languages = matchingLanguageCodes.map { BookModel.Language(displayValue: $0[Expression<String>("lang_code")]) }
-            let lastModified = Date()
+            
+            let lastModifiedRawDate = row[Expression<String?>("last_modified")]
+            let lastModified = date(from: lastModifiedRawDate)
+            
             let tags = [""]
-            let title = Book.Title(name: "", sort: "")
-            let publishedDate = Date()
+            
+            let titleName = row[Expression<String>("title")]
+            let sortName = row[Expression<String>("sort")]
+            let title = Book.Title(name: titleName, sort: sortName)
+            
+            let lastPublishedRawDate = row[Expression<String?>("pubdate")]
+            let publishedDate = date(from: lastPublishedRawDate)
+            
             let rating = Book.Rating.oneStar
-            let series = Book.Series(name: "", index: 0)
+            let series = Book.Series(name: "", index: 0) // OPTIONAL
             let formats: [Book.Format] = []
             let cover = Image(image: UIImage())
             let thumbnail = Image(image: UIImage())
@@ -99,6 +130,22 @@ struct SQLiteHandle {
         }
         
         completion()
+    }
+    
+    private func date(from dateString: String?) -> Date? {
+        guard var dateString = dateString else {
+            return nil
+        }
+        // Most dates are coming back looking like: "2018-11-21T16:27:09+00:00".
+        // Some, however, look like: "2019-01-29T03:35:00.046910+00:00".
+        // It is easier to just strip out the fractional seconds than to create
+        // a new date formatter.
+        if let indexOfPeriod = dateString.firstIndex(of: "."),
+            let indexOfPlus = dateString.firstIndex(of: "+") {
+            dateString.removeSubrange(indexOfPeriod..<indexOfPlus)
+        }
+        let date = type(of: self).dateFormatter.date(from: dateString)
+        return date
     }
 }
 
