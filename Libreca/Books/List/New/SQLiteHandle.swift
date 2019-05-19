@@ -47,6 +47,10 @@ struct SQLiteHandle {
         let bookCount = try database.scalar(booksTable.count)
         start(bookCount)
         
+        // This is a nasty, brute force algorithm because my sql skills are lacking.
+        // If you are reading this and know an sqlite query that would pull all these fields out,
+        // please open a merge request or issue!
+        
         let availableLanguages = Array(try database.prepare(Table("languages").select([Expression<Int>("id"), Expression<String>("lang_code")])))
         let booksLanguagesLink = Array(try database.prepare(Table("books_languages_link").select([Expression<Int>("book"), Expression<String>("lang_code")])))
         
@@ -57,10 +61,6 @@ struct SQLiteHandle {
         
         try database.prepare(booksTable).forEach { row in
             // TODO: Finish implementing me - parse the rest of the data
-            
-            // This is a nasty, brute force algorithm because my sql skills are lacking.
-            // If you are reading this and know an sqlite query that would pull all these fields out,
-            // please open a merge request or issue!
             
             // swiftlint:disable:next identifier_name
             let id = row[Expression<Int>("id")]
