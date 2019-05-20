@@ -59,6 +59,9 @@ struct SQLiteHandle {
         
         let availableIdentifiers = Array(try database.prepare(Table("identifiers").select([Expression<Int>("book"), Expression<String>("type"), Expression<String>("val")])))
         
+        let availableTags = Array(try database.prepare(Table("tags").select([Expression<Int>("id"), Expression<String>("name"), Expression<String>("val")])))
+        let booksTagsLink = Array(try database.prepare(Table("books_tags_link").select([Expression<Int>("book"), Expression<Int>("tag")])))
+        
         try database.prepare(booksTable).forEach { row in
             // TODO: Finish implementing me - parse the rest of the data
             
@@ -92,7 +95,13 @@ struct SQLiteHandle {
             let lastModifiedRawDate = row[Expression<String?>("last_modified")]
             let lastModified = date(from: lastModifiedRawDate)
             
-            let tags = [""]
+            let matchingBooksTagsLink = booksTagsLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingTagCodes = availableTags.filter { tag in
+                matchingBooksTagsLink.contains { link in
+                    tag[Expression<Int>("id")] == link[Expression<Int>("tag")]
+                }
+            }
+            let tags = matchingTagCodes.map { $0[Expression<String>("name")] }
             
             let titleName = row[Expression<String>("title")]
             let sortName = row[Expression<String>("sort")]
@@ -107,6 +116,8 @@ struct SQLiteHandle {
             let cover = Image(image: UIImage())
             let thumbnail = Image(image: UIImage())
             let bookDownload = BookDownload(format: Book.Format.epub, file: Data())
+            
+            print(title, tags)
             
             let book = Book(
                 id: id,
