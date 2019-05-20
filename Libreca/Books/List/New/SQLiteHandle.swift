@@ -59,8 +59,11 @@ struct SQLiteHandle {
         
         let availableIdentifiers = Array(try database.prepare(Table("identifiers").select([Expression<Int>("book"), Expression<String>("type"), Expression<String>("val")])))
         
-        let availableTags = Array(try database.prepare(Table("tags").select([Expression<Int>("id"), Expression<String>("name"), Expression<String>("val")])))
+        let availableTags = Array(try database.prepare(Table("tags").select([Expression<Int>("id"), Expression<String>("name")])))
         let booksTagsLink = Array(try database.prepare(Table("books_tags_link").select([Expression<Int>("book"), Expression<Int>("tag")])))
+        
+        let availableRatings = Array(try database.prepare(Table("ratings").select([Expression<Int>("id"), Expression<Int>("rating")])))
+        let booksRatingsLink = Array(try database.prepare(Table("books_ratings_link").select([Expression<Int>("book"), Expression<Int>("rating")])))
         
         try database.prepare(booksTable).forEach { row in
             // TODO: Finish implementing me - parse the rest of the data
@@ -110,14 +113,21 @@ struct SQLiteHandle {
             let lastPublishedRawDate = row[Expression<String?>("pubdate")]
             let publishedDate = date(from: lastPublishedRawDate)
             
-            let rating = Book.Rating.oneStar
+            let matchingBooksRatingLink = booksRatingsLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingRatingCodes = availableRatings.filter { rating in
+                matchingBooksRatingLink.contains { link in
+                    rating[Expression<Int>("id")] == link[Expression<Int>("rating")]
+                }
+            }
+            let rawRating = matchingRatingCodes.first?[Expression<Int>("rating")]
+            let modifiedRawRating = (Double(rawRating ?? 0)) / 2.0 // coming back from the database as doubled
+            let rating = try Book.Rating(rawRating: modifiedRawRating)
+            
             let series = Book.Series(name: "", index: 0) // OPTIONAL
             let formats: [Book.Format] = []
             let cover = Image(image: UIImage())
             let thumbnail = Image(image: UIImage())
             let bookDownload = BookDownload(format: Book.Format.epub, file: Data())
-            
-            print(title, tags)
             
             let book = Book(
                 id: id,
