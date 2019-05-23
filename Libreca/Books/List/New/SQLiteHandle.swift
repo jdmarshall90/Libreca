@@ -226,6 +226,7 @@ fileprivate struct Book: BookModel {
     let series: Series?
     let formats: [Format]
     
+    // this is ugly, but it'll work for now ...
     let _fetchCover: ((Image) -> Void) -> Void
     let _fetchThumbnail: ((Image) -> Void) -> Void
     let _fetchMainFormat: ((BookDownload) -> Void) -> Void
