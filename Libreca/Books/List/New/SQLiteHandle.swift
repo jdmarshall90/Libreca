@@ -42,7 +42,7 @@ struct SQLiteHandle {
     }
     
     func queryForAllBooks(start: (Int) -> Void,
-                          dataFetcher: DataFetcher,
+                          dataFetcher: DataFetcher, this line is going to have to change into 2 separate closure parameters
                           progress: @escaping (BookModel) -> Void,
                           completion: @escaping () -> Void) throws {
         // TODO: Do all this work on a background thread, but call the various closures on the same thread from which this function was initially called
@@ -170,9 +170,15 @@ struct SQLiteHandle {
                     rating: rating,
                     series: series,
                     formats: formats,
-                    cover: cover,
-                    thumbnail: thumbnail,
-                    bookDownload: bookDownload
+                    _fetchCover: { completion in
+                        
+                    },
+                    _fetchThumbnail: { completion in
+                        
+                    },
+                    _fetchMainFormat: { completion in
+                        
+                    }
                 )
                 progress(book)
                 dispatchGroup.leave()
@@ -220,19 +226,19 @@ fileprivate struct Book: BookModel {
     let series: Series?
     let formats: [Format]
     
-    let _fetchCover: () -> (Image) -> Void
-    let _fetchThumbnail: () -> (Image) -> Void
-    let _fetchMainFormat: () -> (BookDownload) -> Void
-    ß∫
-    func fetchCover(completion: @escaping (Image) -> Void) {
-        completion(_fetchCover())
+    let _fetchCover: ((Image) -> Void) -> Void
+    let _fetchThumbnail: ((Image) -> Void) -> Void
+    let _fetchMainFormat: ((BookDownload) -> Void) -> Void
+    
+    func fetchCover(completion: (Image) -> Void) {
+        _fetchCover(completion)
     }
     
     func fetchThumbnail(completion: (Image) -> Void) {
-        _fetchThumbnail()
+        _fetchThumbnail(completion)
     }
     
     func fetchMainFormat(completion: (BookDownload) -> Void) {
-        _fetchMainFormat()
+        _fetchMainFormat(completion)
     }
 }
