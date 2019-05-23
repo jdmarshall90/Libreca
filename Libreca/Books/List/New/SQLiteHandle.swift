@@ -27,6 +27,8 @@ import Foundation
 import SQLite
 
 struct SQLiteHandle {
+    typealias DataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ image: Data, _ ebookFile: Data?) -> Void) -> Void
+    
     private static let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.timeZone = TimeZone.current
@@ -39,7 +41,10 @@ struct SQLiteHandle {
         self.databaseURL = databaseURL
     }
     
-    func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
+    func queryForAllBooks(start: (Int) -> Void,
+                          dataFetcher: DataFetcher,
+                          progress: @escaping (BookModel) -> Void,
+                          completion: @escaping () -> Void) throws {
         // TODO: Do all this work on a background thread, but call the various closures on the same thread from which this function was initially called
         
         let database = try Connection(databaseURL.path, readonly: true)
@@ -68,8 +73,11 @@ struct SQLiteHandle {
         let availableSeries = Array(try database.prepare(Table("series").select([Expression<Int>("id"), Expression<String>("name")])))
         let booksSeriesLink = Array(try database.prepare(Table("books_series_link").select([Expression<Int>("book"), Expression<Int>("series")])))
         
+        let dispatchGroup = DispatchGroup()
         try database.prepare(booksTable).forEach { row in
             // TODO: Finish implementing me - parse the rest of the data
+            
+            dispatchGroup.enter()
             
             // swiftlint:disable:next identifier_name
             let id = row[Expression<Int>("id")]
@@ -142,33 +150,39 @@ struct SQLiteHandle {
                 series = nil
             }
             
-            let formats: [Book.Format] = []
-            let cover = Image(image: UIImage())
-            let thumbnail = Image(image: UIImage())
-            let bookDownload = BookDownload(format: Book.Format.epub, file: Data())
+            dataFetcher(authors, title) { image, ebookFile in
+                let formats: [Book.Format] = []
+                let cover = Image(image: UIImage())
+                let thumbnail = Image(image: UIImage())
+                let bookDownload = BookDownload(format: Book.Format.epub, file: Data())
+                
+                let book = Book(
+                    id: id,
+                    addedOn: addedOn,
+                    authors: authors,
+                    comments: comments,
+                    identifiers: identifiers,
+                    languages: languages,
+                    lastModified: lastModified,
+                    tags: tags,
+                    title: title,
+                    publishedDate: publishedDate,
+                    rating: rating,
+                    series: series,
+                    formats: formats,
+                    cover: cover,
+                    thumbnail: thumbnail,
+                    bookDownload: bookDownload
+                )
+                progress(book)
+                dispatchGroup.leave()
+            }
             
-            let book = Book(
-                id: id,
-                addedOn: addedOn,
-                authors: authors,
-                comments: comments,
-                identifiers: identifiers,
-                languages: languages,
-                lastModified: lastModified,
-                tags: tags,
-                title: title,
-                publishedDate: publishedDate,
-                rating: rating,
-                series: series,
-                formats: formats,
-                cover: cover,
-                thumbnail: thumbnail,
-                bookDownload: bookDownload
-            )
-            progress(book)
         }
         
-        completion()
+        dispatchGroup.notify(queue: .main) {
+            completion()
+        }
     }
     
     private func date(from dateString: String?) -> Date? {
@@ -206,19 +220,19 @@ fileprivate struct Book: BookModel {
     let series: Series?
     let formats: [Format]
     
-    let cover: Image
-    let thumbnail: Image
-    let bookDownload: BookDownload
-    
-    func fetchCover(completion: (Image) -> Void) {
-        completion(cover)
+    let _fetchCover: () -> (Image) -> Void
+    let _fetchThumbnail: () -> (Image) -> Void
+    let _fetchMainFormat: () -> (BookDownload) -> Void
+    ß∫
+    func fetchCover(completion: @escaping (Image) -> Void) {
+        completion(_fetchCover())
     }
     
     func fetchThumbnail(completion: (Image) -> Void) {
-        completion(thumbnail)
+        _fetchThumbnail()
     }
     
     func fetchMainFormat(completion: (BookDownload) -> Void) {
-        completion(bookDownload)
+        _fetchMainFormat()
     }
 }
