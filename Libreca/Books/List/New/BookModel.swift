@@ -28,7 +28,7 @@ import Foundation
 // endpoint system gets in the way of the fact that books from an SQLite
 // database will not have an `Endpoint` from which to fetch data.
 
-protocol BookModel {
+protocol BookModel: SectionIndexDisplayable {
     typealias Author = Book.Author
     typealias Identifier = Book.Identifier
     typealias Language = Book.Language
@@ -51,9 +51,12 @@ protocol BookModel {
     var rating: Rating { get }
     var series: Series? { get }
     var formats: [Format] { get }
+    var mainFormatType: Format? { get }
     
-    // TODO: Change this to use a Result type for error handling
+    // TODO: Change this to use a Result type for error handling, then try to refactor out all your force casts to CalibreKit.Book
     func fetchCover(completion: (Image?) -> Void)
     func fetchThumbnail(completion: (Image?) -> Void)
     func fetchMainFormat(completion: (BookDownload?) -> Void)
+    
+    func isEqual(to: BookModel) -> Bool
 }

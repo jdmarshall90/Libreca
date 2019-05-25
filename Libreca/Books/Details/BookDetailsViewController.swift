@@ -42,14 +42,14 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func reload(for book: Book) {
+    func reload(for book: BookModel) {
         prepare(for: book)
         coverImageView.image = nil
         showBookCover()
         tableView.reloadData()
     }
     
-    func prepare(for book: Book) {
+    func prepare(for book: BookModel) {
         bookViewModel = viewModel.createBookModel(for: book)
     }
     
@@ -66,12 +66,14 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
-        presenter.edit(bookViewModel.book)
+        // swiftlint:disable:next force_cast
+        presenter.edit(bookViewModel.book as! Book)
     }
     
     @IBAction private func didTapDownload(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
-        presenter.download(bookViewModel.book)
+        // swiftlint:disable:next force_cast
+        presenter.download(bookViewModel.book as! Book)
     }
     
     func removeBookDetails() {
