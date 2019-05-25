@@ -27,6 +27,9 @@ import UIKit
 
 // TODO: Tag CalibreKit and point Libreca to tag, isntead of master
 // TODO: Update licenses list with Dropbox SDK
+// TODO: Update App Store metadata: description, subtitle, search terms
+// TODO: Update libreca.io
+// TODO: Update Google ad
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
