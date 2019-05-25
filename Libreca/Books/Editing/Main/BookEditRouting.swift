@@ -30,21 +30,21 @@ protocol BookEditRouting {
     typealias Series = BookEditModuleFactory.Series
     
     func routeForPicEditing()
-    func routeForAddingAuthors(currentList: [Book.Author], completion: @escaping ([Book.Author]) -> Void)
+    func routeForAddingAuthors(currentList: [BookModel.Author], completion: @escaping ([BookModel.Author]) -> Void)
     func routeForAddingIdentifiers(completion: @escaping (Identifier?) -> Void)
     func routeForAddingSeries(completion: @escaping (Series?) -> Void)
-    func routeForAddingLanguages(currentList: [Book.Language], completion: @escaping ([Book.Language]) -> Void)
+    func routeForAddingLanguages(currentList: [BookModel.Language], completion: @escaping ([BookModel.Language]) -> Void)
     func routeForAddingTags(currentList: [String], completion: @escaping ([String]) -> Void)
-    func routeForSuccessfulSave(of updatedBook: Book, andOthers otherUpdatedBooks: [Book])
+    func routeForSuccessfulSave(of updatedBook: BookModel, andOthers otherUpdatedBooks: [BookModel])
     func routeForCancellation()
 }
 
 final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     weak var viewController: (BookEditViewing & UIViewController)?
-    private let book: Book
-    private let completion: (Book) -> Void
+    private let book: BookModel
+    private let completion: (BookModel) -> Void
     
-    init(book: Book, completion: @escaping (Book) -> Void) {
+    init(book: BookModel, completion: @escaping (BookModel) -> Void) {
         self.book = book
         self.completion = completion
     }
@@ -55,7 +55,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController.present(alertController, animated: true)
     }
     
-    func routeForAddingAuthors(currentList: [Book.Author], completion: @escaping ([Book.Author]) -> Void) {
+    func routeForAddingAuthors(currentList: [BookModel.Author], completion: @escaping ([BookModel.Author]) -> Void) {
         let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingAuthor(to: book, currentList: currentList, completion: completion))
         viewController?.present(navController, animated: true)
     }
@@ -78,7 +78,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController.present(seriesViewController, animated: true)
     }
     
-    func routeForAddingLanguages(currentList: [Book.Language], completion: @escaping ([Book.Language]) -> Void) {
+    func routeForAddingLanguages(currentList: [BookModel.Language], completion: @escaping ([BookModel.Language]) -> Void) {
         let navController = navigationController(for: BookEditModuleFactory.viewControllerForAddingLanguage(to: book, currentList: currentList, completion: completion))
         viewController?.present(navController, animated: true)
     }
@@ -88,7 +88,7 @@ final class BookEditRouter: NSObject, BookEditRouting, UIImagePickerControllerDe
         viewController?.present(navController, animated: true)
     }
     
-    func routeForSuccessfulSave(of updatedBook: Book, andOthers otherUpdatedBooks: [Book]) {
+    func routeForSuccessfulSave(of updatedBook: BookModel, andOthers otherUpdatedBooks: [BookModel]) {
         completion(updatedBook)
         viewController?.dismiss(animated: true)
         

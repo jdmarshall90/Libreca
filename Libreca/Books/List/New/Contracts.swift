@@ -43,11 +43,11 @@ protocol BookListPresenting {
 }
 
 protocol BookListInteracting {
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void)
+    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void)
 }
 
 protocol BookListDataManaging {
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void)
+    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void)
 }
 
 protocol BookListServicing {

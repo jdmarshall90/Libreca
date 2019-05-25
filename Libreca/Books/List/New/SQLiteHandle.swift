@@ -218,7 +218,8 @@ struct SQLiteHandle {
 // swiftlint:disable identifier_name
 // swiftlint:disable lower_acl_than_parent
 // swiftlint:disable:next private_over_fileprivate
-fileprivate struct Book: BookModel {
+fileprivate struct Book: BookModel, Equatable {
+    // IMPORTANT: If you add any properties, update the `==` implementation. The closure properties in here prevent auto-generation of `==` by the compiler.
     let id: Int
     let addedOn: Date?
     let authors: [Author]
@@ -248,5 +249,34 @@ fileprivate struct Book: BookModel {
     
     func fetchMainFormat(completion: (BookDownload?) -> Void) {
         _fetchMainFormat(completion)
+    }
+    
+    static func ==(lhs: Book, rhs: Book) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.addedOn == rhs.addedOn &&
+            lhs.authors == rhs.authors &&
+            lhs.comments == rhs.comments &&
+            lhs.identifiers == rhs.identifiers &&
+            lhs.languages == rhs.languages &&
+            lhs.lastModified == rhs.lastModified &&
+            lhs.tags == rhs.tags &&
+            lhs.title == rhs.title &&
+            lhs.publishedDate == rhs.publishedDate &&
+            lhs.rating == rhs.rating &&
+            lhs.series == rhs.series &&
+            lhs.formats == rhs.formats
+    }
+    
+    func isEqual(to other: BookModel) -> Bool {
+        // swiftlint:disable:next force_cast
+        return self == other as! Book
+    }
+    
+    var stringValue: String {
+        return self[keyPath: Settings.Sort.current.sortingKeyPath]
+    }
+    
+    var mainFormatType: Format? {
+        return formats.first
     }
 }

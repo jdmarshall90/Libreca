@@ -24,12 +24,6 @@
 import CalibreKit
 import UIKit
 
-extension Book: SectionIndexDisplayable {
-    var stringValue: String {
-        return self[keyPath: Settings.Sort.current.sortingKeyPath]
-    }
-}
-
 extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     var stringValue: String {
         switch self {
@@ -196,7 +190,15 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     func show(book: BookFetchResult, at index: Int) {
-        
+        switch book {
+        case .book(let bookModel):
+            didFetch(book: .book(bookModel), at: index)
+        case .inFlight:
+            didFetch(book: .inFlight, at: index)
+        case .failure:
+            // I do not expect this to happen ...
+            break
+        }
     }
     
     func reload(all: [BookFetchResult]) {
@@ -420,22 +422,36 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         present(alertController, animated: true)
     }
     
-    private func configure(cell: BookTableViewCell, at indexPath: IndexPath, for book: Book) {
+    private func configure(cell: BookTableViewCell, at indexPath: IndexPath, for book: BookModel) {
         cell.titleLabel.text = book.title.name
         cell.ratingLabel.text = book.rating.displayValue
         cell.serieslabel.text = book.series?.displayValue
         
         cell.accessoryType = .disclosureIndicator
         cell.authorsLabel.text = viewModel.authors(for: book)
-        viewModel.fetchThumbnail(for: book) { image in
-            // some kind of timing issue, I think fixing #124 would address this better
-            // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
-            DispatchQueue.main.async {
-                if cell.tag == indexPath.hashValue {
-                    cell.activityIndicator.stopAnimating()
-                    cell.thumbnailImageView.image = image
+        switch Settings.DataSource.current {
+        case .dropbox:
+            book.fetchThumbnail { image in
+                DispatchQueue.main.async {
+                    if cell.tag == indexPath.hashValue {
+                        cell.activityIndicator.stopAnimating()
+                        cell.thumbnailImageView.image = image?.image
+                    }
                 }
             }
+        case .contentServer:
+            viewModel.fetchThumbnail(for: book) { image in
+                // some kind of timing issue, I think fixing #124 would address this better
+                // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
+                DispatchQueue.main.async {
+                    if cell.tag == indexPath.hashValue {
+                        cell.activityIndicator.stopAnimating()
+                        cell.thumbnailImageView.image = image
+                    }
+                }
+            }
+        case .unconfigured:
+            break
         }
     }
 }

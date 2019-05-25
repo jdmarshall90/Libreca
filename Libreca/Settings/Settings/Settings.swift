@@ -72,7 +72,7 @@ struct Settings {
         
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.sortDidChange"))
         
-        var sortingKeyPath: KeyPath<Book, String> {
+        var sortingKeyPath: KeyPath<BookModel, String> {
             switch self {
             case .title:
                 return \Book.title.sort
@@ -100,7 +100,7 @@ struct Settings {
             }
         }
         
-        func sortAction(_ lhs: Book, _ rhs: Book) -> Bool {
+        func sortAction(_ lhs: BookModel, _ rhs: BookModel) -> Bool {
             return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
         }
     }

@@ -1,8 +1,8 @@
 //
-//  BookListInteractor.swift
+//  Book+BookModel.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 5/7/19.
+//  Created by Justin Marshall on 5/25/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,12 +21,31 @@
 //  This file is part of project: Libreca
 //
 
-import Foundation
+import CalibreKit
 
-struct BookListInteractor: BookListInteracting {
-    let dataManager: BookListDataManaging
+extension Book: BookModel {
+    func fetchCover(completion: (Image?) -> Void) {
+        // TODO: Implement me
+    }
     
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void) {
-        dataManager.fetchBooks(start: start, progress: progress, completion: completion)
+    func fetchThumbnail(completion: (Image?) -> Void) {
+        // TODO: Implement me
+    }
+    
+    func fetchMainFormat(completion: (BookDownload?) -> Void) {
+        // TODO: Implement me
+    }
+    
+    func isEqual(to other: BookModel) -> Bool {
+        // swiftlint:disable:next force_cast
+        return self == other as! Book
+    }
+    
+    var stringValue: String {
+        return self[keyPath: Settings.Sort.current.sortingKeyPath]
+    }
+    
+    var mainFormatType: Format? {
+        return mainFormat?.format
     }
 }

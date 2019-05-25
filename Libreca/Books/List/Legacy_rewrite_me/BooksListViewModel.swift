@@ -45,7 +45,7 @@ final class BooksListViewModel {
             }
         }
         
-        case book(Book)
+        case book(BookModel)
         case inFlight
         case failure(Failure)
         
@@ -54,7 +54,7 @@ final class BooksListViewModel {
             return theFailure
         }
         
-        var book: Book? {
+        var book: BookModel? {
             guard case .book(let book) = self else { return nil }
             return book
         }
@@ -91,14 +91,14 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
-    func updateBooks(matching updatedBooks: [Book]) {
+    func updateBooks(matching updatedBooks: [BookModel]) {
         // this is ugly, but I plan to rip it out as part of https://gitlab.com/calibre-utils/Libreca/issues/54
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.edit.updateBooks", qos: .userInitiated).async { [weak self] in
             guard let strongSelf = self else { return }
             var newBookList = strongSelf.books
             for index in 0..<newBookList.count {
                 if let thisBook = newBookList[index].book,
-                    let updatedBook = updatedBooks.first(where: { $0 == thisBook }) {
+                    let updatedBook = updatedBooks.first(where: { $0.isEqual(to: thisBook) }) {
                     newBookList.remove(at: index)
                     newBookList.insert(.book(updatedBook), at: index)
                 }
@@ -147,7 +147,7 @@ final class BooksListViewModel {
         }
     }
     
-    func authors(for book: Book) -> String {
+    func authors(for book: BookModel) -> String {
         return book.authors.map { $0.name }.joined(separator: "; ")
     }
     
@@ -215,14 +215,16 @@ final class BooksListViewModel {
         }
     }
     
-    func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
+    func fetchThumbnail(for book: BookModel, completion: @escaping (UIImage) -> Void) {
         let imageEndpoint: ImageEndpoint
         
         switch Settings.Image.current {
         case .thumbnail:
-            imageEndpoint = book.thumbnail
+            // swiftlint:disable:next force_cast
+            imageEndpoint = (book as! Book).thumbnail
         case .fullSize:
-            imageEndpoint = book.cover
+            // swiftlint:disable:next force_cast
+            imageEndpoint = (book as! Book).cover
         }
         imageEndpoint.hitService { response in
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))

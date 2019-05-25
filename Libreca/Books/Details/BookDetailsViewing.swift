@@ -25,5 +25,5 @@ import CalibreKit
 import Foundation
 
 protocol BookDetailsViewing {
-    func reload(for book: Book)
+    func reload(for book: BookModel)
 }
