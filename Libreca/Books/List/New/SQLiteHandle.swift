@@ -59,6 +59,15 @@ struct SQLiteHandle {
         
         let availableIdentifiers = Array(try database.prepare(Table("identifiers").select([Expression<Int>("book"), Expression<String>("type"), Expression<String>("val")])))
         
+        let availableTags = Array(try database.prepare(Table("tags").select([Expression<Int>("id"), Expression<String>("name")])))
+        let booksTagsLink = Array(try database.prepare(Table("books_tags_link").select([Expression<Int>("book"), Expression<Int>("tag")])))
+        
+        let availableRatings = Array(try database.prepare(Table("ratings").select([Expression<Int>("id"), Expression<Int>("rating")])))
+        let booksRatingsLink = Array(try database.prepare(Table("books_ratings_link").select([Expression<Int>("book"), Expression<Int>("rating")])))
+        
+        let availableSeries = Array(try database.prepare(Table("series").select([Expression<Int>("id"), Expression<String>("name")])))
+        let booksSeriesLink = Array(try database.prepare(Table("books_series_link").select([Expression<Int>("book"), Expression<Int>("series")])))
+        
         try database.prepare(booksTable).forEach { row in
             // TODO: Finish implementing me - parse the rest of the data
             
@@ -92,7 +101,13 @@ struct SQLiteHandle {
             let lastModifiedRawDate = row[Expression<String?>("last_modified")]
             let lastModified = date(from: lastModifiedRawDate)
             
-            let tags = [""]
+            let matchingBooksTagsLink = booksTagsLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingTagCodes = availableTags.filter { tag in
+                matchingBooksTagsLink.contains { link in
+                    tag[Expression<Int>("id")] == link[Expression<Int>("tag")]
+                }
+            }
+            let tags = matchingTagCodes.map { $0[Expression<String>("name")] }
             
             let titleName = row[Expression<String>("title")]
             let sortName = row[Expression<String>("sort")]
@@ -101,8 +116,32 @@ struct SQLiteHandle {
             let lastPublishedRawDate = row[Expression<String?>("pubdate")]
             let publishedDate = date(from: lastPublishedRawDate)
             
-            let rating = Book.Rating.oneStar
-            let series = Book.Series(name: "", index: 0) // OPTIONAL
+            let matchingBooksRatingLink = booksRatingsLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingRatingCodes = availableRatings.filter { rating in
+                matchingBooksRatingLink.contains { link in
+                    rating[Expression<Int>("id")] == link[Expression<Int>("rating")]
+                }
+            }
+            let rawRating = matchingRatingCodes.first?[Expression<Int>("rating")]
+            let modifiedRawRating = (Double(rawRating ?? 0)) / 2.0 // coming back from the database as doubled
+            let rating = try Book.Rating(rawRating: modifiedRawRating)
+            
+            let matchingBooksSeriesLink = booksSeriesLink.filter { $0[Expression<Int>("book")] == id }
+            let matchingSeriesCodes = availableSeries.filter { series in
+                matchingBooksSeriesLink.contains { link in
+                    series[Expression<Int>("id")] == link[Expression<Int>("series")]
+                }
+            }
+            
+            let series: Book.Series?
+            if let seriesCode = matchingSeriesCodes.first {
+                let seriesName = seriesCode[Expression<String>("name")]
+                let seriesIndex = row[Expression<Double>("series_index")]
+                series = Book.Series(name: seriesName, index: seriesIndex)
+            } else {
+                series = nil
+            }
+            
             let formats: [Book.Format] = []
             let cover = Image(image: UIImage())
             let thumbnail = Image(image: UIImage())
