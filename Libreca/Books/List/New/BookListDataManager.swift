@@ -86,7 +86,8 @@ struct BookListDataManager: BookListDataManaging {
         let sqliteHandle = SQLiteHandle(databaseURL: databaseURL)
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
-            // TODO: Show book count on UI
+            // TODO: Error handling
+            start(.success(expectedBookCount))
         }, imageDataFetcher: { authors, title, completion in
             // TODO: Fetch these from appropriate API (Dropbox, in this case)
             
@@ -98,7 +99,7 @@ struct BookListDataManager: BookListDataManaging {
             // TODO: Update UI with books as they come in
         }, completion: {
             // TODO: Perform final refresh of UI
-            completion(.success(bookModels))
+            completion()
         })
     }
 }
