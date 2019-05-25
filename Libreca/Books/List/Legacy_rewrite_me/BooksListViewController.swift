@@ -201,8 +201,20 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         }
     }
     
-    func reload(all: [BookFetchResult]) {
+    func reload(all results: [BookFetchResult]) {
+        let legacyResults: [BooksListViewModel.BookFetchResult] = results.map { result in
+            switch result {
+            case .book(let bookModel):
+                return .book(bookModel)
+            case .inFlight:
+                return .inFlight
+            case .failure:
+                // I do not expect this to happen ...
+                return .inFlight
+            }
+        }
         
+        reload(all: legacyResults)
     }
     
     // MARK: - BooksListView

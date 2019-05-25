@@ -47,12 +47,21 @@ struct BookListPresenter: BookListPresenting {
         }, progress: { result in
             switch result {
             case .success(let info):
-                self.view?.show(book: .book(info.book), at: info.index)
+                switch info.result {
+                case .book(let book):
+                    self.view?.show(book: .book(book), at: info.index)
+                case .inFlight:
+                    // TODO: Implement me
+                    break
+                case .failure(retry: let retry):
+                    // TODO: Implement me
+                    break
+                }
             case .failure(let error):
                 break
             }
-        }, completion: {
-            
+        }, completion: { results in
+            self.view?.reload(all: results)
         })
     }
 }

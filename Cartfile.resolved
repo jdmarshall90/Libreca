@@ -1,4 +1,4 @@
-git "git@gitlab.com:calibre-utils/CalibreKit.git" "8f0e87d54c89727629d69b0e740fe53956372fd0"
+git "git@gitlab.com:calibre-utils/CalibreKit.git" "0d6810815ae54b6fe8fff5d139e7768274bad4cc"
 git "git@gitlab.com:iOS_Open_Source_Forks/LicenseGenerator-iOS.git" "0.7.0"
 git "git@gitlab.com:jdmarshall90libs/SwiftLintConfig.git" "v3.2.0"
 github "Alamofire/Alamofire" "4.8.2"

@@ -32,7 +32,7 @@ struct BookListDataManager: BookListDataManaging {
         self.dataSource = dataSource
     }
     
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void) {
+    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
         switch dataSource {
         case .contentServer:
             fetchFromContentServer(start: start, progress: progress, completion: completion)
@@ -44,7 +44,7 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
-    private func fetchFromContentServer(start: (Result<Int, Error>) -> Void, progress: (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void) {
+    private func fetchFromContentServer(start: (Result<Int, Error>) -> Void, progress: (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
         CalibreContentServerBookListService().fetchBooks { response in
             switch response {
             case .success:
@@ -55,7 +55,7 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
-    private func fetchFromDropbox(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void) {
+    private func fetchFromDropbox(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
         // TODO: Grab from disk if available, only hit network if user pulls to refresh
         // TODO: Use user-provided path
         DropboxBookListService(path: "/Calibre Library").fetchBooks { response in
@@ -82,7 +82,7 @@ struct BookListDataManager: BookListDataManaging {
         return databaseURL
     }
     
-    private func queryForBooks(atDatabaseURL databaseURL: URL, start: (Result<Int, Error>) -> Void, progress: (Result<(book: BookModel, index: Int), Error>) -> Void, completion: @escaping () -> Void) throws {
+    private func queryForBooks(atDatabaseURL databaseURL: URL, start: (Result<Int, Error>) -> Void, progress: (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) throws {
         let sqliteHandle = SQLiteHandle(databaseURL: databaseURL)
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
@@ -97,10 +97,10 @@ struct BookListDataManager: BookListDataManaging {
         }, progress: { nextBookModel in
             bookModels.append(nextBookModel)
             // TODO: Error handling
-            progress(.success((nextBookModel, bookModels.count - 1)))
+            progress(.success((.book(nextBookModel), bookModels.count - 1)))
         }, completion: {
-            // TODO: Perform final refresh of UI
-            completion()
+            // TODO: Error handling
+            completion(bookModels.map { .book($0) })
         })
     }
 }

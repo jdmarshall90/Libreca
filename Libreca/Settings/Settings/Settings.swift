@@ -140,19 +140,32 @@ struct Settings {
     struct Dropbox {
         private init() {}
         
-        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dropboxDidChange"))
+        static let didChangeAuthorizationNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dropboxDidChangeAuthorization"))
         
-        private static var key: String {
-            return Settings.baseSettingsKey + "dropbox"
+        private static var keyIsCurrent: String {
+            return Settings.baseSettingsKey + "dropbox.isCurrent"
+        }
+        
+        private static var keyIsAuthorized: String {
+            return Settings.baseSettingsKey + "dropbox.isAuthorized"
+        }
+        
+        static var isAuthorized: Bool {
+            get {
+                return UserDefaults.standard.bool(forKey: keyIsAuthorized)
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue, forKey: keyIsAuthorized)
+            }
         }
         
         static var isCurrent: Bool {
             get {
-                return UserDefaults.standard.bool(forKey: key)
+                return UserDefaults.standard.bool(forKey: keyIsCurrent)
             }
             set(newValue) {
-                UserDefaults.standard.set(newValue, forKey: key)
-                NotificationCenter.default.post(didChangeNotification)
+                UserDefaults.standard.set(newValue, forKey: keyIsCurrent)
+                NotificationCenter.default.post(DataSource.didChangeNotification)
             }
         }
     }
@@ -161,6 +174,8 @@ struct Settings {
         case contentServer(ServerConfiguration)
         case dropbox
         case unconfigured
+        
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dataSourceDidChange"))
         
         static var current: DataSource {
             if Dropbox.isCurrent {
