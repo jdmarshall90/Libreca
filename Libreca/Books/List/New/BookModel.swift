@@ -52,7 +52,8 @@ protocol BookModel {
     var series: Series? { get }
     var formats: [Format] { get }
     
-    func fetchCover(completion: (Image) -> Void)
-    func fetchThumbnail(completion: (Image) -> Void)
-    func fetchMainFormat(completion: (BookDownload) -> Void)
+    // TODO: Change this to use a Result type for error handling
+    func fetchCover(completion: (Image?) -> Void)
+    func fetchThumbnail(completion: (Image?) -> Void)
+    func fetchMainFormat(completion: (BookDownload?) -> Void)
 }

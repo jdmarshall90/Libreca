@@ -27,6 +27,9 @@ import Foundation
 import SQLite
 
 struct SQLiteHandle {
+    typealias ImageDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ image: Data) -> Void) -> Void
+    typealias EbookFileDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ ebookFile: Data?) -> Void) -> Void
+    
     private static let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.timeZone = TimeZone.current
@@ -39,7 +42,11 @@ struct SQLiteHandle {
         self.databaseURL = databaseURL
     }
     
-    func queryForAllBooks(start: (Int) -> Void, progress: (BookModel) -> Void, completion: () -> Void) throws {
+    func queryForAllBooks(start: (Int) -> Void,
+                          imageDataFetcher: @escaping ImageDataFetcher,
+                          ebookFileDataFetcher: @escaping EbookFileDataFetcher,
+                          progress: (BookModel) -> Void,
+                          completion: () -> Void) throws {
         // TODO: Do all this work on a background thread, but call the various closures on the same thread from which this function was initially called
         
         let database = try Connection(databaseURL.path, readonly: true)
@@ -143,9 +150,6 @@ struct SQLiteHandle {
             }
             
             let formats: [Book.Format] = []
-            let cover = Image(image: UIImage())
-            let thumbnail = Image(image: UIImage())
-            let bookDownload = BookDownload(format: Book.Format.epub, file: Data())
             
             let book = Book(
                 id: id,
@@ -161,9 +165,31 @@ struct SQLiteHandle {
                 rating: rating,
                 series: series,
                 formats: formats,
-                cover: cover,
-                thumbnail: thumbnail,
-                bookDownload: bookDownload
+                _fetchCover: { completion in
+                    imageDataFetcher(authors, title) { imageData in
+                        guard let image = UIImage(data: imageData) else {
+                            return completion(nil)
+                        }
+                        completion(Image(image: image))
+                    }
+                },
+                _fetchThumbnail: { completion in
+                    imageDataFetcher(authors, title) { imageData in
+                        guard let image = UIImage(data: imageData) else {
+                            return completion(nil)
+                        }
+                        completion(Image(image: image))
+                    }
+                },
+                _fetchMainFormat: { completion in
+                    ebookFileDataFetcher(authors, title) { ebookFileData in
+                        guard let ebookFileData = ebookFileData else {
+                            return completion(nil)
+                        }
+                        // TODO: Grab the correct file type
+                        completion(BookDownload(format: .epub, file: ebookFileData))
+                    }
+                }
             )
             progress(book)
         }
@@ -206,19 +232,20 @@ fileprivate struct Book: BookModel {
     let series: Series?
     let formats: [Format]
     
-    let cover: Image
-    let thumbnail: Image
-    let bookDownload: BookDownload
+    // this is ugly, but it'll work for now ...
+    let _fetchCover: ((Image?) -> Void) -> Void
+    let _fetchThumbnail: ((Image?) -> Void) -> Void
+    let _fetchMainFormat: ((BookDownload?) -> Void) -> Void
     
-    func fetchCover(completion: (Image) -> Void) {
-        completion(cover)
+    func fetchCover(completion: (Image?) -> Void) {
+        _fetchCover(completion)
     }
     
-    func fetchThumbnail(completion: (Image) -> Void) {
-        completion(thumbnail)
+    func fetchThumbnail(completion: (Image?) -> Void) {
+        _fetchThumbnail(completion)
     }
     
-    func fetchMainFormat(completion: (BookDownload) -> Void) {
-        completion(bookDownload)
+    func fetchMainFormat(completion: (BookDownload?) -> Void) {
+        _fetchMainFormat(completion)
     }
 }
