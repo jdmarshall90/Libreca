@@ -32,19 +32,19 @@ struct BookListDataManager: BookListDataManaging {
         self.dataSource = dataSource
     }
     
-    func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void) {
+    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void) {
         switch dataSource {
         case .contentServer:
-            fetchFromContentServer(completion: completion)
+            fetchFromContentServer(start: start, progress: progress, completion: completion)
         case .dropbox:
-            fetchFromDropbox(completion: completion)
+            fetchFromDropbox(start: start, progress: progress, completion: completion)
         case .unconfigured:
             // TODO: Return an error
             break
         }
     }
     
-    private func fetchFromContentServer(completion: @escaping (Result<[BookModel], Error>) -> Void) {
+    private func fetchFromContentServer(start: (Result<Int, Error>) -> Void, progress: (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void) {
         CalibreContentServerBookListService().fetchBooks { response in
             switch response {
             case .success:
@@ -55,7 +55,7 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
-    private func fetchFromDropbox(completion: @escaping (Result<[BookModel], Error>) -> Void) {
+    private func fetchFromDropbox(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void) {
         // TODO: Grab from disk if available, only hit network if user pulls to refresh
         // TODO: Use user-provided path
         DropboxBookListService(path: "/Calibre Library").fetchBooks { response in
@@ -63,7 +63,7 @@ struct BookListDataManager: BookListDataManaging {
             case .success(let responseData):
                 do {
                     let databaseURL = try self.writeToDisk(responseData)
-                    try self.queryForBooks(atDatabaseURL: databaseURL, completion: completion)
+                    try self.queryForBooks(atDatabaseURL: databaseURL, start: start, progress: progress, completion: completion)
                 } catch {
                     // TODO: Handle errors
                 }
@@ -82,11 +82,12 @@ struct BookListDataManager: BookListDataManaging {
         return databaseURL
     }
     
-    private func queryForBooks(atDatabaseURL databaseURL: URL, completion: @escaping (Result<[BookModel], Error>) -> Void) throws {
+    private func queryForBooks(atDatabaseURL databaseURL: URL, start: (Result<Int, Error>) -> Void, progress: (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void) throws {
         let sqliteHandle = SQLiteHandle(databaseURL: databaseURL)
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
-            // TODO: Show book count on UI
+            // TODO: Error handling
+            start(.success(expectedBookCount))
         }, imageDataFetcher: { authors, title, completion in
             // TODO: Fetch these from appropriate API (Dropbox, in this case)
             
@@ -98,7 +99,7 @@ struct BookListDataManager: BookListDataManaging {
             // TODO: Update UI with books as they come in
         }, completion: {
             // TODO: Perform final refresh of UI
-            completion(.success(bookModels))
+            completion()
         })
     }
 }

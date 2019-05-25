@@ -37,8 +37,17 @@ struct BookListPresenter: BookListPresenting {
     }
     
     func fetchBooks() {
-        interactor.fetchBooks { result in
-            // TODO: Implement me
-        }
+        interactor.fetchBooks(start: { result in
+            switch result {
+            case .success(let bookCount):
+                self.view?.show(bookCount: bookCount)
+            case .failure(let error):
+                break
+            }
+        }, progress: { result in
+            
+        }, completion: {
+            
+        })
     }
 }

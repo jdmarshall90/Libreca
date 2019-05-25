@@ -192,7 +192,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     // MARK: - BookListViewing
     
     func show(bookCount: Int) {
-        
+        didFetch(bookCount: bookCount)
     }
     
     func show(book: BookFetchResult, at index: Int) {

@@ -24,6 +24,7 @@
 private enum Contracts { /* silence a swiftlint warning, the standard swiftlint:disable is not working */ }
 
 protocol BookListViewing: class {
+    func show(message: String)
     func show(bookCount: Int)
     func show(book: BookFetchResult, at index: Int)
     func reload(all: [BookFetchResult])
@@ -42,11 +43,11 @@ protocol BookListPresenting {
 }
 
 protocol BookListInteracting {
-    func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void)
+    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void)
 }
 
 protocol BookListDataManaging {
-    func fetchBooks(completion: @escaping (Result<[BookModel], Error>) -> Void)
+    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<BookModel, Error>) -> Void, completion: @escaping () -> Void)
 }
 
 protocol BookListServicing {
