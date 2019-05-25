@@ -27,7 +27,11 @@ import UIKit
 // TODO: Update privacy policy to include Dropbox
 final class DropboxSetupViewController: UIViewController {
     // TODO: Add Dropbox icon to the button
-    @IBOutlet weak var dropboxButton: UIButton!
+    @IBOutlet weak var dropboxButton: UIButton! {
+        didSet {
+            updateButtonText()
+        }
+    }
     
     @IBAction private func didTapConnect(_ sender: UIButton) {
         // TODO: Allow user to type in Dropbox dir
@@ -35,6 +39,22 @@ final class DropboxSetupViewController: UIViewController {
             UIApplication.shared,
             controller: self) { (url: URL) -> Void in
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateButtonText), name: Settings.Dropbox.didChangeAuthorizationNotification.name, object: nil)
+    }
+    
+    @objc
+    private func updateButtonText() {
+        if Settings.Dropbox.isAuthorized {
+            dropboxButton.setTitle("Dropbox Connected", for: .normal)
+            dropboxButton.isEnabled = false
+        } else {
+            dropboxButton.setTitle("Connect Dropbox", for: .normal)
+            dropboxButton.isEnabled = true
         }
     }
 }

@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ServerConfigCellID" textLabel="yMS-DP-YOm" detailTextLabel="4Vg-kN-42Q" style="IBUITableViewCellStyleSubtitle" id="TVA-OM-Tgk">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BackendConfigCellID" textLabel="yMS-DP-YOm" detailTextLabel="4Vg-kN-42Q" style="IBUITableViewCellStyleSubtitle" id="TVA-OM-Tgk">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TVA-OM-Tgk" id="FuI-aA-g0O">
@@ -232,10 +232,10 @@
             </objects>
             <point key="canvasLocation" x="1967" y="-232"/>
         </scene>
-        <!--Server Setup-->
+        <!--Server Setup View Controller-->
         <scene sceneID="ILB-2P-hMZ">
             <objects>
-                <tableViewController title="Server Setup" id="EAu-Au-OdW" customClass="ServerSetupViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="EAu-Au-OdW" customClass="ServerSetupViewController" customModule="Libreca" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="c9Q-V3-Ks6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -482,6 +482,7 @@
                             <constraint firstItem="qo9-Sf-OpC" firstAttribute="centerY" secondItem="gTF-oi-SVS" secondAttribute="centerY" id="8ZS-Bv-Fgu"/>
                             <constraint firstItem="qo9-Sf-OpC" firstAttribute="centerX" secondItem="gTF-oi-SVS" secondAttribute="centerX" id="urO-JD-Ezt"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="zSz-qE-hau"/>
                     </view>
                     <connections>
                         <outlet property="dropboxButton" destination="qo9-Sf-OpC" id="J3p-5x-pZJ"/>

@@ -123,17 +123,32 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     private func reload() {
+        let backendMainText: String
+        switch Settings.DataSource.current {
+        case .contentServer:
+            backendMainText = "Calibre Content Server"
+        case .dropbox:
+            backendMainText = "Dropbox"
+        case .unconfigured:
+            backendMainText = "Setup Dropbox or Content Server"
+        }
         displayModels = [
             [
                 DisplayModel(
-                    mainText: "Calibre Content Server",
+                    mainText: backendMainText,
                     subText: {
-                        let configuration = Settings.ContentServer.current
-                        var subtext = configuration?.url.absoluteString ?? "None configured"
-                        if let username = configuration?.credentials?.username {
-                            subtext = "\(username) @ \(subtext)"
+                        switch Settings.DataSource.current {
+                        case .contentServer(let configuration):
+                            var subtext = configuration.url.absoluteString
+                            if let username = configuration.credentials?.username {
+                                subtext = "\(username) @ \(subtext)"
+                            }
+                            return subtext
+                        case .dropbox:
+                            return Settings.Dropbox.isAuthorized ? "Connected" : "Unconnected"
+                        case .unconfigured:
+                            return "Unconfigured"
                         }
-                        return subtext
                 }(),
                     accessoryType: .detailDisclosureButton,
                     selectionHandler: { [weak self] in
@@ -368,8 +383,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         } else if indexPath.section == 0 && indexPath.row == 3 {
             return createThemeCell(for: thisDisplayModel)
         } else {
-            // TODO: This needs to change
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ServerConfigCellID") else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "BackendConfigCellID") else {
                 return UITableViewCell()
             }
             
@@ -377,15 +391,16 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             cell.detailTextLabel?.text = thisDisplayModel.subText
             
             let textColor: UIColor
-            switch (Settings.ContentServer.current?.url, Settings.Theme.current) {
-            case (.some, .dark):
-                textColor = .white
-            case (.none, .dark),
-                 (.none, .light):
+            
+            switch (Settings.DataSource.current, Settings.Theme.current) {
+            case (.unconfigured, _):
                 textColor = .red
-            case (.some, .light):
+            case (_, .dark):
+                textColor = .white
+            case (_, .light):
                 textColor = .black
             }
+            
             cell.detailTextLabel?.textColor = textColor
             cell.accessoryType = thisDisplayModel.accessoryType
             

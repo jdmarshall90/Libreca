@@ -31,6 +31,8 @@ final class BackendSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showNecessaryUI(for: Settings.DataSource.current, animated: false)
+        // TODO: Update this title on the fly as user changes backend
+        title = Settings.Dropbox.isCurrent ? "Dropbox Setup" : "Server Setup"
     }
     
     @IBAction private func backendSelectorDidChange(_ sender: UISegmentedControl) {
