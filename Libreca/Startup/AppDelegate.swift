@@ -30,6 +30,7 @@ import UIKit
 // TODO: Update App Store metadata: description, subtitle, search terms
 // TODO: Update libreca.io
 // TODO: Update Google ad
+// TODO: Update App Store screenshots
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
