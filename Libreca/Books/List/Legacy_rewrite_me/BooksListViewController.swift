@@ -117,6 +117,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(dataSourceDidChange), name: Settings.DataSource.didChangeNotification.name, object: nil)
+        
         refreshControl = booksRefreshControl
         didJustLoadView = true
         
@@ -396,6 +398,12 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         alertController.popoverPresentationController?.barButtonItem = sender
         
         present(alertController, animated: true)
+    }
+    
+    @objc
+    private func dataSourceDidChange(_ notification: Notification) {
+        navigationController?.popToRootViewController(animated: false)
+        refreshControlPulled(booksRefreshControl)
     }
     
     @objc

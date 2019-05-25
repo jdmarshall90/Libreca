@@ -60,10 +60,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // TODO: Need some logic in here
             switch authResult {
             case .success:
+                Settings.Dropbox.isAuthorized = true
                 print("Success! User is logged into Dropbox.")
             case .cancel:
+                Settings.Dropbox.isAuthorized = false
                 print("Authorization flow was manually canceled by user!")
             case .error(_, let description):
+                Settings.Dropbox.isAuthorized = false
                 print("Error: \(description)")
             }
         }
