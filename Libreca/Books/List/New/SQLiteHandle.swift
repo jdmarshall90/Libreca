@@ -75,9 +75,9 @@ struct SQLiteHandle {
         let availableSeries = Array(try database.prepare(Table("series").select([Expression<Int>("id"), Expression<String>("name")])))
         let booksSeriesLink = Array(try database.prepare(Table("books_series_link").select([Expression<Int>("book"), Expression<Int>("series")])))
         
+        let availableFormats = Array(try database.prepare(Table("data").select([Expression<Int>("book"), Expression<String>("format")])))
+        
         try database.prepare(booksTable).forEach { row in
-            // TODO: Finish implementing me - parse the rest of the data
-            
             // swiftlint:disable:next identifier_name
             let id = row[Expression<Int>("id")]
             
@@ -149,7 +149,8 @@ struct SQLiteHandle {
                 series = nil
             }
             
-            let formats: [Book.Format] = []
+            let matchingFormats = availableFormats.filter { $0[Expression<Int>("book")] == id }
+            let formats = matchingFormats.map { BookModel.Format(serverValue: $0[Expression<String>("format")]) }
             
             let book = Book(
                 id: id,
