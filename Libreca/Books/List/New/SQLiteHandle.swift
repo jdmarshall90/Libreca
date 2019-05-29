@@ -47,8 +47,7 @@ struct SQLiteHandle {
                           ebookFileDataFetcher: @escaping EbookFileDataFetcher,
                           progress: (BookModel) -> Void,
                           completion: () -> Void) throws {
-        // TODO: Do all this work on a background thread, but call the various closures on the same thread from which this function was initially called
-        
+        // TODO: I suspect the performance problems are because of my brute force algorithm, but see if you can enhance at all
         let database = try Connection(databaseURL.path, readonly: true)
         let booksTable = Table("books")
         let bookCount = try database.scalar(booksTable.count)
