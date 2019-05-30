@@ -55,10 +55,9 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
-    private func fetchFromDropbox(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
-        // TODO: Grab from disk if available, only hit network if user pulls to refresh
-        // TODO: Use user-provided path
-        DropboxBookListService(path: "/Calibre Library").fetchBooks { response in
+    private func fetchFromDropbox(at directory: String, start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
+        // TODO: Grab from disk if available, only hit network if user pulls to refresh, or if user changes dropbox path
+        DropboxBookListService(path: directory).fetchBooks { response in
             // The Dropbox API calls this completion handler on the main thread, so
             // kick back to a background thread before continuing.
             DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.dataManager.dropboxResponse", qos: .userInitiated).async {
