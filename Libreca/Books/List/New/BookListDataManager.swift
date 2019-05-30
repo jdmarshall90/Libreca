@@ -26,18 +26,18 @@ import CalibreKit
 struct BookListDataManager: BookListDataManaging {
     typealias DataSource = Settings.DataSource
     
-    private let dataSource: DataSource
+    private let dataSource: () -> DataSource
     
-    init(dataSource: DataSource) {
+    init(dataSource: @escaping @autoclosure () -> DataSource) {
         self.dataSource = dataSource
     }
     
     func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
-        switch dataSource {
+        switch dataSource() {
         case .contentServer:
             fetchFromContentServer(start: start, progress: progress, completion: completion)
-        case .dropbox:
-            fetchFromDropbox(start: start, progress: progress, completion: completion)
+        case .dropbox(let directory):
+            fetchFromDropbox(at: directory ?? Settings.Dropbox.defaultDirectory, start: start, progress: progress, completion: completion)
         case .unconfigured:
             // TODO: Return an error
             break
