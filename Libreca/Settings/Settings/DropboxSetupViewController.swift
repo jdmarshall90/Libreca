@@ -45,7 +45,7 @@ final class DropboxSetupViewController: UIViewController {
         var textEntry: String?
         alertController.addTextField { textField in
             textField.keyboardType = .webSearch
-            
+            textField.text = Settings.Dropbox.directory
             token = NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: nil) { _ in
                 textEntry = textField.text
             }
