@@ -182,7 +182,17 @@ struct Settings {
                 return UserDefaults.standard.string(forKey: keyDirectory)
             }
             set(newValue) {
-                UserDefaults.standard.set(newValue, forKey: keyDirectory)
+                let sanitizedNewValue: String?
+                if var newValue = newValue {
+                    newValue = newValue.replacingOccurrences(of: "\\", with: "/")
+                    if !newValue.hasPrefix("/") {
+                        newValue.insert("/", at: newValue.startIndex)
+                    }
+                    sanitizedNewValue = newValue
+                } else {
+                    sanitizedNewValue = newValue
+                }
+                UserDefaults.standard.set(sanitizedNewValue, forKey: keyDirectory)
                 NotificationCenter.default.post(DataSource.didChangeNotification)
             }
         }
