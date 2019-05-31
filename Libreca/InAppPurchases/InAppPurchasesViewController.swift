@@ -164,7 +164,7 @@ final class InAppPurchasesViewController: UITableViewController {
         case .success(let products):
             switch inAppPurchase.kind {
             case .support:
-                return createSupportSections(from: products)
+                return createTipSections(from: products)
             case .feature:
                 return createFeatureSections(from: products)
             }
@@ -208,7 +208,7 @@ final class InAppPurchasesViewController: UITableViewController {
         return [instructionsSection] + productsSections + [restorationSection]
     }
     
-    private func createSupportSections(from products: [InAppPurchase.Product]) -> [Section] {
+    private func createTipSections(from products: [InAppPurchase.Product]) -> [Section] {
         tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
         // swiftlint:disable:next force_unwrapping
