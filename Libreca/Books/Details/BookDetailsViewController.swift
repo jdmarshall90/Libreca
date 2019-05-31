@@ -66,14 +66,12 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
-        // swiftlint:disable:next force_cast
-        presenter.edit(bookViewModel.book as! Book)
+        presenter.edit(bookViewModel.book)
     }
     
     @IBAction private func didTapDownload(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
-        // swiftlint:disable:next force_cast
-        presenter.download(bookViewModel.book as! Book)
+        presenter.download(bookViewModel.book)
     }
     
     func removeBookDetails() {
