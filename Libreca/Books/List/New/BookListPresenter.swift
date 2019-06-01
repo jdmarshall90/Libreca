@@ -70,6 +70,7 @@ struct BookListPresenter: BookListPresenting {
                     self.view?.reload(all: results)
                 }
             })
+            // swiftlint:disable:previous multiline_arguments_brackets
         }
     }
 }

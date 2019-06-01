@@ -105,5 +105,6 @@ struct BookListDataManager: BookListDataManaging {
         }, completion: {
             completion(bookModels.map { .book($0) })
         })
+        // swiftlint:disable:previous multiline_arguments_brackets
     }
 }
