@@ -21,6 +21,8 @@
 //  This file is part of project: Libreca
 //
 
+import SQLite
+
 private enum Contracts { /* silence a swiftlint warning, the standard swiftlint:disable is not working */ }
 
 protocol BookListViewing: class {
@@ -42,16 +44,33 @@ protocol BookListPresenting {
     func fetchBooks()
 }
 
+enum FetchError: Error {
+    enum SQL: Error {
+        case query(QueryError)
+        case underlying(SQLite.Result)
+    }
+    
+    enum BackendSystem: Error {
+        case dropbox(DropboxBookListService.DropboxAPIError)
+        case contentServer(Error)
+        case unconfiguredBackend
+    }
+    
+    case sql(SQL)
+    case backendSystem(BackendSystem)
+    case unknown(Error)
+}
+
 protocol BookListInteracting {
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
+    func fetchBooks(start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
 }
 
 protocol BookListDataManaging {
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
+    func fetchBooks(start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
 }
 
 protocol BookListServicing {
     associatedtype BookServiceResponseData
     associatedtype BookServiceError: Error
-    func fetchBooks(completion: @escaping (Result<BookServiceResponseData, BookServiceError>) -> Void)
+    func fetchBooks(completion: @escaping (Swift.Result<BookServiceResponseData, BookServiceError>) -> Void)
 }
