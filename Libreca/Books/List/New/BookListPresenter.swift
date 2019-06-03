@@ -44,7 +44,7 @@ struct BookListPresenter: BookListPresenting {
                     case .success(let bookCount):
                         self.view?.show(bookCount: bookCount)
                     case .failure(let error):
-                        break
+                        self.handle(error)
                     }
                 }
             }, progress: { result in
@@ -55,14 +55,14 @@ struct BookListPresenter: BookListPresenting {
                         case .book(let book):
                             self.view?.show(book: .book(book), at: info.index)
                         case .inFlight:
-                            // TODO: Implement me
+                            // as of now, this can't happen. Will need to handle this
+                            // once the content server flow goes through this code
                             break
                         case .failure(let retry):
-                            // TODO: Implement me
-                            break
+                            self.view?.show(book: .failure(retry: retry), at: info.index)
                         }
                     case .failure(let error):
-                        break
+                        self.handle(error)
                     }
                 }
             }, completion: { results in
@@ -72,5 +72,9 @@ struct BookListPresenter: BookListPresenting {
             })
             // swiftlint:disable:previous multiline_arguments_brackets
         }
+    }
+    
+    private func handle(_ error: FetchError) {
+        // TODO: Implement me
     }
 }

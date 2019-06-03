@@ -198,7 +198,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         case .inFlight:
             didFetch(book: .inFlight, at: index)
         case .failure:
-            // I do not expect this to happen ...
+            // I do not expect this to happen until the content server flow goes through this path
             break
         }
     }
