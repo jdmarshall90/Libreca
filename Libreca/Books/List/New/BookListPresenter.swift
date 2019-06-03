@@ -22,6 +22,8 @@
 //
 
 import Foundation
+import SQLite
+import SwiftyDropbox
 
 struct BookListPresenter: BookListPresenting {
     typealias View = BookListViewing
@@ -75,6 +77,97 @@ struct BookListPresenter: BookListPresenting {
     }
     
     private func handle(_ error: FetchError) {
-        // TODO: Implement me
+        switch error {
+        case .sql(let sqlError):
+            handle(sqlError)
+        case .backendSystem(let backendError):
+            handle(backendError)
+        case .unknown(let unknownError):
+            handleUnknown(unknownError)
+        }
+    }
+    
+    private func handle(_ error: FetchError.SQL) {
+        switch error {
+        case .query(let queryError):
+            handleUnknown(queryError)
+        case .underlying(let underlyingSQLError):
+            handle(underlyingSQLError)
+        }
+    }
+    
+    private func handle(_ error: FetchError.BackendSystem) {
+        switch error {
+        case .dropbox(let dropboxAPIError):
+            handle(dropboxAPIError)
+        case .contentServer(let contentServerError):
+            handleUnknown(contentServerError)
+        case .unconfiguredBackend:
+            handleUnconfiguredBackend()
+        }
+    }
+    
+    private func handleUnknown(_ error: Error) {
+        
+    }
+    
+    private func handle(_ error: QueryError) {
+        switch error {
+        case .noSuchTable(let table):
+            break
+        case .noSuchColumn(let column, let columns):
+            break
+        case .ambiguousColumn(let column, let similarColumn):
+            break
+        case .unexpectedNullValue(let value):
+            break
+        }
+    }
+    
+    private func handle(_ error: SQLite.Result) {
+        switch error {
+        case .error(let message, let code, let statement):
+            break
+        }
+    }
+    
+    private func handle(_ error: DropboxBookListService.DropboxAPIError) {
+        switch error {
+        case .unauthorized:
+            break
+        case .error(let callError):
+            handle(callError)
+        case .nonsenseResponse:
+            break
+        }
+    }
+    
+    private func handleContentServer(_ error: Error) {
+        
+    }
+    
+    private func handleUnconfiguredBackend() {
+        
+    }
+    
+    private func handle(_ error: CallError<Files.DownloadError>) {
+        switch error {
+        case .internalServerError(let code, let string, let string2):
+            break
+        case .badInputError(let string, let string2):
+            break
+        case .rateLimitError(let rateLimitError, let string, let string2, let string3):
+            break
+        case .httpError(let int, let string, let string2):
+            break
+        case .authError(let authError, let string, let string2, let string3):
+            break
+        case .accessError(let accessError, let string, let string2, let string3):
+            break
+        case .routeError(let routeError, let string, let string2, let string3):
+            break
+        case .clientError(let clientError):
+            break
+        }
     }
 }
