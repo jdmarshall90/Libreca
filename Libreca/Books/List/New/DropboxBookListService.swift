@@ -40,7 +40,7 @@ struct DropboxBookListService: BookListServicing {
         guard let client = DropboxClientsManager.authorizedClient else {
             return completion(.failure(DropboxAPIError.unauthorized))
         }
-        
+        // TODO: API doesn't seem to respond in airplane mode, check for network connectivity before trying
         client.files.download(path: "\(path)/metadata.db").response { responseFiles, error in
             switch (responseFiles, error) {
             case (.some(_, let sqliteFileData), .none):

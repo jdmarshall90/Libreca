@@ -25,6 +25,8 @@ import Foundation
 import SQLite
 import SwiftyDropbox
 
+// TODO: Test what happens if you connect to Dropbox, then disallow Dropbox access via Dropbox site, then try to refresh
+
 struct BookListPresenter: BookListPresenting {
     typealias View = BookListViewing
     
