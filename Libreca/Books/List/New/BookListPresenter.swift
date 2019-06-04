@@ -64,7 +64,7 @@ struct BookListPresenter: BookListPresenting {
                             self.view?.show(book: .failure(retry: retry), at: info.index)
                         }
                     case .failure(let error):
-                        self.handle(error)
+                        break
                     }
                 }
             }, completion: { results in
@@ -101,73 +101,140 @@ struct BookListPresenter: BookListPresenting {
         case .dropbox(let dropboxAPIError):
             handle(dropboxAPIError)
         case .contentServer(let contentServerError):
-            handleUnknown(contentServerError)
+            handleContentServer(contentServerError)
         case .unconfiguredBackend:
             handleUnconfiguredBackend()
         }
     }
     
     private func handleUnknown(_ error: Error) {
-        
+        view?.show(message: "An unknown error has occurred: \(error.localizedDescription)")
     }
     
     private func handle(_ error: QueryError) {
         switch error {
         case .noSuchTable(let table):
-            break
+            view?.show(message: "Invalid SQL query: no such table \"\(table)\"")
         case .noSuchColumn(let column, let columns):
-            break
-        case .ambiguousColumn(let column, let similarColumn):
-            break
+            view?.show(message: "Invalid SQL query: no such column \"\(column)\" in column list \"\(columns)\"")
+        case .ambiguousColumn(let column, let similarColumns):
+            view?.show(message: "Invalid SQL query: ambiguous column \"\(column)\" in potential matches \"\(similarColumns)\"")
         case .unexpectedNullValue(let value):
-            break
+            view?.show(message: "Invalid SQL query: unexpected null value \"\(value)\"")
         }
     }
     
     private func handle(_ error: SQLite.Result) {
         switch error {
-        case .error(let message, let code, let statement):
-            break
+        case .error(let message, let code, _):
+            view?.show(message: "SQL query or response error: \"\(message)\" (\(code))")
         }
     }
     
     private func handle(_ error: DropboxBookListService.DropboxAPIError) {
         switch error {
         case .unauthorized:
-            break
+            view?.show(message: "Dropbox has been selected, but not connected. Go into settings to connect to Dropbox.")
         case .error(let callError):
             handle(callError)
         case .nonsenseResponse:
-            break
+            view?.show(message: "Dropbox connectivity has encountered an unexpected error. If you are seeing this message, please contact app support.")
         }
     }
     
     private func handleContentServer(_ error: Error) {
-        
+        // as of now, this can't happen. Will need to handle this
+        // once the content server flow goes through this code
     }
     
     private func handleUnconfiguredBackend() {
-        
+        view?.show(message: "Go into settings to connect to Dropbox or to your content server.")
     }
     
+    // swiftlint:disable:next function_body_length
     private func handle(_ error: CallError<Files.DownloadError>) {
         switch error {
         case .internalServerError(let code, let string, let string2):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered an internal error:
+                
+                \(string ?? "")
+                \(string2 ?? "")
+                Error code \(code)
+                """
+            )
         case .badInputError(let string, let string2):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered an input error:
+                
+                \(string ?? "")
+                \(string2 ?? "")
+                """
+            )
         case .rateLimitError(let rateLimitError, let string, let string2, let string3):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered an access error due to too many requests:
+                
+                \(rateLimitError.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
         case .httpError(let int, let string, let string2):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered an HTTP error:
+                
+                \(string ?? "")
+                \(string2 ?? "")
+                Error code \(int ?? 0)
+                """
+            )
         case .authError(let authError, let string, let string2, let string3):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered an authentication error:
+                
+                \(authError.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
         case .accessError(let accessError, let string, let string2, let string3):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered an access error:
+                
+                \(accessError.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
         case .routeError(let routeError, let string, let string2, let string3):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered a routing error:
+                
+                \(routeError.unboxed.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
         case .clientError(let clientError):
-            break
+            view?.show(
+                message: """
+                Dropbox has encountered a client error:
+                
+                \(clientError?.localizedDescription ?? "")
+                """
+            )
         }
     }
 }
