@@ -438,7 +438,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             case .contentServer:
                 viewModel.fetchBooks()
             case .unconfigured:
-                break
+                // this is another issue that'll go away once the content server flow is rewritten ...
+                show(message: "Go into settings to connect to Dropbox or to your content server.")
             }
         }
     }
