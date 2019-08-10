@@ -422,7 +422,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     private func refresh() {
-        // TODO: For a brand new app install, this is hanging on app launch. The user cannot get into the backend selection setting flow
+        // TODO: For a brand new app install, this is hanging on app launch. The user cannot get into the backend selection setting flow -- this may have been fixed already, test and verify
         if isRefreshing {
             refreshControl?.endRefreshing()
             displayUninteractibleAlert()
