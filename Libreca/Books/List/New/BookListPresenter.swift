@@ -141,6 +141,8 @@ struct BookListPresenter: BookListPresenting {
             handle(callError)
         case .nonsenseResponse:
             view?.show(message: "Dropbox connectivity has encountered an unexpected error. If you are seeing this message, please contact app support.")
+        case .noNetwork:
+            view?.show(message: "Dropbox connectivity requires a network connection. Please connect to Wi-Fi or Cellular data.")
         }
     }
     

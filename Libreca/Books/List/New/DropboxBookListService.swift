@@ -32,6 +32,7 @@ struct DropboxBookListService: BookListServicing {
         case unauthorized
         case error(CallError<Files.DownloadError>)
         case nonsenseResponse
+        case noNetwork
     }
     
     let path: String
@@ -40,16 +41,31 @@ struct DropboxBookListService: BookListServicing {
         guard let client = DropboxClientsManager.authorizedClient else {
             return completion(.failure(DropboxAPIError.unauthorized))
         }
-        // TODO: API doesn't seem to respond in airplane mode, check for network connectivity before trying
-        client.files.download(path: "\(path)/metadata.db").response { responseFiles, error in
-            switch (responseFiles, error) {
-            case (.some(_, let sqliteFileData), .none):
-                completion(.success(sqliteFileData))
-            case (.none, .some(let error)):
-                completion(.failure(DropboxAPIError.error(error)))
-            case (.some, .some),
-                 (.none, .none):
-                completion(.failure(DropboxAPIError.nonsenseResponse))
+        
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.networkchecker", qos: .userInitiated).async {
+            // Dropbox API doesn't seem to respond in airplane mode.
+            // Apple's NWPathMonitor class was giving me a false negative.
+            // Hence this crappy workaround.
+            do {
+                guard let appWebsite = URL(string: "https://libreca.io") else {
+                    return completion(.failure(DropboxAPIError.noNetwork))
+                }
+                _ = try Data(contentsOf: appWebsite)
+                // if we get here, assume a network connection is available ...
+                
+                client.files.download(path: "\(self.path)/metadata.db").response { responseFiles, error in
+                    switch (responseFiles, error) {
+                    case (.some(_, let sqliteFileData), .none):
+                        completion(.success(sqliteFileData))
+                    case (.none, .some(let error)):
+                        completion(.failure(DropboxAPIError.error(error)))
+                    case (.some, .some),
+                         (.none, .none):
+                        completion(.failure(DropboxAPIError.nonsenseResponse))
+                    }
+                }
+            } catch {
+                completion(.failure(DropboxAPIError.noNetwork))
             }
         }
     }
