@@ -54,7 +54,7 @@ struct BookDetailsInteractor: BookDetailsInteracting {
             return .stillFetching
         }
         
-        if Settings.Dropbox.isCurrent {
+        if Settings.Dropbox.isAuthorized {
             return .unsupportedBackend
         }
         
