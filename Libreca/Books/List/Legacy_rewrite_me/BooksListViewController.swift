@@ -222,6 +222,13 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     // MARK: - BooksListView
     
     func show(message: String) {
+        // there is a bug in this VC where, if show(message:) is called before reload(all:),
+        // then the message won't actually show up
+        let emptyBookResults: [BooksListViewModel.BookFetchResult] = []
+        reload(all: emptyBookResults)
+        DispatchQueue.main.async {
+            self.refreshControl?.endRefreshing()
+        }
         content = .message(message)
     }
     
