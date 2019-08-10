@@ -26,7 +26,6 @@ import UIKit
 
 // TODO: Update privacy policy to include Dropbox
 final class DropboxSetupViewController: UIViewController {
-    // TODO: Add Dropbox icon to the button
     @IBOutlet private weak var dropboxButton: UIButton! {
         didSet {
             updateConnectButtonText()
