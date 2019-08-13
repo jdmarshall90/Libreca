@@ -336,6 +336,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
             ∙ https://mysecurecontentserver.com:8080
             
             Please include https:// or http://
+            
+            If you are using calibre's prefix setting, add a / to the end of your URL.
             """,
             preferredStyle: .alert
         )

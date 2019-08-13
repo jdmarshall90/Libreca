@@ -270,13 +270,13 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Credentials - leave blank if authentication not needed" id="pix-Kr-AQc">
-                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
+                                <mutableString key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://</string>
+            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://  If you are using calibre's prefix setting, add a / to the end of your URL.</mutableString>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3gY-rN-sij">
                                         <rect key="frame" x="0.0" y="163" width="375" height="44"/>
