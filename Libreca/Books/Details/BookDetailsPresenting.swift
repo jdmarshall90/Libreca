@@ -22,13 +22,14 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 protocol BookDetailsPresenting {
     func edit(_ book: Book)
     func download(_ book: Book)
 }
+
+// TODO: Disable editing (with a new error message) when using Dropbox
 
 struct BookDetailsPresenter: BookDetailsPresenting {
     typealias View = (BookDetailsViewing & ErrorMessageShowing & LoadingViewShowing & UIViewController)
@@ -91,7 +92,6 @@ struct BookDetailsPresenter: BookDetailsPresenting {
     
     private func actuallyDownload(_ book: Book) {
         guard interactor.canDownload(book) else {
-            Analytics.logEvent("download_ebook_no_url", parameters: nil)
             return router.routeToDownloadUnavailableMessage()
         }
         view?.showLoader()

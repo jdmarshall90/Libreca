@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import Foundation
 
 protocol BooksListView: class {
@@ -46,7 +45,7 @@ final class BooksListViewModel {
             }
         }
         
-        case book(Book)
+        case book(BookModel)
         case inFlight
         case failure(Failure)
         
@@ -55,7 +54,7 @@ final class BooksListViewModel {
             return theFailure
         }
         
-        var book: Book? {
+        var book: BookModel? {
             guard case .book(let book) = self else { return nil }
             return book
         }
@@ -92,14 +91,14 @@ final class BooksListViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(imageSettingDidChange), name: Settings.Image.didChangeNotification.name, object: nil)
     }
     
-    func updateBooks(matching updatedBooks: [Book]) {
+    func updateBooks(matching updatedBooks: [BookModel]) {
         // this is ugly, but I plan to rip it out as part of https://gitlab.com/calibre-utils/Libreca/issues/54
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.edit.updateBooks", qos: .userInitiated).async { [weak self] in
             guard let strongSelf = self else { return }
             var newBookList = strongSelf.books
             for index in 0..<newBookList.count {
                 if let thisBook = newBookList[index].book,
-                    let updatedBook = updatedBooks.first(where: { $0 == thisBook }) {
+                    let updatedBook = updatedBooks.first(where: { $0.isEqual(to: thisBook) }) {
                     newBookList.remove(at: index)
                     newBookList.insert(.book(updatedBook), at: index)
                 }
@@ -116,7 +115,6 @@ final class BooksListViewModel {
         view?.show(message: "Searching...")
         guard !terms.isEmpty else {
             if books.isEmpty {
-                Analytics.logEvent("search_results", parameters: ["count": 0])
                 view?.show(message: noResultsFoundMessage)
             } else {
                 results(books)
@@ -133,7 +131,6 @@ final class BooksListViewModel {
             
             DispatchQueue.main.async {
                 if matchResults.isEmpty {
-                    Analytics.logEvent("search_results", parameters: ["count": 0])
                     self?.view?.show(message: noResultsFoundMessage)
                 } else {
                     results(matchResults)
@@ -150,7 +147,7 @@ final class BooksListViewModel {
         }
     }
     
-    func authors(for book: Book) -> String {
+    func authors(for book: BookModel) -> String {
         return book.authors.map { $0.name }.joined(separator: "; ")
     }
     
@@ -164,7 +161,6 @@ final class BooksListViewModel {
             
             switch searchResponse.result {
             case .success(let value) where value.totalBookCount == 0:
-                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.books = []
                 strongSelf.view?.didFetch(bookCount: 0)
                 strongSelf.view?.reload(all: strongSelf.books)
@@ -172,19 +168,14 @@ final class BooksListViewModel {
             case .success(let value):
                 strongSelf.paginate(from: value, startedAt: startTime)
             case .failure(let error as CalibreError):
-                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(calibreError: error)
-                strongSelf.logError()
             case .failure(let error):
-                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(error: error)
-                strongSelf.logError()
             }
         }
     }
     
     func retryFailures() {
-        let startTime = Date()
         let dispatchGroup = DispatchGroup()
         
         let endpoints: [(Int, BookEndpoint)] = books.enumerated().compactMap {
@@ -215,7 +206,6 @@ final class BooksListViewModel {
         
         dispatchGroup.notify(queue: .main) { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.logTimeInterval(since: startTime, isRetry: true)
             
             // A better solution would be to fetch them already sorted from the server,
             // that way they populate in the UI in the right order, but this is good
@@ -225,14 +215,16 @@ final class BooksListViewModel {
         }
     }
     
-    func fetchThumbnail(for book: Book, completion: @escaping (UIImage) -> Void) {
+    func fetchThumbnail(for book: BookModel, completion: @escaping (UIImage) -> Void) {
         let imageEndpoint: ImageEndpoint
         
         switch Settings.Image.current {
         case .thumbnail:
-            imageEndpoint = book.thumbnail
+            // swiftlint:disable:next force_cast
+            imageEndpoint = (book as! Book).thumbnail
         case .fullSize:
-            imageEndpoint = book.cover
+            // swiftlint:disable:next force_cast
+            imageEndpoint = (book as! Book).cover
         }
         imageEndpoint.hitService { response in
             completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
@@ -257,7 +249,6 @@ final class BooksListViewModel {
                         allBookDetails.append(bookFetchResult)
                         dispatchGroup.leave()
                     case .failure:
-                        strongSelf.logError()
                         let bookFetchResult = BookFetchResult.failure(BookFetchResult.Failure(endpoint: bookID))
                         strongSelf.view?.didFetch(book: bookFetchResult, at: index)
                         allBookDetails.append(bookFetchResult)
@@ -266,7 +257,6 @@ final class BooksListViewModel {
                 }
             }
             dispatchGroup.notify(queue: .main) {
-                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.books = allBookDetails
                 
                 // A better solution would be to fetch them already sorted from the server,
@@ -291,13 +281,9 @@ final class BooksListViewModel {
                     completion(bookIDs)
                 }
             case .failure(let error as CalibreError):
-                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(calibreError: error)
-                strongSelf.logError()
             case .failure(let error):
-                strongSelf.logTimeInterval(since: startTime)
                 strongSelf.handle(error: error)
-                strongSelf.logError()
             }
         }
     }
@@ -386,17 +372,5 @@ final class BooksListViewModel {
         view?.didFetch(bookCount: 0)
         view?.reload(all: books)
         view?.show(message: "Error: \(error.localizedDescription) - Double check your Calibre© Content Server setup in settings (https:// or http:// is required) and make sure your server is up and running.")
-    }
-    
-    private func logTimeInterval(since startTime: Date, isRetry: Bool = false) {
-        let elapsed = -startTime.timeIntervalSinceNow
-        let toNearest = 0.01
-        let roundedElapsed = round(elapsed / toNearest) * toNearest
-        let eventName = isRetry ? "books_refetched" : "books_fetched"
-        Analytics.logEvent(eventName, parameters: ["time_interval": roundedElapsed])
-    }
-    
-    private func logError() {
-        Analytics.logEvent("book_count_error", parameters: nil)
     }
 }

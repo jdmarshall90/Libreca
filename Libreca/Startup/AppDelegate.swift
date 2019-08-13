@@ -22,8 +22,11 @@
 //
 
 import CalibreKit
-import Firebase
+import SwiftyDropbox
 import UIKit
+
+// TODO: Tag CalibreKit and point Libreca to tag, isntead of master
+// TODO: Update licenses list with Dropbox SDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,18 +36,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // swiftlint:disable:next discouraged_optional_collection
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        DropboxClientsManager.setupWithAppKey("3s4u5gvkukbbu1n")
         CalibreKitConfiguration.configuration = Settings.ContentServer.current
         
         NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
-        
-        // commenting out for now due to new app store review requirement for user opt-in
-        // not sure at this point if I'll just remove analytics altogether, or build the
-        // opt-in / opt-out flow
-//        #if !DEBUG
-//            AppAnalytics.shared.enable()
-//            AppAnalytics.shared.appStarted()
-//        #endif
-        
+                
         let theWindow = UIWindow(frame: UIScreen.main.bounds)
         let router = AppLaunchRouter(window: theWindow)
         router.route()
@@ -55,6 +52,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         applyTheme()
         Settings.AppLaunched.appDidLaunch()
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+            // TODO: Need some logic in here
+            switch authResult {
+            case .success:
+                Settings.Dropbox.isAuthorized = true
+                print("Success! User is logged into Dropbox.")
+            case .cancel:
+                Settings.Dropbox.isAuthorized = false
+                print("Authorization flow was manually canceled by user!")
+            case .error(_, let description):
+                Settings.Dropbox.isAuthorized = false
+                print("Error: \(description)")
+            }
+        }
         return true
     }
     

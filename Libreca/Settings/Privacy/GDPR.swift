@@ -24,6 +24,8 @@
 import CalibreKit
 import Foundation
 
+// TODO: This file might need updated for Dropbox support
+
 protocol GDPRItem {
     var information: String { get }
     

@@ -1,8 +1,8 @@
 //
-//  BookDetailsViewing.swift
+//  Book+BookModel.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 1/12/19.
+//  Created by Justin Marshall on 5/25/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,8 +22,30 @@
 //
 
 import CalibreKit
-import Foundation
 
-protocol BookDetailsViewing {
-    func reload(for book: BookModel)
+extension Book: BookModel {
+    func fetchCover(completion: (Image?) -> Void) {
+        // TODO: Implement me
+    }
+    
+    func fetchThumbnail(completion: (Image?) -> Void) {
+        // TODO: Implement me
+    }
+    
+    func fetchMainFormat(completion: (BookDownload?) -> Void) {
+        // TODO: Implement me
+    }
+    
+    func isEqual(to other: BookModel) -> Bool {
+        // swiftlint:disable:next force_cast
+        return self == other as! Book
+    }
+    
+    var stringValue: String {
+        return self[keyPath: Settings.Sort.current.sortingKeyPath]
+    }
+    
+    var mainFormatType: Format? {
+        return mainFormat?.format
+    }
 }

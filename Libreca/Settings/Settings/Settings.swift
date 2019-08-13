@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import Foundation
 import StoreKit
 
@@ -73,7 +72,7 @@ struct Settings {
         
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.sortDidChange"))
         
-        var sortingKeyPath: KeyPath<Book, String> {
+        var sortingKeyPath: KeyPath<BookModel, String> {
             switch self {
             case .title:
                 return \Book.title.sort
@@ -101,7 +100,7 @@ struct Settings {
             }
         }
         
-        func sortAction(_ lhs: Book, _ rhs: Book) -> Bool {
+        func sortAction(_ lhs: BookModel, _ rhs: BookModel) -> Bool {
             return lhs[keyPath: sortingKeyPath] < rhs[keyPath: sortingKeyPath]
         }
     }
@@ -126,6 +125,7 @@ struct Settings {
             }
             set(newValue) {
                 if let newValue = newValue {
+                    Dropbox.isCurrent = false
                     Keychain.store(newValue)
                 } else {
                     Keychain.wipe()
@@ -133,6 +133,57 @@ struct Settings {
                 
                 CalibreKitConfiguration.configuration = newValue
                 NotificationCenter.default.post(didChangeNotification)
+            }
+        }
+    }
+    
+    struct Dropbox {
+        private init() {}
+        
+        static let didChangeAuthorizationNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dropboxDidChangeAuthorization"))
+        
+        private static var keyIsCurrent: String {
+            return Settings.baseSettingsKey + "dropbox.isCurrent"
+        }
+        
+        private static var keyIsAuthorized: String {
+            return Settings.baseSettingsKey + "dropbox.isAuthorized"
+        }
+        
+        static var isAuthorized: Bool {
+            get {
+                return UserDefaults.standard.bool(forKey: keyIsAuthorized)
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue, forKey: keyIsAuthorized)
+            }
+        }
+        
+        static var isCurrent: Bool {
+            get {
+                return UserDefaults.standard.bool(forKey: keyIsCurrent)
+            }
+            set(newValue) {
+                UserDefaults.standard.set(newValue, forKey: keyIsCurrent)
+                NotificationCenter.default.post(DataSource.didChangeNotification)
+            }
+        }
+    }
+    
+    enum DataSource {
+        case contentServer(ServerConfiguration)
+        case dropbox
+        case unconfigured
+        
+        static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dataSourceDidChange"))
+        
+        static var current: DataSource {
+            if Dropbox.isCurrent {
+                return .dropbox
+            } else if let serverConfiguration = ContentServer.current {
+                return .contentServer(serverConfiguration)
+            } else {
+                return .unconfigured
             }
         }
     }
@@ -171,11 +222,7 @@ struct Settings {
             set(newValue) {
                 UserDefaults.standard.set(newValue.rawValue, forKey: key)
                 if UIApplication.shared.supportsAlternateIcons {
-                    UIApplication.shared.setAlternateIconName(newValue.iconName) { error in
-                        if error != nil {
-                            Analytics.logEvent("icon_change_error", parameters: ["type": Settings.Theme.current.rawValue])
-                        }
-                    }
+                    UIApplication.shared.setAlternateIconName(newValue.iconName)
                 }
                 NotificationCenter.default.post(didChangeNotification)
             }

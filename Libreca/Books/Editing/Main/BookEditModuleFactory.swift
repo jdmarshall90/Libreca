@@ -22,13 +22,12 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 
 struct BookEditModuleFactory {
     typealias Identifier = (displayValue: String, uniqueID: String)
     typealias Series = (name: String, index: Double)
     
-    private static var allBooks: [Book] {
+    private static var allBooks: [BookModel] {
         // This is a dirty, shameful hack... but it's also the least invasive solution until
         // `BooksListViewController` and `BookDetailsViewController` are refactored to the new
         // architecture. I'm not going to bother with a GitLab issue for this hack itself,
@@ -47,25 +46,27 @@ struct BookEditModuleFactory {
     
     private init() {}
     
-    static func viewController(for book: Book, completion: @escaping (Book) -> Void) -> BookEditViewing & UIViewController {
+    static func viewController(for book: BookModel, completion: @escaping (BookModel) -> Void) -> BookEditViewing & UIViewController {
+        // swiftlint:disable force_cast
         let router = BookEditRouter(book: book, completion: completion)
-        let coverEndpoint = book.cover
+        let coverEndpoint = (book as! Book).cover
         
         let loadedBooks = allBooks
-        let service = BookEditService(coverService: coverEndpoint, book: book, loadedBooks: loadedBooks, setFieldsInit: SetFieldsEndpoint.init)
-        let interactor = BookEditInteractor(book: book, service: service)
-        let presenter = BookEditPresenter(book: book, router: router, interactor: interactor)
+        let service = BookEditService(coverService: coverEndpoint, book: book as! Book, loadedBooks: loadedBooks as! [Book], setFieldsInit: SetFieldsEndpoint.init)
+        let interactor = BookEditInteractor(book: book as! Book, service: service)
+        let presenter = BookEditPresenter(book: book as! Book, router: router, interactor: interactor)
         let editVC = BookEditViewController(presenter: presenter)
         router.viewController = editVC
         presenter.view = editVC
         return editVC
+        // swiftlint:enable force_cast
     }
     
     // I believe that the Calibre Content Server API does support just searching for all of
     // these `values` directly. However, I am purposely trying to minimize service calls so
     // as to be able to provide a fully offline-capable experience.
     
-    static func viewControllerForAddingAuthor(to book: Book, currentList: [Book.Author], completion: @escaping ([Book.Author]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    static func viewControllerForAddingAuthor(to book: BookModel, currentList: [BookModel.Author], completion: @escaping ([BookModel.Author]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allAuthors = allBooks.flatMap { $0.authors }
         let viewController = viewControllerForAdding(using: BookEditAuthorSearchListInteractor(currentList: currentList, allItems: allAuthors), usesSections: true, analyticsIdentifier: "author", completion: completion)
         viewController.title = "Edit Authors"
@@ -94,7 +95,6 @@ struct BookEditModuleFactory {
             
             uniqueIDAlertController.addAction(
                 UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                    Analytics.logEvent("edit_book_identifier_number_cancel", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     newIdentifierName = nil
@@ -103,7 +103,6 @@ struct BookEditModuleFactory {
                 }
             )
             let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                Analytics.logEvent("edit_book_identifier_number_add", parameters: nil)
                 guard let token = token else { return }
                 NotificationCenter.default.removeObserver(token)
                 
@@ -145,7 +144,6 @@ struct BookEditModuleFactory {
                 
                 newIdentifierAlertController.addAction(
                     UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                        Analytics.logEvent("edit_book_identifier_name_cancel", parameters: nil)
                         guard let token = token else { return }
                         NotificationCenter.default.removeObserver(token)
                         newIdentifierName = nil
@@ -154,7 +152,6 @@ struct BookEditModuleFactory {
                     }
                 )
                 let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                    Analytics.logEvent("edit_book_identifier_name_add", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     presentingViewController.present(uniqueIDAlertController, animated: true)
@@ -185,7 +182,6 @@ struct BookEditModuleFactory {
         allIdentifiers.forEach { identifier in
             identifierSelectionAlertController.addAction(
                 UIAlertAction(title: identifier, style: .default) { _ in
-                    Analytics.logEvent("edit_book_identifier_preselect_add", parameters: nil)
                     newIdentifierName = identifier
                     presentingViewController.present(uniqueIDAlertController, animated: true)
                 }
@@ -194,7 +190,6 @@ struct BookEditModuleFactory {
         
         identifierSelectionAlertController.addAction(
             UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                Analytics.logEvent("edit_book_identifier_add_new_cancel", parameters: nil)
                 newIdentifierName = nil
                 newUniqueID = nil
                 completion(nil)
@@ -224,7 +219,6 @@ struct BookEditModuleFactory {
             
             seriesIndexAlertController.addAction(
                 UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                    Analytics.logEvent("edit_book_series_index_cancel", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     newSeriesName = nil
@@ -233,7 +227,6 @@ struct BookEditModuleFactory {
                 }
             )
             let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                Analytics.logEvent("edit_book_series_index_add", parameters: nil)
                 guard let token = token else { return }
                 NotificationCenter.default.removeObserver(token)
                 
@@ -276,7 +269,6 @@ struct BookEditModuleFactory {
                 
                 newSeriesAlertController.addAction(
                     UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                        Analytics.logEvent("edit_book_series_name_cancel", parameters: nil)
                         guard let token = token else { return }
                         NotificationCenter.default.removeObserver(token)
                         newSeriesName = nil
@@ -285,7 +277,6 @@ struct BookEditModuleFactory {
                     }
                 )
                 let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-                    Analytics.logEvent("edit_book_series_name_add", parameters: nil)
                     guard let token = token else { return }
                     NotificationCenter.default.removeObserver(token)
                     presentingViewController.present(seriesIndexAlertController, animated: true)
@@ -316,7 +307,6 @@ struct BookEditModuleFactory {
         allSeries.forEach { identifier in
             seriesSelectionAlertController.addAction(
                 UIAlertAction(title: identifier, style: .default) { _ in
-                    Analytics.logEvent("edit_book_series_preselect_add", parameters: nil)
                     newSeriesName = identifier
                     presentingViewController.present(seriesIndexAlertController, animated: true)
                 }
@@ -325,7 +315,6 @@ struct BookEditModuleFactory {
         
         seriesSelectionAlertController.addAction(
             UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                Analytics.logEvent("edit_book_series_add_new_cancel", parameters: nil)
                 newSeriesName = nil
                 newIndex = nil
                 completion(nil)
@@ -335,7 +324,7 @@ struct BookEditModuleFactory {
         return seriesSelectionAlertController
     }
     
-    static func viewControllerForAddingLanguage(to book: Book, currentList: [Book.Language], completion: @escaping ([Book.Language]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    static func viewControllerForAddingLanguage(to book: BookModel, currentList: [BookModel.Language], completion: @escaping ([BookModel.Language]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allLanguages = allBooks.flatMap { $0.languages }
         // don't use sections for languages because I would never expect there to be enough languages in the list to warrant it
         let viewController = viewControllerForAdding(using: BookEditLanguageSearchListInteractor(currentList: currentList, allItems: allLanguages), usesSections: false, analyticsIdentifier: "language", completion: completion)
@@ -343,7 +332,7 @@ struct BookEditModuleFactory {
         return viewController
     }
     
-    static func viewControllerForAddingTag(to book: Book, currentList: [String], completion: @escaping ([String]) -> Void) -> BookEditSearchListViewing & UIViewController {
+    static func viewControllerForAddingTag(to book: BookModel, currentList: [String], completion: @escaping ([String]) -> Void) -> BookEditSearchListViewing & UIViewController {
         let allTags = allBooks.flatMap { $0.tags }
         let viewController = viewControllerForAdding(using: BookEditTagSearchListInteractor(currentList: currentList, allItems: allTags), usesSections: true, analyticsIdentifier: "tag", completion: completion)
         viewController.title = "Edit Tags"
