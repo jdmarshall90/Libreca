@@ -25,10 +25,10 @@ import CalibreKit
 import Foundation
 
 struct Searcher {
-    let dataSet: [Book]
+    let dataSet: [BookModel]
     let terms: [String]
     
-    func search() -> [Book] {
+    func search() -> [BookModel] {
         guard !terms.isEmpty else { return dataSet }
         let matches = dataSet.filter { book in
             let searchableMetadata = book.searchableMetadata.map { $0.lowercased() }
@@ -44,7 +44,7 @@ struct Searcher {
     }
 }
 
-private extension Book {
+private extension BookModel {
     var searchableMetadata: [String] {
         var searchableMetadata = [
             [title.name],

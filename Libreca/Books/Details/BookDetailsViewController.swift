@@ -22,7 +22,6 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, BookDetailsView, BookDetailsViewing, ErrorMessageShowing, LoadingViewShowing {
@@ -43,14 +42,14 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func reload(for book: Book) {
+    func reload(for book: BookModel) {
         prepare(for: book)
         coverImageView.image = nil
         showBookCover()
         tableView.reloadData()
     }
     
-    func prepare(for book: Book) {
+    func prepare(for book: BookModel) {
         bookViewModel = viewModel.createBookModel(for: book)
     }
     
@@ -65,19 +64,16 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("book_details", screenClass: nil)
-    }
-    
     @IBAction private func didTapEdit(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
-        presenter.edit(bookViewModel.book)
+        // swiftlint:disable:next force_cast
+        presenter.edit(bookViewModel.book as! Book)
     }
     
     @IBAction private func didTapDownload(_ sender: UIBarButtonItem) {
         guard let bookViewModel = bookViewModel else { return }
-        presenter.download(bookViewModel.book)
+        // swiftlint:disable:next force_cast
+        presenter.download(bookViewModel.book as! Book)
     }
     
     func removeBookDetails() {
@@ -95,11 +91,29 @@ class BookDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
-        
-        let cellModel = bookViewModel?.detailsScreenSections[indexPath.section].cells[indexPath.row]
-        cell.textLabel?.attributedText = cellModel?.text
-        return cell
+        // swiftlint:disable:next force_unwrapping
+        let section = bookViewModel!.detailsScreenSections[indexPath.section]
+        let cellModel = section.cells[indexPath.row]
+        switch section.field {
+        case .title,
+             .titleSort,
+             .rating,
+             .authors,
+             .series,
+             .formats,
+             .publishedOn,
+             .languages,
+             .identifiers,
+             .tags:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "detailCellID") ?? UITableViewCell(style: .default, reuseIdentifier: "detailCellID")
+            cell.textLabel?.attributedText = cellModel.text
+            return cell
+        case .comments:
+            // swiftlint:disable:next force_cast
+            let cell = tableView.dequeueReusableCell(withIdentifier: "commentsCellID") as! BookDetailsCommentsTableViewCell
+            cell.render(comments: cellModel.text)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

@@ -55,6 +55,12 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         let booksLeftNav = booksSplitVC.viewControllers.first as! UINavigationController
         let booksListVC = booksLeftNav.viewControllers.first as! BooksListViewController
         
+        let router = BookListRouter()
+        let dataManager = BookListDataManager(dataSource: .dropbox)
+        let interactor = BookListInteractor(dataManager: dataManager)
+        let presenter = BookListPresenter(view: booksListVC, router: router, interactor: interactor)
+        booksListVC.presenter = presenter
+        
         let downloadsVC = DownloadsTableViewController()
         let downloadsNav = UINavigationController(rootViewController: downloadsVC)
         downloadsNav.navigationBar.isTranslucent = false
