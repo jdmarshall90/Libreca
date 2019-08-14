@@ -59,24 +59,28 @@ struct BookListDataManager: BookListDataManaging {
         // TODO: Grab from disk if available, only hit network if user pulls to refresh
         // TODO: Use user-provided path
         DropboxBookListService(path: "/Calibre Library").fetchBooks { response in
-            switch response {
-            case .success(let responseData):
-                do {
-                    let databaseURL = try self.writeToDisk(responseData)
-                    try self.queryForBooks(atDatabaseURL: databaseURL, start: start, progress: progress, completion: completion)
-                } catch {
-                    // TODO: Handle errors
+            // The Dropbox API calls this completion handler on the main thread, so
+            // kick back to a background thread before continuing.
+            DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.dataManager.dropboxResponse", qos: .userInitiated).async {
+                switch response {
+                case .success(let responseData):
+                    do {
+                        let databaseURL = try self.writeToDisk(responseData)
+                        try self.queryForBooks(atDatabaseURL: databaseURL, start: start, progress: progress, completion: completion)
+                    } catch {
+                        // TODO: Handle errors
+                    }
+                case .failure(let error):
+                    // TODO: Implement me
+                    break
                 }
-            case .failure(let error):
-                // TODO: Implement me
-                break
             }
         }
     }
     
     private func writeToDisk(_ data: Data) throws -> URL {
         // swiftlint:disable:next force_unwrap
-        let documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentsPathURL = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
         let databaseURL = documentsPathURL.appendingPathComponent("libreca_calibre_lib").appendingPathExtension("sqlite3")
         try data.write(to: databaseURL)
         return databaseURL

@@ -37,31 +37,39 @@ struct BookListPresenter: BookListPresenting {
     }
     
     func fetchBooks() {
-        interactor.fetchBooks(start: { result in
-            switch result {
-            case .success(let bookCount):
-                self.view?.show(bookCount: bookCount)
-            case .failure(let error):
-                break
-            }
-        }, progress: { result in
-            switch result {
-            case .success(let info):
-                switch info.result {
-                case .book(let book):
-                    self.view?.show(book: .book(book), at: info.index)
-                case .inFlight:
-                    // TODO: Implement me
-                    break
-                case .failure(retry: let retry):
-                    // TODO: Implement me
-                    break
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.presenter.fetchBooks", qos: .userInitiated).async {
+            self.interactor.fetchBooks(start: { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let bookCount):
+                        self.view?.show(bookCount: bookCount)
+                    case .failure(let error):
+                        break
+                    }
                 }
-            case .failure(let error):
-                break
-            }
-        }, completion: { results in
-            self.view?.reload(all: results)
-        })
+            }, progress: { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let info):
+                        switch info.result {
+                        case .book(let book):
+                            self.view?.show(book: .book(book), at: info.index)
+                        case .inFlight:
+                            // TODO: Implement me
+                            break
+                        case .failure(retry: let retry):
+                            // TODO: Implement me
+                            break
+                        }
+                    case .failure(let error):
+                        break
+                    }
+                }
+            }, completion: { results in
+                DispatchQueue.main.async {
+                    self.view?.reload(all: results)
+                }
+            })
+        }
     }
 }
