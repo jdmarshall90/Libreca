@@ -112,7 +112,6 @@
 		D0B5215221F2D3CD007FB264 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */; };
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
-		D0D6F2B521795EE7006F21A4 /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */; };
 		D0EBFAEE23050E5D00830D8C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EBFAED23050E5D00830D8C /* Notifications.swift */; };
 		D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */; };
 		D0DC4E8E2280EB57005EBA60 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC4E8D2280EB57005EBA60 /* Contracts.swift */; };
@@ -256,7 +255,6 @@
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
-		D0D6F2B421795EE7006F21A4 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
 		D0EBFAED23050E5D00830D8C /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		D0DC4E8D2280EB57005EBA60 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
