@@ -31,7 +31,6 @@ protocol ResponseStatusReporting {
     func reportStatus(of response: DataResponse<ResponseType>)
 }
 
-// TODO: Add issue for refactoring this into writing to debug location that can be sent via email ...
 extension ResponseStatusReporting {
     func reportStatus(of response: DataResponse<ResponseType>) {
         switch response.result {
