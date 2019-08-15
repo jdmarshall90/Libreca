@@ -164,7 +164,7 @@ final class InAppPurchasesViewController: UITableViewController {
         case .success(let products):
             switch inAppPurchase.kind {
             case .support:
-                return createSupportSections(from: products)
+                return createTipSections(from: products)
             case .feature:
                 return createFeatureSections(from: products)
             }
@@ -176,15 +176,22 @@ final class InAppPurchasesViewController: UITableViewController {
     private func createFeatureSections(from products: [InAppPurchase.Product]) -> [Section] {
         tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
-        let productsSections = products.map {
+        let productsSections = products.map { product in
+            // swiftlint:disable:next trailing_closure -- false positive
             Section(
-                header: $0.title,
+                header: product.title,
                 cells: [
-                    Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
+                    Section.Cell(text: "One-Time Payment of \(product.price)", product: product, cellID: "IAPCellID", accessoryType: product.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
                         self?.purchaseItem(at: indexPath)
                     }
                 ],
-                footer: $0.description
+                footer: {
+                    if case .editMetadata = product.name {
+                        return product.description + " (content server only)"
+                    } else {
+                        return product.description
+                    }
+            }()
             )
         }
         let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
@@ -201,7 +208,7 @@ final class InAppPurchasesViewController: UITableViewController {
         return [instructionsSection] + productsSections + [restorationSection]
     }
     
-    private func createSupportSections(from products: [InAppPurchase.Product]) -> [Section] {
+    private func createTipSections(from products: [InAppPurchase.Product]) -> [Section] {
         tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
         // swiftlint:disable:next force_unwrapping

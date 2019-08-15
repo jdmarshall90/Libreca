@@ -30,6 +30,7 @@ protocol BookDetailsRouting {
     func routeToDownloadPurchaseValueProposition(completion: @escaping () -> Void)
     func routeToStillFetchingMessage()
     func routeToDownloadUnavailableMessage()
+    func routeToEditUnsupportedMessage()
 }
 
 final class BookDetailsRouter: BookDetailsRouting {
@@ -99,6 +100,13 @@ final class BookDetailsRouter: BookDetailsRouting {
     
     func routeToDownloadUnavailableMessage() {
         let alertController = UIAlertController(title: "Download unavailable", message: "This book has no downloadable ebook.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        viewController?.present(alertController, animated: true)
+    }
+    
+    func routeToEditUnsupportedMessage() {
+        let alertController = UIAlertController(title: "Unsupported", message: "Editing is only available when connected to a content server.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         
         viewController?.present(alertController, animated: true)

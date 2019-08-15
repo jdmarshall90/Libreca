@@ -28,6 +28,7 @@ enum EditAvailability {
     case editable
     case stillFetching
     case unpurchased
+    case unsupportedBackend
 }
 
 enum DownloadAvailability {
@@ -40,8 +41,8 @@ protocol BookDetailsInteracting {
     var editAvailability: EditAvailability { get }
     var downloadAvailability: DownloadAvailability { get }
     
-    func canDownload(_ book: Book) -> Bool
-    func download(_ book: Book, completion: @escaping (Result<Download, Error>) -> Void)
+    func canDownload(_ book: BookModel) -> Bool
+    func download(_ book: BookModel, completion: @escaping (Result<Download, Error>) -> Void)
 }
 
 struct BookDetailsInteractor: BookDetailsInteracting {
@@ -51,6 +52,10 @@ struct BookDetailsInteractor: BookDetailsInteracting {
     var editAvailability: EditAvailability {
         if isFetchingbooks {
             return .stillFetching
+        }
+        
+        if Settings.Dropbox.isCurrent {
+            return .unsupportedBackend
         }
         
         if !hasPurchasedEditing {
@@ -99,41 +104,42 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         return downloadPurchase.isPurchased
     }
     
-    func canDownload(_ book: Book) -> Bool {
-        return book.mainFormat != nil
+    func canDownload(_ book: BookModel) -> Bool {
+        return book.mainFormatType != nil
     }
     
-    func download(_ book: Book, completion: @escaping (Result<Download, Error>) -> Void) {
+    func download(_ book: BookModel, completion: @escaping (Result<Download, Error>) -> Void) {
         service.download(book) { result in
             switch result {
             case .success(let download):
-                let imageEndpoint: ImageEndpoint
+                let imageEndpoint: ((Image?) -> Void) -> ()
                 
                 switch Settings.Image.current {
                 case .thumbnail:
-                    imageEndpoint = book.thumbnail
+                    imageEndpoint = book.fetchThumbnail
                 case .fullSize:
-                    imageEndpoint = book.cover
+                    imageEndpoint = book.fetchCover
                 }
-                imageEndpoint.hitService { response in
-                    let queue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.download.mainEbook", qos: .userInitiated)
-                    queue.async {
-                        let imageData = response.result.value?.image.pngData()
-                        let appBook = Download.Book(
-                            authors: book.authors,
-                            id: book.id,
-                            imageData: imageData,
-                            series: book.series,
-                            title: book.title,
-                            rating: book.rating
-                        )
-                        let download = Download(book: appBook, bookDownload: download)
-                        self.dataManager.save(download)
-                        DispatchQueue.main.async {
-                            NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
-                            completion(.success(download))
-                        }
-                    }
+                imageEndpoint { response in
+                    // TODO: Finish this out once fetchMainFormat response type is refactored
+//                    let queue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.download.mainEbook", qos: .userInitiated)
+//                    queue.async {
+//                        let imageData = response.result.value?.image.pngData()
+//                        let appBook = Download.Book(
+//                            authors: book.authors,
+//                            id: book.id,
+//                            imageData: imageData,
+//                            series: book.series,
+//                            title: book.title,
+//                            rating: book.rating
+//                        )
+//                        let download = Download(book: appBook, bookDownload: download)
+//                        self.dataManager.save(download)
+//                        DispatchQueue.main.async {
+//                            NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
+//                            completion(.success(download))
+//                        }
+//                    }
                 }
                 
             case .failure(let error):
