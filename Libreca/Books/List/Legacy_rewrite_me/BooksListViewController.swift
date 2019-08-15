@@ -427,6 +427,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             refreshControl?.endRefreshing()
             displayUninteractibleAlert()
         } else {
+            NotificationCenter.default.post(Notifications.didRefreshBooksNotification)
             searchBar.disable()
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true

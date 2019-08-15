@@ -112,6 +112,7 @@
 		D0B5215221F2D3CD007FB264 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */; };
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
+		D0EBFAEE23050E5D00830D8C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EBFAED23050E5D00830D8C /* Notifications.swift */; };
 		D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */; };
 		D0DC4E8E2280EB57005EBA60 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC4E8D2280EB57005EBA60 /* Contracts.swift */; };
 		D0E716CF2287AB9B002DF4CA /* SQLiteHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */; };
@@ -254,6 +255,7 @@
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
+		D0EBFAED23050E5D00830D8C /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		D0DC4E8D2280EB57005EBA60 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
 		D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteHandle.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				D003E9FE21FEA37100B200A2 /* ErrorMessageShowing.swift */,
 				D042EEDF21E5684F0046D00F /* Formatters.swift */,
 				D003EA002203B7BD00B200A2 /* LoadingViewShowing.swift */,
+				D0EBFAED23050E5D00830D8C /* Notifications.swift */,
 				D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */,
 				D09FDACE22602979006BBD2B /* ResponseStatusReporting.swift */,
 				D0B5214B21F16EC6007FB264 /* UITableViewCell+Extensions.swift */,
@@ -795,6 +798,7 @@
 				D04871A5216AF31D0085D22C /* BookDetailsViewController.swift in Sources */,
 				D003EA082207893100B200A2 /* InAppPurchasesViewController.swift in Sources */,
 				D027F5BC21C6DB1B00634587 /* ThemeSettingTableViewCell.swift in Sources */,
+				D0EBFAEE23050E5D00830D8C /* Notifications.swift in Sources */,
 				D0A0C8D42299B8BB00DAD510 /* Book+BookModel.swift in Sources */,
 				D003E9FF21FEA37100B200A2 /* ErrorMessageShowing.swift in Sources */,
 				D0B5213C21EED8FE007FB264 /* BookEditSearchListPresenting.swift in Sources */,
