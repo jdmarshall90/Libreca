@@ -323,11 +323,12 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        // TODO: This copy needs to change
         let alertController = UIAlertController(
             title: "What's this?",
             message: """
-            This setting lets you connect \(Constants.Bundles.app.name) to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
+            This setting lets you connect \(Constants.Bundles.app.name) to Dropbox, or to your Calibre© Content Server.
+            
+            If using a content server, provide the credentials (if any) and URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
@@ -419,8 +420,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         
         Made with ❤️ on GitLab
         
-        \(Constants.Bundles.app.name) connects with Calibre© content server via HTTP. It is neither affiliated with nor endorsed by Calibre©.
-        """ // TODO: The last line of this text needs updated
+        \(Constants.Bundles.app.name) connects with Calibre© content server via Dropbox or HTTP. It is neither affiliated with nor endorsed by Calibre©.
+        """
     }
     
     private func createSortCell(for displayModel: DisplayModel) -> UITableViewCell {

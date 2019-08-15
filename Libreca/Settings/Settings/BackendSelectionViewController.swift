@@ -28,24 +28,53 @@ final class BackendSelectionViewController: UIViewController {
     @IBOutlet private weak var dropboxContainerView: UIView!
     @IBOutlet private weak var contentServerContainerView: UIView!
     
+    private enum Backend: Int {
+        case dropbox
+        case contentServer
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        showNecessaryUI(for: Settings.DataSource.current, animated: false)
-        // TODO: Update this title on the fly as user changes backend
-        title = Settings.Dropbox.isCurrent ? "Dropbox Setup" : "Server Setup"
-    }
-    
-    // TODO: Fix issue where the app will freeze up if, after initially selecting the Dropbox segment, you leave the Dropbox screen before having connected to Dropbox
-    
-    @IBAction private func backendSelectorDidChange(_ sender: UISegmentedControl) {
-        Settings.Dropbox.isCurrent = sender.selectedSegmentIndex == 0
-        showNecessaryUI(for: Settings.DataSource.current, animated: true)
-    }
-    
-    private func showNecessaryUI(for backend: Settings.DataSource, animated: Bool) {
+        
         switch Settings.DataSource.current {
+        case .dropbox,
+             .unconfigured:
+            showNecessaryUI(for: .dropbox, animated: false)
+        case .contentServer:
+            showNecessaryUI(for: .contentServer, animated: false)
+        }
+    }
+        
+    @IBAction private func backendSelectorDidChange(_ sender: UISegmentedControl) {
+        guard let backend = Backend(rawValue: sender.selectedSegmentIndex) else {
+            return
+        }
+        
+        if isFetchingbooks {
+            let alertController = UIAlertController(title: "Library Loading", message: "Please try again after loading completes.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alertController, animated: true)
+            switch backend {
+            case .dropbox:
+                sender.selectedSegmentIndex = Backend.contentServer.rawValue
+            case .contentServer:
+                sender.selectedSegmentIndex = Backend.dropbox.rawValue
+            }
+            return
+        }
+        
+        if backend == .contentServer {
+            Settings.Dropbox.isAuthorized = false
+        }
+        showNecessaryUI(for: backend, animated: true)
+    }
+    
+    private func showNecessaryUI(for backend: Backend, animated: Bool) {
+        switch backend {
         case .dropbox:
             UIView.animate(withDuration: animated ? 0.5 : 0) {
+                self.title = "Dropbox Setup"
                 self.backendSelector.selectedSegmentIndex = 0
                 self.view.endEditing(true)
                 self.dropboxContainerView.alpha = 1
@@ -53,12 +82,28 @@ final class BackendSelectionViewController: UIViewController {
             }
         case .contentServer:
             UIView.animate(withDuration: animated ? 0.5 : 0) {
+                self.self.title = "Server Setup"
                 self.backendSelector.selectedSegmentIndex = 1
                 self.dropboxContainerView.alpha = 0
                 self.contentServerContainerView.alpha = 1
             }
-        case .unconfigured:
-            break
         }
+    }
+    
+    private var isFetchingbooks: Bool {
+        // This is a dirty, shameful hack... but it's also the least invasive solution until
+        // `BooksListViewController` and `BookDetailsViewController` are refactored to the new
+        // architecture. I'm not going to bother with a GitLab issue for this hack itself,
+        // because fixing the architecture will reveal this via a compile-time error.
+        
+        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController as? UITabBarController,
+            let splitViewController = rootViewController.viewControllers?.first as? UISplitViewController,
+            let mainNavController = splitViewController.viewControllers.first as? UINavigationController,
+            let booksListViewController = mainNavController.viewControllers.first as? BooksListViewController else {
+                return false
+        }
+        
+        let isFetchingBooks = booksListViewController.isRefreshing
+        return isFetchingBooks
     }
 }

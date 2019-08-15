@@ -22,6 +22,10 @@
 //
 
 import Foundation
+import SQLite
+import SwiftyDropbox
+
+// TODO: Test what happens if you connect to Dropbox, then disallow Dropbox access via Dropbox site, then try to refresh
 
 struct BookListPresenter: BookListPresenting {
     typealias View = BookListViewing
@@ -44,7 +48,7 @@ struct BookListPresenter: BookListPresenting {
                     case .success(let bookCount):
                         self.view?.show(bookCount: bookCount)
                     case .failure(let error):
-                        break
+                        self.handle(error)
                     }
                 }
             }, progress: { result in
@@ -55,11 +59,11 @@ struct BookListPresenter: BookListPresenting {
                         case .book(let book):
                             self.view?.show(book: .book(book), at: info.index)
                         case .inFlight:
-                            // TODO: Implement me
+                            // as of now, this can't happen. Will need to handle this
+                            // once the content server flow goes through this code
                             break
                         case .failure(let retry):
-                            // TODO: Implement me
-                            break
+                            self.view?.show(book: .failure(retry: retry), at: info.index)
                         }
                     case .failure(let error):
                         break
@@ -71,6 +75,170 @@ struct BookListPresenter: BookListPresenting {
                 }
             })
             // swiftlint:disable:previous multiline_arguments_brackets
+        }
+    }
+    
+    private func handle(_ error: FetchError) {
+        switch error {
+        case .sql(let sqlError):
+            handle(sqlError)
+        case .backendSystem(let backendError):
+            handle(backendError)
+        case .unknown(let unknownError):
+            handleUnknown(unknownError)
+        }
+    }
+    
+    private func handle(_ error: FetchError.SQL) {
+        switch error {
+        case .query(let queryError):
+            handleUnknown(queryError)
+        case .underlying(let underlyingSQLError):
+            handle(underlyingSQLError)
+        }
+    }
+    
+    private func handle(_ error: FetchError.BackendSystem) {
+        switch error {
+        case .dropbox(let dropboxAPIError):
+            handle(dropboxAPIError)
+        case .contentServer(let contentServerError):
+            handleContentServer(contentServerError)
+        case .unconfiguredBackend:
+            handleUnconfiguredBackend()
+        }
+    }
+    
+    private func handleUnknown(_ error: Error) {
+        view?.show(message: "An unknown error has occurred: \(error.localizedDescription)")
+    }
+    
+    private func handle(_ error: QueryError) {
+        switch error {
+        case .noSuchTable(let table):
+            view?.show(message: "Invalid SQL query: no such table \"\(table)\"")
+        case .noSuchColumn(let column, let columns):
+            view?.show(message: "Invalid SQL query: no such column \"\(column)\" in column list \"\(columns)\"")
+        case .ambiguousColumn(let column, let similarColumns):
+            view?.show(message: "Invalid SQL query: ambiguous column \"\(column)\" in potential matches \"\(similarColumns)\"")
+        case .unexpectedNullValue(let value):
+            view?.show(message: "Invalid SQL query: unexpected null value \"\(value)\"")
+        }
+    }
+    
+    private func handle(_ error: SQLite.Result) {
+        switch error {
+        case .error(let message, let code, _):
+            view?.show(message: "SQL query or response error: \"\(message)\" (\(code))")
+        }
+    }
+    
+    private func handle(_ error: DropboxBookListService.DropboxAPIError) {
+        switch error {
+        case .unauthorized:
+            view?.show(message: "Dropbox has been selected, but not connected. Go into settings to connect to Dropbox.")
+        case .error(let callError):
+            handle(callError)
+        case .nonsenseResponse:
+            view?.show(message: "Dropbox connectivity has encountered an unexpected error. If you are seeing this message, please contact app support.")
+        case .noNetwork:
+            view?.show(message: "Dropbox connectivity requires a network connection. Please connect to Wi-Fi or Cellular data.")
+        }
+    }
+    
+    private func handleContentServer(_ error: Error) {
+        // as of now, this can't happen. Will need to handle this
+        // once the content server flow goes through this code
+    }
+    
+    private func handleUnconfiguredBackend() {
+        view?.show(message: "Go into settings to connect to Dropbox or to your content server.")
+    }
+    
+    // swiftlint:disable:next function_body_length
+    private func handle(_ error: CallError<Files.DownloadError>) {
+        switch error {
+        case .internalServerError(let code, let string, let string2):
+            view?.show(
+                message: """
+                Dropbox has encountered an internal error:
+                
+                \(string ?? "")
+                \(string2 ?? "")
+                Error code \(code)
+                """
+            )
+        case .badInputError(let string, let string2):
+            view?.show(
+                message: """
+                Dropbox has encountered an input error:
+                
+                \(string ?? "")
+                \(string2 ?? "")
+                """
+            )
+        case .rateLimitError(let rateLimitError, let string, let string2, let string3):
+            view?.show(
+                message: """
+                Dropbox has encountered an access error due to too many requests:
+                
+                \(rateLimitError.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
+        case .httpError(let int, let string, let string2):
+            view?.show(
+                message: """
+                Dropbox has encountered an HTTP error:
+                
+                \(string ?? "")
+                \(string2 ?? "")
+                Error code \(int ?? 0)
+                """
+            )
+        case .authError(let authError, let string, let string2, let string3):
+            view?.show(
+                message: """
+                Dropbox has encountered an authentication error:
+                
+                \(authError.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
+        case .accessError(let accessError, let string, let string2, let string3):
+            view?.show(
+                message: """
+                Dropbox has encountered an access error:
+                
+                \(accessError.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
+        case .routeError(let routeError, let string, let string2, let string3):
+            view?.show(
+                message: """
+                Dropbox has encountered a routing error:
+                
+                \(routeError.unboxed.description)
+                \(string ?? "")
+                \(string2 ?? "")
+                \(string3 ?? "")
+                """
+            )
+        case .clientError(let clientError):
+            view?.show(
+                message: """
+                Dropbox has encountered a client error:
+                
+                \(clientError?.localizedDescription ?? "")
+                """
+            )
         }
     }
 }

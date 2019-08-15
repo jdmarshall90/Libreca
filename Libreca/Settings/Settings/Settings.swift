@@ -125,7 +125,7 @@ struct Settings {
             }
             set(newValue) {
                 if let newValue = newValue {
-                    Dropbox.isCurrent = false
+                    Dropbox.isAuthorized = false
                     Keychain.store(newValue)
                 } else {
                     Keychain.wipe()
@@ -146,10 +146,6 @@ struct Settings {
             return Settings.baseSettingsKey + "dropbox.directory"
         }
         
-        private static var keyIsCurrent: String {
-            return Settings.baseSettingsKey + "dropbox.isCurrent"
-        }
-        
         private static var keyIsAuthorized: String {
             return Settings.baseSettingsKey + "dropbox.isAuthorized"
         }
@@ -164,15 +160,7 @@ struct Settings {
             }
             set(newValue) {
                 UserDefaults.standard.set(newValue, forKey: keyIsAuthorized)
-            }
-        }
-        
-        static var isCurrent: Bool {
-            get {
-                return UserDefaults.standard.bool(forKey: keyIsCurrent)
-            }
-            set(newValue) {
-                UserDefaults.standard.set(newValue, forKey: keyIsCurrent)
+                NotificationCenter.default.post(didChangeAuthorizationNotification)
                 NotificationCenter.default.post(DataSource.didChangeNotification)
             }
         }
@@ -206,7 +194,7 @@ struct Settings {
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dataSourceDidChange"))
         
         static var current: DataSource {
-            if Dropbox.isCurrent {
+            if Dropbox.isAuthorized {
                 return .dropbox(directory: Dropbox.directory)
             } else if let serverConfiguration = ContentServer.current {
                 return .contentServer(serverConfiguration)

@@ -198,7 +198,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         case .inFlight:
             didFetch(book: .inFlight, at: index)
         case .failure:
-            // I do not expect this to happen ...
+            // I do not expect this to happen until the content server flow goes through this path
             break
         }
     }
@@ -222,6 +222,13 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     // MARK: - BooksListView
     
     func show(message: String) {
+        // there is a bug in this VC where, if show(message:) is called before reload(all:),
+        // then the message won't actually show up
+        let emptyBookResults: [BooksListViewModel.BookFetchResult] = []
+        reload(all: emptyBookResults)
+        DispatchQueue.main.async {
+            self.refreshControl?.endRefreshing()
+        }
         content = .message(message)
     }
     
@@ -415,6 +422,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     private func refresh() {
+        // TODO: For a brand new app install, this is hanging on app launch. The user cannot get into the backend selection setting flow -- this may have been fixed already, test and verify
         if isRefreshing {
             refreshControl?.endRefreshing()
             displayUninteractibleAlert()
@@ -430,7 +438,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             case .contentServer:
                 viewModel.fetchBooks()
             case .unconfigured:
-                break
+                // this is another issue that'll go away once the content server flow is rewritten ...
+                show(message: "Go into settings to connect to Dropbox or to your content server.")
             }
         }
     }

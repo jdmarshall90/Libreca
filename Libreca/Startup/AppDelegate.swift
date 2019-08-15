@@ -62,17 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
-            // TODO: Need some logic in here
             switch authResult {
             case .success:
                 Settings.Dropbox.isAuthorized = true
-                print("Success! User is logged into Dropbox.")
             case .cancel:
                 Settings.Dropbox.isAuthorized = false
-                print("Authorization flow was manually canceled by user!")
-            case .error(_, let description):
+            case .error:
                 Settings.Dropbox.isAuthorized = false
-                print("Error: \(description)")
             }
         }
         return true
