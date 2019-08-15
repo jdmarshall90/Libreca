@@ -57,7 +57,7 @@ struct BookListPresenter: BookListPresenting {
                         case .inFlight:
                             // TODO: Implement me
                             break
-                        case .failure(retry: let retry):
+                        case .failure(let retry):
                             // TODO: Implement me
                             break
                         }
@@ -70,6 +70,7 @@ struct BookListPresenter: BookListPresenting {
                     self.view?.reload(all: results)
                 }
             })
+            // swiftlint:disable:previous multiline_arguments_brackets
         }
     }
 }

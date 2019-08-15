@@ -26,7 +26,7 @@ import Foundation
 struct BookListInteractor: BookListInteracting {
     let dataManager: BookListDataManaging
     
-    func fetchBooks(start: @escaping (Result<Int, Error>) -> Void, progress: @escaping (Result<(result: BookFetchResult, index: Int), Error>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
+    func fetchBooks(start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
         dataManager.fetchBooks(start: start, progress: progress, completion: completion)
     }
 }
