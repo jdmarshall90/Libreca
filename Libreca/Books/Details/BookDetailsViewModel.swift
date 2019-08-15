@@ -126,7 +126,7 @@ final class BookDetailsViewModel {
         let cover: (@escaping (UIImage) -> Void) -> Void
         let title: String
         let sections: [Section]
-        let book: Book
+        let book: Libreca.BookModel
         
         var detailsScreenSections: [Section] {
             return sections.filter { !$0.field.isEditOnly }
@@ -137,7 +137,7 @@ final class BookDetailsViewModel {
         }
         
         // swiftlint:disable:next function_body_length
-        init(book: Book) {
+        init(book: Libreca.BookModel) {
             self.book = book
             self.title = book.title.name
             
@@ -151,7 +151,7 @@ final class BookDetailsViewModel {
             
             let footer: String?
             var formats = book.formats
-            if let mainFormat = book.mainFormat?.format,
+            if let mainFormat = book.mainFormatType,
                 formats.count > 1,
                 let mainFormatIndex = formats.firstIndex(where: { $0.displayValue == mainFormat.displayValue }) {
                 formats.remove(at: mainFormatIndex)
@@ -194,8 +194,8 @@ final class BookDetailsViewModel {
             self.sections = [titleSection, titleSortSection, ratingSection, authorsSection, seriesSection, commentsSection, formatsSections, publishedSection, languagesSection, identifiersSection, tagsSection]
             
             self.cover = { completion in
-                book.cover.hitService { response in
-                    completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+                book.fetchCover { cover in
+                    completion(cover?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
                 }
             }
         }
@@ -208,7 +208,7 @@ final class BookDetailsViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(urlDidChange), name: Settings.ContentServer.didChangeNotification.name, object: nil)
     }
     
-    func createBookModel(for book: Book) -> BookModel {
+    func createBookModel(for book: Libreca.BookModel) -> BookModel {
         return BookModel(book: book)
     }
     

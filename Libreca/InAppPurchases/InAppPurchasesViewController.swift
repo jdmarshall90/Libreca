@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import UIKit
 
 /// A view controller that allows the user to see a list of available
@@ -82,16 +81,6 @@ final class InAppPurchasesViewController: UITableViewController {
         }
         
         loadUI()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        switch inAppPurchase.kind {
-        case .feature:
-            Analytics.setScreenName("iap_upgrades", screenClass: nil)
-        case .support:
-            Analytics.setScreenName("iap_support", screenClass: nil)
-        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -170,12 +159,12 @@ final class InAppPurchasesViewController: UITableViewController {
         }
     }
     
-    private func createSections(from result: Result<[InAppPurchase.Product]>) -> [Section] {
+    private func createSections(from result: Result<[InAppPurchase.Product], InAppPurchase.InAppPurchaseError>) -> [Section] {
         switch result {
         case .success(let products):
             switch inAppPurchase.kind {
             case .support:
-                return createSupportSections(from: products)
+                return createTipSections(from: products)
             case .feature:
                 return createFeatureSections(from: products)
             }
@@ -187,15 +176,22 @@ final class InAppPurchasesViewController: UITableViewController {
     private func createFeatureSections(from products: [InAppPurchase.Product]) -> [Section] {
         tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
-        let productsSections = products.map {
+        let productsSections = products.map { product in
+            // swiftlint:disable:next trailing_closure -- false positive
             Section(
-                header: $0.title,
+                header: product.title,
                 cells: [
-                    Section.Cell(text: "One-Time Payment of \($0.price)", product: $0, cellID: "IAPCellID", accessoryType: $0.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
+                    Section.Cell(text: "One-Time Payment of \(product.price)", product: product, cellID: "IAPCellID", accessoryType: product.name.isPurchased ? .checkmark : .disclosureIndicator) { [weak self] indexPath in
                         self?.purchaseItem(at: indexPath)
                     }
                 ],
-                footer: $0.description
+                footer: {
+                    if case .editMetadata = product.name {
+                        return product.description + " (content server only)"
+                    } else {
+                        return product.description
+                    }
+            }()
             )
         }
         let instructionsSection = Section(header: nil, cells: [], footer: "Tap an item's price below to purchase.")
@@ -212,7 +208,7 @@ final class InAppPurchasesViewController: UITableViewController {
         return [instructionsSection] + productsSections + [restorationSection]
     }
     
-    private func createSupportSections(from products: [InAppPurchase.Product]) -> [Section] {
+    private func createTipSections(from products: [InAppPurchase.Product]) -> [Section] {
         tableView.contentInset = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
         // swiftlint:disable:next force_unwrapping
@@ -242,22 +238,6 @@ final class InAppPurchasesViewController: UITableViewController {
         ]
     }
     
-    private func setUserProperty(for productName: InAppPurchase.Product.Name) {
-        switch productName {
-        case .editMetadata:
-            Analytics.setUserProperty("premium", forName: "iap_edit_metadata")
-        case .downloadEBook:
-            Analytics.setUserProperty("premium", forName: "iap_download_ebook")
-        case .supportSmall,
-             .supportExtraSmall,
-             .supportTiny:
-            Analytics.setUserProperty("supporter", forName: "iap_support")
-        }
-        
-        Analytics.setUserProperty("premium", forName: "iap_premium_user")
-    }
-    
-    // swiftlint:disable:next function_body_length
     private func purchaseItem(at indexPath: IndexPath) {
         let product: InAppPurchase.Product
         switch inAppPurchase.kind {
@@ -266,58 +246,10 @@ final class InAppPurchasesViewController: UITableViewController {
         case .support:
             product = products[indexPath.row]
         }
-        switch product.name {
-        case .editMetadata:
-            Analytics.logEvent("iap_purchase_edit_metadata_tapped", parameters: nil)
-        case .downloadEBook:
-            Analytics.logEvent("iap_purchase_download_ebook_tapped", parameters: nil)
-        case .supportSmall:
-            Analytics.logEvent("iap_small_support_tapped", parameters: nil)
-        case .supportExtraSmall:
-            Analytics.logEvent("iap_extra_small_support_tapped", parameters: nil)
-        case .supportTiny:
-            Analytics.logEvent("iap_tiny_support_tapped", parameters: nil)
-        }
+        
         let purchasingAlertController = UIAlertController(title: "", message: "Connecting to App Store...", preferredStyle: .alert)
         present(purchasingAlertController, animated: true, completion: nil)
         inAppPurchase.purchase(product) { [weak self] result in
-            switch result {
-            case .success(let product):
-                self?.setUserProperty(for: product.name)
-                switch product.name {
-                case .editMetadata:
-                    Analytics.logEvent("iap_purchase_edit_metadata_success", parameters: nil)
-                case .downloadEBook:
-                    Analytics.logEvent("iap_purchase_download_ebook_success", parameters: nil)
-                case .supportSmall:
-                    Analytics.logEvent("iap_small_support_success", parameters: nil)
-                case .supportExtraSmall:
-                    Analytics.logEvent("iap_extra_small_support_success", parameters: nil)
-                case .supportTiny:
-                    Analytics.logEvent("iap_tiny_support_success", parameters: nil)
-                }
-            case .failure(let error):
-                if let error = error as? InAppPurchase.InAppPurchaseError {
-                    switch error {
-                    case .purchasesDisallowed:
-                        Analytics.logEvent("iap_purchase_disallowed", parameters: nil)
-                    }
-                }
-                
-                switch product.name {
-                case .editMetadata:
-                    Analytics.logEvent("iap_purchase_edit_metadata_fail", parameters: nil)
-                case .downloadEBook:
-                    Analytics.logEvent("iap_purchase_download_ebook_fail", parameters: nil)
-                case .supportSmall:
-                    Analytics.logEvent("iap_small_support_fail", parameters: nil)
-                case .supportExtraSmall:
-                    Analytics.logEvent("iap_extra_small_support_fail", parameters: nil)
-                case .supportTiny:
-                    Analytics.logEvent("iap_tiny_support_fail", parameters: nil)
-                }
-            }
-            
             self?.loadUI()
             purchasingAlertController.dismiss(animated: true) { [weak self] in
                 switch result {
@@ -335,37 +267,14 @@ final class InAppPurchasesViewController: UITableViewController {
     }
     
     private func restore() {
-        Analytics.logEvent("iap_restore_tapped", parameters: nil)
         inAppPurchase.restore { [weak self] result in
             switch result {
             case .success(let products):
-                products.forEach { product in
-                    self?.setUserProperty(for: product.name)
-                    switch product.name {
-                    case .editMetadata:
-                        Analytics.logEvent("iap_restore_edit_metadata_success", parameters: nil)
-                    case .downloadEBook:
-                        Analytics.logEvent("iap_restore_download_ebook_success", parameters: nil)
-                    case .supportSmall,
-                         .supportExtraSmall,
-                         .supportTiny:
-                        fatalError("Support IAPs aren't restorable")
-                    }
-                }
-                
                 self?.loadUI()
                 let successAlertController = UIAlertController(title: "Success!", message: "You have restored \(products.count) upgrade\(products.count == 1 ? "" : "s").", preferredStyle: .alert)
                 successAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(successAlertController, animated: true, completion: nil)
             case .failure(let error):
-                if let error = error as? InAppPurchase.InAppPurchaseError {
-                    switch error {
-                    case .purchasesDisallowed:
-                        Analytics.logEvent("iap_restore_disallowed", parameters: nil)
-                    }
-                }
-                Analytics.logEvent("iap_restore_fail", parameters: nil)
-                
                 let failureAlertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 failureAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(failureAlertController, animated: true, completion: nil)

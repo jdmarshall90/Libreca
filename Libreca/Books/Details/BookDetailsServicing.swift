@@ -25,7 +25,7 @@ import CalibreKit
 import Foundation
 
 protocol BookDetailsServicing {
-    func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void)
+    func download(_ book: BookModel, completion: @escaping (Result<BookDownload, Error>) -> Void)
 }
 
 struct BookDetailsService: BookDetailsServicing, ResponseStatusReporting {
@@ -35,19 +35,22 @@ struct BookDetailsService: BookDetailsServicing, ResponseStatusReporting {
         return "download_ebook"
     }
     
-    func download(_ book: Book, completion: @escaping (Result<BookDownload>) -> Void) {
-        // The interactor is expected to enforce this mainFormat being non-nil before
-        // calling this function. Hence the force unwrap.
-        
-        // swiftlint:disable:next force_unwrapping
-        book.mainFormat!.hitService { mainFormatDownloadResponse in
-            self.reportStatus(of: mainFormatDownloadResponse)
-            switch mainFormatDownloadResponse.result {
-            case .success(let payload):
-                completion(.success(payload))
-            case .failure(let error):
-                completion(.failure(error))
+    func download(_ book: BookModel, completion: @escaping (Result<BookDownload, Error>) -> Void) {
+        book.fetchMainFormat { download in
+            // TODO: Finish this out once fetchMainFormat response type is refactored
+//            self.reportStatus(of: mainFormatDownloadResponse)
+            if let download = download {
+                completion(.success(download))
             }
         }
+        
+//        book.mainFormat!.hitService { mainFormatDownloadResponse in
+//            switch mainFormatDownloadResponse.result {
+//            case .success(let payload):
+//                completion(.success(payload))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
     }
 }

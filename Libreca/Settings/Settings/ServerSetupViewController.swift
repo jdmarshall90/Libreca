@@ -21,7 +21,6 @@
 //  This file is part of project: Libreca
 //
 
-import FirebaseAnalytics
 import UIKit
 
 final class ServerSetupViewController: UITableViewController, UITextFieldDelegate {
@@ -61,11 +60,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
             usernameTextField.keyboardAppearance = .dark
             passwordTextField.keyboardAppearance = .dark
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("settings_content_server", screenClass: nil)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

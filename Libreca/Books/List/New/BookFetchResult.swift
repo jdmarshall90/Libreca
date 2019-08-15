@@ -1,8 +1,8 @@
 //
-//  Result.swift
+//  BookFetchResult.swift
 //  Libreca
 //
-//  Created by Justin Marshall on 1/26/19.
+//  Created by Justin Marshall on 5/7/19.
 //  
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,15 @@
 //  This file is part of project: Libreca
 //
 
-enum Result<Value> {
-    case success(Value)
-    case failure(Error)
+import Foundation
+
+enum BookFetchResult {
+    case book(BookModel)
+    case inFlight
+    case failure(retry: () -> Void)
+    
+    var book: BookModel? {
+        guard case .book(let book) = self else { return nil }
+        return book
+    }
 }

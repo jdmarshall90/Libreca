@@ -22,15 +22,15 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 protocol BookDetailsRouting {
-    func routeToEditing(for book: Book, completion: @escaping (Book) -> Void)
+    func routeToEditing(for book: BookModel, completion: @escaping (BookModel) -> Void)
     func routeToEditPurchaseValueProposition(completion: @escaping () -> Void)
     func routeToDownloadPurchaseValueProposition(completion: @escaping () -> Void)
     func routeToStillFetchingMessage()
     func routeToDownloadUnavailableMessage()
+    func routeToEditUnsupportedMessage()
 }
 
 final class BookDetailsRouter: BookDetailsRouting {
@@ -45,7 +45,7 @@ final class BookDetailsRouter: BookDetailsRouting {
         self.viewController = viewController
     }
     
-    func routeToEditing(for book: Book, completion: @escaping (Book) -> Void) {
+    func routeToEditing(for book: BookModel, completion: @escaping (BookModel) -> Void) {
         let editVC = BookEditModuleFactory.viewController(for: book, completion: completion)
         let editNav = UINavigationController(rootViewController: editVC)
         
@@ -61,14 +61,12 @@ final class BookDetailsRouter: BookDetailsRouting {
         let alertController = UIAlertController(title: "Editing", message: "Editing book metadata is available via a one-time in app purchase.", preferredStyle: .alert)
         alertController.addAction(
             UIAlertAction(title: "No thanks", style: .cancel) { _ in
-                Analytics.logEvent("edit_book_unpurchased_no_thanks", parameters: nil)
                 completion()
             }
         )
         
         alertController.addAction(
             UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
-                Analytics.logEvent("edit_book_unpurchased_learn_more", parameters: nil)
                 self?.showFeatureIAPs(completion: completion)
             }
         )
@@ -80,14 +78,12 @@ final class BookDetailsRouter: BookDetailsRouting {
         let alertController = UIAlertController(title: "Downloads", message: "Downloading e-book files is available via a one-time in app purchase.", preferredStyle: .alert)
         alertController.addAction(
             UIAlertAction(title: "No thanks", style: .cancel) { _ in
-                Analytics.logEvent("download_ebook_unpurchased_no_thanks", parameters: nil)
                 completion()
             }
         )
         
         alertController.addAction(
             UIAlertAction(title: "Learn More", style: .default) { [weak self] _ in
-                Analytics.logEvent("download_ebook_unpurchased_learn_more", parameters: nil)
                 self?.showFeatureIAPs(completion: completion)
             }
         )
@@ -104,6 +100,13 @@ final class BookDetailsRouter: BookDetailsRouting {
     
     func routeToDownloadUnavailableMessage() {
         let alertController = UIAlertController(title: "Download unavailable", message: "This book has no downloadable ebook.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        viewController?.present(alertController, animated: true)
+    }
+    
+    func routeToEditUnsupportedMessage() {
+        let alertController = UIAlertController(title: "Unsupported", message: "Editing is only available when connected to a content server.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         
         viewController?.present(alertController, animated: true)

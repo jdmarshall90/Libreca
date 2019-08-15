@@ -22,12 +22,11 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
 
 protocol BookDetailsPresenting {
-    func edit(_ book: Book)
-    func download(_ book: Book)
+    func edit(_ book: BookModel)
+    func download(_ book: BookModel)
 }
 
 struct BookDetailsPresenter: BookDetailsPresenting {
@@ -43,7 +42,7 @@ struct BookDetailsPresenter: BookDetailsPresenting {
         self.interactor = BookDetailsInteractor(service: BookDetailsService(), dataManager: BookDetailsDataManager())
     }
     
-    func edit(_ book: Book) {
+    func edit(_ book: BookModel) {
         switch interactor.editAvailability {
         case .editable:
             router.routeToEditing(for: book) { updatedBook in
@@ -51,6 +50,8 @@ struct BookDetailsPresenter: BookDetailsPresenting {
             }
         case .stillFetching:
             router.routeToStillFetchingMessage()
+        case .unsupportedBackend:
+            router.routeToEditUnsupportedMessage()
         case .unpurchased:
             router.routeToEditPurchaseValueProposition {
                 switch self.interactor.editAvailability {
@@ -63,12 +64,16 @@ struct BookDetailsPresenter: BookDetailsPresenting {
                     self.router.routeToStillFetchingMessage()
                 case .unpurchased:
                     break // we've asked, user didn't follow through, so don't ask again
+                case .unsupportedBackend:
+                    // not possible, given the UI won't let you change to an unsupported backend
+                    // while the value prop is visible
+                    break
                 }
             }
         }
     }
     
-    func download(_ book: Book) {
+    func download(_ book: BookModel) {
         switch interactor.downloadAvailability {
         case .downloadable:
             actuallyDownload(book)
@@ -89,9 +94,8 @@ struct BookDetailsPresenter: BookDetailsPresenting {
         }
     }
     
-    private func actuallyDownload(_ book: Book) {
+    private func actuallyDownload(_ book: BookModel) {
         guard interactor.canDownload(book) else {
-            Analytics.logEvent("download_ebook_no_url", parameters: nil)
             return router.routeToDownloadUnavailableMessage()
         }
         view?.showLoader()

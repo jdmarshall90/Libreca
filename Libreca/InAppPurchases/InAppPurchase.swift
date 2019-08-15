@@ -119,16 +119,26 @@ final class InAppPurchase {
         }
     }
     
-    enum InAppPurchaseError: String, LocalizedError {
-        case purchasesDisallowed = "Purchases are disallowed by the device settings."
+    enum InAppPurchaseError: LocalizedError {
+        case purchasesDisallowed
+        case storeKitError(Error)
+        
+        private var reason: String {
+            switch self {
+            case .purchasesDisallowed:
+                return "Purchases are disallowed by the device settings."
+            case .storeKitError(let error):
+                return error.localizedDescription
+            }
+        }
         
         var errorDescription: String? {
-            return rawValue
+            return reason
         }
     }
     
-    typealias AvailableProductsCompletion = (Result<[Product]>) -> Void
-    typealias PurchaseCompletion = (Result<Product>) -> Void
+    typealias AvailableProductsCompletion = (Result<[Product], InAppPurchaseError>) -> Void
+    typealias PurchaseCompletion = (Result<Product, InAppPurchaseError>) -> Void
     typealias RestoreCompletion = AvailableProductsCompletion
     
     private let purchaser: Purchaser
@@ -221,7 +231,7 @@ final class InAppPurchase {
         }
         
         func request(_ request: SKRequest, didFailWithError error: Error) {
-            productsRequestCompletionHandler?(.failure(error))
+            productsRequestCompletionHandler?(.failure(.storeKitError(error)))
             cleanup()
         }
         
@@ -306,8 +316,8 @@ final class InAppPurchase {
         
         private func fail(transaction: SKPaymentTransaction) {
             if let transactionError = transaction.error {
-                purchaseCompletion?(.failure(transactionError))
-                restoreCompletion?(.failure(transactionError))
+                purchaseCompletion?(.failure(.storeKitError(transactionError)))
+                restoreCompletion?(.failure(.storeKitError(transactionError)))
             }
             
             SKPaymentQueue.default().finishTransaction(transaction)

@@ -22,7 +22,6 @@
 //
 
 import Alamofire
-import FirebaseAnalytics
 
 protocol ResponseStatusReporting {
     associatedtype ResponseType
@@ -32,6 +31,7 @@ protocol ResponseStatusReporting {
     func reportStatus(of response: DataResponse<ResponseType>)
 }
 
+// TODO: Add issue for refactoring this into writing to debug location that can be sent via email ...
 extension ResponseStatusReporting {
     func reportStatus(of response: DataResponse<ResponseType>) {
         switch response.result {
@@ -46,7 +46,7 @@ extension ResponseStatusReporting {
         let elapsed = response.timeline.totalDuration
         let toNearest = 0.01
         let roundedElapsed = round(elapsed / toNearest) * toNearest
-        Analytics.logEvent("\(reportedEventPrefix)_success", parameters: ["time_interval": roundedElapsed])
+        print(roundedElapsed)
     }
     
     private func reportFailure(of error: Error) {
@@ -68,7 +68,7 @@ extension ResponseStatusReporting {
             let error = error as NSError
             parameters = ["reason": "\(error.code)"]
         }
-        Analytics.logEvent("\(reportedEventPrefix)_fail", parameters: parameters)
+        print(parameters)
     }
     
     private func generateParameters(for reason: AFError.ParameterEncodingFailureReason) -> [String: Any] {

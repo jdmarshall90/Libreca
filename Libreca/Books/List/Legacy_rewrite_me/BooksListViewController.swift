@@ -22,14 +22,7 @@
 //
 
 import CalibreKit
-import FirebaseAnalytics
 import UIKit
-
-extension Book: SectionIndexDisplayable {
-    var stringValue: String {
-        return self[keyPath: Settings.Sort.current.sortingKeyPath]
-    }
-}
 
 extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     var stringValue: String {
@@ -44,7 +37,7 @@ extension BooksListViewModel.BookFetchResult: SectionIndexDisplayable {
     }
 }
 
-class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate {
+class BooksListViewController: UITableViewController, BooksListView, UISearchBarDelegate, BookListViewing {
     private var detailViewController: BookDetailsViewController?
     private(set) lazy var viewModel = BooksListViewModel(view: self)
     private let sectionIndexGenerator = TableViewSectionIndexTitleGenerator<BooksListViewModel.BookFetchResult>(sectionIndexDisplayables: [])
@@ -69,6 +62,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var sortButton: UIBarButtonItem!
+    
+    var presenter: BookListPresenting?
     
     private enum Segue: String {
         case showDetail
@@ -122,6 +117,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(dataSourceDidChange), name: Settings.DataSource.didChangeNotification.name, object: nil)
+        
         refreshControl = booksRefreshControl
         didJustLoadView = true
         
@@ -160,11 +157,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         clearsSelectionOnViewWillAppear = splitViewController?.isCollapsed == true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("books", screenClass: nil)
-    }
-    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         guard let segue = Segue(rawValue: identifier) else { return true }
         switch segue {
@@ -193,9 +185,50 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         }
     }
     
+    // MARK: - BookListViewing
+    
+    func show(bookCount: Int) {
+        didFetch(bookCount: bookCount)
+    }
+    
+    func show(book: BookFetchResult, at index: Int) {
+        switch book {
+        case .book(let bookModel):
+            didFetch(book: .book(bookModel), at: index)
+        case .inFlight:
+            didFetch(book: .inFlight, at: index)
+        case .failure:
+            // I do not expect this to happen until the content server flow goes through this path
+            break
+        }
+    }
+    
+    func reload(all results: [BookFetchResult]) {
+        let legacyResults: [BooksListViewModel.BookFetchResult] = results.map { result in
+            switch result {
+            case .book(let bookModel):
+                return .book(bookModel)
+            case .inFlight:
+                return .inFlight
+            case .failure:
+                // I do not expect this to happen ...
+                return .inFlight
+            }
+        }
+        
+        reload(all: legacyResults)
+    }
+    
     // MARK: - BooksListView
     
     func show(message: String) {
+        // there is a bug in this VC where, if show(message:) is called before reload(all:),
+        // then the message won't actually show up
+        let emptyBookResults: [BooksListViewModel.BookFetchResult] = []
+        reload(all: emptyBookResults)
+        DispatchQueue.main.async {
+            self.refreshControl?.endRefreshing()
+        }
         content = .message(message)
     }
     
@@ -204,7 +237,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         isFetchingBooks = false
         refreshControl?.endRefreshing()
         content = .books(Array(repeating: .inFlight, count: bookCount))
-        Analytics.logEvent("book_count", parameters: ["count": bookCount])
     }
     
     func didFetch(book: BooksListViewModel.BookFetchResult, at index: Int) {
@@ -251,24 +283,16 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         show(message: "Enter search terms, separated by spaces. Tap \"Search\" when done typing.")
-        Analytics.logEvent("search_started", parameters: nil)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        Analytics.logEvent("search_ended", parameters: nil)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        Analytics.logEvent("search_button_clicked", parameters: nil)
         searchBar.resignFirstResponder()
         viewModel.search(using: searchBar.text ?? "") { [weak self] matches in
-            Analytics.logEvent("search_results", parameters: ["count": matches.count])
             self?.content = .books(matches)
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        Analytics.logEvent("search_cancel_button_clicked", parameters: nil)
         searchBar.text = nil
         searchBar.resignFirstResponder()
         refresh()
@@ -311,7 +335,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
                 
                 cell.retryButton.isEnabled = !isFetchingBookDetails
                 cell.retry = { [weak self] in
-                    Analytics.logEvent("retry_book_error_tapped", parameters: nil)
                     self?.isFetchingBookDetails = true
                     self?.isRetryingFailures = true
                     
@@ -356,7 +379,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        Analytics.logEvent("section_index_title_tapped", parameters: nil)
         return index
     }
     
@@ -372,7 +394,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         
         Settings.Sort.allCases.forEach { sortOption in
             let action = UIAlertAction(title: sortOption.rawValue, style: .default) { [weak self] _ in
-                Analytics.logEvent("sort_via_list_vc", parameters: ["type": sortOption.rawValue])
                 self?.viewModel.sort(by: sortOption)
             }
             alertController.addAction(action)
@@ -387,9 +408,13 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     @objc
+    private func dataSourceDidChange(_ notification: Notification) {
+        navigationController?.popToRootViewController(animated: false)
+        refreshControlPulled(booksRefreshControl)
+    }
+    
+    @objc
     private func refreshControlPulled(_ sender: UIRefreshControl) {
-        Analytics.logEvent("pull_to_refresh_books", parameters: nil)
-        
         if !isRefreshing {
             content = BooksListViewController.loadingContent
         }
@@ -397,6 +422,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     private func refresh() {
+        // TODO: For a brand new app install, this is hanging on app launch. The user cannot get into the backend selection setting flow -- this may have been fixed already, test and verify
         if isRefreshing {
             refreshControl?.endRefreshing()
             displayUninteractibleAlert()
@@ -406,7 +432,16 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             sectionIndexGenerator.isSectioningEnabled = false
             isFetchingBooks = true
             isFetchingBookDetails = true
-            viewModel.fetchBooks()
+            
+            switch Settings.DataSource.current {
+            case .dropbox:
+                presenter?.fetchBooks()
+            case .contentServer:
+                viewModel.fetchBooks()
+            case .unconfigured:
+                // this is another issue that'll go away once the content server flow is rewritten ...
+                show(message: "Go into settings to connect to Dropbox or to your content server.")
+            }
         }
     }
     
@@ -417,22 +452,36 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         present(alertController, animated: true)
     }
     
-    private func configure(cell: BookTableViewCell, at indexPath: IndexPath, for book: Book) {
+    private func configure(cell: BookTableViewCell, at indexPath: IndexPath, for book: BookModel) {
         cell.titleLabel.text = book.title.name
         cell.ratingLabel.text = book.rating.displayValue
         cell.serieslabel.text = book.series?.displayValue
         
         cell.accessoryType = .disclosureIndicator
         cell.authorsLabel.text = viewModel.authors(for: book)
-        viewModel.fetchThumbnail(for: book) { image in
-            // some kind of timing issue, I think fixing #124 would address this better
-            // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
-            DispatchQueue.main.async {
-                if cell.tag == indexPath.hashValue {
-                    cell.activityIndicator.stopAnimating()
-                    cell.thumbnailImageView.image = image
+        switch Settings.DataSource.current {
+        case .dropbox:
+            book.fetchThumbnail { image in
+                DispatchQueue.main.async {
+                    if cell.tag == indexPath.hashValue {
+                        cell.activityIndicator.stopAnimating()
+                        cell.thumbnailImageView.image = image?.image
+                    }
                 }
             }
+        case .contentServer:
+            viewModel.fetchThumbnail(for: book) { image in
+                // some kind of timing issue, I think fixing #124 would address this better
+                // The issue is still happening, but seems to happen less often than before. I'm calling this good enough for now.
+                DispatchQueue.main.async {
+                    if cell.tag == indexPath.hashValue {
+                        cell.activityIndicator.stopAnimating()
+                        cell.thumbnailImageView.image = image
+                    }
+                }
+            }
+        case .unconfigured:
+            break
         }
     }
 }
