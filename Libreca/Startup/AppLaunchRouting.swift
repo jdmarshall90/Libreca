@@ -56,7 +56,7 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         let booksListVC = booksLeftNav.viewControllers.first as! BooksListViewController
         
         let router = BookListRouter()
-        let dataManager = BookListDataManager(dataSource: .dropbox)
+        let dataManager = BookListDataManager(dataSource: Settings.DataSource.current)
         let interactor = BookListInteractor(dataManager: dataManager)
         let presenter = BookListPresenter(view: booksListVC, router: router, interactor: interactor)
         booksListVC.presenter = presenter

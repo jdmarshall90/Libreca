@@ -142,12 +142,20 @@ struct Settings {
         
         static let didChangeAuthorizationNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dropboxDidChangeAuthorization"))
         
+        private static var keyDirectory: String {
+            return Settings.baseSettingsKey + "dropbox.directory"
+        }
+        
         private static var keyIsCurrent: String {
             return Settings.baseSettingsKey + "dropbox.isCurrent"
         }
         
         private static var keyIsAuthorized: String {
             return Settings.baseSettingsKey + "dropbox.isAuthorized"
+        }
+        
+        static var defaultDirectory: String {
+            return "/Calibre Library"
         }
         
         static var isAuthorized: Bool {
@@ -168,18 +176,38 @@ struct Settings {
                 NotificationCenter.default.post(DataSource.didChangeNotification)
             }
         }
+        
+        static var directory: String? {
+            get {
+                return UserDefaults.standard.string(forKey: keyDirectory)
+            }
+            set(newValue) {
+                let sanitizedNewValue: String?
+                if var newValue = newValue {
+                    newValue = newValue.replacingOccurrences(of: "\\", with: "/")
+                    if !newValue.hasPrefix("/") {
+                        newValue.insert("/", at: newValue.startIndex)
+                    }
+                    sanitizedNewValue = newValue
+                } else {
+                    sanitizedNewValue = newValue
+                }
+                UserDefaults.standard.set(sanitizedNewValue, forKey: keyDirectory)
+                NotificationCenter.default.post(DataSource.didChangeNotification)
+            }
+        }
     }
     
     enum DataSource {
         case contentServer(ServerConfiguration)
-        case dropbox
+        case dropbox(directory: String?)
         case unconfigured
         
         static let didChangeNotification = Notification(name: Notification.Name(Settings.baseSettingsKey + "notifications.dataSourceDidChange"))
         
         static var current: DataSource {
             if Dropbox.isCurrent {
-                return .dropbox
+                return .dropbox(directory: Dropbox.directory)
             } else if let serverConfiguration = ContentServer.current {
                 return .contentServer(serverConfiguration)
             } else {

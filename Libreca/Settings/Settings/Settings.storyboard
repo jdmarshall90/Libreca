@@ -468,23 +468,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qo9-Sf-OpC">
-                                <rect key="frame" x="118" y="225" width="139" height="33"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <state key="normal" title="Connect Dropbox "/>
-                                <connections>
-                                    <action selector="didTapConnect:" destination="HVU-fQ-wYN" eventType="touchUpInside" id="BaN-1E-KRK"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CCR-op-GEH">
+                                <rect key="frame" x="118" y="222" width="139" height="59"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qo9-Sf-OpC">
+                                        <rect key="frame" x="0.0" y="0.0" width="139" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <state key="normal" title="Connect Dropbox "/>
+                                        <connections>
+                                            <action selector="didTapConnect:" destination="HVU-fQ-wYN" eventType="touchUpInside" id="BaN-1E-KRK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyC-8G-2xr">
+                                        <rect key="frame" x="0.0" y="33" width="139" height="26"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                        <state key="normal" title="Set Dropbox directory..."/>
+                                        <connections>
+                                            <action selector="didTapDirectory:" destination="HVU-fQ-wYN" eventType="touchUpInside" id="mWJ-Ds-2Uq"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="qo9-Sf-OpC" firstAttribute="centerY" secondItem="gTF-oi-SVS" secondAttribute="centerY" id="8ZS-Bv-Fgu"/>
-                            <constraint firstItem="qo9-Sf-OpC" firstAttribute="centerX" secondItem="gTF-oi-SVS" secondAttribute="centerX" id="urO-JD-Ezt"/>
+                            <constraint firstItem="CCR-op-GEH" firstAttribute="centerX" secondItem="zSz-qE-hau" secondAttribute="centerX" id="Wva-Ok-lk7"/>
+                            <constraint firstItem="CCR-op-GEH" firstAttribute="centerY" secondItem="zSz-qE-hau" secondAttribute="centerY" id="zF8-h2-A1z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zSz-qE-hau"/>
                     </view>
                     <connections>
+                        <outlet property="directoryButton" destination="dyC-8G-2xr" id="RvC-gJ-xVT"/>
                         <outlet property="dropboxButton" destination="qo9-Sf-OpC" id="J3p-5x-pZJ"/>
                     </connections>
                 </viewController>

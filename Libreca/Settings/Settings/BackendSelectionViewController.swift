@@ -35,6 +35,8 @@ final class BackendSelectionViewController: UIViewController {
         title = Settings.Dropbox.isCurrent ? "Dropbox Setup" : "Server Setup"
     }
     
+    // TODO: Fix issue where the app will freeze up if, after initially selecting the Dropbox segment, you leave the Dropbox screen before having connected to Dropbox
+    
     @IBAction private func backendSelectorDidChange(_ sender: UISegmentedControl) {
         Settings.Dropbox.isCurrent = sender.selectedSegmentIndex == 0
         showNecessaryUI(for: Settings.DataSource.current, animated: true)
