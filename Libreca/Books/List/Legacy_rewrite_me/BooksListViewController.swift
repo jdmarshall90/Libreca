@@ -465,7 +465,12 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
                 DispatchQueue.main.async {
                     if cell.tag == indexPath.hashValue {
                         cell.activityIndicator.stopAnimating()
-                        cell.thumbnailImageView.image = image?.image
+                        switch image {
+                        case .success(let image):
+                            cell.thumbnailImageView.image = image.image
+                        case .failure:
+                            cell.thumbnailImageView.image = #imageLiteral(resourceName: "BookCoverPlaceholder")
+                        }
                     }
                 }
             }

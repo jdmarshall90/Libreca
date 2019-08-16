@@ -36,21 +36,13 @@ struct BookDetailsService: BookDetailsServicing, ResponseStatusReporting {
     }
     
     func download(_ book: BookModel, completion: @escaping (Result<BookDownload, Error>) -> Void) {
-        book.fetchMainFormat { download in
-            // TODO: Finish this out once fetchMainFormat response type is refactored
-//            self.reportStatus(of: mainFormatDownloadResponse)
-            if let download = download {
+        book.fetchMainFormat { downloadResult in
+            switch downloadResult {
+            case .success(let download):
                 completion(.success(download))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
-        
-//        book.mainFormat!.hitService { mainFormatDownloadResponse in
-//            switch mainFormatDownloadResponse.result {
-//            case .success(let payload):
-//                completion(.success(payload))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
     }
 }

@@ -216,18 +216,22 @@ final class BooksListViewModel {
     }
     
     func fetchThumbnail(for book: BookModel, completion: @escaping (UIImage) -> Void) {
-        let imageEndpoint: ImageEndpoint
+        let imageEndpoint: ((Result<Image, FetchError>) -> Void) -> Void
         
         switch Settings.Image.current {
         case .thumbnail:
-            // swiftlint:disable:next force_cast
-            imageEndpoint = (book as! Book).thumbnail
+            imageEndpoint = book.fetchThumbnail
         case .fullSize:
-            // swiftlint:disable:next force_cast
-            imageEndpoint = (book as! Book).cover
+            imageEndpoint = book.fetchCover
         }
-        imageEndpoint.hitService { response in
-            completion(response.result.value?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+        
+        imageEndpoint { imageResult in
+            switch imageResult {
+            case .success(let image):
+                completion(image.image)
+            case .failure:
+                completion(#imageLiteral(resourceName: "BookCoverPlaceholder"))
+            }
         }
     }
     

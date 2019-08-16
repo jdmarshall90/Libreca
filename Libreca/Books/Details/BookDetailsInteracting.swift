@@ -112,7 +112,7 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         service.download(book) { result in
             switch result {
             case .success(let download):
-                let imageEndpoint: ((Image?) -> Void) -> Void
+                let imageEndpoint: ((Result<Image, FetchError>) -> Void) -> Void
                 
                 switch Settings.Image.current {
                 case .thumbnail:
@@ -120,26 +120,32 @@ struct BookDetailsInteractor: BookDetailsInteracting {
                 case .fullSize:
                     imageEndpoint = book.fetchCover
                 }
-                imageEndpoint { response in
-                    // TODO: Finish this out once fetchMainFormat response type is refactored
-//                    let queue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.download.mainEbook", qos: .userInitiated)
-//                    queue.async {
-//                        let imageData = response.result.value?.image.pngData()
-//                        let appBook = Download.Book(
-//                            authors: book.authors,
-//                            id: book.id,
-//                            imageData: imageData,
-//                            series: book.series,
-//                            title: book.title,
-//                            rating: book.rating
-//                        )
-//                        let download = Download(book: appBook, bookDownload: download)
-//                        self.dataManager.save(download)
-//                        DispatchQueue.main.async {
-//                            NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
-//                            completion(.success(download))
-//                        }
-//                    }
+                imageEndpoint { imageResult in
+                    let queue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.download.mainEbook", qos: .userInitiated)
+                    queue.async {
+                        let imageData: Data?
+                        
+                        switch imageResult {
+                        case .success(let image):
+                            imageData = image.image.pngData()
+                        case .failure:
+                            imageData = nil
+                        }
+                        let appBook = Download.Book(
+                            authors: book.authors,
+                            id: book.id,
+                            imageData: imageData,
+                            series: book.series,
+                            title: book.title,
+                            rating: book.rating
+                        )
+                        let download = Download(book: appBook, bookDownload: download)
+                        self.dataManager.save(download)
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
+                            completion(.success(download))
+                        }
+                    }
                 }
                 
             case .failure(let error):

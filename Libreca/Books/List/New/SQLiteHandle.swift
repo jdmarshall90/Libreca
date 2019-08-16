@@ -27,8 +27,8 @@ import Foundation
 import SQLite
 
 struct SQLiteHandle {
-    typealias ImageDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ image: Data) -> Void) -> Void
-    typealias EbookFileDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ ebookFile: Data?) -> Void) -> Void
+    typealias ImageDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ image: Swift.Result<Data, FetchError>) -> Void) -> Void
+    typealias EbookFileDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void
     
     private static let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -42,6 +42,8 @@ struct SQLiteHandle {
         self.databaseURL = databaseURL
     }
     
+    // TODO: Clean this up
+    // swiftlint:disable:next function_body_length
     func queryForAllBooks(start: (Int) -> Void,
                           imageDataFetcher: @escaping ImageDataFetcher,
                           ebookFileDataFetcher: @escaping EbookFileDataFetcher,
@@ -166,28 +168,40 @@ struct SQLiteHandle {
                 series: series,
                 formats: formats,
                 _fetchCover: { completion in
-                    imageDataFetcher(authors, title) { imageData in
-                        guard let image = UIImage(data: imageData) else {
-                            return completion(nil)
+                    imageDataFetcher(authors, title) { imageFetchResult in
+                        switch imageFetchResult {
+                        case .success(let imageData):
+                            guard let image = UIImage(data: imageData) else {
+                                return completion(.failure(.invalidImage))
+                            }
+                            completion(.success(Image(image: image)))
+                        case .failure(let error):
+                            completion(.failure(error))
                         }
-                        completion(Image(image: image))
                     }
                 },
                 _fetchThumbnail: { completion in
-                    imageDataFetcher(authors, title) { imageData in
-                        guard let image = UIImage(data: imageData) else {
-                            return completion(nil)
+                    imageDataFetcher(authors, title) { imageFetchResult in
+                        switch imageFetchResult {
+                        case .success(let imageData):
+                            guard let image = UIImage(data: imageData) else {
+                                return completion(.failure(.invalidImage))
+                            }
+                            completion(.success(Image(image: image)))
+                        case .failure(let error):
+                            completion(.failure(error))
                         }
-                        completion(Image(image: image))
                     }
                 },
                 _fetchMainFormat: { completion in
-                    ebookFileDataFetcher(authors, title) { ebookFileData in
-                        guard let ebookFileData = ebookFileData else {
-                            return completion(nil)
+                    ebookFileDataFetcher(authors, title) { ebookFetchResult in
+                        switch ebookFetchResult {
+                        case .success(let ebookFileData):
+                            // TODO: Grab the correct file type
+                            completion(.success(BookDownload(format: .epub, file: ebookFileData)))
+                        case .failure(let error):
+                            completion(.failure(error))
                         }
-                        // TODO: Grab the correct file type
-                        completion(BookDownload(format: .epub, file: ebookFileData))
                     }
                 }
             )
@@ -234,19 +248,19 @@ fileprivate struct Book: BookModel, Equatable {
     let formats: [Format]
     
     // this is ugly, but it'll work for now ...
-    let _fetchCover: ((Image?) -> Void) -> Void
-    let _fetchThumbnail: ((Image?) -> Void) -> Void
-    let _fetchMainFormat: ((BookDownload?) -> Void) -> Void
+    let _fetchCover: ((Swift.Result<Image, FetchError>) -> Void) -> Void
+    let _fetchThumbnail: ((Swift.Result<Image, FetchError>) -> Void) -> Void
+    let _fetchMainFormat: ((Swift.Result<BookDownload, FetchError>) -> Void) -> Void
     
-    func fetchCover(completion: (Image?) -> Void) {
+    func fetchCover(completion: (Swift.Result<Image, FetchError>) -> Void) {
         _fetchCover(completion)
     }
     
-    func fetchThumbnail(completion: (Image?) -> Void) {
+    func fetchThumbnail(completion: (Swift.Result<Image, FetchError>) -> Void) {
         _fetchThumbnail(completion)
     }
     
-    func fetchMainFormat(completion: (BookDownload?) -> Void) {
+    func fetchMainFormat(completion: (Swift.Result<BookDownload, FetchError>) -> Void) {
         _fetchMainFormat(completion)
     }
     

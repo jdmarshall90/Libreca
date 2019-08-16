@@ -122,6 +122,8 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         present(safariVC, animated: true)
     }
     
+    // This implementation is simple enough that, for now, I don't think it warrants the time for a refactor.
+    // swiftlint:disable:next function_body_length
     private func reload() {
         let backendMainText: String
         switch Settings.DataSource.current {
