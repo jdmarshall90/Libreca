@@ -195,7 +195,12 @@ final class BookDetailsViewModel {
             
             self.cover = { completion in
                 book.fetchCover { cover in
-                    completion(cover?.image ?? #imageLiteral(resourceName: "BookCoverPlaceholder"))
+                    switch cover {
+                    case .success(let image):
+                        completion(image.image)
+                    case .failure:
+                        completion(#imageLiteral(resourceName: "BookCoverPlaceholder"))
+                    }
                 }
             }
         }

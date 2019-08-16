@@ -58,6 +58,7 @@ enum FetchError: Error {
     
     case sql(SQL)
     case backendSystem(BackendSystem)
+    case invalidImage
     case unknown(Error)
 }
 

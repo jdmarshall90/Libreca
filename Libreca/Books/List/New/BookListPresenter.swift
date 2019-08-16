@@ -84,6 +84,8 @@ struct BookListPresenter: BookListPresenting {
             handle(sqlError)
         case .backendSystem(let backendError):
             handle(backendError)
+        case .invalidImage:
+            handleInvalidImage()
         case .unknown(let unknownError):
             handleUnknown(unknownError)
         }
@@ -107,6 +109,11 @@ struct BookListPresenter: BookListPresenting {
         case .unconfiguredBackend:
             handleUnconfiguredBackend()
         }
+    }
+    
+    private func handleInvalidImage() {
+        // as of now, this can't happen. Will need to handle this
+        // once the front end is rewritten
     }
     
     private func handleUnknown(_ error: Error) {

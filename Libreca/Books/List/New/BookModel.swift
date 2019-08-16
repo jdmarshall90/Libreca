@@ -53,10 +53,9 @@ protocol BookModel: SectionIndexDisplayable {
     var formats: [Format] { get }
     var mainFormatType: Format? { get }
     
-    // TODO: Change this to use a Result type for error handling, then try to refactor out all your force casts to CalibreKit.Book
-    func fetchCover(completion: (Image?) -> Void)
-    func fetchThumbnail(completion: (Image?) -> Void)
-    func fetchMainFormat(completion: (BookDownload?) -> Void)
+    func fetchCover(completion: (Result<Image, FetchError>) -> Void)
+    func fetchThumbnail(completion: (Result<Image, FetchError>) -> Void)
+    func fetchMainFormat(completion: (Result<BookDownload, FetchError>) -> Void)
     
     func isEqual(to: BookModel) -> Bool
 }
