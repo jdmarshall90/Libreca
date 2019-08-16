@@ -57,5 +57,6 @@ protocol BookModel: SectionIndexDisplayable {
     func fetchThumbnail(completion: (Result<Image, FetchError>) -> Void)
     func fetchMainFormat(completion: (Result<BookDownload, FetchError>) -> Void)
     
+    // swiftlint:disable:next identifier_name
     func isEqual(to: BookModel) -> Bool
 }
