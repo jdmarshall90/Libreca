@@ -126,7 +126,9 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     
     @objc
     private func bookListDidRefresh(_ note: Notification) {
-        navigationController?.popToRootViewController(animated: false)
+        if Settings.ContentServer.current != nil || Settings.Dropbox.isAuthorized {
+            navigationController?.popToRootViewController(animated: false)
+        }
     }
 }
 
