@@ -424,7 +424,7 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
         
         Made with ❤️ on GitLab
         
-        \(Constants.Bundles.app.name) connects with Calibre© content server via Dropbox or HTTP. It is neither affiliated with nor endorsed by Calibre©.
+        \(Constants.Bundles.app.name) connects with Calibre© via Dropbox or to your content server using HTTP. It is neither affiliated with nor endorsed by Calibre©.
         """
     }
     
