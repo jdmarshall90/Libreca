@@ -216,7 +216,7 @@ final class BooksListViewModel {
     }
     
     func fetchThumbnail(for book: BookModel, completion: @escaping (UIImage) -> Void) {
-        let imageEndpoint: ((Result<Image, FetchError>) -> Void) -> Void
+        let imageEndpoint: (@escaping (Result<Image, FetchError>) -> Void) -> Void
         
         switch Settings.Image.current {
         case .thumbnail:

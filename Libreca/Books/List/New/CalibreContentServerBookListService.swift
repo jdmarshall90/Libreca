@@ -29,4 +29,8 @@ struct CalibreContentServerBookListService: BookListServicing {
     func fetchBooks(completion: @escaping (Result<BooksEndpoint.ParsedResponse, Error>) -> Void) {
         fatalError("to be implemented as part of legacy system rewrite")
     }
+    
+    func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Result<Data, Error>) -> Void) {
+        fatalError("to be implemented as part of legacy system rewrite")
+    }
 }

@@ -144,8 +144,10 @@ struct BookListPresenter: BookListPresenting {
         switch error {
         case .unauthorized:
             view?.show(message: "Dropbox has been selected, but not connected. Go into settings to connect to Dropbox.")
-        case .error(let callError):
-            handle(callError)
+        case .downloadError(let downloadError):
+            handle(downloadError)
+        case .searchError(let searchError):
+            handle(searchError)
         case .nonsenseResponse:
             view?.show(message: "Dropbox connectivity has encountered an unexpected error. If you are seeing this message, please contact app support.")
         case .noNetwork:
@@ -247,5 +249,9 @@ struct BookListPresenter: BookListPresenting {
                 """
             )
         }
+    }
+    
+    private func handle(_ error: CallError<Files.SearchError>) {
+        // TODO: Implement me
     }
 }

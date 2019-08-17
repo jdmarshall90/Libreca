@@ -249,6 +249,9 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         let indexPath = IndexPath(row: index, section: 0)
         
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
+            // TODO: This is crashing if you re-save the content server url while
+            // the detail screen (or the regular book list screen) is present,
+            // then come back to the library tab (happening on phone, not sure about pad)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         shouldReloadTable = true

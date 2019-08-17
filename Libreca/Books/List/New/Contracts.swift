@@ -74,4 +74,5 @@ protocol BookListServicing {
     associatedtype BookServiceResponseData
     associatedtype BookServiceError: Error
     func fetchBooks(completion: @escaping (Swift.Result<BookServiceResponseData, BookServiceError>) -> Void)
+    func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Swift.Result<Data, BookServiceError>) -> Void)
 }

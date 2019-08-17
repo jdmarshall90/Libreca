@@ -27,8 +27,8 @@ import Foundation
 import SQLite
 
 struct SQLiteHandle {
-    typealias ImageDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ image: Swift.Result<Data, FetchError>) -> Void) -> Void
-    typealias EbookFileDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void
+    typealias ImageDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ image: Swift.Result<Data, FetchError>) -> Void) -> Void
+    typealias EbookFileDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void
     
     private static let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -168,7 +168,7 @@ struct SQLiteHandle {
                 series: series,
                 formats: formats,
                 _fetchCover: { completion in
-                    imageDataFetcher(authors, title) { imageFetchResult in
+                    imageDataFetcher(id, authors, title) { imageFetchResult in
                         switch imageFetchResult {
                         case .success(let imageData):
                             guard let image = UIImage(data: imageData) else {
@@ -181,7 +181,7 @@ struct SQLiteHandle {
                     }
                 },
                 _fetchThumbnail: { completion in
-                    imageDataFetcher(authors, title) { imageFetchResult in
+                    imageDataFetcher(id, authors, title) { imageFetchResult in
                         switch imageFetchResult {
                         case .success(let imageData):
                             guard let image = UIImage(data: imageData) else {
@@ -194,7 +194,7 @@ struct SQLiteHandle {
                     }
                 },
                 _fetchMainFormat: { completion in
-                    ebookFileDataFetcher(authors, title) { ebookFetchResult in
+                    ebookFileDataFetcher(id, authors, title) { ebookFetchResult in
                         switch ebookFetchResult {
                         case .success(let ebookFileData):
                             // TODO: Grab the correct file type
@@ -248,19 +248,19 @@ fileprivate struct Book: BookModel, Equatable {
     let formats: [Format]
     
     // this is ugly, but it'll work for now ...
-    let _fetchCover: ((Swift.Result<Image, FetchError>) -> Void) -> Void
-    let _fetchThumbnail: ((Swift.Result<Image, FetchError>) -> Void) -> Void
-    let _fetchMainFormat: ((Swift.Result<BookDownload, FetchError>) -> Void) -> Void
+    let _fetchCover: (@escaping (Swift.Result<Image, FetchError>) -> Void) -> Void
+    let _fetchThumbnail: (@escaping (Swift.Result<Image, FetchError>) -> Void) -> Void
+    let _fetchMainFormat: (@escaping (Swift.Result<BookDownload, FetchError>) -> Void) -> Void
     
-    func fetchCover(completion: (Swift.Result<Image, FetchError>) -> Void) {
+    func fetchCover(completion: @escaping (Swift.Result<Image, FetchError>) -> Void) {
         _fetchCover(completion)
     }
     
-    func fetchThumbnail(completion: (Swift.Result<Image, FetchError>) -> Void) {
+    func fetchThumbnail(completion: @escaping (Swift.Result<Image, FetchError>) -> Void) {
         _fetchThumbnail(completion)
     }
     
-    func fetchMainFormat(completion: (Swift.Result<BookDownload, FetchError>) -> Void) {
+    func fetchMainFormat(completion: @escaping (Swift.Result<BookDownload, FetchError>) -> Void) {
         _fetchMainFormat(completion)
     }
     

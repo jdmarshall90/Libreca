@@ -28,6 +28,8 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    // TODO: Fix missing save button
+    
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
     
     private let viewModel = ServerSetupViewModel()

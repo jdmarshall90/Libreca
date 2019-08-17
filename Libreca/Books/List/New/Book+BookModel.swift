@@ -24,15 +24,29 @@
 import CalibreKit
 
 extension Book: BookModel {
-    func fetchCover(completion: (Result<Image, FetchError>) -> Void) {
-        // TODO: Implement me
+    func fetchCover(completion: @escaping (Result<Image, FetchError>) -> Void) {
+        cover.hitService { response in
+            switch response.result {
+            case .success(let image):
+                completion(.success(image))
+            case .failure(let error):
+                completion(.failure(.backendSystem(.contentServer(error))))
+            }
+        }
     }
     
-    func fetchThumbnail(completion: (Result<Image, FetchError>) -> Void) {
-        // TODO: Implement me
+    func fetchThumbnail(completion: @escaping (Result<Image, FetchError>) -> Void) {
+        thumbnail.hitService { response in
+            switch response.result {
+            case .success(let image):
+                completion(.success(image))
+            case .failure(let error):
+                completion(.failure(.backendSystem(.contentServer(error))))
+            }
+        }
     }
     
-    func fetchMainFormat(completion: (Result<BookDownload, FetchError>) -> Void) {
+    func fetchMainFormat(completion: @escaping (Result<BookDownload, FetchError>) -> Void) {
         // TODO: Implement me
     }
     
