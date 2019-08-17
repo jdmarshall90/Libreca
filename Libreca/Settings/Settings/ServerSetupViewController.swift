@@ -28,6 +28,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    // TODO: After first app install, if you setup content server the only way to get library to load is to force kill the app and relaunch
     // TODO: Fix missing save button
     
     private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
