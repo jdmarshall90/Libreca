@@ -53,9 +53,9 @@ protocol BookModel: SectionIndexDisplayable {
     var formats: [Format] { get }
     var mainFormatType: Format? { get }
     
-    func fetchCover(completion: (Result<Image, FetchError>) -> Void)
-    func fetchThumbnail(completion: (Result<Image, FetchError>) -> Void)
-    func fetchMainFormat(completion: (Result<BookDownload, FetchError>) -> Void)
+    func fetchCover(completion: @escaping (Result<Image, FetchError>) -> Void)
+    func fetchThumbnail(completion: @escaping (Result<Image, FetchError>) -> Void)
+    func fetchMainFormat(completion: @escaping (Result<BookDownload, FetchError>) -> Void)
     
     // swiftlint:disable:next identifier_name
     func isEqual(to: BookModel) -> Bool

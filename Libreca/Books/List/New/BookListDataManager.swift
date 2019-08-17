@@ -65,7 +65,7 @@ struct BookListDataManager: BookListDataManaging {
                 case .success(let responseData):
                     do {
                         let databaseURL = try self.writeToDisk(responseData)
-                        try self.queryForBooks(atDatabaseURL: databaseURL, start: start, progress: progress, completion: completion)
+                        try self.queryForBooks(atDatabaseURL: databaseURL, inServiceDirectory: directory, start: start, progress: progress, completion: completion)
                     } catch let error as QueryError {
                         start(.failure(.sql(.query(error))))
                     } catch let error as SQLite.Result {
@@ -88,15 +88,22 @@ struct BookListDataManager: BookListDataManaging {
         return databaseURL
     }
     
-    private func queryForBooks(atDatabaseURL databaseURL: URL, start: (Swift.Result<Int, FetchError>) -> Void, progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) throws {
-        let sqliteHandle = SQLiteHandle(databaseURL: databaseURL)
+    private func queryForBooks(atDatabaseURL onDiskDatabaseURL: URL, inServiceDirectory serviceDirectory: String, start: (Swift.Result<Int, FetchError>) -> Void, progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) throws {
+        let sqliteHandle = SQLiteHandle(databaseURL: onDiskDatabaseURL)
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
             start(.success(expectedBookCount))
-        }, imageDataFetcher: { authors, title, completion in
-            // TODO: Fetch these from appropriate API (Dropbox, in this case)
-            
-        }, ebookFileDataFetcher: { authors, title, completion in
+        }, imageDataFetcher: { identifier, authors, title, completion in
+            // TODO: Cache these images on disk
+            DropboxBookListService(path: serviceDirectory).fetchImage(for: identifier, authors: authors, title: title) { result in
+                switch result {
+                case .success(let imageData):
+                    completion(.success(imageData))
+                case .failure(let error):
+                    completion(.failure(.backendSystem(.dropbox(error))))
+                }
+            }
+        }, ebookFileDataFetcher: { identifier, authors, title, completion in
             // TODO: Fetch these from appropriate API (Dropbox, in this case)
             
         }, progress: { nextBookModel in

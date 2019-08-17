@@ -112,7 +112,7 @@ struct BookDetailsInteractor: BookDetailsInteracting {
         service.download(book) { result in
             switch result {
             case .success(let download):
-                let imageEndpoint: ((Result<Image, FetchError>) -> Void) -> Void
+                let imageEndpoint: (@escaping (Result<Image, FetchError>) -> Void) -> Void
                 
                 switch Settings.Image.current {
                 case .thumbnail:

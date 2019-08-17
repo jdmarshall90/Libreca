@@ -30,7 +30,8 @@ struct DropboxBookListService: BookListServicing {
     
     enum DropboxAPIError: Error {
         case unauthorized
-        case error(CallError<Files.DownloadError>)
+        case downloadError(CallError<Files.DownloadError>)
+        case searchError(CallError<Files.SearchError>)
         case nonsenseResponse
         case noNetwork
     }
@@ -42,7 +43,7 @@ struct DropboxBookListService: BookListServicing {
             return completion(.failure(.unauthorized))
         }
         
-        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.networkchecker", qos: .userInitiated).async {
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.networkchecker.fetchbooks", qos: .userInitiated).async {
             // Dropbox API doesn't seem to respond in airplane mode.
             // Apple's NWPathMonitor class was giving me a false negative.
             // Hence this crappy workaround.
@@ -57,6 +58,40 @@ struct DropboxBookListService: BookListServicing {
                     switch (responseFiles, error) {
                     case (.some(_, let sqliteFileData), .none):
                         completion(.success(sqliteFileData))
+                    case (.none, .some(let error)):
+                        completion(.failure(.downloadError(error)))
+                    case (.some, .some),
+                         (.none, .none):
+                        completion(.failure(.nonsenseResponse))
+                    }
+                }
+            } catch {
+                completion(.failure(.noNetwork))
+            }
+        }
+    }
+    
+    func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        guard let client = DropboxClientsManager.authorizedClient else {
+            return completion(.failure(DropboxAPIError.unauthorized))
+        }
+        
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.networkchecker.fetchimage", qos: .userInitiated).async {
+            do {
+                guard let appWebsite = URL(string: "https://libreca.io") else {
+                    return completion(.failure(DropboxAPIError.noNetwork))
+                }
+                _ = try Data(contentsOf: appWebsite)
+                // if we get here, assume a network connection is available ...
+                
+                let authorsPath = authors.map { $0.name }.reduce("", +)
+                let titlePath = title.name + " (\(bookID))"
+                // TODO: This only works for *some* books, fix
+                let path = self.path + "/" + authorsPath + "/" + titlePath + "/cover.jpg"
+                client.files.download(path: path).response { responseImages, error in
+                    switch (responseImages, error) {
+                    case (.some(_, let imageData), .none):
+                        completion(.success(imageData))
                     case (.none, .some(let error)):
                         completion(.failure(.downloadError(error)))
                     case (.some, .some),
