@@ -3,7 +3,7 @@
 //  Libreca
 //
 //  Created by Justin Marshall on 5/7/19.
-//  
+//
 //  Libreca is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
@@ -39,7 +39,7 @@ struct DropboxBookListService: BookListServicing {
     
     func fetchBooks(completion: @escaping (Result<BookServiceResponseData, BookServiceError>) -> Void) {
         guard let client = DropboxClientsManager.authorizedClient else {
-            return completion(.failure(DropboxAPIError.unauthorized))
+            return completion(.failure(.unauthorized))
         }
         
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.networkchecker", qos: .userInitiated).async {
@@ -48,7 +48,7 @@ struct DropboxBookListService: BookListServicing {
             // Hence this crappy workaround.
             do {
                 guard let appWebsite = URL(string: "https://libreca.io") else {
-                    return completion(.failure(DropboxAPIError.noNetwork))
+                    return completion(.failure(.noNetwork))
                 }
                 _ = try Data(contentsOf: appWebsite)
                 // if we get here, assume a network connection is available ...
@@ -58,14 +58,14 @@ struct DropboxBookListService: BookListServicing {
                     case (.some(_, let sqliteFileData), .none):
                         completion(.success(sqliteFileData))
                     case (.none, .some(let error)):
-                        completion(.failure(DropboxAPIError.error(error)))
+                        completion(.failure(.downloadError(error)))
                     case (.some, .some),
                          (.none, .none):
-                        completion(.failure(DropboxAPIError.nonsenseResponse))
+                        completion(.failure(.nonsenseResponse))
                     }
                 }
             } catch {
-                completion(.failure(DropboxAPIError.noNetwork))
+                completion(.failure(.noNetwork))
             }
         }
     }
