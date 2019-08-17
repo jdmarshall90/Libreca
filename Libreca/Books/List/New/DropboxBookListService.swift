@@ -73,13 +73,13 @@ struct DropboxBookListService: BookListServicing {
     
     func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
         guard let client = DropboxClientsManager.authorizedClient else {
-            return completion(.failure(DropboxAPIError.unauthorized))
+            return completion(.failure(.unauthorized))
         }
         
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.networkchecker.fetchimage", qos: .userInitiated).async {
             do {
                 guard let appWebsite = URL(string: "https://libreca.io") else {
-                    return completion(.failure(DropboxAPIError.noNetwork))
+                    return completion(.failure(.noNetwork))
                 }
                 _ = try Data(contentsOf: appWebsite)
                 // if we get here, assume a network connection is available ...
