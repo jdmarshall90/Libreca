@@ -43,7 +43,7 @@ struct DropboxBookListService: BookListServicing {
             return completion(.failure(.unauthorized))
         }
         
-        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.networkchecker.fetchbooks", qos: .userInitiated).async {
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.fetchbooks", qos: .userInitiated).async {
             // Dropbox API doesn't seem to respond in airplane mode.
             // Apple's NWPathMonitor class was giving me a false negative.
             // Hence this crappy workaround.
@@ -76,7 +76,7 @@ struct DropboxBookListService: BookListServicing {
             return completion(.failure(.unauthorized))
         }
         
-        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.networkchecker.fetchimage", qos: .userInitiated).async {
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.fetchimage", qos: .userInitiated).async {
             do {
                 guard let appWebsite = URL(string: "https://libreca.io") else {
                     return completion(.failure(.noNetwork))
