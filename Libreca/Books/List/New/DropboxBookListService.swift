@@ -109,7 +109,6 @@ struct DropboxBookListService: BookListServicing {
                                     if maxTitleLength > 80 {
                                         self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
                                     } else {
-                                        print("Another error with: \(sanitizedPath), failing")
                                         completion(.failure(.downloadError(error)))
                                     }
                                 }
@@ -140,7 +139,7 @@ struct DropboxBookListService: BookListServicing {
         queue: DispatchQueue,
         completion: @escaping (Result<Data, BookServiceError>) -> Void) {
         let sanitizedPath = self.createSanitizedPath(for: bookID, authors: [authors[authorIndex]], title: title, maxTitleLength: maxTitleLength)
-        print("Trying \(sanitizedPath)")
+        
         client.files.download(path: sanitizedPath).response(queue: queue) { responseImages, error in
             switch (responseImages, error) {
             case (.some(_, let imageData), .none):
@@ -153,7 +152,6 @@ struct DropboxBookListService: BookListServicing {
                     if maxTitleLength > 80 {
                         self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
                     } else {
-                        print("Another error with: \(sanitizedPath), failing")
                         completion(.failure(.downloadError(error)))
                     }
                 }
