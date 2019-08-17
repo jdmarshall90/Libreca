@@ -72,28 +72,51 @@ struct DropboxBookListService: BookListServicing {
     }
     
     func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: 100, completion: completion)
+    }
+        
+    private func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, maxTitleLength: Int, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
         guard let client = DropboxClientsManager.authorizedClient else {
             return completion(.failure(.unauthorized))
         }
         
-        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.fetchimage", qos: .userInitiated).async {
+        let fetchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.fetchimage", qos: .userInitiated)
+        fetchQueue.async {
             do {
                 guard let appWebsite = URL(string: "https://libreca.io") else {
                     return completion(.failure(.noNetwork))
                 }
                 _ = try Data(contentsOf: appWebsite)
+                
                 // if we get here, assume a network connection is available ...
                 
-                let authorsPath = authors.map { $0.name }.reduce("", +)
-                let titlePath = title.name + " (\(bookID))"
-                // TODO: This only works for *some* books, fix
-                let path = self.path + "/" + authorsPath + "/" + titlePath + "/cover.jpg"
-                client.files.download(path: path).response { responseImages, error in
+                let path = self.createPath(for: bookID, authors: authors, title: title)
+                client.files.download(path: path).response(queue: fetchQueue) { responseImages, error in
                     switch (responseImages, error) {
                     case (.some(_, let imageData), .none):
                         completion(.success(imageData))
-                    case (.none, .some(let error)):
-                        completion(.failure(.downloadError(error)))
+                    case (.none, .some):
+                        let sanitizedPath = self.createSanitizedPath(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength)
+                        client.files.download(path: sanitizedPath).response(queue: fetchQueue) { responseImages, error in
+                            switch (responseImages, error) {
+                            case (.some(_, let imageData), .none):
+                                completion(.success(imageData))
+                            case (.none, .some(let error)):
+                                if authors.count > 1 {
+                                    // try each author individually
+                                    self.fetchImage(for: bookID, authors: authors, authorIndex: 0, title: title, maxTitleLength: maxTitleLength, using: client, queue: fetchQueue, completion: completion)
+                                } else {
+                                    if maxTitleLength > 80 {
+                                        self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
+                                    } else {
+                                        completion(.failure(.downloadError(error)))
+                                    }
+                                }
+                            case (.some, .some),
+                                 (.none, .none):
+                                completion(.failure(.nonsenseResponse))
+                            }
+                        }
                     case (.some, .some),
                          (.none, .none):
                         completion(.failure(.nonsenseResponse))
@@ -103,5 +126,99 @@ struct DropboxBookListService: BookListServicing {
                 completion(.failure(.noNetwork))
             }
         }
+    }
+    
+    // swiftlint:disable:next function_parameter_count
+    private func fetchImage(
+        for bookID: Int,
+        authors: [BookModel.Author],
+        authorIndex: Int,
+        title: BookModel.Title,
+        maxTitleLength: Int,
+        using client: DropboxClient,
+        queue: DispatchQueue,
+        completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        let sanitizedPath = self.createSanitizedPath(for: bookID, authors: [authors[authorIndex]], title: title, maxTitleLength: maxTitleLength)
+        
+        client.files.download(path: sanitizedPath).response(queue: queue) { responseImages, error in
+            switch (responseImages, error) {
+            case (.some(_, let imageData), .none):
+                completion(.success(imageData))
+            case (.none, .some(let error)):
+                let nextAuthorIndex = authorIndex + 1
+                if nextAuthorIndex < authors.count {
+                    self.fetchImage(for: bookID, authors: authors, authorIndex: nextAuthorIndex, title: title, maxTitleLength: maxTitleLength, using: client, queue: queue, completion: completion)
+                } else {
+                    if maxTitleLength > 80 {
+                        self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
+                    } else {
+                        completion(.failure(.downloadError(error)))
+                    }
+                }
+            case (.some, .some),
+                 (.none, .none):
+                completion(.failure(.nonsenseResponse))
+            }
+        }
+    }
+    
+    private func createPath(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title) -> String {
+        let authorsPath = authors.map { $0.name }.reduce("", +)
+        let titlePath = title.name + " (\(bookID))"
+        let path = self.path + "/" + authorsPath + "/" + titlePath + "/cover.jpg"
+        return path
+    }
+    
+    private func createSanitizedPath(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, maxTitleLength: Int) -> String {
+        let authorsPath = authors.map { $0.name }.reduce("") { result, next in
+            var sanitizedNext = next
+                .folding(options: .diacriticInsensitive, locale: .current)
+                .replacingOccurrences(of: "|", with: ",")
+                .replacingOccurrences(of: "\"", with: "_")
+            
+            if sanitizedNext.last == "." {
+                sanitizedNext = sanitizedNext.dropLast() + "_"
+            }
+            if result.isEmpty {
+                return sanitizedNext
+            } else {
+                return result + ", " + sanitizedNext
+            }
+        }
+        var sanitizedTitle = title.name
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "\"", with: "_")
+            .replacingOccurrences(of: "æ", with: "ae")
+            .replacingOccurrences(of: "?", with: "_")
+        if sanitizedTitle.count > maxTitleLength {
+            let start = sanitizedTitle.startIndex
+            let end = sanitizedTitle.index(start, offsetBy: maxTitleLength)
+            sanitizedTitle = String(sanitizedTitle[..<end])
+        }
+        if sanitizedTitle.last == "." {
+            sanitizedTitle = sanitizedTitle.dropLast() + "_"
+        }
+        
+        sanitizedTitle = sanitizedTitle.folding(options: .diacriticInsensitive, locale: .current)
+        let titlePath = sanitizedTitle + " (\(bookID))"
+        let path = self.path + "/" + authorsPath + "/" + titlePath + "/cover.jpg"
+        let sanitizedPath = path.replacingOccurrences(of: ":", with: "_")
+        let latinizedPath = sanitizedPath.latinized
+        return latinizedPath
+    }
+}
+
+private extension String {
+    /// Returns a version of the string that is transliterated into the Latin alphabet, minus
+    /// all diacritics.
+    ///
+    /// For example:
+    ///
+    /// "Hello! こんにちは! สวัสดี! مرحبا! 您好! Привет!" → "Hello! kon'nichiha! swasdi! mrhba! nin hao! Privet!"
+    var latinized: String {
+        let mutableString = NSMutableString(string: self) as CFMutableString
+        CFStringTransform(mutableString, nil, kCFStringTransformToLatin, false)
+        CFStringTransform(mutableString, nil, kCFStringTransformStripCombiningMarks, false)
+        return mutableString as String
     }
 }

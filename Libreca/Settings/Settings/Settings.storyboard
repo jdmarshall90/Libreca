@@ -270,13 +270,13 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Credentials - leave blank if authentication not needed" id="pix-Kr-AQc">
-                                <mutableString key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
+                                <string key="footerTitle">This setting lets you connect Libreca to your Calibre© Content Server. Provide the credentials (if any) and URL of your server, such as:
             
             ∙ http://192.168.1.0
             ∙ http://192.168.1.0:8080
             ∙ http://mycontentserver.com
             ∙ https://mysecurecontentserver.com
-            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://  If you are using calibre's prefix setting, add a / to the end of your URL.</mutableString>
+            ∙ https://mysecurecontentserver.com:8080  Please include https:// or http://  If you are using calibre's prefix setting, add a / to the end of your URL.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="3gY-rN-sij">
                                         <rect key="frame" x="0.0" y="163" width="375" height="44"/>
@@ -489,10 +489,20 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It is strongly recommended that you use calibre's default settings for &quot;Saving books to disk&quot;." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFQ-zC-Sys">
+                                <rect key="frame" x="20" y="301" width="335" height="64.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="mFQ-zC-Sys" firstAttribute="top" secondItem="dyC-8G-2xr" secondAttribute="bottom" constant="20" id="Gt4-Wn-bFK"/>
+                            <constraint firstItem="zSz-qE-hau" firstAttribute="leading" secondItem="mFQ-zC-Sys" secondAttribute="leading" constant="-20" id="Mxx-yP-trp"/>
                             <constraint firstItem="CCR-op-GEH" firstAttribute="centerX" secondItem="zSz-qE-hau" secondAttribute="centerX" id="Wva-Ok-lk7"/>
+                            <constraint firstItem="mFQ-zC-Sys" firstAttribute="centerX" secondItem="zSz-qE-hau" secondAttribute="centerX" id="baJ-Sc-l9M"/>
+                            <constraint firstItem="mFQ-zC-Sys" firstAttribute="trailing" secondItem="zSz-qE-hau" secondAttribute="trailing" constant="-20" id="uhD-za-FXn"/>
                             <constraint firstItem="CCR-op-GEH" firstAttribute="centerY" secondItem="zSz-qE-hau" secondAttribute="centerY" id="zF8-h2-A1z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zSz-qE-hau"/>
@@ -504,7 +514,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sdf-g9-XA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2870" y="67"/>
+            <point key="canvasLocation" x="2869.5999999999999" y="66.11694152923539"/>
         </scene>
     </scenes>
 </document>

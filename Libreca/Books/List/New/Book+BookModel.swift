@@ -26,22 +26,26 @@ import CalibreKit
 extension Book: BookModel {
     func fetchCover(completion: @escaping (Result<Image, FetchError>) -> Void) {
         cover.hitService { response in
-            switch response.result {
-            case .success(let image):
-                completion(.success(image))
-            case .failure(let error):
-                completion(.failure(.backendSystem(.contentServer(error))))
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let image):
+                    completion(.success(image))
+                case .failure(let error):
+                    completion(.failure(.backendSystem(.contentServer(error))))
+                }
             }
         }
     }
     
     func fetchThumbnail(completion: @escaping (Result<Image, FetchError>) -> Void) {
         thumbnail.hitService { response in
-            switch response.result {
-            case .success(let image):
-                completion(.success(image))
-            case .failure(let error):
-                completion(.failure(.backendSystem(.contentServer(error))))
+            DispatchQueue.main.async {
+                switch response.result {
+                case .success(let image):
+                    completion(.success(image))
+                case .failure(let error):
+                    completion(.failure(.backendSystem(.contentServer(error))))
+                }
             }
         }
     }

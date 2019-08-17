@@ -26,6 +26,7 @@ import Foundation
 // TODO: Update licenses file with this lib
 import SQLite
 
+// TODO: Something is screwy in book sorting for Dropbox, it seems to be using author sort no matter what setting the user has selected ...
 struct SQLiteHandle {
     typealias ImageDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ image: Swift.Result<Data, FetchError>) -> Void) -> Void
     typealias EbookFileDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void
@@ -169,27 +170,31 @@ struct SQLiteHandle {
                 formats: formats,
                 _fetchCover: { completion in
                     imageDataFetcher(id, authors, title) { imageFetchResult in
-                        switch imageFetchResult {
-                        case .success(let imageData):
-                            guard let image = UIImage(data: imageData) else {
-                                return completion(.failure(.invalidImage))
+                        DispatchQueue.main.async {
+                            switch imageFetchResult {
+                            case .success(let imageData):
+                                guard let image = UIImage(data: imageData) else {
+                                    return completion(.failure(.invalidImage))
+                                }
+                                completion(.success(Image(image: image)))
+                            case .failure(let error):
+                                completion(.failure(error))
                             }
-                            completion(.success(Image(image: image)))
-                        case .failure(let error):
-                            completion(.failure(error))
                         }
                     }
                 },
                 _fetchThumbnail: { completion in
                     imageDataFetcher(id, authors, title) { imageFetchResult in
-                        switch imageFetchResult {
-                        case .success(let imageData):
-                            guard let image = UIImage(data: imageData) else {
-                                return completion(.failure(.invalidImage))
+                        DispatchQueue.main.async {
+                            switch imageFetchResult {
+                            case .success(let imageData):
+                                guard let image = UIImage(data: imageData) else {
+                                    return completion(.failure(.invalidImage))
+                                }
+                                completion(.success(Image(image: image)))
+                            case .failure(let error):
+                                completion(.failure(error))
                             }
-                            completion(.success(Image(image: image)))
-                        case .failure(let error):
-                            completion(.failure(error))
                         }
                     }
                 },
