@@ -169,27 +169,31 @@ struct SQLiteHandle {
                 formats: formats,
                 _fetchCover: { completion in
                     imageDataFetcher(id, authors, title) { imageFetchResult in
-                        switch imageFetchResult {
-                        case .success(let imageData):
-                            guard let image = UIImage(data: imageData) else {
-                                return completion(.failure(.invalidImage))
+                        DispatchQueue.main.async {
+                            switch imageFetchResult {
+                            case .success(let imageData):
+                                guard let image = UIImage(data: imageData) else {
+                                    return completion(.failure(.invalidImage))
+                                }
+                                completion(.success(Image(image: image)))
+                            case .failure(let error):
+                                completion(.failure(error))
                             }
-                            completion(.success(Image(image: image)))
-                        case .failure(let error):
-                            completion(.failure(error))
                         }
                     }
                 },
                 _fetchThumbnail: { completion in
                     imageDataFetcher(id, authors, title) { imageFetchResult in
-                        switch imageFetchResult {
-                        case .success(let imageData):
-                            guard let image = UIImage(data: imageData) else {
-                                return completion(.failure(.invalidImage))
+                        DispatchQueue.main.async {
+                            switch imageFetchResult {
+                            case .success(let imageData):
+                                guard let image = UIImage(data: imageData) else {
+                                    return completion(.failure(.invalidImage))
+                                }
+                                completion(.success(Image(image: image)))
+                            case .failure(let error):
+                                completion(.failure(error))
                             }
-                            completion(.success(Image(image: image)))
-                        case .failure(let error):
-                            completion(.failure(error))
                         }
                     }
                 },
