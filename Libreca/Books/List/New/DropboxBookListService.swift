@@ -291,6 +291,7 @@ struct DropboxBookListService: BookListServicing {
         }
     }
     
+    // TODO: From here on down should be refactored into a helper struct
     private func createPath(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title) -> String {
         let authorsPath = authors.map { $0.name }.reduce("", +)
         let titlePath = title.name + " (\(bookID))"
