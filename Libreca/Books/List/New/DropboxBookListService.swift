@@ -235,7 +235,7 @@ struct DropboxBookListService: BookListServicing {
                                     // try each author individually
                                     self.fetchImage(for: bookID, authors: authors, authorIndex: 0, title: title, maxTitleLength: maxTitleLength, using: client, queue: fetchQueue, completion: completion)
                                 } else {
-                                    if maxTitleLength > 80 {
+                                    if maxTitleLength > 90 {
                                         self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
                                     } else {
                                         completion(.failure(.downloadError(error)))
@@ -278,7 +278,7 @@ struct DropboxBookListService: BookListServicing {
                 if nextAuthorIndex < authors.count {
                     self.fetchImage(for: bookID, authors: authors, authorIndex: nextAuthorIndex, title: title, maxTitleLength: maxTitleLength, using: client, queue: queue, completion: completion)
                 } else {
-                    if maxTitleLength > 80 {
+                    if maxTitleLength > 90 {
                         self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
                     } else {
                         completion(.failure(.downloadError(error)))
