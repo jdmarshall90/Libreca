@@ -103,9 +103,15 @@ struct BookListDataManager: BookListDataManaging {
                     completion(.failure(.backendSystem(.dropbox(error))))
                 }
             }
-        }, ebookFileDataFetcher: { identifier, authors, title, completion in
-            // TODO: Fetch these from appropriate API (Dropbox, in this case)
-            
+        }, ebookFileDataFetcher: { authors, title, format, completion in
+            DropboxBookListService(path: serviceDirectory).fetchFormat(authors: authors, title: title, format: format) { result in
+                switch result {
+                case .success(let ebookData):
+                    completion(.success(ebookData))
+                case .failure(let error):
+                    completion(.failure(.backendSystem(.dropbox(error))))
+                }
+            }
         }, progress: { nextBookModel in
             bookModels.append(nextBookModel)
             progress(.success((.book(nextBookModel), bookModels.count - 1)))

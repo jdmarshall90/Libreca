@@ -29,7 +29,7 @@ import SQLite
 // TODO: Something is screwy in book sorting for Dropbox, it seems to be using author sort no matter what setting the user has selected ...
 struct SQLiteHandle {
     typealias ImageDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ image: Swift.Result<Data, FetchError>) -> Void) -> Void
-    typealias EbookFileDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void
+    typealias EbookFileDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ format: BookModel.Format, _ completion: @escaping (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void
     
     private static let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -153,6 +153,7 @@ struct SQLiteHandle {
             
             let matchingFormats = availableFormats.filter { $0[Expression<Int>("book")] == id }
             let formats = matchingFormats.map { BookModel.Format(serverValue: $0[Expression<String>("format")]) }
+            let sortedFormats = formats.sorted(by: sort)
             
             let book = Book(
                 id: id,
@@ -167,7 +168,7 @@ struct SQLiteHandle {
                 publishedDate: publishedDate,
                 rating: rating,
                 series: series,
-                formats: formats,
+                formats: sortedFormats,
                 _fetchCover: { completion in
                     imageDataFetcher(id, authors, title) { imageFetchResult in
                         DispatchQueue.main.async {
@@ -199,11 +200,14 @@ struct SQLiteHandle {
                     }
                 },
                 _fetchMainFormat: { completion in
-                    ebookFileDataFetcher(id, authors, title) { ebookFetchResult in
+                    let sortedFormats = formats.sorted(by: sort)
+                    guard let mainFormat = sortedFormats.first else {
+                        return completion(.failure(.noAvailableEbooks))
+                    }
+                    ebookFileDataFetcher(authors, title, mainFormat) { ebookFetchResult in
                         switch ebookFetchResult {
                         case .success(let ebookFileData):
-                            // TODO: Grab the correct file type
-                            completion(.success(BookDownload(format: .epub, file: ebookFileData)))
+                            completion(.success(BookDownload(format: mainFormat, file: ebookFileData)))
                         case .failure(let error):
                             completion(.failure(error))
                         }
@@ -295,6 +299,31 @@ fileprivate struct Book: BookModel, Equatable {
     }
     
     var mainFormatType: Format? {
-        return formats.first
+        let sortedFormats = formats.sorted(by: sort)
+        let mainFormat = sortedFormats.first
+        return mainFormat
+    }
+}
+
+private func sort(format: BookModel.Format, otherFormat: BookModel.Format) -> Bool {
+    // I have not seen anything in the database that points to the main format,
+    // So I'm just arbitrarily picking this order for now. Once the app is able
+    // to let the user decide which one to download, then this order won't really
+    // matter.
+    switch (format, otherFormat) {
+    case (.epub, _):
+        return true
+    case (_, .epub):
+        return false
+    case (.pdf, _):
+        return true
+    case (_, .pdf):
+        return false
+    case (.other, _):
+        return true
+    case (_, .other):
+        return false
+    default:
+        return true
     }
 }

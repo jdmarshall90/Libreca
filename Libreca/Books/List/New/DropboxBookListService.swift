@@ -24,6 +24,7 @@
 import Foundation
 import SwiftyDropbox
 
+// This file is messy. Clean it up at some point.
 struct DropboxBookListService: BookListServicing {
     typealias BookServiceResponseData = Data
     typealias BookServiceError = DropboxAPIError
@@ -32,6 +33,7 @@ struct DropboxBookListService: BookListServicing {
         case unauthorized
         case downloadError(CallError<Files.DownloadError>)
         case searchError(CallError<Files.SearchError>)
+        case noSearchResults
         case nonsenseResponse
         case noNetwork
     }
@@ -74,6 +76,133 @@ struct DropboxBookListService: BookListServicing {
     func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
         fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: 100, completion: completion)
     }
+    
+    func fetchFormat(authors: [BookModel.Author], title: BookModel.Title, format: BookModel.Format, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        fetchFormatSearchResults(authors: authors, title: title, format: format, maxTitleLength: 45, completion: completion)
+    }
+    
+    private func fetchFormatSearchResults(authors: [BookModel.Author], title: BookModel.Title, format: BookModel.Format, maxTitleLength: Int, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        guard let client = DropboxClientsManager.authorizedClient else {
+            return completion(.failure(.unauthorized))
+        }
+        
+        let fetchQueue = DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.services.dropbox.fetchformat", qos: .userInitiated)
+        fetchQueue.async {
+            // Dropbox API doesn't seem to respond in airplane mode.
+            // Apple's NWPathMonitor class was giving me a false negative.
+            // Hence this crappy workaround.
+            do {
+                guard let appWebsite = URL(string: "https://libreca.io") else {
+                    return completion(.failure(.noNetwork))
+                }
+                _ = try Data(contentsOf: appWebsite)
+                // if we get here, assume a network connection is available ...
+                
+                let ebookName = self.createSanitizedEBookFileName(authors: authors, title: title, format: format, maxTitleLength: maxTitleLength)
+                client.files.search(path: self.path, query: ebookName).response { responseFile, error in
+                    switch (responseFile, error) {
+                    case (.some(let ebookSearchResult), .none):
+                        if let match = ebookSearchResult.matches.first,
+                            let ebookPath = match.metadata.pathDisplay {
+                            self.fetchEbookFile(at: ebookPath, using: client, queue: fetchQueue, completion: completion)
+                        } else {
+                            if authors.count > 1 {
+                                // try each author individually
+                                self.fetchFormatSearchResults(authors: authors, authorIndex: 0, title: title, maxTitleLength: maxTitleLength, format: format, using: client, queue: fetchQueue, completion: completion)
+                            } else {
+                                if maxTitleLength > 40 {
+                                    self.fetchFormatSearchResults(authors: authors, title: title, format: format, maxTitleLength: maxTitleLength - 1, completion: completion)
+                                } else {
+                                    completion(.failure(.noSearchResults))
+                                }
+                            }
+                        }
+                    case (.none, .some(let error)):
+                        if authors.count > 1 {
+                            // try each author individually
+                            self.fetchFormatSearchResults(authors: authors, authorIndex: 0, title: title, maxTitleLength: maxTitleLength, format: format, using: client, queue: fetchQueue, completion: completion)
+                        } else {
+                            if maxTitleLength > 40 {
+                                self.fetchFormatSearchResults(authors: authors, title: title, format: format, maxTitleLength: maxTitleLength - 1, completion: completion)
+                            } else {
+                                completion(.failure(.searchError(error)))
+                            }
+                        }
+                    case (.some, .some),
+                         (.none, .none):
+                        completion(.failure(.nonsenseResponse))
+                    }
+                }
+            } catch {
+                completion(.failure(.noNetwork))
+            }
+        }
+    }
+    
+    // swiftlint:disable:next function_parameter_count
+    private func fetchFormatSearchResults(
+        authors: [BookModel.Author],
+        authorIndex: Int,
+        title: BookModel.Title,
+        maxTitleLength: Int,
+        format: BookModel.Format,
+        using client: DropboxClient,
+        queue: DispatchQueue,
+        completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        let ebookName = createSanitizedEBookFileName(authors: [authors[authorIndex]], title: title, format: format, maxTitleLength: maxTitleLength)
+        client.files.search(path: self.path, query: ebookName).response { responseFile, error in
+            switch (responseFile, error) {
+            case (.some(let ebookSearchResult), .none):
+                if let match = ebookSearchResult.matches.first,
+                    let ebookPath = match.metadata.pathDisplay {
+                    self.fetchEbookFile(at: ebookPath, using: client, queue: queue, completion: completion)
+                } else {
+                    if authors.count > 1 {
+                        // try each author individually
+                        self.fetchFormatSearchResults(authors: authors, authorIndex: 0, title: title, maxTitleLength: maxTitleLength, format: format, using: client, queue: queue, completion: completion)
+                    } else {
+                        if maxTitleLength > 40 {
+                            self.fetchFormatSearchResults(authors: authors, title: title, format: format, maxTitleLength: maxTitleLength - 1, completion: completion)
+                        } else {
+                            completion(.failure(.noSearchResults))
+                        }
+                    }
+                }
+            case (.none, .some(let error)):
+                let nextAuthorIndex = authorIndex + 1
+                if nextAuthorIndex < authors.count {
+                    self.fetchFormatSearchResults(authors: authors, authorIndex: nextAuthorIndex, title: title, maxTitleLength: maxTitleLength, format: format, using: client, queue: queue, completion: completion)
+                } else {
+                    if maxTitleLength > 40 {
+                        self.fetchFormatSearchResults(authors: authors, title: title, format: format, maxTitleLength: maxTitleLength - 1, completion: completion)
+                    } else {
+                        completion(.failure(.searchError(error)))
+                    }
+                }
+            case (.some, .some),
+                 (.none, .none):
+                completion(.failure(.nonsenseResponse))
+            }
+        }
+    }
+    
+    private func fetchEbookFile(
+        at ebookPath: String,
+        using client: DropboxClient,
+        queue: DispatchQueue,
+        completion: @escaping (Result<Data, BookServiceError>) -> Void) {
+        client.files.download(path: ebookPath).response { responseFile, error in
+            switch (responseFile, error) {
+            case (.some(_, let ebookFileData), .none):
+                completion(.success(ebookFileData))
+            case (.none, .some(let error)):
+                completion(.failure(.downloadError(error)))
+            case (.some, .some),
+                 (.none, .none):
+                completion(.failure(.nonsenseResponse))
+            }
+        }
+    }
         
     private func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, maxTitleLength: Int, completion: @escaping (Result<Data, BookServiceError>) -> Void) {
         guard let client = DropboxClientsManager.authorizedClient else {
@@ -106,7 +235,7 @@ struct DropboxBookListService: BookListServicing {
                                     // try each author individually
                                     self.fetchImage(for: bookID, authors: authors, authorIndex: 0, title: title, maxTitleLength: maxTitleLength, using: client, queue: fetchQueue, completion: completion)
                                 } else {
-                                    if maxTitleLength > 80 {
+                                    if maxTitleLength > 90 {
                                         self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
                                     } else {
                                         completion(.failure(.downloadError(error)))
@@ -149,7 +278,7 @@ struct DropboxBookListService: BookListServicing {
                 if nextAuthorIndex < authors.count {
                     self.fetchImage(for: bookID, authors: authors, authorIndex: nextAuthorIndex, title: title, maxTitleLength: maxTitleLength, using: client, queue: queue, completion: completion)
                 } else {
-                    if maxTitleLength > 80 {
+                    if maxTitleLength > 90 {
                         self.fetchImage(for: bookID, authors: authors, title: title, maxTitleLength: maxTitleLength - 1, completion: completion)
                     } else {
                         completion(.failure(.downloadError(error)))
@@ -162,6 +291,7 @@ struct DropboxBookListService: BookListServicing {
         }
     }
     
+    // TODO: From here on down should be refactored into a helper struct
     private func createPath(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title) -> String {
         let authorsPath = authors.map { $0.name }.reduce("", +)
         let titlePath = title.name + " (\(bookID))"
@@ -170,7 +300,24 @@ struct DropboxBookListService: BookListServicing {
     }
     
     private func createSanitizedPath(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, maxTitleLength: Int) -> String {
-        let authorsPath = authors.map { $0.name }.reduce("") { result, next in
+        let authorsPath = createSanitizedAuthors(from: authors)
+        let sanitizedTitle = createSanitizedTitle(from: title, maxTitleLength: maxTitleLength)
+        let titlePath = sanitizedTitle + " (\(bookID))"
+        let path = self.path + "/" + authorsPath + "/" + titlePath + "/cover.jpg"
+        let sanitizedPath = path.replacingOccurrences(of: ":", with: "_")
+        let latinizedPath = sanitizedPath.latinized
+        return latinizedPath
+    }
+    
+    private func createSanitizedEBookFileName(authors: [BookModel.Author], title: BookModel.Title, format: BookModel.Format, maxTitleLength: Int) -> String {
+        let fileTitle = createSanitizedTitle(from: title, maxTitleLength: maxTitleLength)
+        let fileAuthors = createSanitizedAuthors(from: authors)
+        let fileName = "\(fileTitle) - \(fileAuthors).\(format.displayValue.lowercased())"
+        return fileName
+    }
+    
+    private func createSanitizedAuthors(from authors: [BookModel.Author]) -> String {
+        let sanitizedAuthors = authors.map { $0.name }.reduce("") { result, next in
             var sanitizedNext = next
                 .folding(options: .diacriticInsensitive, locale: .current)
                 .replacingOccurrences(of: "|", with: ",")
@@ -185,6 +332,11 @@ struct DropboxBookListService: BookListServicing {
                 return result + ", " + sanitizedNext
             }
         }
+        
+        return sanitizedAuthors
+    }
+    
+    private func createSanitizedTitle(from title: BookModel.Title, maxTitleLength: Int) -> String {
         var sanitizedTitle = title.name
             .replacingOccurrences(of: "/", with: "_")
             .replacingOccurrences(of: "\"", with: "_")
@@ -200,11 +352,7 @@ struct DropboxBookListService: BookListServicing {
         }
         
         sanitizedTitle = sanitizedTitle.folding(options: .diacriticInsensitive, locale: .current)
-        let titlePath = sanitizedTitle + " (\(bookID))"
-        let path = self.path + "/" + authorsPath + "/" + titlePath + "/cover.jpg"
-        let sanitizedPath = path.replacingOccurrences(of: ":", with: "_")
-        let latinizedPath = sanitizedPath.latinized
-        return latinizedPath
+        return sanitizedTitle
     }
 }
 

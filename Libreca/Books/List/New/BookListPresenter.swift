@@ -87,6 +87,8 @@ struct BookListPresenter: BookListPresenting {
             handle(backendError)
         case .invalidImage:
             handleInvalidImage()
+        case .noAvailableEbooks:
+            handleNoAvailableEbooks()
         case .unknown(let unknownError):
             handleUnknown(unknownError)
         }
@@ -115,6 +117,10 @@ struct BookListPresenter: BookListPresenting {
     private func handleInvalidImage() {
         // as of now, this can't happen. Will need to handle this
         // once the front end is rewritten
+    }
+    
+    private func handleNoAvailableEbooks() {
+        // this should never happen
     }
     
     private func handleUnknown(_ error: Error) {
@@ -149,6 +155,8 @@ struct BookListPresenter: BookListPresenting {
             handle(downloadError)
         case .searchError(let searchError):
             handle(searchError)
+        case .noSearchResults:
+            handleNoSearchResults()
         case .nonsenseResponse:
             view?.show(message: "Dropbox connectivity has encountered an unexpected error. If you are seeing this message, please contact app support.")
         case .noNetwork:
@@ -254,5 +262,9 @@ struct BookListPresenter: BookListPresenting {
     
     private func handle(_ error: CallError<Files.SearchError>) {
         // TODO: Implement me
+    }
+    
+    private func handleNoSearchResults() {
+        // should never happen
     }
 }

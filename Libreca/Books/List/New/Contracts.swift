@@ -59,6 +59,7 @@ enum FetchError: Error {
     case sql(SQL)
     case backendSystem(BackendSystem)
     case invalidImage
+    case noAvailableEbooks
     case unknown(Error)
 }
 
@@ -75,4 +76,5 @@ protocol BookListServicing {
     associatedtype BookServiceError: Error
     func fetchBooks(completion: @escaping (Swift.Result<BookServiceResponseData, BookServiceError>) -> Void)
     func fetchImage(for bookID: Int, authors: [BookModel.Author], title: BookModel.Title, completion: @escaping (Swift.Result<Data, BookServiceError>) -> Void)
+    func fetchFormat(authors: [BookModel.Author], title: BookModel.Title, format: BookModel.Format, completion: @escaping (Swift.Result<Data, BookServiceError>) -> Void)
 }
