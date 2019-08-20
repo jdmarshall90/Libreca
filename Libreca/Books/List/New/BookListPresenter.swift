@@ -41,9 +41,9 @@ struct BookListPresenter: BookListPresenting {
         self.interactor = interactor
     }
     
-    func fetchBooks() {
+    func fetchBooks(allowCached: Bool) {
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.presenter.fetchBooks", qos: .userInitiated).async {
-            self.interactor.fetchBooks(start: { result in
+            self.interactor.fetchBooks(allowCached: allowCached, start: { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let bookCount):

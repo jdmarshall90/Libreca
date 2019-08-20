@@ -112,10 +112,10 @@
 		D0B5215221F2D3CD007FB264 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5215121F2D3CD007FB264 /* Optional+Extensions.swift */; };
 		D0D6F2B121795769006F21A4 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B021795769006F21A4 /* CreditsViewController.swift */; };
 		D0D6F2B321795777006F21A4 /* AppLicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */; };
-		D0EBFAEE23050E5D00830D8C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EBFAED23050E5D00830D8C /* Notifications.swift */; };
 		D0DC0CF8227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */; };
 		D0DC4E8E2280EB57005EBA60 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC4E8D2280EB57005EBA60 /* Contracts.swift */; };
 		D0E716CF2287AB9B002DF4CA /* SQLiteHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */; };
+		D0EBFAEE23050E5D00830D8C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EBFAED23050E5D00830D8C /* Notifications.swift */; };
 		D0EFA8E5217AE5CC00622080 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D0518E7F21797CE40087A000 /* LICENSE */; };
 		D0EFA8ED217C0C8300622080 /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EFA8EC217C0C8300622080 /* GDPR.swift */; };
 /* End PBXBuildFile section */
@@ -255,10 +255,10 @@
 		D0D6F26C21781B02006F21A4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D0D6F2B021795769006F21A4 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		D0D6F2B221795777006F21A4 /* AppLicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLicensesViewController.swift; sourceTree = "<group>"; };
-		D0EBFAED23050E5D00830D8C /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		D0DC0CF7227DE20100B22B40 /* BookDetailsCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		D0DC4E8D2280EB57005EBA60 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
 		D0E716CE2287AB9B002DF4CA /* SQLiteHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteHandle.swift; sourceTree = "<group>"; };
+		D0EBFAED23050E5D00830D8C /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		D0EFA8EC217C0C8300622080 /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
