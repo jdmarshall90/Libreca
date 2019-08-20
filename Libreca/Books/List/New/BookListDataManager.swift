@@ -36,6 +36,12 @@ struct BookListDataManager: BookListDataManaging {
         return databaseURL
     }
     
+    private var ebookImageCacheURL: URL {
+        // swiftlint:disable:next force_unwrapping
+        let cachePathURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        return cachePathURL
+    }
+    
     init(dataSource: @escaping @autoclosure () -> DataSource) {
         self.dataSource = dataSource
     }
@@ -64,7 +70,7 @@ struct BookListDataManager: BookListDataManaging {
     
     private func fetchFromDropbox(at directory: String, allowCached: Bool, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
         if allowCached && FileManager.default.fileExists(atPath: databaseURL.path) {
-            readBooks(atDatabaseURL: databaseURL, inServiceDirectory: directory, start: start, progress: progress, completion: completion)
+            readBooks(atDatabaseURL: databaseURL, inServiceDirectory: directory, allowCachedImages: allowCached, start: start, progress: progress, completion: completion)
         } else {
             DropboxBookListService(path: directory).fetchBooks { response in
                 // The Dropbox API calls this completion handler on the main thread, so
@@ -74,7 +80,7 @@ struct BookListDataManager: BookListDataManaging {
                     case .success(let responseData):
                         do {
                             try responseData.write(to: self.databaseURL)
-                            self.readBooks(atDatabaseURL: self.databaseURL, inServiceDirectory: directory, start: start, progress: progress, completion: completion)
+                            self.readBooks(atDatabaseURL: self.databaseURL, inServiceDirectory: directory, allowCachedImages: allowCached, start: start, progress: progress, completion: completion)
                         } catch let error as FetchError {
                             start(.failure(error))
                         } catch {
@@ -88,13 +94,15 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
+    // swiftlint:disable:next function_parameter_count
     private func readBooks(atDatabaseURL onDiskDatabaseURL: URL,
                            inServiceDirectory serviceDirectory: String,
+                           allowCachedImages: Bool,
                            start: (Swift.Result<Int, FetchError>) -> Void,
                            progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void,
                            completion: @escaping ([BookFetchResult]) -> Void) {
         do {
-            try queryForBooks(atDatabaseURL: databaseURL, inServiceDirectory: serviceDirectory, start: start, progress: progress, completion: completion)
+            try queryForBooks(atDatabaseURL: databaseURL, inServiceDirectory: serviceDirectory, allowCachedImages: allowCachedImages, start: start, progress: progress, completion: completion)
         } catch let error as QueryError {
             start(.failure(.sql(.query(error))))
         } catch let error as SQLite.Result {
@@ -104,8 +112,10 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
+    // swiftlint:disable:next function_parameter_count
     private func queryForBooks(atDatabaseURL onDiskDatabaseURL: URL,
                                inServiceDirectory serviceDirectory: String,
+                               allowCachedImages: Bool,
                                start: (Swift.Result<Int, FetchError>) -> Void,
                                progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void,
                                completion: @escaping ([BookFetchResult]) -> Void) throws {
@@ -114,13 +124,38 @@ struct BookListDataManager: BookListDataManaging {
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
             start(.success(expectedBookCount))
         }, imageDataFetcher: { identifier, authors, title, completion in
-            // TODO: Cache these images on disk
-            DropboxBookListService(path: serviceDirectory).fetchImage(for: identifier, authors: authors, title: title) { result in
-                switch result {
-                case .success(let imageData):
-                    completion(.success(imageData))
-                case .failure(let error):
-                    completion(.failure(.backendSystem(.dropbox(error))))
+            let imagePrefix = "image_book_id_"
+            let fileNameForThisBook = self.ebookImageCacheURL.appendingPathComponent("\(imagePrefix)\(identifier)").appendingPathExtension("jpg")
+            let filePathForThisBook = fileNameForThisBook.path
+            if allowCachedImages &&
+                FileManager.default.fileExists(atPath: filePathForThisBook),
+                let imageData = FileManager.default.contents(atPath: filePathForThisBook) {
+                completion(.success(imageData))
+            } else {
+                if !allowCachedImages {
+                    // We could have some cached images, but still get into here, in the scenario that one image
+                    // wasn't cached on the previous run. If the file name is non-standard, it'll take longer to find the image,
+                    // and thus may not have time to find and download it. In that case, don't remove all the cached images.
+                    // Only remove them if the front end says to not allow reading from cache.
+                    do {
+                        let cachedImages = try FileManager
+                            .default
+                            .contentsOfDirectory(at: self.ebookImageCacheURL, includingPropertiesForKeys: [], options: [])
+                            .filter { $0.path.contains(imagePrefix) }
+                        try cachedImages.forEach(FileManager.default.removeItem)
+                    } catch {
+                        // don't care about the error, but don't want to deal with the optionals that would happen with from using `try?`
+                    }
+                }
+                
+                DropboxBookListService(path: serviceDirectory).fetchImage(for: identifier, authors: authors, title: title) { result in
+                    switch result {
+                    case .success(let imageData):
+                        try? imageData.write(to: fileNameForThisBook)
+                        completion(.success(imageData))
+                    case .failure(let error):
+                        completion(.failure(.backendSystem(.dropbox(error))))
+                    }
                 }
             }
         }, ebookFileDataFetcher: { authors, title, format, completion in
