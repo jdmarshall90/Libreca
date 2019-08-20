@@ -29,16 +29,23 @@ struct BookListDataManager: BookListDataManaging {
     
     private let dataSource: () -> DataSource
     
+    private var databaseURL: URL {
+        // swiftlint:disable:next force_unwrapping
+        let documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let databaseURL = documentsPathURL.appendingPathComponent("libreca_calibre_lib").appendingPathExtension("sqlite3")
+        return databaseURL
+    }
+    
     init(dataSource: @escaping @autoclosure () -> DataSource) {
         self.dataSource = dataSource
     }
     
-    func fetchBooks(start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
+    func fetchBooks(allowCached: Bool, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
         switch dataSource() {
         case .contentServer:
             fetchFromContentServer(start: start, progress: progress, completion: completion)
         case .dropbox(let directory):
-            fetchFromDropbox(at: directory ?? Settings.Dropbox.defaultDirectory, start: start, progress: progress, completion: completion)
+            fetchFromDropbox(at: directory ?? Settings.Dropbox.defaultDirectory, allowCached: allowCached, start: start, progress: progress, completion: completion)
         case .unconfigured:
             start(.failure(.backendSystem(.unconfiguredBackend)))
         }
@@ -55,40 +62,53 @@ struct BookListDataManager: BookListDataManaging {
         }
     }
     
-    private func fetchFromDropbox(at directory: String, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
-        // TODO: Grab from disk if available, only hit network if user pulls to refresh, or if user changes dropbox path
-        DropboxBookListService(path: directory).fetchBooks { response in
-            // The Dropbox API calls this completion handler on the main thread, so
-            // kick back to a background thread before continuing.
-            DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.dataManager.dropboxResponse", qos: .userInitiated).async {
-                switch response {
-                case .success(let responseData):
-                    do {
-                        let databaseURL = try self.writeToDisk(responseData)
-                        try self.queryForBooks(atDatabaseURL: databaseURL, inServiceDirectory: directory, start: start, progress: progress, completion: completion)
-                    } catch let error as QueryError {
-                        start(.failure(.sql(.query(error))))
-                    } catch let error as SQLite.Result {
-                        start(.failure(.sql(.underlying(error))))
-                    } catch {
-                        start(.failure(.unknown(error)))
+    private func fetchFromDropbox(at directory: String, allowCached: Bool, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
+        if allowCached && FileManager.default.fileExists(atPath: databaseURL.path) {
+            readBooks(atDatabaseURL: databaseURL, inServiceDirectory: directory, start: start, progress: progress, completion: completion)
+        } else {
+            DropboxBookListService(path: directory).fetchBooks { response in
+                // The Dropbox API calls this completion handler on the main thread, so
+                // kick back to a background thread before continuing.
+                DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.dataManager.dropboxResponse", qos: .userInitiated).async {
+                    switch response {
+                    case .success(let responseData):
+                        do {
+                            try responseData.write(to: self.databaseURL)
+                            self.readBooks(atDatabaseURL: self.databaseURL, inServiceDirectory: directory, start: start, progress: progress, completion: completion)
+                        } catch let error as FetchError {
+                            start(.failure(error))
+                        } catch {
+                            start(.failure(.unknown(error)))
+                        }
+                    case .failure(let error):
+                        start(.failure(.backendSystem(.dropbox(error))))
                     }
-                case .failure(let error):
-                    start(.failure(.backendSystem(.dropbox(error))))
                 }
             }
         }
     }
     
-    private func writeToDisk(_ data: Data) throws -> URL {
-        // swiftlint:disable:next force_unwrapping
-        let documentsPathURL = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        let databaseURL = documentsPathURL.appendingPathComponent("libreca_calibre_lib").appendingPathExtension("sqlite3")
-        try data.write(to: databaseURL)
-        return databaseURL
+    private func readBooks(atDatabaseURL onDiskDatabaseURL: URL,
+                           inServiceDirectory serviceDirectory: String,
+                           start: (Swift.Result<Int, FetchError>) -> Void,
+                           progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void,
+                           completion: @escaping ([BookFetchResult]) -> Void) {
+        do {
+            try queryForBooks(atDatabaseURL: databaseURL, inServiceDirectory: serviceDirectory, start: start, progress: progress, completion: completion)
+        } catch let error as QueryError {
+            start(.failure(.sql(.query(error))))
+        } catch let error as SQLite.Result {
+            start(.failure(.sql(.underlying(error))))
+        } catch {
+            start(.failure(.unknown(error)))
+        }
     }
     
-    private func queryForBooks(atDatabaseURL onDiskDatabaseURL: URL, inServiceDirectory serviceDirectory: String, start: (Swift.Result<Int, FetchError>) -> Void, progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) throws {
+    private func queryForBooks(atDatabaseURL onDiskDatabaseURL: URL,
+                               inServiceDirectory serviceDirectory: String,
+                               start: (Swift.Result<Int, FetchError>) -> Void,
+                               progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void,
+                               completion: @escaping ([BookFetchResult]) -> Void) throws {
         let sqliteHandle = SQLiteHandle(databaseURL: onDiskDatabaseURL)
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in

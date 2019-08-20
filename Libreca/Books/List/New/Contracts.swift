@@ -41,7 +41,7 @@ struct BookListRouter: BookListRouting {
 }
 
 protocol BookListPresenting {
-    func fetchBooks()
+    func fetchBooks(allowCached: Bool)
 }
 
 enum FetchError: Error {
@@ -64,11 +64,11 @@ enum FetchError: Error {
 }
 
 protocol BookListInteracting {
-    func fetchBooks(start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
+    func fetchBooks(allowCached: Bool, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
 }
 
 protocol BookListDataManaging {
-    func fetchBooks(start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
+    func fetchBooks(allowCached: Bool, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void)
 }
 
 protocol BookListServicing {

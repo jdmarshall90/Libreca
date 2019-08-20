@@ -135,7 +135,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             searchBar.keyboardAppearance = .dark
         }
         searchBar.disable()
-        refresh()
+        refresh(allowCached: true)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -298,7 +298,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = nil
         searchBar.resignFirstResponder()
-        refresh()
+        refresh(allowCached: true)
     }
     
     // MARK: - Table View
@@ -421,10 +421,10 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         if !isRefreshing {
             content = BooksListViewController.loadingContent
         }
-        refresh()
+        refresh(allowCached: false)
     }
     
-    private func refresh() {
+    private func refresh(allowCached: Bool) {
         // TODO: For a brand new app install, this is hanging on app launch. The user cannot get into the backend selection setting flow -- this may have been fixed already, test and verify
         if isRefreshing {
             refreshControl?.endRefreshing()
@@ -438,7 +438,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             
             switch Settings.DataSource.current {
             case .dropbox:
-                presenter?.fetchBooks()
+                presenter?.fetchBooks(allowCached: allowCached)
             case .contentServer:
                 viewModel.fetchBooks()
             case .unconfigured:
