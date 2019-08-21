@@ -158,8 +158,6 @@ final class SettingsTableViewController: UITableViewController, MFMailComposeVie
                     }
                 ),
                 DisplayModel(mainText: "Sorting", subText: nil, accessoryType: .none, allowHighlight: false),
-                
-                // TODO: Only show this one if backend is configured for content server
                 DisplayModel(mainText: "Images", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Theme", subText: nil, accessoryType: .none, allowHighlight: false),
                 DisplayModel(mainText: "Upgrades", subText: nil, accessoryType: .disclosureIndicator) { [weak self] in
