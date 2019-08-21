@@ -51,7 +51,18 @@ extension Book: BookModel {
     }
     
     func fetchMainFormat(completion: @escaping (Result<BookDownload, FetchError>) -> Void) {
-        // TODO: Implement me
+        // The interactor is expected to enforce this mainFormat being non-nil before
+        // calling this function. Hence the force unwrap.
+        
+        // swiftlint:disable:next force_unwrapping
+        mainFormat!.hitService { mainFormatDownloadResponse in
+            switch mainFormatDownloadResponse.result {
+            case .success(let payload):
+                completion(.success(payload))
+            case .failure(let error):
+                completion(.failure(.backendSystem(.contentServer(error))))
+            }
+        }
     }
     
     func isEqual(to other: BookModel) -> Bool {
