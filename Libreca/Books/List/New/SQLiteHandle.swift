@@ -23,7 +23,6 @@
 
 import CalibreKit
 import Foundation
-// TODO: Update licenses file with this lib
 import SQLite
 
 // TODO: Something is screwy in book sorting for Dropbox, it seems to be using author sort no matter what setting the user has selected ...

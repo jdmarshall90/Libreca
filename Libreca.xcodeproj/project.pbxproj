@@ -736,7 +736,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script is quirky and is finding duplicates.\n# So I ran it, then commented it out and manually removed the duplicates from the output plist.\n# This will be addressed as part of GitLab issue #151: https://gitlab.com/calibre-utils/Libreca/issues/151\n\n#./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Licenses.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
+			shellScript = "# This script is extremely buggy, is finding duplicates, and is finding no-longer-existing duplicates.\n# Keeping it around for reference purposes.\n# This will be addressed as part of GitLab issue #151: https://gitlab.com/calibre-utils/Libreca/issues/151\n\n#./Carthage/Checkouts/LicenseGenerator-iOS/credits.py -s \"$SRCROOT\" -o \"$SRCROOT/Libreca/Licenses.plist\" -e \"./Carthage/Checkouts/LicenseGenerator-iOS/Example/,./Carthage/Checkouts/LicenseGenerator-iOS/Tests/\"\n";
 		};
 		D0ACBF972185841F00CF9468 /* Copy frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
