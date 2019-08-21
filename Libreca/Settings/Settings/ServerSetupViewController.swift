@@ -29,15 +29,15 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     @IBOutlet weak var passwordTextField: UITextField!
     
     // TODO: After first app install, if you setup content server the only way to get library to load is to force kill the app and relaunch
-    // TODO: Fix missing save button
     
-    private lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
+    private(set) lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTheURL))
     
     private let viewModel = ServerSetupViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: This is no longer working. move this to the parent VC
         // hacky workaround for an issue caused by app freezing when performing book sort:
         // sorting freezes the UI temporarily, so if you repeatedly try to navigate to this screen
         // while that frozenness is happening, you'll get multiples of this on screen. At that point,
@@ -55,8 +55,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         passwordTextField.text = Settings.ContentServer.current?.credentials?.password
         
         NotificationCenter.default.addObserver(self, selector: #selector(bookListDidRefresh), name: Notifications.didRefreshBooksNotification.name, object: nil)
-        
-        navigationItem.rightBarButtonItem = saveButton
         
         if case .dark = Settings.Theme.current {
             urlTextField.keyboardAppearance = .dark

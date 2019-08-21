@@ -197,13 +197,13 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7LQ-dY-RrP">
                                 <rect key="frame" x="0.0" y="68" width="375" height="483"/>
                                 <connections>
-                                    <segue destination="HVU-fQ-wYN" kind="embed" id="YW3-Ya-f3q"/>
+                                    <segue destination="HVU-fQ-wYN" kind="embed" identifier="dropboxSegue" id="YW3-Ya-f3q"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BOv-ph-R1Y">
                                 <rect key="frame" x="0.0" y="68" width="375" height="483"/>
                                 <connections>
-                                    <segue destination="EAu-Au-OdW" kind="embed" id="13g-UJ-quk"/>
+                                    <segue destination="EAu-Au-OdW" kind="embed" identifier="contentServerSegue" id="13g-UJ-quk"/>
                                 </connections>
                             </containerView>
                         </subviews>

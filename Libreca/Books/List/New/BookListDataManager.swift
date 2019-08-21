@@ -127,6 +127,8 @@ struct BookListDataManager: BookListDataManaging {
             let imagePrefix = "image_book_id_"
             let fileNameForThisBook = self.ebookImageCacheURL.appendingPathComponent("\(imagePrefix)\(identifier)").appendingPathExtension("jpg")
             let filePathForThisBook = fileNameForThisBook.path
+            
+            // TODO: Book caching isn't working immediately after connecting to dropbox. requires an app restart to work. this happens if you switch from content server to dropbox, and I suspect it also happens on first install
             if allowCachedImages &&
                 FileManager.default.fileExists(atPath: filePathForThisBook),
                 let imageData = FileManager.default.contents(atPath: filePathForThisBook) {
