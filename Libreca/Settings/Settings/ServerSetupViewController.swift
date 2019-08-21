@@ -115,7 +115,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         do {
             try viewModel.save(url: urlTextField.text, username: usernameTextField.text, password: passwordTextField.text)
             
-            // just in case the hackiness in parent VC doesn't succeed, pop to root to avoid the same issue described there
+            // just in case the hackiness in `didMove(toParent` doesn't succeed, pop to root to avoid the same issue described there
             navigationController?.popToRootViewController(animated: true)
         } catch {
             // swiftlint:disable:next force_cast

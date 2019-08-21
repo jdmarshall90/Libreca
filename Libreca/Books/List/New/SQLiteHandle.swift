@@ -42,14 +42,12 @@ struct SQLiteHandle {
         self.databaseURL = databaseURL
     }
     
-    // TODO: Clean this up
     // swiftlint:disable:next function_body_length
     func queryForAllBooks(start: (Int) -> Void,
                           imageDataFetcher: @escaping ImageDataFetcher,
                           ebookFileDataFetcher: @escaping EbookFileDataFetcher,
                           progress: (BookModel) -> Void,
                           completion: () -> Void) throws {
-        // TODO: I suspect the performance problems are because of my brute force algorithm, but see if you can enhance at all
         let database = try Connection(databaseURL.path, readonly: true)
         let booksTable = Table("books")
         let bookCount = try database.scalar(booksTable.count)
