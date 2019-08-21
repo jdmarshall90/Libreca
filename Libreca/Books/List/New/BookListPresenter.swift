@@ -66,7 +66,9 @@ struct BookListPresenter: BookListPresenting {
                         case .failure(let retry):
                             self.view?.show(book: .failure(retry: retry), at: info.index)
                         }
-                    case .failure(let error):
+                    case .failure:
+                        // as of now, this can't happen. Will need to handle this
+                        // once the content server flow goes through this code
                         break
                     }
                 }
@@ -120,7 +122,8 @@ struct BookListPresenter: BookListPresenting {
     }
     
     private func handleNoAvailableEbooks() {
-        // this should never happen
+        // this should never happen, as this error should only happen when trying to download books
+        // would be better to refactor the errors to better indicate that
     }
     
     private func handleUnknown(_ error: Error) {
@@ -261,10 +264,12 @@ struct BookListPresenter: BookListPresenting {
     }
     
     private func handle(_ error: CallError<Files.SearchError>) {
-        // TODO: Implement me
+        // this should never happen, as this error should only happen when trying to download books
+        // would be better to refactor the errors to better indicate that
     }
     
     private func handleNoSearchResults() {
-        // should never happen
+        // this should never happen, as this error should only happen when trying to download books
+        // would be better to refactor the errors to better indicate that
     }
 }
