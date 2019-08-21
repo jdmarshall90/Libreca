@@ -119,6 +119,7 @@ struct BookListDataManager: BookListDataManaging {
                                start: (Swift.Result<Int, FetchError>) -> Void,
                                progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void,
                                completion: @escaping ([BookFetchResult]) -> Void) throws {
+        var mutableAllowCachedImages = allowCachedImages
         let sqliteHandle = SQLiteHandle(databaseURL: onDiskDatabaseURL)
         var bookModels: [BookModel] = []
         try sqliteHandle.queryForAllBooks(start: { expectedBookCount in
@@ -128,20 +129,18 @@ struct BookListDataManager: BookListDataManaging {
             let fileNameForThisBook = self.ebookImageCacheURL.appendingPathComponent("\(imagePrefix)\(identifier)").appendingPathExtension("jpg")
             let filePathForThisBook = fileNameForThisBook.path
             
-            // TODO: Book caching isn't working immediately after connecting to dropbox. requires an app restart to work. this happens if you switch from content server to dropbox, and I suspect it also happens on first install
-            if allowCachedImages &&
-                FileManager.default.fileExists(atPath: filePathForThisBook),
+            if mutableAllowCachedImages && FileManager.default.fileExists(atPath: filePathForThisBook),
                 let imageData = FileManager.default.contents(atPath: filePathForThisBook) {
                 completion(.success(imageData))
             } else {
-                if !allowCachedImages {
+                if !mutableAllowCachedImages {
+                    defer { mutableAllowCachedImages = true }
                     // We could have some cached images, but still get into here, in the scenario that one image
                     // wasn't cached on the previous run. If the file name is non-standard, it'll take longer to find the image,
                     // and thus may not have time to find and download it. In that case, don't remove all the cached images.
                     // Only remove them if the front end says to not allow reading from cache.
                     do {
-                        let cachedImages = try FileManager
-                            .default
+                        let cachedImages = try FileManager.default
                             .contentsOfDirectory(at: self.ebookImageCacheURL, includingPropertiesForKeys: [], options: [])
                             .filter { $0.path.contains(imagePrefix) }
                         try cachedImages.forEach(FileManager.default.removeItem)
