@@ -37,6 +37,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: This is no longer working. move this to the parent VC
         // hacky workaround for an issue caused by app freezing when performing book sort:
         // sorting freezes the UI temporarily, so if you repeatedly try to navigate to this screen
         // while that frozenness is happening, you'll get multiples of this on screen. At that point,

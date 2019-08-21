@@ -225,7 +225,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         // there is a bug in this VC where, if show(message:) is called before reload(all:),
         // then the message won't actually show up
         let emptyBookResults: [BooksListViewModel.BookFetchResult] = []
-        reload(all: emptyBookResults)
+        reload(all: emptyBookResults) // TODO: This is causing search attempts to crash
         DispatchQueue.main.async {
             self.refreshControl?.endRefreshing()
         }
@@ -252,6 +252,12 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
             // TODO: This is crashing if you re-save the content server url while
             // the detail screen (or the regular book list screen) is present,
             // then come back to the library tab (happening on phone, not sure about pad)
+            // Also happens if your content server settings are incorrect (i.e., 404, 401, etc.), then
+            // change settings to be correct.
+            // For some errors (like if your backend is down, then you start it back up, then re-save),
+            // the app just freezes. App is also freezing in other scenarios on startup or changing content server.
+            // Not sure exact test cases yet, but research in instruments. It happened once after switching from dropbox to content server. Not consistently though.
+            // Consistently happening if you repeatedly save the content server settings.
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         shouldReloadTable = true
