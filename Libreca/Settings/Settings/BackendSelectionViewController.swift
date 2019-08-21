@@ -28,9 +28,20 @@ final class BackendSelectionViewController: UIViewController {
     @IBOutlet private weak var dropboxContainerView: UIView!
     @IBOutlet private weak var contentServerContainerView: UIView!
     
+    // swiftlint:disable implicitly_unwrapped_optional
+    private weak var contentServerViewController: ServerSetupViewController!
+    private weak var dropboxViewController: DropboxSetupViewController!
+    // swiftlint:enable implicitly_unwrapped_optional
+    
     private enum Backend: Int {
         case dropbox
         case contentServer
+    }
+    
+    // this could be refactored and combined with the `Backend` enum
+    private enum Segue: String {
+        case contentServerSegue
+        case dropboxSegue
     }
     
     override func viewDidLoad() {
@@ -44,7 +55,23 @@ final class BackendSelectionViewController: UIViewController {
             showNecessaryUI(for: .contentServer, animated: false)
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let identifier = segue.identifier,
+            let safeSegue = Segue(rawValue: identifier) else {
+                return
+        }
         
+        // swiftlint:disable force_cast
+        switch safeSegue {
+        case .contentServerSegue:
+            contentServerViewController = (segue.destination as! ServerSetupViewController)
+        case .dropboxSegue:
+            dropboxViewController = (segue.destination as! DropboxSetupViewController)
+        }
+        // swiftlint:enable force_cast
+    }
+    
     @IBAction private func backendSelectorDidChange(_ sender: UISegmentedControl) {
         guard let backend = Backend(rawValue: sender.selectedSegmentIndex) else {
             return
@@ -75,6 +102,7 @@ final class BackendSelectionViewController: UIViewController {
         case .dropbox:
             UIView.animate(withDuration: animated ? 0.5 : 0) {
                 self.title = "Dropbox Setup"
+                self.navigationItem.rightBarButtonItem = nil
                 self.backendSelector.selectedSegmentIndex = 0
                 self.view.endEditing(true)
                 self.dropboxContainerView.alpha = 1
@@ -82,7 +110,8 @@ final class BackendSelectionViewController: UIViewController {
             }
         case .contentServer:
             UIView.animate(withDuration: animated ? 0.5 : 0) {
-                self.self.title = "Server Setup"
+                self.title = "Server Setup"
+                self.navigationItem.rightBarButtonItem = self.contentServerViewController.saveButton
                 self.backendSelector.selectedSegmentIndex = 1
                 self.dropboxContainerView.alpha = 0
                 self.contentServerContainerView.alpha = 1
