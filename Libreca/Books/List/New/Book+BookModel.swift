@@ -51,7 +51,7 @@ extension Book: BookModel {
     }
     
     func fetchMainFormat(completion: @escaping (Result<BookDownload, FetchError>) -> Void) {
-        // TODO: Switch from active Dropbox connection to active content server connection, and the first subsequent download doesn't show up on UI, and also causes all previous downloads to be deleted.
+        // TODO: Switch from active Dropbox connection to active content server connection (or vice versa, mostly vice versa), and the first subsequent download doesn't show up on UI, and also causes all previous downloads to be deleted. It (visually) appears to happen only after the download completes.
         
         // The interactor is expected to enforce this mainFormat being non-nil before
         // calling this function. Hence the force unwrap.
