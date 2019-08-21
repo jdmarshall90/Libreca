@@ -37,19 +37,6 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: This is no longer working. move this to the parent VC
-        // hacky workaround for an issue caused by app freezing when performing book sort:
-        // sorting freezes the UI temporarily, so if you repeatedly try to navigate to this screen
-        // while that frozenness is happening, you'll get multiples of this on screen. At that point,
-        // you are able to tap "Save" on multiple different instances of this view controller, causing
-        // a crash.
-        if let navController = navigationController {
-            let viewControllerCount = navController.viewControllers.count
-            if viewControllerCount > 2 {
-                navigationController?.viewControllers.removeSubrange(1..<(viewControllerCount - 1))
-            }
-        }
-        
         urlTextField.text = Settings.ContentServer.current?.url.absoluteString
         usernameTextField.text = Settings.ContentServer.current?.credentials?.username
         passwordTextField.text = Settings.ContentServer.current?.credentials?.password
@@ -60,6 +47,22 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
             urlTextField.keyboardAppearance = .dark
             usernameTextField.keyboardAppearance = .dark
             passwordTextField.keyboardAppearance = .dark
+        }
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        
+        // hacky workaround for an issue caused by app freezing when performing book sort:
+        // sorting freezes the UI temporarily, so if you repeatedly try to navigate to this screen
+        // while that frozenness is happening, you'll get multiples of this on screen. At that point,
+        // you are able to tap "Save" on multiple different instances of this view controller, causing
+        // a crash.
+        if let navController = parent?.navigationController {
+            let viewControllerCount = navController.viewControllers.count
+            if viewControllerCount > 2 {
+                navigationController?.viewControllers.removeSubrange(1..<(viewControllerCount - 1))
+            }
         }
     }
     
@@ -112,7 +115,7 @@ final class ServerSetupViewController: UITableViewController, UITextFieldDelegat
         do {
             try viewModel.save(url: urlTextField.text, username: usernameTextField.text, password: passwordTextField.text)
             
-            // just in case the hackiness in viewDidLoad doesn't succeed, pop to root to avoid the same issue described there
+            // just in case the hackiness in parent VC doesn't succeed, pop to root to avoid the same issue described there
             navigationController?.popToRootViewController(animated: true)
         } catch {
             // swiftlint:disable:next force_cast
