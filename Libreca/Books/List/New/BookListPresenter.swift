@@ -27,12 +27,14 @@ import SwiftyDropbox
 
 // TODO: Test what happens if you connect to Dropbox, then delete all app data, then try to refresh
 
-struct BookListPresenter: BookListPresenting {
+final class BookListPresenter: BookListPresenting {
     typealias View = BookListViewing
     
     private weak var view: View?
     private let router: BookListRouting
     private let interactor: BookListInteracting
+    
+    private var books: [BookFetchResult] = []
     
     init(view: View, router: BookListRouting, interactor: BookListInteracting) {
         self.view = view
@@ -42,28 +44,28 @@ struct BookListPresenter: BookListPresenting {
     
     func fetchBooks(allowCached: Bool) {
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.presenter.fetchBooks", qos: .userInitiated).async {
-            self.interactor.fetchBooks(allowCached: allowCached, start: { result in
+            self.interactor.fetchBooks(allowCached: allowCached, start: { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let bookCount):
-                        self.view?.show(bookCount: bookCount)
+                        self?.view?.show(bookCount: bookCount)
                     case .failure(let error):
-                        self.handle(error)
+                        self?.handle(error)
                     }
                 }
-            }, progress: { result in
+            }, progress: { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let info):
                         switch info.result {
                         case .book(let book):
-                            self.view?.show(book: .book(book), at: info.index)
+                            self?.view?.show(book: .book(book), at: info.index)
                         case .inFlight:
                             // as of now, this can't happen. Will need to handle this
                             // once the content server flow goes through this code
                             break
                         case .failure(let retry):
-                            self.view?.show(book: .failure(retry: retry), at: info.index)
+                            self?.view?.show(book: .failure(retry: retry), at: info.index)
                         }
                     case .failure:
                         // as of now, this can't happen. Will need to handle this
@@ -71,12 +73,42 @@ struct BookListPresenter: BookListPresenting {
                         break
                     }
                 }
-            }, completion: { results in
+            }, completion: { [weak self] results in
+                self?.books = results
                 DispatchQueue.main.async {
-                    self.view?.reload(all: results)
+                    self?.view?.reload(all: results)
                 }
             })
             // swiftlint:disable:previous multiline_arguments_brackets
+        }
+    }
+    
+    func search(using terms: String, results: @escaping ([BookFetchResult]) -> Void) {
+        let noResultsFoundMessage = "No results found. Try different search terms, separated by spaces."
+        view?.show(message: "Searching...")
+        guard !terms.isEmpty else {
+            if books.isEmpty {
+                view?.show(message: noResultsFoundMessage)
+            } else {
+                results(books)
+            }
+            return
+        }
+        
+        DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.search.library.presenter", qos: .userInitiated).async { [weak self] in
+            guard let strongSelf = self else { return }
+            let terms = terms.split(separator: " ").map(String.init)
+            let dataSet = strongSelf.books.compactMap { $0.book }
+            let matches = Searcher(dataSet: dataSet, terms: terms).search()
+            let matchResults = matches.map { BookFetchResult.book($0) }
+            
+            DispatchQueue.main.async {
+                if matchResults.isEmpty {
+                    self?.view?.show(message: noResultsFoundMessage)
+                } else {
+                    results(matchResults)
+                }
+            }
         }
     }
     

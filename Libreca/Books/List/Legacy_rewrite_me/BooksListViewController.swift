@@ -204,6 +204,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     func reload(all results: [BookFetchResult]) {
+        // yet another quirk that can be removed once the content server flow is rewritten ...
         let legacyResults: [BooksListViewModel.BookFetchResult] = results.map { result in
             switch result {
             case .book(let bookModel):
@@ -225,7 +226,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         // there is a bug in this VC where, if show(message:) is called before reload(all:),
         // then the message won't actually show up
         let emptyBookResults: [BooksListViewModel.BookFetchResult] = []
-        reload(all: emptyBookResults) // TODO: This is causing search attempts to crash
+        reload(all: emptyBookResults)
         DispatchQueue.main.async {
             self.refreshControl?.endRefreshing()
         }
@@ -269,15 +270,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         isRetryingFailures = false
         sectionIndexGenerator.isSectioningEnabled = true
         content = .books(books)
-        
-        if let searchText = searchBar.text,
-            !searchText.isEmpty {
-            // if VC is told to reload while some search text is present, re-run
-            // the search to update the UI with any changes
-            viewModel.search(using: searchText) { [weak self] matches in
-                self?.content = .books(matches)
-            }
-        }
     }
     
     func willRefreshBooks() {
@@ -296,8 +288,29 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        viewModel.search(using: searchBar.text ?? "") { [weak self] matches in
-            self?.content = .books(matches)
+        
+        // yet another quirk that can be removed once the content server flow is rewritten ...
+        switch Settings.DataSource.current {
+        case .contentServer:
+            viewModel.search(using: searchBar.text ?? "") { [weak self] matches in
+                self?.content = .books(matches)
+            }
+        case .dropbox,
+             .unconfigured:
+            presenter?.search(using: searchBar.text ?? "") { [weak self] matches in
+                let legacyMatches: [BooksListViewModel.BookFetchResult] = matches.map { result in
+                    switch result {
+                    case .book(let bookModel):
+                        return .book(bookModel)
+                    case .inFlight:
+                        return .inFlight
+                    case .failure:
+                        // I do not expect this to happen ...
+                        return .inFlight
+                    }
+                }
+                self?.content = .books(legacyMatches)
+            }
         }
     }
     

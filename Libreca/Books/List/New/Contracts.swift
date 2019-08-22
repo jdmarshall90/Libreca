@@ -42,6 +42,7 @@ struct BookListRouter: BookListRouting {
 
 protocol BookListPresenting {
     func fetchBooks(allowCached: Bool)
+    func search(using terms: String, results: @escaping ([BookFetchResult]) -> Void)
 }
 
 enum FetchError: Error {
