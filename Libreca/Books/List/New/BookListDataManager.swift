@@ -29,7 +29,7 @@ struct BookListDataManager: BookListDataManaging {
     
     private let dataSource: () -> DataSource
     
-    private var databaseURL: URL {
+    static var databaseURL: URL {
         // swiftlint:disable:next force_unwrapping
         let documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let databaseURL = documentsPathURL.appendingPathComponent("libreca_calibre_lib").appendingPathExtension("sqlite3")
@@ -69,8 +69,8 @@ struct BookListDataManager: BookListDataManaging {
     }
     
     private func fetchFromDropbox(at directory: String, allowCached: Bool, start: @escaping (Swift.Result<Int, FetchError>) -> Void, progress: @escaping (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void, completion: @escaping ([BookFetchResult]) -> Void) {
-        if allowCached && FileManager.default.fileExists(atPath: databaseURL.path) {
-            readBooks(atDatabaseURL: databaseURL, inServiceDirectory: directory, allowCachedImages: allowCached, start: start, progress: progress, completion: completion)
+        if allowCached && FileManager.default.fileExists(atPath: BookListDataManager.databaseURL.path) {
+            readBooks(atDatabaseURL: BookListDataManager.databaseURL, inServiceDirectory: directory, allowCachedImages: allowCached, start: start, progress: progress, completion: completion)
         } else {
             DropboxBookListService(path: directory).fetchBooks { response in
                 // The Dropbox API calls this completion handler on the main thread, so
@@ -79,8 +79,8 @@ struct BookListDataManager: BookListDataManaging {
                     switch response {
                     case .success(let responseData):
                         do {
-                            try responseData.write(to: self.databaseURL)
-                            self.readBooks(atDatabaseURL: self.databaseURL, inServiceDirectory: directory, allowCachedImages: allowCached, start: start, progress: progress, completion: completion)
+                            try responseData.write(to: BookListDataManager.databaseURL)
+                            self.readBooks(atDatabaseURL: BookListDataManager.databaseURL, inServiceDirectory: directory, allowCachedImages: allowCached, start: start, progress: progress, completion: completion)
                         } catch let error as FetchError {
                             start(.failure(error))
                         } catch {
@@ -102,7 +102,7 @@ struct BookListDataManager: BookListDataManaging {
                            progress: (Swift.Result<(result: BookFetchResult, index: Int), FetchError>) -> Void,
                            completion: @escaping ([BookFetchResult]) -> Void) {
         do {
-            try queryForBooks(atDatabaseURL: databaseURL, inServiceDirectory: serviceDirectory, allowCachedImages: allowCachedImages, start: start, progress: progress, completion: completion)
+            try queryForBooks(atDatabaseURL: BookListDataManager.databaseURL, inServiceDirectory: serviceDirectory, allowCachedImages: allowCachedImages, start: start, progress: progress, completion: completion)
         } catch let error as QueryError {
             start(.failure(.sql(.query(error))))
         } catch let error as SQLite.Result {

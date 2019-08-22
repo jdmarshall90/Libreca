@@ -70,6 +70,9 @@ struct DownloadsDataManager: DownloadsDataManaging {
     }
     
     private func allDownloadURLs() throws -> [URL] {
-        return try FileManager.default.contentsOfDirectory(at: Download.allEbooksDownloadPath, includingPropertiesForKeys: [], options: [])
+        return try FileManager
+            .default
+            .contentsOfDirectory(at: Download.allEbooksDownloadPath, includingPropertiesForKeys: [], options: [])
+            .filter { $0.lastPathComponent != BookListDataManager.databaseURL.lastPathComponent }
     }
 }
