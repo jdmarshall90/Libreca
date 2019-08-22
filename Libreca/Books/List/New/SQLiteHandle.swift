@@ -25,7 +25,6 @@ import CalibreKit
 import Foundation
 import SQLite
 
-// TODO: Something is screwy in book sorting for Dropbox, it seems to be using author sort no matter what setting the user has selected ...
 struct SQLiteHandle {
     typealias ImageDataFetcher = (_ id: Int, _ authors: [BookModel.Author], _ title: BookModel.Title, _ completion: @escaping (_ image: Swift.Result<Data, FetchError>) -> Void) -> Void
     typealias EbookFileDataFetcher = (_ authors: [BookModel.Author], _ title: BookModel.Title, _ format: BookModel.Format, _ completion: @escaping (_ ebookFile: Swift.Result<Data, FetchError>) -> Void) -> Void

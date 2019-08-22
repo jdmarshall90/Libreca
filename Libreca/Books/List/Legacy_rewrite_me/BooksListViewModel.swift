@@ -309,6 +309,9 @@ final class BooksListViewModel {
         // do. So just ignore the notification.
         guard !books.isEmpty else { return }
         
+        // yet another quirk that can be removed once the content server flow is rewritten ...
+        guard case .contentServer = Settings.DataSource.current else { return }
+        
         books = sortBooks(by: Settings.Sort.current)
         view?.reload(all: books)
     }
