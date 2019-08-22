@@ -40,6 +40,8 @@ final class BookListPresenter: BookListPresenting {
         self.view = view
         self.router = router
         self.interactor = interactor
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sortSettingDidChange), name: Settings.Sort.didChangeNotification.name, object: nil)
     }
     
     func fetchBooks(allowCached: Bool) {
@@ -74,9 +76,11 @@ final class BookListPresenter: BookListPresenting {
                     }
                 }
             }, completion: { [weak self] results in
-                self?.books = results
+                guard let strongSelf = self else { return }
+                strongSelf.books = results
+                strongSelf.books = strongSelf.sortBooks(by: Settings.Sort.current)
                 DispatchQueue.main.async {
-                    self?.view?.reload(all: results)
+                    self?.view?.reload(all: strongSelf.books)
                 }
             })
             // swiftlint:disable:previous multiline_arguments_brackets
@@ -107,6 +111,62 @@ final class BookListPresenter: BookListPresenting {
                     self?.view?.show(message: noResultsFoundMessage)
                 } else {
                     results(matchResults)
+                }
+            }
+        }
+    }
+    
+    @objc
+    private func sortSettingDidChange(_ notification: Notification) {
+        // If books is empty, that means either:
+        // a.) User has no books in library.
+        // b.) There was an error fetching books.
+        //
+        // In either of these cases, updating the UI would clear out that empty
+        // state or error message, which we don't want to
+        // do. So just ignore the notification.
+        guard !books.isEmpty else { return }
+        
+        books = sortBooks(by: Settings.Sort.current)
+        view?.reload(all: books)
+    }
+    
+    private func sortBooks(by sort: Settings.Sort) -> [BookFetchResult] {
+        switch sort {
+        case .authorLastName:
+            return books.sorted { result1, result2 in
+                switch (result1, result2) {
+                case (.book(let book1), .book(let book2)):
+                    if book1[keyPath: sort.sortingKeyPath] != book2[keyPath: sort.sortingKeyPath] {
+                        return sort.sortAction(book1, book2)
+                    } else if book1.series?.name != book2.series?.name {
+                        return (book1.series?.name ?? "") < (book2.series?.name ?? "")
+                    } else {
+                        return (book1.series?.index ?? -Double(Int.min)) < (book2.series?.index ?? -Double(Int.min))
+                    }
+                case (.inFlight, .book), (.failure, .book):
+                    return true
+                case (.book, _),
+                     (.failure, .inFlight),
+                     (.failure, .failure),
+                     (.inFlight, .inFlight),
+                     (.inFlight, .failure):
+                    return false
+                }
+            }
+        case .title:
+            return books.sorted { result1, result2 in
+                switch (result1, result2) {
+                case (.book(let book1), .book(let book2)):
+                    return sort.sortAction(book1, book2)
+                case (.inFlight, .book), (.failure, .book):
+                    return true
+                case (.book, _),
+                     (.failure, .inFlight),
+                     (.failure, .failure),
+                     (.inFlight, .inFlight),
+                     (.inFlight, .failure):
+                    return false
                 }
             }
         }
