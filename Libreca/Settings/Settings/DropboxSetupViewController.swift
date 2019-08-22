@@ -24,7 +24,6 @@
 import SwiftyDropbox
 import UIKit
 
-// TODO: Update privacy policy to include Dropbox
 final class DropboxSetupViewController: UIViewController {
     @IBOutlet private weak var dropboxButton: UIButton! {
         didSet {
