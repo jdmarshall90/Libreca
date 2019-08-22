@@ -24,7 +24,7 @@
 import CalibreKit
 import Foundation
 
-// TODO: This file might need updated for Dropbox support
+// TODO: This file needs updated for Dropbox support and deleting downloaded ebooks (from both content server and Dropbox)
 
 protocol GDPRItem {
     var information: String { get }
