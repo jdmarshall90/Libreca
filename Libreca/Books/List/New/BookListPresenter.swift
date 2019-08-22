@@ -44,28 +44,28 @@ final class BookListPresenter: BookListPresenting {
     
     func fetchBooks(allowCached: Bool) {
         DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.presenter.fetchBooks", qos: .userInitiated).async {
-            self.interactor.fetchBooks(allowCached: allowCached, start: { result in
+            self.interactor.fetchBooks(allowCached: allowCached, start: { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let bookCount):
-                        self.view?.show(bookCount: bookCount)
+                        self?.view?.show(bookCount: bookCount)
                     case .failure(let error):
-                        self.handle(error)
+                        self?.handle(error)
                     }
                 }
-            }, progress: { result in
+            }, progress: { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let info):
                         switch info.result {
                         case .book(let book):
-                            self.view?.show(book: .book(book), at: info.index)
+                            self?.view?.show(book: .book(book), at: info.index)
                         case .inFlight:
                             // as of now, this can't happen. Will need to handle this
                             // once the content server flow goes through this code
                             break
                         case .failure(let retry):
-                            self.view?.show(book: .failure(retry: retry), at: info.index)
+                            self?.view?.show(book: .failure(retry: retry), at: info.index)
                         }
                     case .failure:
                         // as of now, this can't happen. Will need to handle this
