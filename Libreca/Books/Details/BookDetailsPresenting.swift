@@ -105,7 +105,7 @@ struct BookDetailsPresenter: BookDetailsPresenting {
             case .success:
                 break
             case .failure(let error):
-                self.view?.showError(withTitle: "An error occurred", message: error.localizedDescription)
+                self.view?.showError(withTitle: "An error occurred", message: "\(error.localizedDescription) (\(error))")
             }
             self.view?.removeLoader()
         }

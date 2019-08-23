@@ -39,6 +39,7 @@ final class DownloadsViewModel {
         self.view = view
         self.allDownloads = DownloadsViewModel.buildSectionModels()
         NotificationCenter.default.addObserver(self, selector: #selector(didDownloadNewEbook), name: Download.downloadsUpdatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didDownloadNewEbook), name: Download.downloadsUpdatedNotification, object: nil)
     }
     
     private static func buildSectionModels() -> [SectionModel] {

@@ -36,10 +36,19 @@ struct BookListDataManager: BookListDataManaging {
         return databaseURL
     }
     
-    private var ebookImageCacheURL: URL {
+    static var ebookImageCacheURL: URL {
         // swiftlint:disable:next force_unwrapping
         let cachePathURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         return cachePathURL
+    }
+    
+    static var cachedImageCount: Int {
+        let cachedEbookImages = try? FileManager
+            .default
+            .contentsOfDirectory(at: ebookImageCacheURL, includingPropertiesForKeys: [], options: [])
+            .filter { $0.pathExtension == "jpg" }
+        let count = cachedEbookImages?.count
+        return count ?? 0
     }
     
     init(dataSource: @escaping @autoclosure () -> DataSource) {
@@ -126,7 +135,7 @@ struct BookListDataManager: BookListDataManaging {
             start(.success(expectedBookCount))
         }, imageDataFetcher: { identifier, authors, title, completion in
             let imagePrefix = "image_book_id_"
-            let fileNameForThisBook = self.ebookImageCacheURL.appendingPathComponent("\(imagePrefix)\(identifier)").appendingPathExtension("jpg")
+            let fileNameForThisBook = BookListDataManager.ebookImageCacheURL.appendingPathComponent("\(imagePrefix)\(identifier)").appendingPathExtension("jpg")
             let filePathForThisBook = fileNameForThisBook.path
             
             if mutableAllowCachedImages && FileManager.default.fileExists(atPath: filePathForThisBook),
@@ -141,7 +150,7 @@ struct BookListDataManager: BookListDataManaging {
                     // Only remove them if the front end says to not allow reading from cache.
                     do {
                         let cachedImages = try FileManager.default
-                            .contentsOfDirectory(at: self.ebookImageCacheURL, includingPropertiesForKeys: [], options: [])
+                            .contentsOfDirectory(at: BookListDataManager.ebookImageCacheURL, includingPropertiesForKeys: [], options: [])
                             .filter { $0.path.contains(imagePrefix) }
                         try cachedImages.forEach(FileManager.default.removeItem)
                     } catch {

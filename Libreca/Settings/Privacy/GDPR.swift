@@ -23,8 +23,7 @@
 
 import CalibreKit
 import Foundation
-
-// TODO: This file needs updated for Dropbox support (deauthenticate from Dropbox and remove the local flag indicating Dropbox use) and deleting downloaded ebooks (from both content server and Dropbox)
+import SwiftyDropbox
 
 protocol GDPRItem {
     var information: String { get }
@@ -36,7 +35,21 @@ struct GDPR {
     private init() {}
     
     private static var allItems: [GDPRItem] {
-        return [Settings.Sort.current, Settings.ContentServer.current, Settings.Image.current, Settings.Theme.current]
+        let settings: [GDPRItem] = [
+            Settings.Sort.current,
+            Settings.ContentServer.current,
+            Settings.Image.current,
+            Settings.Theme.current,
+            Settings.DataSource.current
+        ]
+        
+        var data: [GDPRItem] = DownloadsDataManager().allDownloads()
+        if FileManager.default.fileExists(atPath: BookListDataManager.databaseURL.path) || BookListDataManager.cachedImageCount > 0 {
+            data.append(BookListDataManager(dataSource: .unconfigured))
+        }
+        
+        let allItems = settings + data
+        return allItems
     }
     
     static func export() -> [GDPRItem] {
@@ -95,5 +108,53 @@ extension Settings.Theme: GDPRItem {
     
     func delete() {
         Settings.Theme.current = .default
+    }
+}
+
+extension Settings.DataSource: GDPRItem {
+    var information: String {
+        return "Is Dropbox authorized? \(Settings.Dropbox.isAuthorized)"
+    }
+    
+    func delete() {
+        Settings.Dropbox.isAuthorized = false
+        DropboxClientsManager.unlinkClients()
+    }
+}
+
+extension Download: GDPRItem {
+    var information: String {
+        return "Ebook file: \(ebookDownloadPath.lastPathComponent)"
+    }
+    
+    func delete() {
+        DownloadsDataManager().delete(self)
+    }
+}
+
+extension BookListDataManager: GDPRItem {
+    var information: String {
+        var information = ""
+        if FileManager.default.fileExists(atPath: BookListDataManager.databaseURL.path) {
+            information += "Dropbox database: \(BookListDataManager.databaseURL.lastPathComponent)"
+        }
+        
+        if FileManager.default.fileExists(atPath: BookListDataManager.ebookImageCacheURL.path) {
+            if !information.isEmpty {
+                information += "\n"
+            }
+            information += "Dropbox image count: \(BookListDataManager.cachedImageCount)"
+        }
+        return information
+    }
+    
+    func delete() {
+        try? FileManager.default.removeItem(at: BookListDataManager.databaseURL)
+        
+        let cachedEbookImages = try? FileManager.default.contentsOfDirectory(at: BookListDataManager.ebookImageCacheURL, includingPropertiesForKeys: [], options: [])
+        cachedEbookImages?.forEach {
+            try? FileManager.default.removeItem(at: $0)
+        }
+        NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
     }
 }
