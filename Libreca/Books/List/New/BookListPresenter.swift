@@ -25,8 +25,6 @@ import Foundation
 import SQLite
 import SwiftyDropbox
 
-// TODO: Test what happens if you connect to Dropbox, then delete all app data, then try to refresh
-
 final class BookListPresenter: BookListPresenting {
     typealias View = BookListViewing
     

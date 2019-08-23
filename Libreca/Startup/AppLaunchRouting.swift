@@ -145,7 +145,9 @@ final class AppLaunchRouter: NSObject, AppLaunchRouting, UISplitViewControllerDe
         let tabBarController = window.rootViewController as? UITabBarController
         let downloadsTabItem = tabBarController?.tabBar.items?[1]
         
-        if let currentBadge = downloadsTabItem?.badgeValue,
+        if BookListDataManager.cachedImageCount == 0 {
+            downloadsTabItem?.badgeValue = nil
+        } else if let currentBadge = downloadsTabItem?.badgeValue,
             let currentBadgeNumber = Int(currentBadge) {
             downloadsTabItem?.badgeValue = "\(currentBadgeNumber + 1)"
         } else {
