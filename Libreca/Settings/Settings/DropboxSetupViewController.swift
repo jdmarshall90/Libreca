@@ -56,6 +56,8 @@ final class DropboxSetupViewController: UIViewController {
                 self?.updateDirectoryButtonText()
             }
         )
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alertController, animated: true)
     }
     
