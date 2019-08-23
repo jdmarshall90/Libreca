@@ -29,7 +29,6 @@ import UIKit
 // TODO: Update libreca.io
 // TODO: Update Google ad
 // TODO: Update App Store screenshots
-// TODO: Make sure everything looks good in dark mode
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
