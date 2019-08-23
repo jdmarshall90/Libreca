@@ -24,7 +24,6 @@
 import SwiftyDropbox
 import UIKit
 
-// TODO: Update privacy policy to include Dropbox
 final class DropboxSetupViewController: UIViewController {
     @IBOutlet private weak var dropboxButton: UIButton! {
         didSet {
@@ -71,6 +70,10 @@ final class DropboxSetupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateConnectButtonText), name: Settings.Dropbox.didChangeAuthorizationNotification.name, object: nil)
+        
+        if case .dark = Settings.Theme.current {
+            view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        }
     }
     
     @objc

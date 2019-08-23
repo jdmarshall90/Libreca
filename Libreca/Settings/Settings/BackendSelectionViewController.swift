@@ -54,6 +54,10 @@ final class BackendSelectionViewController: UIViewController {
         case .contentServer:
             showNecessaryUI(for: .contentServer, animated: false)
         }
+        
+        if case .dark = Settings.Theme.current {
+            view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

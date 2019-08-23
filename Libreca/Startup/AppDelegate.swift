@@ -25,12 +25,10 @@ import CalibreKit
 import SwiftyDropbox
 import UIKit
 
-// TODO: Tag CalibreKit and point Libreca to tag, instead of master
 // TODO: Update App Store metadata: description, subtitle, search terms
 // TODO: Update libreca.io
 // TODO: Update Google ad
 // TODO: Update App Store screenshots
-// TODO: Make sure everything looks good in dark mode
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

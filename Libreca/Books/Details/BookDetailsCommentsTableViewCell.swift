@@ -28,5 +28,11 @@ final class BookDetailsCommentsTableViewCell: UITableViewCell {
     
     func render(comments: NSAttributedString) {
         textView.attributedText = comments
+        
+        if case .dark = Settings.Theme.current {
+            textView.keyboardAppearance = .dark
+            textView.backgroundColor = #colorLiteral(red: 0.1960784314, green: 0.2156862745, blue: 0.262745098, alpha: 1)
+            textView.textColor = .white
+        }
     }
 }
