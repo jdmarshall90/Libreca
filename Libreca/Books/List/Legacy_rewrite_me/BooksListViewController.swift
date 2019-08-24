@@ -51,7 +51,7 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     /// table view. A better fix would be to cancel in flight requests when refreshing the data or
     /// changing the content server.
     var isRefreshing: Bool {
-        return isRetryingFailures || !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView)
+        return !isResettingIndices && (isRetryingFailures || !(sectionIndexGenerator.isSectioningEnabled || didJustLoadView))
     }
     
     private var booksRefreshControl: UIRefreshControl {
@@ -82,15 +82,36 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     }
     
     private var shouldReloadTable = true
+    private var isResettingIndices = false
     private var content: Content = BooksListViewController.loadingContent {
         didSet {
             func handleContentChange(with books: [BooksListViewModel.BookFetchResult]) {
-                sectionIndexGenerator.reset(with: books)
-                
-                if shouldReloadTable {
-                    title = "Books (\(books.count))"
-                    tableView.reloadData()
-                    tableView.reloadSectionIndexTitles()
+                switch Settings.DataSource.current {
+                case .dropbox:
+                    sectionIndexGenerator.reset(with: books)
+                    
+                    if shouldReloadTable {
+                        title = "Books (\(books.count))"
+                        tableView.reloadData()
+                        tableView.reloadSectionIndexTitles()
+                    }
+                case .contentServer:
+                    isResettingIndices = true
+                    DispatchQueue(label: "com.marshall.justin.mobile.ios.Libreca.queue.sectionindex.reset", qos: .userInitiated).async {
+                        self.sectionIndexGenerator.reset(with: books)
+                        if self.shouldReloadTable {
+                            DispatchQueue.main.async {
+                                self.isResettingIndices = false
+                                self.tableView.reloadData()
+                                self.tableView.reloadSectionIndexTitles()
+                            }
+                        }
+                    }
+                    if shouldReloadTable {
+                        title = "Books (\(books.count))"
+                    }
+                case .unconfigured:
+                    break // impossible
                 }
             }
             
@@ -249,26 +270,27 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     
     func didFetch(book: BooksListViewModel.BookFetchResult, at index: Int) {
         searchBar.disable()
-        guard case .books(var books) = content else { return }
-        books[index] = book
-        shouldReloadTable = false
-        content = .books(books)
         
-        let indexPath = IndexPath(row: index, section: 0)
-        
-        if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
-            // TODO: This is crashing if you re-save the content server url while
-            // the detail screen (or the regular book list screen) is present,
-            // then come back to the library tab (happening on phone, not sure about pad)
-            // Also happens if your content server settings are incorrect (i.e., 404, 401, etc.), then
-            // change settings to be correct.
-            // For some errors (like if your backend is down, then you start it back up, then re-save),
-            // the app just freezes. App is also freezing in other scenarios on startup or changing content server.
-            // Not sure exact test cases yet, but research in instruments. It happened once after switching from dropbox to content server. Not consistently though.
-            // Consistently happening if you repeatedly save the content server settings.
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+        switch Settings.DataSource.current {
+        case .dropbox:
+            guard case .books(var books) = content else { return }
+            books[index] = book
+            shouldReloadTable = false
+            content = .books(books)
+            
+            let indexPath = IndexPath(row: index, section: 0)
+            
+            if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+            shouldReloadTable = true
+        case .contentServer:
+            // performance takes a huge hit if we do this on the content server flow, as well as causes a few crashes, so do nothing
+            break
+        case .unconfigured:
+            // impossible
+            break
         }
-        shouldReloadTable = true
     }
     
     func reload(all books: [BooksListViewModel.BookFetchResult]) {
