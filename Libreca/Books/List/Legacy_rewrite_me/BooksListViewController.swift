@@ -117,6 +117,13 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // force lazy var to be instantiated
+        // yet another quirk that can be removed once the content server flow is rewritten ...
+        // Fixes bug where after first app install, if you setup content server the only way to get library to load was to force kill the app and relaunch.
+        // Root cause was because the notification that tells the view model to fetch from content server (listened for by this view model) was not
+        // being received, because the view model had not yet been instantiated. 🤦🏼‍♂️
+        _ = viewModel
+        
         NotificationCenter.default.addObserver(self, selector: #selector(dataSourceDidChange), name: Settings.DataSource.didChangeNotification.name, object: nil)
         
         refreshControl = booksRefreshControl
