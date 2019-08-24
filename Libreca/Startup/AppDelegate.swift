@@ -27,7 +27,6 @@ import UIKit
 
 // TODO: Update libreca.io
 // TODO: Update Google ad
-// TODO: Update App Store screenshots
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
