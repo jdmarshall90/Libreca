@@ -87,7 +87,8 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
         didSet {
             func handleContentChange(with books: [BooksListViewModel.BookFetchResult]) {
                 switch Settings.DataSource.current {
-                case .dropbox:
+                case .dropbox,
+                     .unconfigured:
                     sectionIndexGenerator.reset(with: books)
                     
                     if shouldReloadTable {
@@ -110,8 +111,6 @@ class BooksListViewController: UITableViewController, BooksListView, UISearchBar
                     if shouldReloadTable {
                         title = "Books (\(books.count))"
                     }
-                case .unconfigured:
-                    break // impossible
                 }
             }
             
