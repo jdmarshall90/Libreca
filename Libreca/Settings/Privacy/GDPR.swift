@@ -113,11 +113,19 @@ extension Settings.Theme: GDPRItem {
 
 extension Settings.DataSource: GDPRItem {
     var information: String {
-        return "Is Dropbox authorized? \(Settings.Dropbox.isAuthorized)"
+        switch (Settings.Dropbox.isAuthorized, Keychain.retrieveDropboxTokenUid()) {
+        case (false, _):
+            return "Is Dropbox authorized? false"
+        case (true, .some(let tokenUid)):
+            return "Dropbox authorized with oauth token: \(tokenUid)"
+        case (true, .none):
+            return "Is Dropbox authorized? true"
+        }
     }
     
     func delete() {
         Settings.Dropbox.isAuthorized = false
+        Keychain.wipe()
         DropboxClientsManager.unlinkClients()
     }
 }

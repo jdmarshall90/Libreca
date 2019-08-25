@@ -43,6 +43,10 @@ struct Keychain {
         return "Libreca_keychain_password_key"
     }
     
+    private static var dropboxTokenUidKey: String {
+        return "Libreca_dropbox_token_uid_key"
+    }
+    
     static func retrieveServerConfiguration() -> ServerConfiguration? {
         guard let rawURL = valet.string(forKey: urlKey),
             let url = URL(string: rawURL) else { return nil }
@@ -71,6 +75,14 @@ struct Keychain {
             valet.removeObject(forKey: usernameKey)
             valet.removeObject(forKey: passwordKey)
         }
+    }
+    
+    static func retrieveDropboxTokenUid() -> String? {
+        return valet.string(forKey: dropboxTokenUidKey)
+    }
+    
+    static func store(_ dropboxTokenUid: String) {
+        valet.set(string: dropboxTokenUid, forKey: dropboxTokenUidKey)
     }
     
     static func wipe() {

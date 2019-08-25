@@ -38,6 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         DropboxClientsManager.setupWithAppKey("3s4u5gvkukbbu1n")
+        
+        if let dropboxTokenUid = Keychain.retrieveDropboxTokenUid() {
+            DropboxClientsManager.reauthorizeClient(dropboxTokenUid)
+        }
+        
         CalibreKitConfiguration.configuration = Settings.ContentServer.current
         
         NotificationCenter.default.addObserver(self, selector: #selector(themeSettingDidChange), name: Settings.Theme.didChangeNotification.name, object: nil)
@@ -59,6 +64,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let authResult = DropboxClientsManager.handleRedirectURL(url) {
             switch authResult {
             case .success:
+                let tokenUidKey = "uid"
+                if let tokenUid = url
+                    .query?
+                    .components(separatedBy: "&")
+                    .first(where: { $0.hasPrefix(tokenUidKey) })?
+                    .components(separatedBy: "=")
+                    .last {
+                    Keychain.store(tokenUid)
+                }
                 Settings.Dropbox.isAuthorized = true
             case .cancel:
                 Settings.Dropbox.isAuthorized = false
