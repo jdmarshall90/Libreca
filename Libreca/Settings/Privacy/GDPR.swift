@@ -129,6 +129,7 @@ extension Download: GDPRItem {
     
     func delete() {
         DownloadsDataManager().delete(self)
+        NotificationCenter.default.post(name: Download.downloadsUpdatedNotification, object: nil)
     }
 }
 
